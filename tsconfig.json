@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
+    // "forceConsistentCasingInFileNames": true, // 禁止对同一个文件的不一致的引用
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    // "noImplicitAny": true, // 在表达式和声明上有隐含的 any类型时报错
+    "outDir": "dist",
+    "sourceMap": true, // 生成相应的 .map文件。
+    "strict": true, // 严格模式
+    "experimentalDecorators": true,
+    "target": "es6",
+  },
+  "exclude": [
+    "node_module",
+    "dist"
+  ],
+}
