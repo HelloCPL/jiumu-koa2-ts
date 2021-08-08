@@ -11,11 +11,13 @@
  *   getUuId // 生成唯一id标识
  *   getFileRandomName // 生成文件随机名字
  *   formatDate // 格式化日期
+ *   getKey // 获取 key
 */
 
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid'
 import _ from 'lodash'
 import dayjs from 'dayjs'
+import Config from '../config'
 
 /**
  * 返回格式后的路径
@@ -41,10 +43,9 @@ export function sureIsArray(arr: any): any[] {
 }
 
 /**
- * 将 key 名称转换成 驼峰命名
+ * 如果是对象或数组将 key 名称转换成 驼峰命名
 */
-type ResultsType = ObjectAny | ObjectAny[]
-export function toCamelCase(results: ResultsType): ResultsType {
+export function toCamelCase<T>(results: T): T {
   // 处理对象 key
   const _toObjectKey = (obj: ObjectAny) => {
     let newObj: ObjectAny = {}
@@ -69,8 +70,10 @@ export function toCamelCase(results: ResultsType): ResultsType {
     return arr
   }
   if (_.isArray(results))
+    // @ts-ignore 
     return _toArrayKey(results)
   else if (isObject(results))
+    // @ts-ignore 
     return _toObjectKey(results)
   return results
 }
@@ -78,7 +81,7 @@ export function toCamelCase(results: ResultsType): ResultsType {
 /**
  * 判断是否为对象，补充 lodash 不能识别数据库查询返回的数据是否为对象的问题
 */
-export function isObject(obj: any) {
+export function isObject(obj: any): boolean {
   return _.isPlainObject(obj) || (typeof obj === 'object' && toString.call(obj) === '[object Object]')
 }
 
@@ -115,4 +118,9 @@ export function formatDate(date: any, format = 'YYYY-MM-DD HH:mm:ss'): string {
   } catch (e) {
     return ''
   }
+}
+
+// 获取 key
+export const getKey = (key: string): string => {
+  return `${Config.ENV}_jiumu_koa2_ts_${key}`
 }

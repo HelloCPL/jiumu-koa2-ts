@@ -6,7 +6,7 @@
  *   catchError // 全局捕捉异常集合
  */
 
-import { Context } from 'koa'
+import { Context, Next } from 'koa'
 import { ExceptionHttp, Success } from '../../utils/http-exception'
 import { Code } from '../../enums'
 // import Logger from '../../utils/logger'
@@ -16,7 +16,7 @@ import { Code } from '../../enums'
 /**
  * 全局捕捉异常集合
  */
-export async function catchError(ctx: Context, next: any) {
+export async function catchError(ctx: Context, next: Next) {
   try {
     await next()
   } catch (error) {

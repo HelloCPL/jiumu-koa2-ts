@@ -11,6 +11,7 @@ interface ObjectAny {
 // 声明命名空间 合并 Global 接口，用于扩展global对象
 declare namespace NodeJS {
   export interface Global {
+    unlessPath: string[];
     requestCount: number;
     requestStart: any,
     requestEnd: any,

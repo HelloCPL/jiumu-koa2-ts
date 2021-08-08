@@ -10,15 +10,13 @@
 import validator from 'validator'
 import { findMembers } from './find-members'
 import { get, last, set, cloneDeep } from 'lodash'
-
-const ParameterException = global.ExceptionParameter
+import { ExceptionParameter } from '../../utils/http-exception'
 
 export class LinValidator {
   constructor() {
     this.data = {}
     this.parsed = {}
   }
-
 
   _assembleAllParams(ctx) {
     return {
@@ -78,7 +76,7 @@ export class LinValidator {
       }
     }
     if (errorMsgs.length != 0) {
-      throw new ParameterException({ message: errorMsgs })
+      throw new ExceptionParameter({ message: errorMsgs })
     }
     ctx.v = this
     return this

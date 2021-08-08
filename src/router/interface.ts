@@ -4,10 +4,23 @@
  * @update 2021-08-06 16:14:35
 */
 
+// 路由接口
 export interface RouteOptions {
   target: any,
-  method: string,
   path: string,
+  methods: string[],
+  terminals: string[],
   unless?: boolean,
-  terminals: string[]
 }
+
+// 请求参数接口
+export interface RequestOptions {
+  path: string,
+  methods: string[],
+  unless?: boolean,
+  terminals?: string[]
+}
+
+
+
+

@@ -11,6 +11,7 @@
 import Redis from 'redis'
 import Config from '../config'
 import _ from 'lodash'
+import {getKey} from '../utils/tools'
 // import Logger from '../../utils/logs'
 const REDIS = Config.REDIS
 
@@ -18,8 +19,6 @@ interface RedisOptions {
   key: string,
   value: any
 }
-
-const prefixName = 'jiumu_koa2_ts_'
 
 // 创建 redis 连接
 const redisClient = Redis.createClient(REDIS.PORT, REDIS.HOST)
@@ -36,12 +35,14 @@ redisClient.on('error', err => {
 
 // 保存 redis 值
 export const clientSet = (key: string, value: any) => {
-  key = prefixName + key
+  key = getKey(key)
   return new Promise((resolve, reject) => {
     const options = _handleSetItem(key, value)
     redisClient.set(options.key, options.value, (err: any) => {
       if (err) reject(err)
+      // @ts-ignore 
       else resolve(null)
+
     })
   })
 }
@@ -57,7 +58,7 @@ function _handleSetItem(key: string, value: any): RedisOptions {
 
 // 获取 redis 值
 export const clientGet = (key: string) => {
-  key = prefixName + key
+  key = getKey(key)
   return new Promise((resolve, reject) => {
     redisClient.get(key, (err: any, value) => {
       if (err) reject(err)
@@ -82,13 +83,17 @@ function _handleGetItem(value: any): any {
 
 // 删除 redis 值
 export const clientDel = (key: string) => {
-  key = prefixName + key
+  key = getKey(key)
   return new Promise((resolve, reject) => {
     try {
       redisClient.del(key, (err: any) => {
         if (err) reject(err)
+        // @ts-ignore 
         else resolve(null)
       })
-    } catch (e) { resolve(null) }
+    } catch (e) {
+      // @ts-ignore 
+      resolve(null)
+    }
   })
 }

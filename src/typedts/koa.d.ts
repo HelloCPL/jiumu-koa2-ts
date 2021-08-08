@@ -6,15 +6,12 @@
 
 import Koa from 'koa'
 import compose from 'koa-compose'
+import { DataOptions } from '../lib/mount-parameter/interface'
 
 declare module 'koa' {
   interface Context {
-    data: {
-      query: ObjectAny,
-      body: ObjectAny,
-      path: ObjectAny,
-      header: ObjectAny,
-    } | any, // 访问参数
-    terminal: any, // 访问终端
+    data: DataOptions, // 包含不同传参方法的访问参数
+    params: ObjectAny, // 自动根据请求获取的访问参数
+    terminal: string | undefined, // 访问终端
   }
 }

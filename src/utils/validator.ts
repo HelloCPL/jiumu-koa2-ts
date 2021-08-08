@@ -15,7 +15,7 @@ import { Message } from '../enums'
 
 type RulesOptions = any[]
 
-interface ValidatorOptions {
+export interface ValidatorOptions {
   key: string,
   rules: RulesOptions | RulesOptions[]
 }
@@ -90,6 +90,7 @@ export class ValidatorParameters extends ValidatorParam {
 export const validateRange = (value: any, data: any[], message?: string) => {
   if (value || value === 0 || value === false) {
     let flag = false
+    // @ts-ignore 
     data.find(val => {
       if (value == val) {
         flag = true

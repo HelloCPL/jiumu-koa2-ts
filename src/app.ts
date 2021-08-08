@@ -11,10 +11,10 @@ import KoaCors from '@koa/cors'
 import KoaBody from 'koa-body'
 import Config from './config'
 import InitGlobal from './global'
-import { catchError } from './lib/catch-error.ts'
+import { catchError } from './lib/catch-error'
 import { Route } from './router'
 
-const app = new Koa()
+const app: Koa = new Koa()
 
 // 处理跨域
 app.use(KoaCors())
@@ -29,6 +29,7 @@ app.use(KoaBody({
 InitGlobal.init()
 // 全局异常捕获
 app.use(catchError)
+// 挂载 token 权限判断处理
 // 初始化路由
 const route = new Route(app)
 route.init()
