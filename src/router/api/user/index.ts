@@ -20,7 +20,7 @@ export default class User {
     unless: true
   })
   @Required(['phone', 'password'])
-  // @Convert(doUserRegisterIsExist)
+  @Convert(doUserRegisterIsExist)
   async doUserRegister(ctx: Context, next: Next) {
     await doUserRegister(ctx, next)
   }

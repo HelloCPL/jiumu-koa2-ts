@@ -22,8 +22,7 @@ export const doUserRegister = async (ctx: Context, next: Next) => {
   const currentTime = formatDate(new Date())
   const sql = `INSERT users (id, password, phone,username, create_time, update_time, terminal) VALUES (?,?,?,?,?,?,?)`
   const data = [id, password, ctx.params.phone, '匿名', currentTime, currentTime, ctx.terminal]
-  const res = await query(sql, data)
-  console.log(res);
+  await query(sql, data)
   // 生成 token
   const tokenParams = {
     id,

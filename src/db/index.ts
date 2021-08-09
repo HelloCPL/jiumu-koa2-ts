@@ -7,18 +7,20 @@
  *   execTrans // 事务查询
 */
 
-import MySQL from 'mysql2'
+import MySQL, { Pool, PoolConnection } from 'mysql2'
 import Async from 'async'
 import Config from '../config/index'
 // import Logger from '../utils/logs'
 import { ExceptionHttp } from '../utils/http-exception'
+import { SQLOptions, ErrorOptions } from './interface'
+import { Message } from '../enums'
 
 const DATABASE = Config.DATABASE
 
 /**
  * 创建连接词
 */
-const pool = MySQL.createPool({
+const pool: Pool = MySQL.createPool({
   host: DATABASE.HOST,
   user: DATABASE.USER,
   password: DATABASE.PASSWORD,
@@ -37,17 +39,16 @@ export function query(sql: string, data?: any) {
     // Logger.query(sql, data)
     // console.log(sql);
     // console.log(data);
-    pool.query(sql, data, async (err, results) => {
+    pool.query(sql, data, async (err, results: any) => {
       if (err)
-        return throwError(reject, '服务器发生错误：数据库查询语句出错', null, sql, data)
+        return _throwError(reject, { sql, data, err })
+      // 新增或更新数据失败抛出错误
+      const sqlStr = sql.toUpperCase()
+      if ((sqlStr.includes('INSERT') || sqlStr.includes('UPDATE')) && results.affectedRows == 0)
+        return _throwError(reject, { message: Message.fail, sql, data, err })
       resolve(results)
     })
   })
-}
-
-interface SQLOptions {
-  sql: string,
-  data?: any[] | string
 }
 
 /**
@@ -56,20 +57,28 @@ interface SQLOptions {
 */
 export function execTrans(sqlList: SQLOptions[]) {
   return new Promise((resolve, reject) => {
-    pool.getConnection((err, connection) => {
+    // 连接数据库
+    pool.getConnection((err, connection: PoolConnection) => {
       if (err)
-        return throwError(reject, '服务器发生错误：创建数据库连接失败', err)
+        return _throwError(reject, { message: Message.dbConnect, err })
+      // 开启事务
       connection.beginTransaction(err => {
         if (err)
-          return throwError(reject, '服务器发生错误：事务开启失败', err)
-        const params = handleExceTransSQLParams(reject, connection, sqlList)
+          return _throwError(reject, { message: Message.dbExecTrancStart, err })
+        const params = _handleExceTransSQLParams(reject, connection, sqlList)
         // 串联执行多个异步
         Async.series(params, (err, results) => {
           if (err)
-            return handleExceTransRoolback(reject, connection, err, '服务器发生错误：事务执行失败')
+            return _handleExceTransRollback(reject, connection, {
+              message: Message.dbExecTrancStart,
+              err
+            })
           connection.commit(err => {
             if (err)
-              return handleExceTransRoolback(reject, connection, err, '服务器发生错误：事务执行失败')
+              return _handleExceTransRollback(reject, connection, {
+                message: Message.dbExecTrancPerform,
+                err
+              })
             connection.release()
             resolve(results)
           })
@@ -82,16 +91,30 @@ export function execTrans(sqlList: SQLOptions[]) {
 /**
  * 处理多条 SQL 语句查询
 */
-function handleExceTransSQLParams(reject: any, connection: any, sqlList: SQLOptions[]) {
+function _handleExceTransSQLParams(reject: any, connection: PoolConnection, sqlList: SQLOptions[]) {
   let queryArr: any[] = []
   sqlList.forEach(item => {
     // Logger.query(item.sql, item.data)
     let temp = function (cb: Function) {
       connection.query(item.sql, item.data, (err: any, results: any) => {
-        if (err) {
-          handleExceTransRoolback(reject, connection, err, '服务器发生错误：数据库查询语句出错', item)
+        if (err)
+          _handleExceTransRollback(reject, connection, {
+            err,
+            sql: item.sql,
+            data: item.data
+          })
+        else {
+          // 新增或更新数据失败抛出错误
+          const sqlStr = item.sql.toUpperCase()
+          if ((sqlStr.includes('INSERT') || sqlStr.includes('UPDATE')) && results.affectedRows == 0)
+            _handleExceTransRollback(reject, connection, {
+              message: Message.fail,
+              sql: item.sql,
+              data: item.data,
+              err
+            })
+          else cb(null, results)
         }
-        else cb(null, results)
       })
     }
     queryArr.push(temp)
@@ -100,22 +123,33 @@ function handleExceTransSQLParams(reject: any, connection: any, sqlList: SQLOpti
 }
 
 // 普通错误抛出异常
-function throwError(reject: any, message: string, err?: any, ...args: any[]) {
-  // Logger.error(message, ...args)
+function _throwError(reject: any, errorMessage: ErrorOptions) {
+  // let args: any = []
+  // if (errorMessage.sql) args.push(errorMessage.sql)
+  // if (errorMessage.data) args.push(errorMessage.data)
+  // if (errorMessage.err) args.push(errorMessage.err)
+  // Logger.error(errorMessage.message, ...args)
   reject(new ExceptionHttp({
-    message,
-    data: err
+    message: errorMessage.message || Message.dbSQL,
+    code: errorMessage.code,
+    data: errorMessage.err
   }))
 }
 
 // 事务查询发生错误时回滚并返回错误
-function handleExceTransRoolback(reject: any, connection: any, err: any, message: string, ...args: any[]) {
-  connection.roolback(() => {
+function _handleExceTransRollback(reject: any, connection: PoolConnection, errorMessage: ErrorOptions) {
+  connection.rollback(() => {
     // Logger.error(message, ...args)
+    // let args: any = []
+    // if (errorMessage.sql) args.push(errorMessage.sql)
+    // if (errorMessage.data) args.push(errorMessage.data)
+    // if (errorMessage.err) args.push(errorMessage.err)
+    // Logger.error(errorMessage.message, ...args)
     connection.release()
     reject(new ExceptionHttp({
-      message,
-      data: err
+      message: errorMessage.message || Message.dbSQL,
+      code: errorMessage.code,
+      data: errorMessage.err
     }))
   })
 }

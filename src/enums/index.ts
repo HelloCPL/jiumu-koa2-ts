@@ -29,19 +29,24 @@ export enum Message {
   register = '注册成功',
   login = '登录成功',
   userExist = '用户已存在',
-  userUnExist = '用户不存在'
+  userUnExist = '用户不存在',
+  dbSQL = '服务器发生错误：数据库查询语句出错',
+  dbConnect = '服务器发生错误：创建数据库连接失败',
+  dbExecTrancStart = '服务器发生错误：事务开启失败',
+  dbExecTrancPerform = '服务器发生错误：事务执行失败',
+  fail = '操作失败'
 }
 
 /**
  * 返回数据状态码
 */
 export enum Code {
+  success = 200,
   error = 500,
   parameter = 400,
   notFound = 404,
   forbidden = 403, // 权限不足
   authFailed = 401, // 授权失败
-  success = 200,
   authLogin = 205, // 重新登录
   authRefresh = 206, // token 失效需重新刷新
   locked = 423, // 静态资源被锁定，用于不返回日志信息
