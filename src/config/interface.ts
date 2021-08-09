@@ -40,6 +40,7 @@ export interface ConfigOptions extends ObjectAny {
   REDIS: RedisOptions,
   WX: WXOptions,
   TOKEN: TokenOptions,
+  ALLOW_MULTIPLE: boolean,
   BASE_URL: string,
   TERMINALS: string[],
   METHODS: string[],

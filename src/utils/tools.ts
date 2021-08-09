@@ -12,13 +12,14 @@
  *   getFileRandomName // 生成文件随机名字
  *   formatDate // 格式化日期
  *   getKey // 获取 key
+ *   getTerminal // 获取路径 terminal
 */
 
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid'
 import _ from 'lodash'
 import dayjs from 'dayjs'
 import Config from '../config'
-
+import { Context } from 'koa'
 /**
  * 返回格式后的路径
  * 如 member/list 或 member/list/ ==> /member/list
@@ -123,4 +124,11 @@ export function formatDate(date: any, format = 'YYYY-MM-DD HH:mm:ss'): string {
 // 获取 key
 export const getKey = (key: string): string => {
   return `${Config.ENV}_jiumu_koa2_ts_${key}`
+}
+
+// 获取路径 terminal
+export const getTerminal = (ctx: Context): string => {
+  const url: string = ctx.request.url
+  const terminal: string = url.substring(1, url.indexOf('/', 1)).toLowerCase()
+  return terminal
 }

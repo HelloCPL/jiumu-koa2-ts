@@ -20,7 +20,7 @@ export default class User {
     unless: true
   })
   @Required(['phone', 'password'])
-  @Convert(doUserRegisterIsExist)
+  // @Convert(doUserRegisterIsExist)
   async doUserRegister(ctx: Context, next: Next) {
     await doUserRegister(ctx, next)
   }
@@ -29,10 +29,10 @@ export default class User {
   @Request({
     path: 'login',
     methods: ['post', 'get'],
-    unless: true
+    // unless: false 
   })
   @Required(['phone', 'password'])
-  @Convert(doUserRegisterIsExist)
+  // @Convert(doUserRegisterIsExist)
   async doUserLogin(ctx: Context, next: Next) {
     await doUserLogin(ctx, next)
   }

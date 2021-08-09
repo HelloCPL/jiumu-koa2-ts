@@ -21,9 +21,15 @@ export enum Message {
   rules = '服务器发生错误，校验规则有误',
   authLogin = '令牌已失效，请重新登录',
   authRefresh = '令牌已过期，请重新刷新',
-  authNotFound = 'token 不存在',
+  locked = '资源受保护，令牌过期或无权限查看',
+
+  authNotFound = '权限不足，令牌不存在',
   authDevice = '登录设备异常，请重新登录',
-  locked = '资源受保护，令牌过期或无权限查看'
+  authLoginOther = '您的账号已在其他设备登录，如果不是本人操作，请修改密码',
+  register = '注册成功',
+  login = '登录成功',
+  userExist = '用户已存在',
+  userUnExist = '用户不存在'
 }
 
 /**

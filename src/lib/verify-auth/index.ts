@@ -9,21 +9,29 @@
  *   getTokenKey // 获取token保存的key
 */
 
-import {Context, Next} from 'koa'
-
-export const TokenAuth =  async (ctx: Context, next: Next) => {
-  console.log('----- TokenAuth ----');
-  console.log(ctx.data);
-  console.log(global.unlessPath);
-  console.log(ctx);
-  await next()
-}
+import { Context, Next } from 'koa'
+import { analysisToken } from './token'
+import { Code } from '../../enums'
+import { ExceptionHttp } from '../../utils/http-exception'
 
 /**
  * 拦截普通路由请求 token 权限
 */
 export const verifyRoute = async (ctx: Context, next: Next) => {
+  const url = _getFullPath(ctx.request.url)
+  if (global.unlessPath.indexOf(url) === -1) {
+    const tokenInfo = await analysisToken(ctx)
+    if (tokenInfo.code !== Code.success)
+      throw new ExceptionHttp(tokenInfo)
+  }
   await next()
+}
+// 获取请求路径
+function _getFullPath(path: string): string {
+  let index = path.indexOf('?')
+  if (index !== -1)
+    path = path.substring(0, index)
+  return path
 }
 
 /**

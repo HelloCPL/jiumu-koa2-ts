@@ -12,6 +12,6 @@ declare module 'koa' {
   interface Context {
     data: DataOptions, // 包含不同传参方法的访问参数
     params: ObjectAny, // 自动根据请求获取的访问参数
-    terminal: string | undefined, // 访问终端
+    terminal: string, // 访问终端
   }
 }

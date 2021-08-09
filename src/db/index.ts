@@ -10,9 +10,10 @@
 import MySQL from 'mysql2'
 import Async from 'async'
 import Config from '../config/index'
-const DATABASE = Config.DATABASE
 // import Logger from '../utils/logs'
-import {ExceptionHttp} from '../utils/http-exception'
+import { ExceptionHttp } from '../utils/http-exception'
+
+const DATABASE = Config.DATABASE
 
 /**
  * 创建连接词
@@ -26,10 +27,6 @@ const pool = MySQL.createPool({
   connectionLimit: DATABASE.CONNECTION_LIMIT
 })
 
-interface SQLOptions {
-  sql: string,
-  data?: any [] | string
-}
 
 /**
  * 普通查询
@@ -38,12 +35,19 @@ interface SQLOptions {
 export function query(sql: string, data?: any) {
   return new Promise((resolve, reject) => {
     // Logger.query(sql, data)
+    // console.log(sql);
+    // console.log(data);
     pool.query(sql, data, async (err, results) => {
       if (err)
         return throwError(reject, '服务器发生错误：数据库查询语句出错', null, sql, data)
       resolve(results)
     })
   })
+}
+
+interface SQLOptions {
+  sql: string,
+  data?: any[] | string
 }
 
 /**

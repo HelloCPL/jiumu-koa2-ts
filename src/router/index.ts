@@ -41,12 +41,13 @@ export class Route {
     })
     for (let [config, controller] of Route.__DecoratedRouters) {
       // 处理路由中间件方法
-      const controllers: Function[] = sureIsArray(controller)
+      let controllers: Function[] = sureIsArray(controller)
       // 自定义路由中间件 自己调整中间件顺序
       const middleares: Function[] = [
         mountParameter, // 挂载参数处理
         verifyRoute, // 权限校验
       ]
+      controllers.unshift(...middleares)
 
       //  拼接路由集合
       const routePaths: string[] = []

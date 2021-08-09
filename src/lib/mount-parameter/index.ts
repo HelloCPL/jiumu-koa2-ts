@@ -6,7 +6,8 @@
 
 import { Context, Next } from 'koa'
 import { LinValidator } from '../lin-validator'
-import { DataOptions } from './/interface'
+import { DataOptions } from './interface'
+import { getTerminal } from '../../utils/tools'
 // import Logger from '../../utils/logger'
 
 /**
@@ -17,6 +18,7 @@ export const mountParameter = async (ctx: Context, next: Next) => {
   const v: any = await new LinValidator().validate(ctx)
   ctx.data = <DataOptions>v.data
   ctx.params = getParams(ctx)
+  ctx.terminal = getTerminal(ctx)
   // 记录日志
   global.requestCount++
   global.requestStart = process.hrtime.bigint()
@@ -37,4 +39,3 @@ export const getParams = (ctx: Context): ObjectAny => {
     params = { ...ctx.data.query, ...ctx.data.body }
   return params
 }
-

@@ -5,25 +5,40 @@
 */
 
 import { Context, Next } from "koa";
+import { Message } from '../../../enums'
 import { Success } from '../../../utils/http-exception'
-import {gernerateToken} from '../../../lib/verify-auth/token'
+import { gernerateToken } from '../../../lib/verify-auth/token'
 import Config from '../../../config'
+import { getUuId, formatDate, getKey } from '../../../utils/tools'
+import { encrypt } from '../../../utils/crypto'
+import { query } from '../../../db/index'
 
 /**
  * 用户注册
 */
 export const doUserRegister = async (ctx: Context, next: Next) => {
-  console.log(123);
-  console.log(ctx.data);
-  console.log(ctx.params);
-  console.log(ctx);
-  let params = {
-    id: 'sqwewq',
-    phone: '123123',
-    terminal: 'pc',
-    'user-agent': <string>ctx.request.header['user-agent']
+  const id = getUuId()
+  const password = encrypt(ctx.params.password)
+  const currentTime = formatDate(new Date())
+  const sql = `INSERT users (id, password, phone,username, create_time, update_time, terminal) VALUES (?,?,?,?,?,?,?)`
+  const data = [id, password, ctx.params.phone, '匿名', currentTime, currentTime, ctx.terminal]
+  const res = await query(sql, data)
+  console.log(res);
+  // 生成 token
+  const tokenParams = {
+    id,
+    phone: ctx.params.phone,
+    validTime: Config.TOKEN.VALID_TIME,
+    key: 'token'
   }
-  const token = await gernerateToken(params, Config.TOKEN.VALID_TIME)
-  const tokenRefresh = await gernerateToken(params, Config.TOKEN.REFRESH_VALID_TIME)
-  throw new Success({ message: '注册成功', data: { token, tokenRefresh}})
+  const token = await gernerateToken(ctx, tokenParams)
+  // 生成刷新 token
+  const tokenRefreshParams = {
+    id,
+    phone: ctx.params.phone,
+    validTime: Config.TOKEN.REFRESH_VALID_TIME,
+    key: 'token_refresh'
+  }
+  const tokenRefresh = await gernerateToken(ctx, tokenRefreshParams)
+  throw new Success({ message: Message.register, data: { token, tokenRefresh } })
 }
