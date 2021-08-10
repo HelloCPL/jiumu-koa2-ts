@@ -68,7 +68,6 @@ export const getFileByIds = async (ctx: Context, ids: string): Promise<FileOptio
  * 否则正常返回
 */
 function _handleFile(ctx: Context, file: FileOptions): FileOptions | null {
-  console.log(file);
   if (file.is_secret === '1' && file.create_user !== ctx.user.id) return null
   file.file_path = Config.BASE_URL + file.static_place + '/' + file.file_path
   if (file.is_secret === '1') {

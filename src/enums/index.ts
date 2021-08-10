@@ -21,7 +21,9 @@ export enum Message {
   rules = '服务器发生错误，校验规则有误',
   authLogin = '令牌已失效，请重新登录',
   authRefresh = '令牌已过期，请重新刷新',
-  locked = '资源受保护，令牌过期或无权限查看',
+
+  lockedAuth = '资源受保护，无权限查看',
+  lockedTime = '资源受保护，链接已过期',
 
   register = '注册成功',
   login = '登录成功',

@@ -32,7 +32,7 @@ export async function catchError(ctx: Context, next: Next) {
         data: error.data,
         total: error.total
       }
-      if (error.code !== Code.locked)
+      // if (error.code !== Code.locked)
         // Logger.response(ctx, data)
       ctx.body = data
     } else {

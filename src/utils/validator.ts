@@ -96,8 +96,8 @@ interface RangeOptions {
  * 校验参数是否在指定范围内容
 */
 export const validateRange = (info: RangeOptions) => {
+  let flag = false
   if (info.value || info.value === 0 || info.value === false) {
-    let flag = false
     // @ts-ignore 
     info.range.find(val => {
       if (_.isBoolean(info.value)) {
@@ -112,8 +112,8 @@ export const validateRange = (info: RangeOptions) => {
         }
       }
     })
-    if (flag) return info.value
-    else if (info.noThrow) return info.default
-    else throw new ExceptionParameter({ message: info.message || Message.parameter })
-  } else return info.value
+  }
+  if (flag) return info.value
+  else if (info.noThrow) return info.default
+  else throw new ExceptionParameter({ message: info.message || Message.parameter })
 }
