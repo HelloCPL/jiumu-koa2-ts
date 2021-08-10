@@ -108,7 +108,7 @@ export function getUuId(): string {
 // 生成文件随机名字
 export function getFileRandomName(fileName: string): string {
   const suffix = getSuffix(fileName)
-  return uuidv1() + suffix
+  return uuidv1() + '.' + suffix
 }
 
 // 格式化日期

@@ -9,7 +9,7 @@ import { Message } from '../../../enums'
 import { Success } from '../../../utils/http-exception'
 import { gernerateToken } from '../../../lib/verify-auth/token'
 import Config from '../../../config'
-import { getUuId, formatDate, getKey } from '../../../utils/tools'
+import { getUuId, formatDate } from '../../../utils/tools'
 import { encrypt } from '../../../utils/crypto'
 import { query } from '../../../db/index'
 

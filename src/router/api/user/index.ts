@@ -6,7 +6,7 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doUserRegisterIsExist } from '../../controller/user/convert'
+import { doUserRegisterIsExist, doUserLoginIsNotExist } from '../../controller/user/convert'
 import { doUserRegister } from '../../controller/user/register'
 import { doUserLogin } from '../../controller/user/login'
 
@@ -16,7 +16,7 @@ export default class User {
   // 1 用户注册
   @Request({
     path: 'register',
-    methods: ['post', 'get', 'put', 'delete'],
+    methods: ['post', 'get'],
     unless: true
   })
   @Required(['phone', 'password'])
@@ -29,10 +29,10 @@ export default class User {
   @Request({
     path: 'login',
     methods: ['post', 'get'],
-    // unless: false 
+    unless: true
   })
   @Required(['phone', 'password'])
-  // @Convert(doUserRegisterIsExist)
+  @Convert(doUserLoginIsNotExist)
   async doUserLogin(ctx: Context, next: Next) {
     await doUserLogin(ctx, next)
   }

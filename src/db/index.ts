@@ -37,15 +37,15 @@ const pool: Pool = MySQL.createPool({
 export function query(sql: string, data?: any) {
   return new Promise((resolve, reject) => {
     // Logger.query(sql, data)
-    // console.log(sql);
-    // console.log(data);
+    console.log(sql);
+    console.log(data);
     pool.query(sql, data, async (err, results: any) => {
       if (err)
         return _throwError(reject, { sql, data, err })
       // 新增或更新数据失败抛出错误
       const sqlStr = sql.toUpperCase()
       if ((sqlStr.includes('INSERT') || sqlStr.includes('UPDATE')) && results.affectedRows == 0)
-        return _throwError(reject, { message: Message.fail, sql, data, err })
+        return _throwError(reject, { message: Message.errorDoing, sql, data, err })
       resolve(results)
     })
   })
@@ -108,7 +108,7 @@ function _handleExceTransSQLParams(reject: any, connection: PoolConnection, sqlL
           const sqlStr = item.sql.toUpperCase()
           if ((sqlStr.includes('INSERT') || sqlStr.includes('UPDATE')) && results.affectedRows == 0)
             _handleExceTransRollback(reject, connection, {
-              message: Message.fail,
+              message: Message.errorDoing,
               sql: item.sql,
               data: item.data,
               err

@@ -19,7 +19,7 @@ import { Message, Code } from '../../enums'
 import { clientDel, clientSet, clientGet } from '../../db/redis'
 import dayjs from 'dayjs'
 
-interface TokenOptions extends ObjectAny {
+export interface TokenOptions extends ObjectAny {
   id: string,
   phone: string,
   terminal: string,
@@ -62,7 +62,7 @@ export const gernerateToken = async (ctx: Context, info: InfoOptions): Promise<s
 export const analysisToken = async (ctx: Context, key: string = 'token'): Promise<ExceptionOptions> => {
   const tokenOrigin = BasicAuth(ctx.req)
   if (!tokenOrigin || !tokenOrigin.name)
-    return { message: Message.authNotFound, code: Code.forbidden }
+    return { message: Message.noToken, code: Code.forbidden }
   // 解析 token 信息
   const token = tokenOrigin.name
   const tokenInfo: TokenOptions = <TokenOptions>JWT.decode(token)
@@ -82,13 +82,13 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
       return { message: Message.authLogin, code: Code.authLogin }
     // 校验登录设备、请求路径与终端的信息是否一致
     if (ctx.terminal !== tokenVerify.terminal || ctx.request.header['user-agent'] !== tokenVerify['user-agent'])
-      return { message: Message.authDevice, code: Code.forbidden }
+      return { message: Message.errorDevice, code: Code.forbidden }
     // 校验是否允许多平台登录
     if (tokenVerify['user-agent'] !== tokenRedisInfo['user-agent'] || token !== tokenRedis) {
       if (Config.ALLOW_MULTIPLE)
         return { message: Message.authLogin, code: Code.authLogin }
       else
-        return { message: Message.authLoginOther, code: Code.forbidden }
+        return { message: Message.errorLogin, code: Code.forbidden }
     }
   } catch (e) {
     // iat 开始有效时间

@@ -21,10 +21,11 @@ export const verifyRoute = async (ctx: Context, next: Next) => {
   const url = _getFullPath(ctx.request.url)
   if (global.unlessPath.indexOf(url) === -1) {
     const tokenInfo = await analysisToken(ctx)
-    if (tokenInfo.code !== Code.success)
-      throw new ExceptionHttp(tokenInfo)
-  }
-  await next()
+    if (tokenInfo.code === Code.success) {
+      ctx.user = tokenInfo.data
+      await next()
+    } else throw new ExceptionHttp(tokenInfo)
+  } else await next()
 }
 // 获取请求路径
 function _getFullPath(path: string): string {

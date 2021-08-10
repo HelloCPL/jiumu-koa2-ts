@@ -84,20 +84,36 @@ export class ValidatorParameters extends ValidatorParam {
   }
 }
 
+interface RangeOptions {
+  value: any, // 校验值
+  range: any[], // 校验范围
+  message?: string,
+  noThrow?: boolean, // 不抛出错误
+  default?: any, // 默认值
+}
+
 /**
  * 校验参数是否在指定范围内容
 */
-export const validateRange = (value: any, data: any[], message?: string) => {
-  if (value || value === 0 || value === false) {
+export const validateRange = (info: RangeOptions) => {
+  if (info.value || info.value === 0 || info.value === false) {
     let flag = false
     // @ts-ignore 
-    data.find(val => {
-      if (value == val) {
-        flag = true
-        return true
+    info.range.find(val => {
+      if (_.isBoolean(info.value)) {
+        if (info.value === val) {
+          flag = true
+          return true
+        }
+      } else {
+        if (info.value == val) {
+          flag = true
+          return true
+        }
       }
     })
-    if (flag) return value
-    else throw new ExceptionParameter({ message: message || Message.parameter })
-  } else return value
+    if (flag) return info.value
+    else if (info.noThrow) return info.default
+    else throw new ExceptionParameter({ message: info.message || Message.parameter })
+  } else return info.value
 }
