@@ -30,15 +30,15 @@ app.use(KoaBody({
     maxFieldsSize: 500 * 1024 * 1024 // 设置上传文件大小最大限制，默认500M
   }
 }))
-// 初始化全局方法或变量
+// 初始化全局变量/常量
 InitGlobal.init()
 // 全局异常捕获
 app.use(catchError)
-// 初始化路由
+// 注册路由
 const route = new Route(app)
 route.init()
 /**
- * 初始化静态资源
+ * 设置静态资源访问
  * 访问如 http://localhost:3000/files/395d00a0-6918-11eb-a413-3be76f9212d3.jpg
 */
 const staticPath = path.join(__dirname, '../static/')

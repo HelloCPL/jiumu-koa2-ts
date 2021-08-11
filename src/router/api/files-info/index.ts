@@ -6,21 +6,21 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Request, Required, Convert } from '../../router'
-import { doFileUpload } from '../../controller/file-operate/upload'
-import { doFileGet } from '../../controller/file-operate/get'
-import { doFileDelete } from '../../controller/file-operate/delete'
-import { doFileDeleteIsPower } from '../../controller/file-operate/convert'
+import { doFileAdd } from '../../controller/files-info/add'
+import { doFileGet } from '../../controller/files-info/get'
+import { doFileDelete } from '../../controller/files-info/delete'
+import { doFileDeleteIsPower } from '../../controller/files-info/convert'
 
 
 @Prefix('file')
-export default class User {
+export default class API{
   // 1 文件上传 可上传一个或多个文件 返回数组格式
   @Request({
-    path: 'upload',
+    path: 'add',
     methods: ['post'],
   })
-  async doFileUpload(ctx: Context, next: Next) {
-    await doFileUpload(ctx, next)
+  async doFileAdd(ctx: Context, next: Next) {
+    await doFileAdd(ctx, next)
   }
 
   // 2 文件获取 返回数组格式

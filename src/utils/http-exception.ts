@@ -2,6 +2,13 @@
  * @description: 设置异常类
  * @author chen
  * @update 2021-01-20 10:24:21
+ * @list 异常类说明
+ *   ExceptionHttp // 服务器异常
+ *   ExceptionParameter // 参数异常
+ *   ExceptionNotFound // 资源不存在异常
+ *   ExceptionForbidden // 权限不足异常
+ *   ExceptionAuthFailed // 授权失败异常
+ *   Success // 特殊异常 成功类异常用于返回数据
 */
 
 import { toCamelCase } from '../utils/tools'

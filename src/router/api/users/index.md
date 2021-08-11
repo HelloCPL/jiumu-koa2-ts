@@ -8,7 +8,7 @@
 
 #### 请求
 
-- `get | post` 
+- `post` 
 - `user/register`
 
 #### 参数
@@ -41,7 +41,7 @@
 
 #### 请求
 
-- `get | post` 
+- `post` 
 - `user/login`
 
 #### 参数

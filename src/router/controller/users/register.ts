@@ -5,9 +5,9 @@
 */
 
 import { Context, Next } from "koa";
-import { Message } from '../../../enums'
+import { Message, Terminal } from '../../../enums'
 import { Success } from '../../../utils/http-exception'
-import { gernerateToken } from '../../../lib/verify-auth/token'
+import { gernerateToken } from './token'
 import Config from '../../../config'
 import { getUuId, formatDate } from '../../../utils/tools'
 import { encrypt } from '../../../utils/crypto'
@@ -21,7 +21,7 @@ export const doUserRegister = async (ctx: Context, next: Next) => {
   const password = encrypt(ctx.params.password)
   const currentTime = formatDate(new Date())
   const sql = `INSERT users (id, password, phone,username, create_time, update_time, terminal) VALUES (?,?,?,?,?,?,?)`
-  const data = [id, password, ctx.params.phone, '匿名', currentTime, currentTime, ctx.terminal]
+  const data = [id, password, ctx.params.phone, '匿名', currentTime, currentTime, Terminal[ctx.terminal]]
   await query(sql, data)
   // 生成 token
   const tokenParams = {

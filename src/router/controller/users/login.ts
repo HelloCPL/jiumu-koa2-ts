@@ -6,7 +6,7 @@
 
 import { Context, Next } from "koa";
 import { Success, ExceptionParameter } from '../../../utils/http-exception'
-import { gernerateToken } from '../../../lib/verify-auth/token'
+import { gernerateToken } from './token'
 import { decrypt } from '../../../utils/crypto'
 import { query } from "../../../db";
 import { Message } from "../../../enums";
@@ -39,5 +39,5 @@ export const doUserLogin = async (ctx: Context, next: Next) => {
     }
     const tokenRefresh = await gernerateToken(ctx, tokenRefreshParams)
     throw new Success({ message: Message.login, data: { token, tokenRefresh } })
-  } else throw new ExceptionParameter({ message: Message.password })
+  } else throw new ExceptionParameter({ message: Message.errorPassword })
 }

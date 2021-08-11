@@ -6,21 +6,21 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doUserRegisterIsExist, doUserLoginIsNotExist } from '../../controller/user/convert'
-import { doUserRegister } from '../../controller/user/register'
-import { doUserLogin } from '../../controller/user/login'
+import { doUserRegisterExist, doUserLoginNoExist } from '../../controller/users/convert'
+import { doUserRegister } from '../../controller/users/register'
+import { doUserLogin } from '../../controller/users/login'
 
 
 @Prefix('user')
-export default class User {
+export default class API {
   // 1 用户注册
   @Request({
     path: 'register',
-    methods: ['post', 'get'],
+    methods: ['post'],
     unless: true
   })
   @Required(['phone', 'password'])
-  @Convert(doUserRegisterIsExist)
+  @Convert(doUserRegisterExist)
   async doUserRegister(ctx: Context, next: Next) {
     await doUserRegister(ctx, next)
   }
@@ -28,11 +28,11 @@ export default class User {
   // 2 用户登录
   @Request({
     path: 'login',
-    methods: ['post', 'get'],
+    methods: ['post'],
     unless: true
   })
   @Required(['phone', 'password'])
-  @Convert(doUserLoginIsNotExist)
+  @Convert(doUserLoginNoExist)
   async doUserLogin(ctx: Context, next: Next) {
     await doUserLogin(ctx, next)
   }

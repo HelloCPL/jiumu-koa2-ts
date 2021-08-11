@@ -10,13 +10,13 @@
 */
 
 import { Context } from 'koa'
-import Config from '../../config'
+import Config from '../../../config'
 import JWT from 'jsonwebtoken'
 import { Base64 } from 'js-base64'
 import BasicAuth from 'basic-auth'
-import { ExceptionOptions } from '../../utils/http-exception'
-import { Message, Code } from '../../enums'
-import { clientDel, clientSet, clientGet } from '../../db/redis'
+import { ExceptionOptions } from '../../../utils/http-exception'
+import { Message, Code } from '../../../enums'
+import { clientDel, clientSet, clientGet } from '../../../db/redis'
 import dayjs from 'dayjs'
 
 export interface TokenOptions extends ObjectAny {
@@ -118,20 +118,4 @@ function _getTokenKey(info: TokenKeyOptions): string {
   else
     return `${info.id}_${info.terminal}_${info.key}`
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

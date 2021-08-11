@@ -6,6 +6,7 @@
  * @list 方法集合说明
  *   ValidatorParameter // 校验一个参数类
  *   ValidatorParameters // 校验多个参数类
+ *   validateRange // 校验参数是否在指定范围内容
 */
 
 import { Rule, LinValidator } from '../lib/lin-validator'

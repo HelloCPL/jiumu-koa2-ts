@@ -3,14 +3,12 @@
  * @author chen
  * @update 2021-01-21 14:23:03
  * @list 方法集合说明
- *   TokenAuth // token拦截中间件
- *   TokenVerify // 普通路由校验方法
- *   TokenGernerate // 生成 token
- *   getTokenKey // 获取token保存的key
+ *   verifyRoute // 拦截普通路由请求 token 权限
+ *   verifyStatic // 拦截静态资源访问权限
 */
 
 import { Context, Next } from 'koa'
-import { analysisToken } from './token'
+import { analysisToken } from '../../router/controller/users/token'
 import { Code, Message } from '../../enums'
 import { ExceptionHttp } from '../../utils/http-exception'
 import { getSuffix } from '../../utils/tools';
@@ -49,7 +47,7 @@ export const verifyStatic = async (ctx: Context, next: Next) => {
     let filePath = getSuffix(_getFullPath(url), '/')
     const sql: string = `SELECT is_secret, create_user FROM files_info WHERE file_path = ?`
     const res: any = await query(sql, filePath)
-    if (res.length && res[0]['is_secret']) {
+    if (res.length && res[0]['is_secret'] === '1') {
       const vt = _getQueryParams(url, 'vt=')
       const uid = _getQueryParams(url, 'uid=')
       // 校验访问权限

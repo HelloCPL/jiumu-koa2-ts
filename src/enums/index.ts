@@ -2,10 +2,11 @@
  * @description: 枚举
  * @author chen
  * @update 2021-01-20 11:20:09
- * @list 方法集合说明
+ * @list 枚举集合说明
  *   Message // 返回数据信息提示
  *   Code // 返回数据状态码
  *   ParamsMessage // 必传参数不满足条件时提示文本
+ *   Terminal // 终端类型
 */
 
 /**
@@ -32,15 +33,19 @@ export enum Message {
   errorDevice = '登录设备异常，请重新登录',
   errorLogin = '您的账号已在其他设备登录，如果不是本人操作，请修改密码',
   errorDoing = '操作失败',
+  errorPassword = '密码错误',
 
   dbSQL = '服务器发生错误：数据库查询语句出错',
   dbConnect = '服务器发生错误：创建数据库连接失败',
   dbExecTrancStart = '服务器发生错误：事务开启失败',
   dbExecTrancPerform = '服务器发生错误：事务执行失败',
-  
-  userExist = '用户已存在',
-  userUnExist = '用户不存在',
-  password = '密码错误'
+
+  existUser = '用户已存在',
+  unexistUser = '用户不存在',
+  existTag = '标签已存在',
+  unexistTag = '标签不存在',
+
+  hasChildren = '有子级关联，操作失败'
 }
 
 /**
@@ -75,8 +80,15 @@ export enum MessageParameter {
   isJWT = '参数必须为JWT token格式',
 }
 
+// 终端类型枚举
+export enum Terminal {
+  'pc' = '管理端',
+  'web' = '桌面端',
+  'app' = '移动端',
+  'wechat' = '管理端',
+}
 
-
+export type TerminalType = keyof typeof Terminal
 
 
 

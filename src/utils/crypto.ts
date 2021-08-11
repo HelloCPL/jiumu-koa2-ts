@@ -15,7 +15,7 @@ import Config from '../config/index'
  * crypto-js 加密方法
  * password 参数 keyStr 加密字符串 ivStr 加密字符串
 */
-export function encrypt(str: string, keyStr?: string, ivStr?: string) {
+export function encrypt(str: string, keyStr?: string, ivStr?: string): string {
   if (!str) return str
   try {
     keyStr = keyStr ? keyStr : Config.CRYPTOJS_KEY
@@ -29,14 +29,14 @@ export function encrypt(str: string, keyStr?: string, ivStr?: string) {
       padding: CryptoJS.pad.ZeroPadding
     }).toString()
   } catch (e) {
-    return str
+    return ''
   }
 }
 
 /**
  * crypto-js 解密方法
 */
-export function decrypt(str: string, keyStr?: string, ivStr?: string) {
+export function decrypt(str: string, keyStr?: string, ivStr?: string): string {
   if (!str) return str
   try {
     keyStr = keyStr ? keyStr : Config.CRYPTOJS_KEY
@@ -49,7 +49,9 @@ export function decrypt(str: string, keyStr?: string, ivStr?: string) {
       padding: CryptoJS.pad.ZeroPadding
     }).toString(CryptoJS.enc.Utf8)
     return formatStr(descyptStr)
-  } catch (e) { return str }
+  } catch (e) {
+    return ''
+  }
 }
 
 // 将多余空格去除

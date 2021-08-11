@@ -37,3 +37,21 @@
 | create_time | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
+
+#### tags 标签信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 标签id |
+| parent_code | v64 | 是 | 父级code，相同标签类型同一个父级，默认 0  |
+| code | v64 | 是 | 标签code，唯一标识 |
+| label | v64 | 是 | 标签描述 |
+| sort | mediumint | 否 | 排序 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
+
+

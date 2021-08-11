@@ -5,7 +5,7 @@
  * @list 方法集合说明
  *   toPath // 返回格式后的路径
  *   sureIsArray // 确保返回数组集合方法
- *   toCamelCase // 将 key 名称转换成 驼峰命名
+ *   toCamelCase // 将数组或对象 key 名称转换成 驼峰命名
  *   isObject // 判断是否为对象
  *   getSuffix // 获取文件后缀
  *   getUuId // 生成唯一id标识
@@ -20,6 +20,8 @@ import _ from 'lodash'
 import dayjs from 'dayjs'
 import Config from '../config'
 import { Context } from 'koa'
+import { TerminalType } from '../enums'
+
 /**
  * 返回格式后的路径
  * 如 member/list 或 member/list/ ==> /member/list
@@ -127,8 +129,8 @@ export const getKey = (key: string): string => {
 }
 
 // 获取路径 terminal
-export const getTerminal = (ctx: Context): string => {
+export const getTerminal = (ctx: Context): TerminalType => {
   const url: string = ctx.request.url
-  const terminal: string = url.substring(1, url.indexOf('/', 1)).toLowerCase()
+  const terminal: TerminalType = <TerminalType>url.substring(1, url.indexOf('/', 1)).toLowerCase()
   return terminal
 }
