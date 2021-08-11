@@ -52,6 +52,7 @@ export async function isExistTag(value: any, key: string = 'id'): Promise<boolea
 
 // 根据 id 或 code 判断是否有子级
 export async function isExistChildren(value: any, key: string = 'id'): Promise<boolean> {
+  if (value == '0' && key === 'code') return true
   const sql = `SELECT t1.id FROM tags t1 WHERE t1.parent_code IN (SELECT t2.code FROM tags t2 WHERE t2.${key} = ?)`
   const res: any = await query(sql, value)
   if (res && res.length) return true
