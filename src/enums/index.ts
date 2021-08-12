@@ -42,8 +42,14 @@ export enum Message {
 
   existUser = '用户已存在',
   unexistUser = '用户不存在',
-  existTag = '标签已存在',
-  unexistTag = '标签不存在',
+  existTag = '标签标识已存在',
+  unexistTag = '标签标识不存在',
+  existPermission = '权限标识已存在',
+  unexistPermission = '权限标识不存在',
+  existRole = '角色标识已存在',
+  unexistRole = '角色标识不存在',
+  existRolePermission = '角色-权限关联标识已存在',
+  unexistRolePermission = '角色-权限关联标识不存在',
 
   hasChildren = '有子级关联，操作失败'
 }

@@ -10,10 +10,10 @@
 import MySQL, { Pool, PoolConnection } from 'mysql2'
 import Async from 'async'
 import Config from '../config/index'
-// import Logger from '../utils/logs'
 import { ExceptionHttp } from '../utils/http-exception'
 import { SQLOptions, ErrorOptions } from './interface'
 import { Message } from '../enums'
+import Logger from '../lib/logger'
 
 const DATABASE = Config.DATABASE
 
@@ -35,9 +35,6 @@ const pool: Pool = MySQL.createPool({
 */
 export function query(sql: string, data?: any) {
   return new Promise((resolve, reject) => {
-    // Logger.query(sql, data)
-    console.log(sql);
-    console.log(data);
     pool.query(sql, data, async (err, results: any) => {
       if (err)
         return _throwError(reject, { sql, data, err })
@@ -45,6 +42,8 @@ export function query(sql: string, data?: any) {
       const sqlStr = sql.toUpperCase()
       if ((sqlStr.startsWith('INSERT') || sqlStr.startsWith('UPDATE') || sqlStr.startsWith('DELETE')) && results.affectedRows == 0)
         return _throwError(reject, { message: Message.errorDoing, sql, data, err })
+      // 记录日志
+      Logger.query({ message: Message.success, sql, data })
       resolve(results)
     })
   })
@@ -79,6 +78,8 @@ export function execTrans(sqlList: SQLOptions[]) {
                 err
               })
             connection.release()
+            // 记录日志
+            Logger.query({ message: Message.success, data: sqlList })
             resolve(results)
           })
         })
@@ -123,11 +124,13 @@ function _handleExceTransSQLParams(reject: any, connection: PoolConnection, sqlL
 
 // 普通错误抛出异常
 function _throwError(reject: any, errorMessage: ErrorOptions) {
-  // let args: any = []
-  // if (errorMessage.sql) args.push(errorMessage.sql)
-  // if (errorMessage.data) args.push(errorMessage.data)
-  // if (errorMessage.err) args.push(errorMessage.err)
-  // Logger.error(errorMessage.message, ...args)
+  Logger.query({
+    code: errorMessage.code,
+    message: errorMessage.message || Message.dbSQL,
+    sql: errorMessage.sql,
+    data: errorMessage.data,
+    error: errorMessage.err
+  })
   reject(new ExceptionHttp({
     message: errorMessage.message || Message.dbSQL,
     code: errorMessage.code,
@@ -138,12 +141,13 @@ function _throwError(reject: any, errorMessage: ErrorOptions) {
 // 事务查询发生错误时回滚并返回错误
 function _handleExceTransRollback(reject: any, connection: PoolConnection, errorMessage: ErrorOptions) {
   connection.rollback(() => {
-    // Logger.error(message, ...args)
-    // let args: any = []
-    // if (errorMessage.sql) args.push(errorMessage.sql)
-    // if (errorMessage.data) args.push(errorMessage.data)
-    // if (errorMessage.err) args.push(errorMessage.err)
-    // Logger.error(errorMessage.message, ...args)
+    Logger.query({
+      code: errorMessage.code,
+      message: errorMessage.message || Message.dbSQL,
+      sql: errorMessage.sql,
+      data: errorMessage.data,
+      error: errorMessage.err
+    })
     connection.release()
     reject(new ExceptionHttp({
       message: errorMessage.message || Message.dbSQL,

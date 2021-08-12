@@ -49,7 +49,7 @@ export default class API {
 
   // 4 获取指定的某个标签
   @Request({
-    path: 'get/byCode',
+    path: 'get/bycode',
     methods: ['get', 'post']
   })
   @Required(['code'])
@@ -59,10 +59,9 @@ export default class API {
 
   // 5 获取某类标签
   @Request({
-    path: 'get/byParentCode',
+    path: 'get/byparentcode',
     methods: ['get', 'post']
   })
-  @Required(['parentCode'])
   async doTagGetByParentCode(ctx: Context, next: Next) {
     await doTagGetByParentCode(ctx, next)
   }

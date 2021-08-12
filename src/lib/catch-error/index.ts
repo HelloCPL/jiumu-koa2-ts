@@ -7,11 +7,9 @@
  */
 
 import { Context, Next } from 'koa'
-import { ExceptionHttp, Success } from '../../utils/http-exception'
+import { ExceptionHttp } from '../../utils/http-exception'
 import { Code } from '../../enums'
-// import Logger from '../../utils/logger'
-
-// import CONFIG from '../../config/index'
+import Logger from '../logger'
 
 /**
  * 全局捕捉异常集合
@@ -21,9 +19,7 @@ export async function catchError(ctx: Context, next: Next) {
     await next()
   } catch (error) {
     const isExceptionHttp = error instanceof ExceptionHttp
-    // const isDev = CONFIG.ENV === 'dev'
-    // if (isDev && !isExceptionHttp) 
-    throwError(error, isExceptionHttp)
+    _saveLogger(error, isExceptionHttp)
     ctx.status = Code.success
     if (isExceptionHttp) {
       let data = {
@@ -32,8 +28,6 @@ export async function catchError(ctx: Context, next: Next) {
         data: error.data,
         total: error.total
       }
-      // if (error.code !== Code.locked)
-        // Logger.response(ctx, data)
       ctx.body = data
     } else {
       let data = {
@@ -42,19 +36,24 @@ export async function catchError(ctx: Context, next: Next) {
         data: null,
         total: 0
       }
-      // Logger.response(ctx, data)
       ctx.body = data
     }
   }
 }
 
-// 打印捕捉的错误
-function throwError(error: Error, isExceptionHttp: boolean) {
-  let isSuccess = error instanceof Success
-  if (isSuccess) return
+// 记录响应日志
+function _saveLogger(error: any, isExceptionHttp: boolean) {
   if (isExceptionHttp) {
-    // Logger.error('已知错误', error, '已知错误')
+    Logger.response({
+      code: error.code,
+      message: error.message,
+      data: error.data
+    })
   } else {
-    // Logger.error('未知错误', error, '未知错误')
+    Logger.error({
+      code: Code.error,
+      message: '未知错误',
+      error: error
+    })
   }
 }

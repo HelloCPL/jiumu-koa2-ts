@@ -65,7 +65,7 @@ export const getSelectWhereData = (options: paramsOptions, connector: string = '
 
 /**
  * 处理 SELECT 查询列表时 WHERE 条件为 keyword 语句有效值
- * options.valid 有效的参数名集合 可带表名、指定数据key，如 pas t1.pas pas:password
+ * options.valid 需要模糊查询的字段 可带表名、指定数据key，如 pas t1.pas pas:password
  * options.data 传参对象
  * connector 参数间的连接符
  * prefix sql为真时是否添加前缀

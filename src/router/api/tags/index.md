@@ -107,13 +107,13 @@
 #### 请求
 
 - `get | post` 
-- `tag/get/byCode`
+- `tag/get/bycode`
 
 #### 参数
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| code | string | 是 | 标签code |
+| code | string | 是 | 标签 code 或 id |
 
 #### 返回示例
 
@@ -147,13 +147,13 @@
 #### 请求
 
 - `get | post` 
-- `tag/get/byParentCode`
+- `tag/get/byparentcode`
 
 #### 参数
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| parentCode | string | 是 | 父级标签code，获取全部标签传 0 |
+| parentCode | string | 否 | 父级标签code，不传或传 0 获取全部标签 |
 
 #### 返回示例
 

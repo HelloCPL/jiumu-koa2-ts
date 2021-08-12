@@ -11,8 +11,8 @@
 import Redis from 'redis'
 import Config from '../config'
 import _ from 'lodash'
-import {getKey} from '../utils/tools'
-// import Logger from '../../utils/logs'
+import { getKey } from '../utils/tools'
+import Logger from '../lib/logger'
 const REDIS = Config.REDIS
 
 interface RedisOptions {
@@ -31,6 +31,10 @@ redisClient.auth(REDIS.PASSWORD, () => {
 // 监听 redis 错误事件
 redisClient.on('error', err => {
   // Logger.error('redis 发生错误', err, 'redis 发生错误')
+  Logger.error({
+    message: 'redis 发生错误',
+    error: err
+  })
 })
 
 // 保存 redis 值

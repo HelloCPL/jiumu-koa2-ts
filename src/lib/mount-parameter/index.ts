@@ -8,7 +8,6 @@ import { Context, Next } from 'koa'
 import { LinValidator } from '../lin-validator'
 import { DataOptions } from './interface'
 import { getTerminal } from '../../utils/tools'
-// import Logger from '../../utils/logger'
 
 /**
  * 挂载参数
@@ -22,7 +21,6 @@ export const mountParameter = async (ctx: Context, next: Next) => {
   // 记录日志
   global.requestCount++
   global.requestStart = process.hrtime.bigint()
-  // Logger.request(ctx)
   await next()
 }
 

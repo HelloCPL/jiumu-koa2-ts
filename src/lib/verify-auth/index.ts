@@ -15,6 +15,7 @@ import { getSuffix } from '../../utils/tools';
 import { query } from '../../db';
 import { decrypt } from '../../utils/crypto';
 import dayjs from 'dayjs'
+import Logger from '../logger'
 
 /**
  * 拦截普通路由请求 token 权限
@@ -25,8 +26,12 @@ export const verifyRoute = async (ctx: Context, next: Next) => {
     const tokenInfo = await analysisToken(ctx)
     if (tokenInfo.code === Code.success) {
       ctx.user = tokenInfo.data
-    } else throw new ExceptionHttp(tokenInfo)
+    } else {
+      Logger.request(ctx)
+      throw new ExceptionHttp(tokenInfo)
+    }
   }
+  Logger.request(ctx)
   await next()
 }
 

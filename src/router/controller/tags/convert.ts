@@ -1,5 +1,5 @@
 /**
- * @description 用户模块中间件
+ * @description 标签模块中间件
  * @author chen
  * @update 2021-08-07 15:12:57
 */
@@ -20,12 +20,19 @@ export const doTagAddExist = async (ctx: Context, next: Next) => {
 }
 
 /**
- * 修改时 判断标签是否不存在
+ * 修改时 判断标签是否不存在，若修改 code 再判断 code 是否存在
 */
 export async function doTagUpdateNoExist(ctx: Context, next: Next) {
   const flag = await isExistTag(ctx.params.id)
   if (!flag)
     throw new ExceptionParameter({ message: Message.unexistTag })
+  if (ctx.params.code) {
+    const sql = `SELECT id FROM tags WHERE code = ? AND id != ?`
+    const data = [ctx.params.code, ctx.params.id]
+    const res: any = await query(sql, data)
+    if (res && res.length)
+      throw new ExceptionParameter({ message: Message.existTag })
+  }
   await next()
 }
 
