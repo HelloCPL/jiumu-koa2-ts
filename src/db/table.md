@@ -86,4 +86,31 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
+#### roles-permissions 角色-权限关联信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 角色-权限关联id |
+| role_id | v64 | 是 | 角色id |
+| permission_id | v64 | 是 | 权限id |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+#### users-permissions 用户-权限关联额外标签信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 角色-权限关联id |
+| user_id | v64 | 是 | 用户id |
+| permission_id | v64 | 是 | 权限id |
+| status | v64 | 是 | 额外权限状态，使用系统状态标签 1 启用 0 禁用 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
+
 

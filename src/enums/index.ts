@@ -50,6 +50,8 @@ export enum Message {
   unexistRole = '角色标识不存在',
   existRolePermission = '角色-权限关联标识已存在',
   unexistRolePermission = '角色-权限关联标识不存在',
+  existUserPermission = '用户-权限关联标识已存在',
+  unexistUserPermission = '用户-权限关联标识不存在',
 
   hasChildren = '有子级关联，操作失败'
 }

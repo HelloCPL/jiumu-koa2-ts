@@ -30,11 +30,11 @@ export async function doUserLoginNoExist(ctx: Context, next: Next) {
 }
 
 /**
- * 根据电话 判断用户是否存在
+ * 根据 电话 或 id 判断用户是否存在
 */
-export async function isExistUser(phone: any): Promise<boolean> {
-  let sql = `SELECT id FROM users WHERE phone = ?`
-  const res: any = await query(sql, phone)
+export async function isExistUser(value: string, key: string = 'phone'): Promise<boolean> {
+  let sql = `SELECT id FROM users WHERE ${key} = ?`
+  const res: any = await query(sql, value)
   if (res && res.length) return true
   return false
 }

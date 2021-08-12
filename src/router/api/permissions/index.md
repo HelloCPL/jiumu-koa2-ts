@@ -144,7 +144,9 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取指定的获取某类权限，
+- 获取指定的获取某类权限
+  若传了`roleId`，增加`checked`、`disabled`两个字段，其中`disabled`根据`user-permissions`关联判断是否可选
+  若传了`userId`，优先级比`roleId`高（即用户可能包含多个角色），增加`checked`、`disabled`、`special`三个字段，其中`disabled`恒为 `true`
   返回数组或[]
 
 #### 请求
@@ -157,6 +159,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | parentCode | string | 否 | 父级权限code，不传或传 0 获取全部权限 |
+| roleId | string | 否 | 角色id，会增加 checked 是否包含 disabled 是否可选 两个字段 |
+| userId | string | 否 | 用户id，会增加 checked 是否包含 disabled 是否可选 special 是否为用户额外权限 三个字段 |
 
 #### 返回示例
 

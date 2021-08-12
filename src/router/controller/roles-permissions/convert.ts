@@ -34,7 +34,7 @@ export const doRolePermissionAddExist = async (ctx: Context, next: Next) => {
  * 删除时 判断角色-权限关联是否不存在
 */
 export async function doRolePermissionDeleteExist(ctx: Context, next: Next) {
-  const isExist = await isExistId(ctx.params.id)
+  const isExist = await isExistRolePermissionById(ctx.params.id)
   if (!isExist)
     throw new ExceptionParameter({ message: Message.unexistRolePermission })
   await next()
@@ -42,7 +42,7 @@ export async function doRolePermissionDeleteExist(ctx: Context, next: Next) {
 
 
 // 根据 id 判断角色是否存在
-export async function isExistId(id: string): Promise<boolean> {
+export async function isExistRolePermissionById(id: string): Promise<boolean> {
   const sql = `SELECT id FROM roles_permissions WHERE id = ?`
   const res: any = await query(sql, id)
   if (res && res.length) return true

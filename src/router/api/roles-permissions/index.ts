@@ -9,6 +9,7 @@ import { Prefix, Convert, Request, Required } from '../../router'
 import { doRolePermissionAddExist, doRolePermissionDeleteExist } from '../../controller/roles-permissions/convert'
 import { doRolePermissionAdd } from '../../controller/roles-permissions/add'
 import { doRolePermissionDelete } from '../../controller/roles-permissions/delete'
+import { doRolePermissionGetAllPermission } from '../../controller/roles-permissions/get'
 
 @Prefix('role/permission')
 export default class API {
@@ -34,22 +35,14 @@ export default class API {
     await doRolePermissionDelete(ctx, next)
   }
 
-  // 3 根据角色获取关联的权限
+  // 3 获取指定角色拥有的所有权限，多个角色用逗号隔开
   @Request({
-    path: 'get',
+    path: 'get/allpermission',
     methods: ['get', 'post']
   })
-  @Required(['id'])
-  @Convert(doRolePermissionDeleteExist)
-  async doRolePermissionGet(ctx: Context, next: Next) {
-    // await doRolePermissionGet(ctx, next)
+  @Required(['roleIds'])
+  async doRolePermissionGetAllPermission(ctx: Context, next: Next) {
+    await doRolePermissionGetAllPermission(ctx, next)
   }
 }
-
-
-
-
-
-
-
 

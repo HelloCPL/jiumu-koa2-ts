@@ -65,5 +65,4 @@ export default class API {
   async doPermissionGetByParentCode(ctx: Context, next: Next) {
     await doPermissionGetByParentCode(ctx, next)
   }
-
 }

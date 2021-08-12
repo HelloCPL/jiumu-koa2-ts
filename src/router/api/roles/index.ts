@@ -65,6 +65,5 @@ export default class API {
   async doRoleGetList(ctx: Context, next: Next) {
     await doRoleGetList(ctx, next)
   }
-
 }
 
