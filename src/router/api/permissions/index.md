@@ -74,7 +74,7 @@
 
 - `pc | web | app | wechat` 端
 - 删除权限
-  注意：当权限有子级权限时是不能删除的，只有将其子级删除后才可以删除
+- 注意：当权限有子级权限时是不能删除的，只有将其子级删除后才可以删除
 
 #### 请求
 
@@ -104,7 +104,7 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定的某个权限
-  返回对象或null
+- 返回对象或null
 
 #### 请求
 
@@ -145,9 +145,9 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定的获取某类权限
-  若传了`roleId`，增加`checked`、`disabled`两个字段，其中`disabled`根据`user-permissions`关联判断是否可选
-  若传了`userId`，优先级比`roleId`高（即用户可能包含多个角色），增加`checked`、`disabled`、`special`三个字段，其中`disabled`恒为 `true`
-  返回数组或[]
+- 若传了`roleId`，增加`checked`、`disabled`两个字段，其中`disabled`根据`user-permissions`关联判断是否可选
+- 若传了`userId`，优先级比`roleId`高（即用户可能包含多个角色），增加`checked`、`disabled`、`special`三个字段，其中`disabled`恒为 `true`
+- 返回数组或[]
 
 #### 请求
 
