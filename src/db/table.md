@@ -1,5 +1,5 @@
 
-#### users 用户信息表
+#### 1 users 用户信息表
 
 - 说明
 
@@ -19,7 +19,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### files_info 文件信息表
+#### 2 files_info 文件信息表
 
 - 说明
 
@@ -38,7 +38,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### tags 标签信息表
+#### 3 tags 标签信息表
 
 - 说明
 
@@ -54,7 +54,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### permissions 权限信息表
+#### 4 permissions 权限信息表
 
 - 说明
 
@@ -71,7 +71,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### roles 角色信息表
+#### 5 roles 角色信息表
 
 - 说明
 
@@ -86,7 +86,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### roles-permissions 角色-权限关联信息表
+#### 6 roles-permissions 角色-权限关联信息表
 
 - 说明
 
@@ -98,7 +98,7 @@
 | create_time | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |
 
-#### users-permissions 用户-权限关联额外标签信息表
+#### 7 users-permissions 用户-权限关联额外标签信息表
 
 - 说明
 
