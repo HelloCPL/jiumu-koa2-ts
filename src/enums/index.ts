@@ -52,8 +52,16 @@ export enum Message {
   unexistRolePermission = '角色-权限关联标识不存在',
   existUserPermission = '用户-权限关联标识已存在',
   unexistUserPermission = '用户-权限关联标识不存在',
+  existUserRole = '用户-角色关联标识已存在',
+  unexistUserRole = '用户-角色关联标识不存在',
+  existUserTag = '用户-特殊标签关联标识已存在',
+  unexistUserTag = '用户-特殊标签关联标识不存在',
 
-  hasChildren = '有子级关联，操作失败'
+  relevantChildren = '有子级关联，操作失败',
+  relevantRolePermission = '角色-权限有关联，请解除关联后再操作',
+  relevantUserPermission = '用户-权限有关联，请解除关联后再操作',
+  relevantUserRole = '用户-角色有关联，请解除关联后再操作',
+  relevantUserTag = '用户-标签有关联，请解除关联后再操作',
 }
 
 /**

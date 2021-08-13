@@ -13,6 +13,8 @@ import { Rule, LinValidator } from '../lib/lin-validator'
 import _ from 'lodash'
 import { ExceptionHttp, ExceptionParameter } from '../utils/http-exception'
 import { Message } from '../enums'
+import { getByParentCode, TagOptions } from '../router/controller/tags/get'
+import { log } from 'console'
 
 type RulesOptions = any[]
 
@@ -87,34 +89,57 @@ export class ValidatorParameters extends ValidatorParam {
 
 interface RangeOptions {
   value: any, // 校验值
-  range: any[], // 校验范围
+  range: any[] | string, // 校验范围，自定义数据数组或指定标签
   message?: string,
   noThrow?: boolean, // 不抛出错误
   default?: any, // 默认值
 }
 
 /**
- * 校验参数是否在指定范围内容
+ * 校验指定参数是否在指定范围内容，并返回指定参数
 */
-export const validateRange = (info: RangeOptions) => {
+export const validateRange = async (info: RangeOptions) => {
   let flag = false
   if (info.value || info.value === 0 || info.value === false) {
-    // @ts-ignore 
-    info.range.find(val => {
-      if (_.isBoolean(info.value)) {
-        if (info.value === val) {
-          flag = true
-          return true
+    if (_.isArray(info.range)) {
+      // @ts-ignore 
+      info.range.find(val => {
+        if (_.isBoolean(info.value)) {
+          if (info.value === val) {
+            flag = true
+            return true
+          }
+        } else {
+          if (info.value == val) {
+            flag = true
+            return true
+          }
         }
-      } else {
-        if (info.value == val) {
+      })
+    } else if (_.isString(info.range)) {
+      const res = await getByParentCode(info.range)
+      if (res && res.length) {
+        const codes = _getTagsCode(res)
+        if (codes.indexOf(info.value) !== -1)
           flag = true
-          return true
-        }
       }
-    })
+    }
   }
   if (flag) return info.value
   else if (info.noThrow) return info.default
   else throw new ExceptionParameter({ message: info.message || Message.parameter })
+}
+
+// 获取标签指定 code 一维数据列表
+function _getTagsCode(data: TagOptions[]): string[] {
+  let codes: string[] = []
+  const _handleGetCode = (arr: TagOptions[]) => {
+    arr.forEach(item => {
+      codes.push(item.code)
+      if (_.isArray(item.children) && item.children.length)
+        _handleGetCode(item.children)
+    })
+  }
+  _handleGetCode(data)
+  return codes
 }

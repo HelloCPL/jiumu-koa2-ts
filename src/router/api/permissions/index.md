@@ -18,7 +18,7 @@
 | code | string | 是 | 权限code，不能重复 |
 | label | string | 是 | 权限说明 |
 | href | string | 否 | 关联接口,*表示后面任意类型，默认# |
-| parent_code | string | 否 | 父级权限code，默认 0 |
+| parent_code | string | 否 | 父级权限code |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 
@@ -53,7 +53,7 @@
 | code | string | 否 | 权限code，不能重复 |
 | label | string | 否 | 权限说明 |
 | href | string | 否 | 关联接口,*表示后面任意类型，默认# |
-| parent_code | string | 否 | 父级权限code，默认 0 |
+| parent_code | string | 否 | 父级权限code |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 
@@ -74,7 +74,7 @@
 
 - `pc | web | app | wechat` 端
 - 删除权限
-- 注意：当权限有子级权限时是不能删除的，只有将其子级删除后才可以删除
+- 注意：当权限有子级权限、角色-权限关联、用户-额外权限关联时是不能删除的，只有将关联解除后才可删除
 
 #### 请求
 
@@ -145,8 +145,9 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定的获取某类权限
-- 若传了`roleId`，增加`checked`、`disabled`两个字段，其中`disabled`根据`user-permissions`关联判断是否可选
-- 若传了`userId`，优先级比`roleId`高（即用户可能包含多个角色），增加`checked`、`disabled`、`special`三个字段，其中`disabled`恒为 `true`
+- 若传了`roleId`，优先级1，增加`checked`、`disabled`两个字段，其中`disabled`根据`user-permissions`关联判断是否可选
+- 若传了`userId`，优先级2，增加`checked`、`disabled`、`special`三个字段，其中`disabled`恒为 `true`
+- `roleId`、`userId`间只需传其中一个
 - 返回数组或[]
 
 #### 请求
@@ -158,7 +159,7 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| parentCode | string | 否 | 父级权限code，不传或传 0 获取全部权限 |
+| parentCode | string | 否 | 父级权限code，不传获取全部权限 |
 | roleId | string | 否 | 角色id，会增加 checked 是否包含 disabled 是否可选 两个字段 |
 | userId | string | 否 | 用户id，会增加 checked 是否包含 disabled 是否可选 special 是否为用户额外权限 三个字段 |
 

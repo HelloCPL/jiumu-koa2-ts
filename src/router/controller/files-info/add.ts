@@ -39,13 +39,13 @@ export const doFileAdd = async (ctx: Context, next: Next) => {
  * 将文件写入数据库，并将文件信息返回
 */
 async function _writeFile(ctx: Context, file: File): Promise<FileOptions | null> {
-  const isSecret = validateRange({
+  const isSecret = await validateRange({
     value: ctx.data.query.isSecret,
     range: ['0', '1'],
     noThrow: true,
     default: '0'
   })
-  const staticPlace = validateRange({
+  const staticPlace = await validateRange({
     value: ctx.data.query.staticPlace,
     range: ['files', 'images', 'videos', 'editors'],
     noThrow: true,

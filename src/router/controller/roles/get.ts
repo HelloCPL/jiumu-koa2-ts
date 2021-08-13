@@ -23,6 +23,7 @@ export const doRoleGetList = async (ctx: Context, next: Next) => {
     keyword: ctx.params.keyword
   }
   const data = await getList(parmas)
+  // ...
   throw new Success(data);
 }
 

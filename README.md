@@ -94,6 +94,20 @@
     在 `router/controller` 目录构建对应名称的业务处理模块目录，主要实现业务逻辑处理、数据库查询和数据返回等，其中 `convert.ts` 为该模块的中间件方法集合，一般用于数据校验，其他业务方法细分至每个单独的文件，一般以 `增(add) 删(delete) 查(get) 改(update)` 划分
 
 
+先写 users-roles users-tags 
+再优化 permission roles tags 列表获取
+再设计 menus roles-menus
+再写 users login-info
+再写 likes collections
+再写 comments-first comments-second
+再写 权限接口关联的接口请求权限校验
+再写 articles questions sources
+
+权限：编辑，删除，查看分配的用户2，查看分配的角色1
+角色：编辑，删除，查看分配的用户1，查看分配的权限2
+特殊标签：编辑，删除，查看分配的用户
+菜单：编辑，删除，查看分配的用户（仅查看） 查看分配的角色
+用户：编辑，删除，查看分配的标签4，查看分配的权限2，查看分配的角色1，查看分配的菜单3
 
 
 

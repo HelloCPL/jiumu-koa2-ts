@@ -17,7 +17,7 @@
 |:---:|:---:|:---:|:---:|
 | code | string | 是 | 标签code，不能重复 |
 | label | string | 是 | 标签说明 |
-| parent_code | string | 否 | 父级标签code，默认 0 |
+| parent_code | string | 否 | 父级标签code |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 
@@ -51,7 +51,7 @@
 | id | string | 是 | 标签id |
 | code | string | 是 | 标签code，不能重复 |
 | label | string | 是 | 标签说明 |
-| parent_code | string | 否 | 父级标签code，默认 0 |
+| parent_code | string | 否 | 父级标签code |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 
@@ -72,7 +72,7 @@
 
 - `pc | web | app | wechat` 端
 - 删除标签
-- 注意：当标签有子级标签时是不能删除的，只有将其子级删除后才可以删除
+- 注意：当标签有子级标签、用户-标签关联时是不能删除的，只有解除关联后才可删除
 
 #### 请求
 
@@ -153,7 +153,7 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| parentCode | string | 否 | 父级标签code，不传或传 0 获取全部标签 |
+| parentCode | string | 否 | 父级标签code，不传获取全部标签 |
 
 #### 返回示例
 
