@@ -70,6 +70,7 @@
 
 - `pc | web | app | wechat` 端
 - 删除角色
+- 注意：当角色有角色-权限关联、用户角色关联时不能删除，只有解除关联后可删除
 
 #### 请求
 
@@ -139,6 +140,10 @@
 
 - `pc | web | app | wechat` 端
 - 获取角色列表
+- 若传了`userId`，优先级1，增加`checked` 一个字段
+- 若传了`permissionId`，优先级2，增加`checked`、`disabled`两个字段，其中`disabled`根据`user-permissions`关联判断是否可选
+
+- `userId`、`permissionId`间只需传其中一个
 - 返回数组或[]
 
 #### 请求
@@ -153,6 +158,8 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
+| userId | string | 否 | 用户id，会增加 checked 是否已选 字段 |
+| permissionId | string | 否 | 权限id，增加 checked 是否已选 disabled 是否可选 字段  |
 
 #### 返回示例
 

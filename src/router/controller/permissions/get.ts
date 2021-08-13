@@ -17,8 +17,9 @@ export const doPermissionGetOne = async (ctx: Context, next: Next) => {
 
 // 获取某类权限
 export const doPermissionGetByParentCode = async (ctx: Context, next: Next) => {
-  const parentCode = ctx.params.parentCode || '0'
+  const parentCode = ctx.params.parentCode || ''
   const data = await getByParentCode(parentCode)
+  // ...
   throw new Success({ data })
 }
 
