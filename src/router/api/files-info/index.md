@@ -47,51 +47,6 @@
 }
 ```
 
-## ---------------- 获取文件/图片 ---------------------
-
-#### 简要描述
-
-- `pc | web | app | wechat` 端
-- 获取文件/图片，返回数组对象格式
-- 注意：如果是私密文件，只有上传者本人可获取该文件，如果是公开文件所有用户均可获取
-
-#### 请求
-
-- `get | post` 
-- `file/get`
-
-#### 参数
-
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| ids | string | 是 | 图片ids，用逗号隔开 |
-
-#### 返回示例
-
-```
-{
-  "code": 200,
-  "message": "操作成功",
-  "data": [
-    {
-      "id": "d93b9321-bad4-4605-804c-e284a53c333c",
-      "filePath": "http://localhost:3030/files/86c2cb50-fa76-11eb-a739-9f5ab7713dc1.png",
-      "fileName": "avatar6.png",
-      "fileSize": 28326,
-      "suffix": "png",
-      "staticPlace": "files",
-      "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-      "isSecret": "0",
-      "checkValidTime": 3,
-      "createTime": "2021-08-11 15:34:13",
-      "terminal": "管理端",
-      "remarks": null
-    }
-  ],
-  "total": 0
-}
-```
-
 ## ---------------- 删除文件/图片 ---------------------
 
 #### 简要描述
@@ -119,5 +74,141 @@
   "message": "操作成功",
   "data": null,
   "total": 0
+}
+```
+
+## ---------------- 获取一个指定文件/图片 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 获取一个指定文件/图片，返回对象或null
+- 注意：如果是私密文件，只有上传者本人可获取该文件，如果是公开文件所有用户均可获取
+
+#### 请求
+
+- `get | post` 
+- `file/get/one`
+
+#### 参数
+
+| 参数名 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 是 | 图片id |
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": {
+    "id": "d93b9321-bad4-4605-804c-e284a53c333c",
+    "filePath": "http://localhost:3030/files/86c2cb50-fa76-11eb-a739-9f5ab7713dc1.png",
+    "fileName": "avatar6.png",
+    "fileSize": 28326,
+    "suffix": "png",
+    "staticPlace": "files",
+    "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+    "isSecret": "0",
+    "checkValidTime": 3,
+    "createTime": "2021-08-11 15:34:13",
+    "terminal": "管理端",
+    "remarks": null
+  },
+  "total": 0
+}
+```
+
+## ---------------- 获取指定用户的所有文件/图片列表 返回数组或[] ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 获取指定用户的所有文件/图片列表，返回数组或[]
+
+#### 请求
+
+- `get | post` 
+- `file/get/list/byuserid`
+
+#### 参数
+
+| 参数名 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| userId | string | 是 | 用户id |
+| pageNo | number | 否 | 页码，默认1 |
+| pageSize | number | 否 | 每页页数，默认10 |
+| suffix | string | 否 | 指定后缀类型，多个用逗号隔开 如 'png,docx' |
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": [
+    {
+      "id": "012d28c4-959c-4874-bb03-474d66d0792a",
+      "filePath": "http://localhost:3030/files/afad2f70-fa5c-11eb-ab7b-db29bdd8c894.png",
+      "fileName": "avatar6.png",
+      "fileSize": 28326,
+      "suffix": "png",
+      "staticPlace": "files",
+      "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+      "isSecret": "0",
+      "checkValidTime": 3,
+      "createTime": "2021-08-11 12:29:15",
+      "terminal": "管理端",
+      "remarks": null
+    }
+  ],
+  "total": 9
+}
+```
+
+## ---------------- 获取指定本用户的所有文件/图片列表 返回数组或[] ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 获取指定本用户的所有文件/图片列表 返回数组或[]
+
+#### 请求
+
+- `get | post` 
+- `file/get/list/self`
+
+#### 参数
+
+| 参数名 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| pageNo | number | 否 | 页码，默认1 |
+| pageSize | number | 否 | 每页页数，默认10 |
+| suffix | string | 否 | 指定后缀类型，多个用逗号隔开 如 'png,docx' |
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": [
+    {
+      "id": "012d28c4-959c-4874-bb03-474d66d0792a",
+      "filePath": "http://localhost:3030/files/afad2f70-fa5c-11eb-ab7b-db29bdd8c894.png",
+      "fileName": "avatar6.png",
+      "fileSize": 28326,
+      "suffix": "png",
+      "staticPlace": "files",
+      "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+      "isSecret": "0",
+      "checkValidTime": 3,
+      "createTime": "2021-08-11 12:29:15",
+      "terminal": "管理端",
+      "remarks": null
+    }
+  ],
+  "total": 9
 }
 ```

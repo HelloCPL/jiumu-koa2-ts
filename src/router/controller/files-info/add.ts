@@ -13,8 +13,9 @@ import { getFileRandomName, getSuffix, getUuId, formatDate } from "../../../util
 import { query } from "../../../db";
 import { File } from 'formidable'
 import _ from 'lodash'
-import { FileOptions, getFileById } from './get'
+import { getFileById } from './get'
 import { Terminal } from '../../../enums';
+import { FileInfoOptions } from './interface'
 
 /**
  * 文件上传 可上传一个或多个文件 返回数组格式
@@ -22,7 +23,7 @@ import { Terminal } from '../../../enums';
 export const doFileAdd = async (ctx: Context, next: Next) => {
   const files: any = ctx.request.files
   const file: File = files.file
-  let fileList: FileOptions[] = []
+  let fileList: FileInfoOptions[] = []
   if (_.isArray(file)) {
     for (let val of file) {
       const fileInfo = await _writeFile(ctx, val)
@@ -38,7 +39,7 @@ export const doFileAdd = async (ctx: Context, next: Next) => {
 /**
  * 将文件写入数据库，并将文件信息返回
 */
-async function _writeFile(ctx: Context, file: File): Promise<FileOptions | null> {
+async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | null> {
   const isSecret = await validateRange({
     value: ctx.data.query.isSecret,
     range: ['0', '1'],
@@ -64,6 +65,6 @@ async function _writeFile(ctx: Context, file: File): Promise<FileOptions | null>
   const savePath = path.join(__dirname, `../../../../static/${staticPlace}`, filePath)
   const upStream: WriteStream = fs.createWriteStream(savePath)
   reader.pipe(upStream)
-  const fileInfo = await getFileById(ctx, id)
+  const fileInfo = await getFileById(id, ctx.user.id)
   return fileInfo
 }

@@ -12,7 +12,7 @@
 */
 
 import { toCamelCase } from '../utils/tools'
-import {Message, Code} from '../enums'
+import { Message, Code } from '../enums'
 
 // 异常类接口类型
 export interface ExceptionOptions {
@@ -31,15 +31,22 @@ export class ExceptionHttp extends Error {
   constructor(config: ExceptionOptions = {}) {
     super()
     this.message = config.message || Message.error
-    this.data = config.data || null
+    this.data = this.formatData(config.data)
     this.code = config.code || Code.error
     this.total = config.total || 0
     this.formatDataKey()
   }
 
   // 格式化返回数据 若为对象，属性名统一转成驼峰命名
-  formatDataKey() {
+  protected formatDataKey() {
     this.data = toCamelCase(this.data)
+  }
+
+  // 处理返回数据格式
+  protected formatData(data: any) {
+    if (data || data === 0 || data === false)
+      return data
+    return null
   }
 }
 
@@ -48,7 +55,7 @@ export class ExceptionParameter extends ExceptionHttp {
   constructor(config: ExceptionOptions = {}) {
     super()
     this.message = config.message || Message.parameter
-    this.data = config.data || null
+    this.data = this.formatData(config.data)
     this.code = config.code || Code.parameter
     this.total = config.total || 0
     this.formatDataKey()
@@ -60,7 +67,7 @@ export class ExceptionNotFound extends ExceptionHttp {
   constructor(config: ExceptionOptions = {}) {
     super()
     this.message = config.message || Message.notFound
-    this.data = config.data || null
+    this.data = this.formatData(config.data)
     this.code = config.code || Code.notFound
     this.total = config.total || 0
     this.formatDataKey()
@@ -72,7 +79,7 @@ export class ExceptionForbidden extends ExceptionHttp {
   constructor(config: ExceptionOptions = {}) {
     super()
     this.message = config.message || Message.forbidden
-    this.data = config.data || null
+    this.data = this.formatData(config.data)
     this.code = config.code || Code.forbidden
     this.total = config.total || 0
     this.formatDataKey()
@@ -84,7 +91,7 @@ export class ExceptionAuthFailed extends ExceptionHttp {
   constructor(config: ExceptionOptions = {}) {
     super()
     this.message = config.message || Message.authFailed
-    this.data = config.data || null
+    this.data = this.formatData(config.data)
     this.code = config.code || Code.authFailed
     this.total = config.total || 0
     this.formatDataKey()
@@ -96,7 +103,7 @@ export class Success extends ExceptionHttp {
   constructor(config: ExceptionOptions = {}) {
     super()
     this.message = config.message || Message.success
-    this.data = config.data || null
+    this.data = this.formatData(config.data)
     this.code = config.code || Code.success
     this.total = config.total || 0
     this.formatDataKey()

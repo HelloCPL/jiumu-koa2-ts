@@ -7,7 +7,7 @@
 import Koa from 'koa'
 import compose from 'koa-compose'
 import { DataOptions } from '../lib/mount-parameter/interface'
-import { TokenOptions } from '../router/controller/users/token'
+import { TokenOptions } from '../router/controller/users/interface'
 import { TerminalType } from '../enums'
 
 declare module 'koa' {

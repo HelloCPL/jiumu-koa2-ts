@@ -6,7 +6,6 @@
 
 
 import { Context, Next } from 'koa'
-import { query } from '../../../db'
 import { Message } from '../../../enums'
 import { validateRange } from '../../../utils/validator'
 import { isExist } from '../convert'
@@ -17,7 +16,7 @@ import { isExist } from '../convert'
  * 判断特殊标签是否不存在
  * 判断用户-特殊标签关联是否已存在
 */
-export const doUserTagAddExist = async (ctx: Context, next: Next) => {
+export const doUserTagAddConvert = async (ctx: Context, next: Next) => {
   // 判断用户是否不存在
   await isExist({
     table: 'users',
@@ -48,7 +47,7 @@ export const doUserTagAddExist = async (ctx: Context, next: Next) => {
  * 删除时 
  * 判断用户-特殊标签关联是否不存在
 */
-export async function doUserTagDeleteExist(ctx: Context, next: Next) {
+export async function doUserTagDeleteConvert(ctx: Context, next: Next) {
   // 判断用户-特殊标签关联是否不存在
   await isExist({
     table: 'users_tags',
@@ -59,28 +58,16 @@ export async function doUserTagDeleteExist(ctx: Context, next: Next) {
   await next()
 }
 
-
-
-
-
-
-
-
-
-
-// 根据 id 判断用户-特殊标签关联是否存在
-export async function isExistUserRoleById(id: string): Promise<boolean> {
-  const sql = `SELECT id FROM users_tags WHERE id = ?`
-  const res: any = await query(sql, id)
-  if (res && res.length) return true
-  return false
-}
-
-// 根据 tagCode userId 判断用户-特殊标签关联是否存在
-export async function isExistUserTag(tagCode: string, userId: string): Promise<boolean> {
-  const sql = `SELECT id FROM users_tags WHERE tag_code = ? AND user_id = ?`
-  const data = [tagCode, userId]
-  const res: any = await query(sql, data)
-  if (res && res.length) return true
-  return false
+/**
+ * 根据指定特殊标签获取关联的所有用户时
+ * 判断特殊标签是否不存在
+*/
+export async function doUserTagGetAllUserByTagCodeConvert(ctx: Context, next: Next) {
+  // 判断特殊标签是否不存在
+  await validateRange({
+    value: ctx.params.tagCode,
+    range: '8888',
+    message: 'tagCode必须为特殊标签8888下的标签'
+  })
+  await next()
 }

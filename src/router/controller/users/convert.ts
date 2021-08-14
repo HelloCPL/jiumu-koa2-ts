@@ -5,7 +5,6 @@
 */
 
 import { Context, Next } from 'koa'
-import { query } from '../../../db'
 import { Message } from '../../../enums'
 import { isExist } from '../convert'
 
@@ -13,7 +12,7 @@ import { isExist } from '../convert'
  * 注册
  * 判断用户是否已存在
 */
-export const doUserRegisterExist = async (ctx: Context, next: Next) => {
+export const doUserRegisterConvert = async (ctx: Context, next: Next) => {
   // 判断用户是否已存在
   await isExist({
     table: 'users',
@@ -28,7 +27,7 @@ export const doUserRegisterExist = async (ctx: Context, next: Next) => {
  * 登录
  * 判断用户是否不存在
 */
-export async function doUserLoginNoExist(ctx: Context, next: Next) {
+export async function doUserLoginConvert(ctx: Context, next: Next) {
   // 判断用户是否不存在
   await isExist({
     table: 'users',
@@ -37,21 +36,4 @@ export async function doUserLoginNoExist(ctx: Context, next: Next) {
     message: Message.unexistUser
   })
   await next()
-}
-
-
-
-
-
-
-
-
-/**
- * 根据 电话 或 id 判断用户是否存在
-*/
-export async function isExistUser(value: string, key: string = 'phone'): Promise<boolean> {
-  let sql = `SELECT id FROM users WHERE ${key} = ?`
-  const res: any = await query(sql, value)
-  if (res && res.length) return true
-  return false
 }

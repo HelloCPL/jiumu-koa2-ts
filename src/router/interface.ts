@@ -4,21 +4,23 @@
  * @update 2021-08-06 16:14:35
 */
 
+import { TerminalType, MethodsType } from '../enums'
+
 // 路由接口
 export interface RouteOptions {
   target: any,
   path: string,
-  methods: string[],
-  terminals: string[],
+  methods: MethodsType[],
+  terminals: TerminalType[],
   unless?: boolean,
 }
 
 // 请求参数接口
 export interface RequestOptions {
   path: string,
-  methods: string[],
+  methods: MethodsType[],
   unless?: boolean,
-  terminals?: string[]
+  terminals?: TerminalType[]
 }
 
 

@@ -106,6 +106,12 @@ export enum Terminal {
 
 export type TerminalType = keyof typeof Terminal
 
+// 可请求类型枚举
+export enum Methods {
+  'get' = 'get',
+  'post' = 'post',
+  'put' = 'put',
+  'delete' = 'delete',
+}
 
-
-
+export type MethodsType = keyof typeof Methods

@@ -5,57 +5,74 @@
 */
 
 import { Context, Next } from "koa";
-import { query } from "../../../db";
+import { query, execTrans } from "../../../db";
 import Config from "../../../config";
 import dayjs from "dayjs";
 import { encrypt } from "../../../utils/crypto";
 import { Success } from "../../../utils/http-exception";
+import { FileInfoOptions, FileListParamsOptions, FileListReturnOptions } from './interface'
 
-export interface FileOptions extends ObjectAny {
-  id: string,
-  file_path: string,
-  file_name?: string,
-  file_size?: number,
-  suffix: string,
-  static_place: string,
-  create_user: string,
-  is_secret?: string,
-  check_valid_time: number,
-  create_time: string,
-  terminal: string,
-  remarks?: string
+/**
+ * 获取一个指定文件 返回对象或null
+*/
+export const doFileGetOne = async (ctx: Context, next: Next) => {
+  const fileInfo = await getFileById(ctx.params.id, ctx.user.id)
+  throw new Success({ data: fileInfo })
 }
 
 /**
- * 文件获取 返回数组格式
+ * 获取指定用户的所有文件列表 返回数组或[]
 */
-export const doFileGet = async (ctx: Context, next: Next) => {
-  const fileList = await getFileByIds(ctx, ctx.params.ids)
-  throw new Success({ data: fileList })
+export const doFileGetListByUserId = async (ctx: Context, next: Next) => {
+  const params = {
+    userId: ctx.params.userId,
+    pageNo: ctx.params.pageNo * 1 || 1,
+    pageSize: ctx.params.pageSize * 1 || 10,
+    suffix: ctx.params.suffix
+  }
+  const data = await _handleFileList(params)
+  throw new Success(data)
 }
 
 /**
- * 根据 id 获取文件信息 返回对象或null
+ * 获取指定用户的所有文件列表 返回数组或[]
 */
-export const getFileById = async (ctx: Context, id: string): Promise<FileOptions | null> => {
+export const doFileGetListSelf = async (ctx: Context, next: Next) => {
+  const params = {
+    userId: ctx.user.id,
+    pageNo: ctx.params.pageNo * 1 || 1,
+    pageSize: ctx.params.pageSize * 1 || 10,
+    suffix: ctx.params.suffix
+  }
+  const data = await _handleFileList(params)
+  throw new Success(data)
+}
+
+
+/**
+ * 根据 fileId 获取文件信息 返回对象或null
+*/
+export const getFileById = async (fileId: string, userId?: string): Promise<FileInfoOptions | null> => {
+  if (!fileId) return null
   const sql = `SELECT * FROM files_info WHERE id = ?`
-  const res: any = await query(sql, id)
+  const res: any = await query(sql, fileId)
   if (res && res.length)
-    return _handleFile(ctx, <FileOptions>res[0])
+    return _handleFile(<FileInfoOptions>res[0], userId)
   return null
 }
 
 /**
- * 根据 ids 获取文件信息，用逗号隔开
+ * 根据 fileIds 获取文件信息，用逗号隔开
  * 返回数组或空数组
 */
-export const getFileByIds = async (ctx: Context, ids: string): Promise<FileOptions[]> => {
+export const getFileByIds = async (fileIds: string, userId?: string): Promise<FileInfoOptions[]> => {
+  if (!fileIds) return []
   const sql = `SELECT * FROM files_info WHERE FIND_IN_SET(id, ?)`
-  const res: any = await query(sql, ids)
-  let fileList: FileOptions[] = []
+  const res: any = await query(sql, fileIds)
+  let fileList: FileInfoOptions[] = []
   if (res && res.length) {
-    res.forEach((file: FileOptions) => {
-      let fileInfo = _handleFile(ctx, file)
+    res.forEach((file: FileInfoOptions) => {
+      let fileInfo = _handleFile(file, userId)
       if (fileInfo) fileList.push(fileInfo)
     })
   }
@@ -67,8 +84,8 @@ export const getFileByIds = async (ctx: Context, ids: string): Promise<FileOptio
  * 如果私密文件判断是否有权限
  * 否则正常返回
 */
-function _handleFile(ctx: Context, file: FileOptions): FileOptions | null {
-  if (file.is_secret === '1' && file.create_user !== ctx.user.id) return null
+function _handleFile(file: FileInfoOptions, userId?: string): FileInfoOptions | null {
+  if (file.is_secret === '1' && file.create_user !== userId) return null
   file.file_path = Config.BASE_URL + file.static_place + '/' + file.file_path
   if (file.is_secret === '1') {
     let queryParams = '?'
@@ -79,4 +96,29 @@ function _handleFile(ctx: Context, file: FileOptions): FileOptions | null {
     file.file_path += queryParams
   }
   return file
+}
+
+interface IdsOptions {
+  id: string
+}
+
+// 根据用户获取文件列表
+async function _handleFileList(options: FileListParamsOptions): Promise<FileListReturnOptions> {
+  const pageNo = (options.pageNo - 1) * options.pageSize
+  let sqlParam: SQLParamsOptions = { sql: '', data: [] }
+  if (options.suffix) {
+    sqlParam.sql = ` AND FIND_IN_SET(suffix, ?) `
+    sqlParam.data.push(options.suffix)
+  }
+  const sql1 = `SELECT COUNT(id) as total FROM files_info WHERE create_user = ? ${sqlParam.sql}`
+  const data1 = [options.userId, ...sqlParam.data]
+  const sql2 = `SELECT id FROM files_info WHERE create_user = ? ${sqlParam.sql} ORDER BY create_time DESC LIMIT ?, ?`
+  const data2 = [...data1, pageNo, options.pageSize]
+  const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])
+  const fileIds = (<IdsOptions[]>res[1]).map(item => item.id).join(',')
+  const fileList = await getFileByIds(fileIds, options.userId)
+  return {
+    total: res[0][0]['total'],
+    data: fileList
+  }
 }

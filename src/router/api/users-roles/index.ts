@@ -6,13 +6,12 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doUserRoleAddExist, doUserRoleDeleteExist } from '../../controller/users-roles/convert'
+import { doUserRoleAddConvert, doUserRoleDeleteConvert } from '../../controller/users-roles/convert'
 import { doUserRoleAdd } from '../../controller/users-roles/add'
 import { doUserRoleDelete } from '../../controller/users-roles/delete'
-import { doUserRoleGetAllRole } from '../../controller/users-roles/get'
+import { doUserRoleGetAllRoleByUserId, doUserRoleGetAllUserByRoleId } from '../../controller/users-roles/get'
 
-
-@Prefix('user/role')
+@Prefix('user-role')
 export default class API {
   // 1 新增用户-角色关联
   @Request({
@@ -20,7 +19,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['roleId', 'userId'])
-  @Convert(doUserRoleAddExist)
+  @Convert(doUserRoleAddConvert)
   async doUserRoleAdd(ctx: Context, next: Next) {
     await doUserRoleAdd(ctx, next)
   }
@@ -31,25 +30,28 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doUserRoleDeleteExist)
+  @Convert(doUserRoleDeleteConvert)
   async doUserRoleDelete(ctx: Context, next: Next) {
     await doUserRoleDelete(ctx, next)
   }
 
-  // 3 获取指定用户拥有的所有角色
+  // 3 获取指定用户关联的所有角色
   @Request({
-    path: 'get/allrole',
+    path: 'get/allrole/byuserid',
     methods: ['get', 'post']
   })
   @Required(['userId'])
-  async doUserRoleGetAllRole(ctx: Context, next: Next) {
-    await doUserRoleGetAllRole(ctx, next)
+  async doUserRoleGetAllRoleByUserId(ctx: Context, next: Next) {
+    await doUserRoleGetAllRoleByUserId(ctx, next)
   }
 
+  // 4 获取指定角色关联的所有用户
+  @Request({
+    path: 'get/alluser/byroleid',
+    methods: ['get', 'post']
+  })
+  @Required(['roleId'])
+  async doUserRoleGetAllUserByRoleId(ctx: Context, next: Next) {
+    await doUserRoleGetAllUserByRoleId(ctx, next)
+  }
 }
-
-
-
-
-
-

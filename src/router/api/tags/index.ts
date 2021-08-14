@@ -6,7 +6,7 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doTagAddExist, doTagUpdateNoExist, doTagDeleteHasChild } from '../../controller/tags/convert'
+import { doTagAddConvert, doTagUpdateConvert, doTagDeleteConvert } from '../../controller/tags/convert'
 import { doTagAdd } from '../../controller/tags/add'
 import { doTagUpdate } from '../../controller/tags/update'
 import { doTagDelete } from '../../controller/tags/delete'
@@ -20,7 +20,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['code', 'label'])
-  @Convert(doTagAddExist)
+  @Convert(doTagAddConvert)
   async doTagAdd(ctx: Context, next: Next) {
     await doTagAdd(ctx, next)
   }
@@ -31,7 +31,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doTagUpdateNoExist)
+  @Convert(doTagUpdateConvert)
   async doTagUpdate(ctx: Context, next: Next) {
     await doTagUpdate(ctx, next)
   }
@@ -42,7 +42,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doTagDeleteHasChild)
+  @Convert(doTagDeleteConvert)
   async doTagDelete(ctx: Context, next: Next) {
     await doTagDelete(ctx, next)
   }

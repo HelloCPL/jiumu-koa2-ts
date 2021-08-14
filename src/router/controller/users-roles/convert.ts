@@ -5,7 +5,6 @@
 */
 
 import { Context, Next } from 'koa'
-import { query } from '../../../db'
 import { Message } from '../../../enums'
 import { isExist } from '../convert'
 
@@ -15,7 +14,7 @@ import { isExist } from '../convert'
  * 判断角色是否不存在
  * 判断用户-角色关联是否已存在
 */
-export const doUserRoleAddExist = async (ctx: Context, next: Next) => {
+export const doUserRoleAddConvert = async (ctx: Context, next: Next) => {
   //  判断用户是否不存在
   await isExist({
     table: 'users',
@@ -47,7 +46,7 @@ export const doUserRoleAddExist = async (ctx: Context, next: Next) => {
  * 删除时 
  * 判断用户-角色关联是否不存在
 */
-export async function doUserRoleDeleteExist(ctx: Context, next: Next) {
+export async function doUserRoleDeleteConvert(ctx: Context, next: Next) {
   // 判断用户-角色关联是否不存在
   await isExist({
     table: 'users_roles',
@@ -57,31 +56,3 @@ export async function doUserRoleDeleteExist(ctx: Context, next: Next) {
   })
   await next()
 }
-
-
-
-
-
-
-
-
-
-
-// 根据 id 判断用户-角色关联是否存在
-export async function isExistUserRoleById(id: string): Promise<boolean> {
-  const sql = `SELECT id FROM users_roles WHERE id = ?`
-  const res: any = await query(sql, id)
-  if (res && res.length) return true
-  return false
-}
-
-// 根据 roleId userId 判断用户-角色关联是否存在
-export async function isExistUserRole(roleId: string, userId: string): Promise<boolean> {
-  const sql = `SELECT id FROM users_roles WHERE role_id = ? AND user_id = ?`
-  const data = [roleId, userId]
-  const res: any = await query(sql, data)
-  if (res && res.length) return true
-  return false
-}
-
-

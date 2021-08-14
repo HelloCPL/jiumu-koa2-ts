@@ -6,13 +6,12 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doUserTagAddExist, doUserTagDeleteExist } from '../../controller/users-tags/convert'
+import { doUserTagAddConvert, doUserTagDeleteConvert, doUserTagGetAllUserByTagCodeConvert } from '../../controller/users-tags/convert'
 import { doUserTagAdd } from '../../controller/users-tags/add'
 import { doUserTagDelete } from '../../controller/users-tags/delete'
-import { doUserTagGetAllTag } from '../../controller/users-tags/get'
+import { doUserTagGetAllTagByUserId, doUserTagGetAllUserByTagCode } from '../../controller/users-tags/get'
 
-
-@Prefix('user/tag')
+@Prefix('user-tag')
 export default class API {
   // 1 新增用户-特殊标签关联
   @Request({
@@ -20,7 +19,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['tagCode', 'userId'])
-  @Convert(doUserTagAddExist)
+  @Convert(doUserTagAddConvert)
   async doUserTagAdd(ctx: Context, next: Next) {
     await doUserTagAdd(ctx, next)
   }
@@ -31,30 +30,29 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doUserTagDeleteExist)
+  @Convert(doUserTagDeleteConvert)
   async doUserTagDelete(ctx: Context, next: Next) {
     await doUserTagDelete(ctx, next)
   }
 
-  // 3 获取指定用户拥有的所有特殊标签
+  // 3 获取指定用户关联的所有特殊标签
   @Request({
-    path: 'get/alltag',
+    path: 'get/alltag/byuserid',
     methods: ['get', 'post']
   })
   @Required(['userId'])
-  async doUserTagGetAllTag(ctx: Context, next: Next) {
-    await doUserTagGetAllTag(ctx, next)
+  async doUserTagGetAllTagByUserId(ctx: Context, next: Next) {
+    await doUserTagGetAllTagByUserId(ctx, next)
   }
 
+  // 4 获取指定特殊标签关联的所有用户
+  @Request({
+    path: 'get/alluser/bytagcode',
+    methods: ['get', 'post']
+  })
+  @Required(['tagCode'])
+  @Convert(doUserTagGetAllUserByTagCodeConvert)
+  async doUserTagGetAllUserByTagCode(ctx: Context, next: Next) {
+    await doUserTagGetAllUserByTagCode(ctx, next)
+  }
 }
-
-
-
-
-
-
-
-
-
-
-

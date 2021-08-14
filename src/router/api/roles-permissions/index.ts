@@ -6,12 +6,12 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doRolePermissionAddExist, doRolePermissionDeleteExist } from '../../controller/roles-permissions/convert'
+import { doRolePermissionAddConvert, doRolePermissionDeleteConvert } from '../../controller/roles-permissions/convert'
 import { doRolePermissionAdd } from '../../controller/roles-permissions/add'
 import { doRolePermissionDelete } from '../../controller/roles-permissions/delete'
-import { doRolePermissionGetAllPermission } from '../../controller/roles-permissions/get'
+import { doRolePermissiongetAllPermissionByRoleId, doRolePermissionGetAllRoleByPermissionId } from '../../controller/roles-permissions/get'
 
-@Prefix('role/permission')
+@Prefix('role-permission')
 export default class API {
   // 1 新增角色-权限关联
   @Request({
@@ -19,7 +19,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['roleId', 'permissionId'])
-  @Convert(doRolePermissionAddExist)
+  @Convert(doRolePermissionAddConvert)
   async doRolePermissionAdd(ctx: Context, next: Next) {
     await doRolePermissionAdd(ctx, next)
   }
@@ -30,19 +30,28 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doRolePermissionDeleteExist)
+  @Convert(doRolePermissionDeleteConvert)
   async doRolePermissionDelete(ctx: Context, next: Next) {
     await doRolePermissionDelete(ctx, next)
   }
 
-  // 3 获取指定角色拥有的所有权限，多个角色用逗号隔开
+  // 3 获取指定角色关联的所有权限
   @Request({
-    path: 'get/allpermission',
+    path: 'get/allpermission/byroleid',
     methods: ['get', 'post']
   })
-  @Required(['roleIds'])
-  async doRolePermissionGetAllPermission(ctx: Context, next: Next) {
-    await doRolePermissionGetAllPermission(ctx, next)
+  @Required(['roleId'])
+  async doRolePermissiongetAllPermissionByRoleId(ctx: Context, next: Next) {
+    await doRolePermissiongetAllPermissionByRoleId(ctx, next)
+  }
+
+  // 4 获取指定权限关联的所有角色
+  @Request({
+    path: 'get/allrole/bypermissionid',
+    methods: ['get', 'post']
+  })
+  @Required(['permissionId'])
+  async doRolePermissionGetAllRoleByPermissionId(ctx: Context, next: Next) {
+    await doRolePermissionGetAllRoleByPermissionId(ctx, next)
   }
 }
-

@@ -145,23 +145,23 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定的获取某类权限
-- 若传了`roleId`，优先级1，增加`checked`、`disabled`两个字段，其中`disabled`根据`user-permissions`关联判断是否可选
-- 若传了`userId`，优先级2，增加`checked`、`disabled`、`special`三个字段，其中`disabled`恒为 `true`
+- 若传了`roleId`，优先级1，增加`checked` 字段，表示是否与该角色关联
+- 若传了`userId`，优先级2，增加`checked` 字段，表示是否与该用户关联
 - `roleId`、`userId`间只需传其中一个
-- 返回数组或[]
+- 返回数组或[]，数组有子级
 
 #### 请求
 
 - `get | post` 
-- `tag/get/byparentcode`
+- `permission/get/byparentcode`
 
 #### 参数
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | parentCode | string | 否 | 父级权限code，不传获取全部权限 |
-| roleId | string | 否 | 角色id，会增加 checked 是否包含 disabled 是否可选 两个字段 |
-| userId | string | 否 | 用户id，会增加 checked 是否包含 disabled 是否可选 special 是否为用户额外权限 三个字段 |
+| roleId | string | 否 | 角色id，会增加`checked` 字段，表示是否与该角色关联 |
+| userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联 |
 
 #### 返回示例
 
@@ -171,29 +171,18 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "50253b99-c288-4206-b730-350157a1b56a",
-      "parentCode": "permission:get",
-      "code": "permission:get:byparentcode",
-      "label": "获取某类权限",
-      "href": "/permission/get/byparentcode",
+      "id": "3c47e7be-3327-4ecc-bd6e-0a9618e87227",
+      "parentCode": "",
+      "code": "permission:update",
+      "label": "权限修改",
+      "href": "/permission/update",
       "sort": 1,
-      "createTime": "2021-08-12 15:08:06",
-      "updateTime": "2021-08-12 15:08:06",
+      "createTime": "2021-08-12 14:56:32",
+      "updateTime": "2021-08-12 14:56:32",
       "terminal": "管理端",
-      "remarks": null
+      "remarks": null,
+      "children": []
     },
-    {
-      "id": "6eb4f2e2-0ead-4717-ba3d-b2df2ffe0180",
-      "parentCode": "permission:get",
-      "code": "permission:get:bycode",
-      "label": "获取某个权限",
-      "href": "/permission/get/bycode",
-      "sort": 1,
-      "createTime": "2021-08-12 15:07:40",
-      "updateTime": "2021-08-12 15:07:40",
-      "terminal": "管理端",
-      "remarks": null
-    }
   ],
   "total": 0
 }

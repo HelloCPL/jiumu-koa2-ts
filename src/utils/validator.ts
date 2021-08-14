@@ -13,8 +13,8 @@ import { Rule, LinValidator } from '../lib/lin-validator'
 import _ from 'lodash'
 import { ExceptionHttp, ExceptionParameter } from '../utils/http-exception'
 import { Message } from '../enums'
-import { getByParentCode, TagOptions } from '../router/controller/tags/get'
-import { log } from 'console'
+import { getByParentCode } from '../router/controller/tags/get'
+import { TagOptions } from '../router/controller/tags/interface'
 
 type RulesOptions = any[]
 

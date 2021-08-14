@@ -5,7 +5,6 @@
 */
 
 import { Context, Next } from 'koa'
-import { query } from '../../../db'
 import { Message } from '../../../enums'
 import { isExist } from '../convert'
 
@@ -13,7 +12,7 @@ import { isExist } from '../convert'
  * 新增时 
  * 判断角色是否已存在
 */
-export const doRoleAddExist = async (ctx: Context, next: Next) => {
+export const doRoleAddConvert = async (ctx: Context, next: Next) => {
   // 判断角色是否已存在
   await isExist({
     table: 'roles',
@@ -29,7 +28,7 @@ export const doRoleAddExist = async (ctx: Context, next: Next) => {
  * 判断角色是否不存在
  * 若修改 code 再判断 code 除自身外是否存在
 */
-export async function doRoleUpdateNoExist(ctx: Context, next: Next) {
+export async function doRoleUpdateConvert(ctx: Context, next: Next) {
   // 判断角色是否不存在
   await isExist({
     table: 'roles',
@@ -58,7 +57,7 @@ export async function doRoleUpdateNoExist(ctx: Context, next: Next) {
  * 再判断是否有 roles-permissions 角色-权限关联
  * 再判断是否有 users-roles 用户-角色关联
 */
-export async function doRoleDeleteNoExist(ctx: Context, next: Next) {
+export async function doRoleDeleteConvert(ctx: Context, next: Next) {
   // 判断角色是否不存在
   await isExist({
     table: 'roles',
@@ -81,18 +80,4 @@ export async function doRoleDeleteNoExist(ctx: Context, next: Next) {
     message: Message.relevantUserRole
   })
   await next()
-}
-
-
-
-
-
-
-
-// 根据 id 判断角色是否存在
-export async function isExistRole(value: any, key: string = 'id', table: string = 'roles'): Promise<boolean> {
-  const sql = `SELECT id FROM ${table} WHERE ${key} = ?`
-  const res: any = await query(sql, value)
-  if (res && res.length) return true
-  return false
 }

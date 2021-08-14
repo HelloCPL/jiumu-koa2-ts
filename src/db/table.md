@@ -98,9 +98,9 @@
 | create_time | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |
 
-#### 7 users-permissions 用户-权限关联额外标签信息表
+<!-- #### 7 users-permissions 用户-权限关联额外标签信息表
 
-- 说明
+- 说明 废弃
 
 | 字段名称 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
@@ -111,7 +111,7 @@
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
-| remarks | v255 | 否 | 备注 |
+| remarks | v255 | 否 | 备注 | -->
 
 #### users-roles 用户-角色关联信息表
 

@@ -20,7 +20,6 @@ import { RequestOptions, RouteOptions } from './interface'
 import { MessageParameter, Message } from '../enums'
 import Config from '../config'
 
-
 /**
  * @author chen
  * @params prefix 路由前缀
@@ -41,24 +40,12 @@ export const Prefix = (prefix: string): ClassDecorator => (target: any) => {
 */
 export const Request = (options: RequestOptions): MethodDecorator => (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
   if (!(_.isArray(options.terminals) && options.terminals.length))
-    options.terminals = Config.TERMINALS
-  options.terminals = _handleOptions(options.terminals, Config.TERMINALS)
-  options.methods = _handleOptions(options.methods, Config.METHODS)
+    options.terminals = ['pc', 'app', 'web', 'wechat']
   Route.__DecoratedRouters.set(<RouteOptions>{
     target,
     ...options
   }, target[key])
   return descriptor
-}
-// 指定范围数组
-function _handleOptions(target: string[], origin: string[]): string[] {
-  const targetData: string[] = []
-  target.forEach(val => {
-    val = val.toLocaleLowerCase()
-    if (origin.indexOf(val) !== -1)
-      targetData.push(val)
-  })
-  return targetData
 }
 
 /**

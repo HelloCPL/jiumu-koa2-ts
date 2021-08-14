@@ -6,7 +6,7 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doPermissionAddExist, doPermissionUpdateNoExist, doPermissionDeleteHasChild } from '../../controller/permissions/convert'
+import { doPermissionAddConvert, doPermissionUpdateConvert, doPermissionDeleteConvert } from '../../controller/permissions/convert'
 import { doPermissionAdd } from '../../controller/permissions/add'
 import { doPermissionUpdate } from '../../controller/permissions/update'
 import { doPermissionDelete } from '../../controller/permissions/delete'
@@ -20,7 +20,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['code', 'label'])
-  @Convert(doPermissionAddExist)
+  @Convert(doPermissionAddConvert)
   async doPermissionAdd(ctx: Context, next: Next) {
     await doPermissionAdd(ctx, next)
   }
@@ -31,7 +31,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doPermissionUpdateNoExist)
+  @Convert(doPermissionUpdateConvert)
   async doPermissionUpdate(ctx: Context, next: Next) {
     await doPermissionUpdate(ctx, next)
   }
@@ -42,7 +42,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doPermissionDeleteHasChild)
+  @Convert(doPermissionDeleteConvert)
   async doPermissionDelete(ctx: Context, next: Next) {
     await doPermissionDelete(ctx, next)
   }

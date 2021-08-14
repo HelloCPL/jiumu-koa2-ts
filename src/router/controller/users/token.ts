@@ -18,25 +18,12 @@ import { ExceptionOptions } from '../../../utils/http-exception'
 import { Message, Code } from '../../../enums'
 import { clientDel, clientSet, clientGet } from '../../../db/redis'
 import dayjs from 'dayjs'
-
-export interface TokenOptions extends ObjectAny {
-  id: string,
-  phone: string,
-  terminal: string,
-  'user-agent': string
-}
-
-interface InfoOptions {
-  id: string,
-  phone: string,
-  validTime: number,
-  key: string
-}
+import { TokenOptions, TokenParamsOptions, TokenSaveParamsOptions } from './interface'
 
 /**
  * 生成 token
 */
-export const gernerateToken = async (ctx: Context, info: InfoOptions): Promise<string> => {
+export const gernerateToken = async (ctx: Context, info: TokenParamsOptions): Promise<string> => {
   const payload: TokenOptions = {
     id: info.id,
     phone: info.phone,
@@ -103,19 +90,10 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
   return { message: Message.success, code: Code.success, data: tokenInfo }
 }
 
-
-interface TokenKeyOptions {
-  id: string,
-  terminal: string,
-  'user-agent': string,
-  key: string
-}
-
 // 获取保存 token 的 key 
-function _getTokenKey(info: TokenKeyOptions): string {
+function _getTokenKey(info: TokenSaveParamsOptions): string {
   if (Config.ALLOW_MULTIPLE)
     return `${info.id}_${info.terminal}_${info['user-agent']}_${info.key}`
   else
     return `${info.id}_${info.terminal}_${info.key}`
 }
-

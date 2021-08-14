@@ -141,8 +141,9 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取指定的获取某类标签，
-- 返回数组或[]
+- 获取指定的获取某类标签
+- 若传了`userId`，增加`checked` 字段，表示是否与该用户关联，仅`parentCode=8888`时有效
+- 返回数组或[]，数组有子级
 
 #### 请求
 
@@ -154,6 +155,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | parentCode | string | 否 | 父级标签code，不传获取全部标签 |
+| userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联，仅`parentCode=8888`时有效 |
 
 #### 返回示例
 
@@ -163,27 +165,17 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "7d92e778-a01b-495e-a226-85838de20bd4",
-      "parentCode": "300",
-      "code": "3001",
-      "label": "富文本编辑器",
+      "id": "1fae1396-6d86-4c11-b009-8ee8d8fe2e93",
+      "parentCode": "100",
+      "code": "1",
+      "label": "启用",
       "sort": 1,
-      "createTime": "2021-08-11 16:33:32",
-      "updateTime": "2021-08-11 16:44:13",
+      "createTime": "2021-08-12 21:54:24",
+      "updateTime": "2021-08-12 21:54:24",
       "terminal": "管理端",
-      "remarks": null
+      "remarks": "用于系统状态，不要修改",
+      "children": []
     },
-    {
-      "id": "b0190033-a923-4af4-b017-51370cbe5404",
-      "parentCode": "300",
-      "code": "3002",
-      "label": "Markdown编辑器",
-      "sort": 2,
-      "createTime": "2021-08-11 16:33:52",
-      "updateTime": "2021-08-11 16:46:46",
-      "terminal": "管理端",
-      "remarks": null
-    }
   ],
   "total": 0
 }

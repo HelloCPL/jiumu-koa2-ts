@@ -24,7 +24,7 @@ interface WXOptions {
   APP_SECRET: string
 }
 
-interface TokenOptions {
+interface ConfigTokenOptions {
   SECRET_KEY: string,
   VALID_TIME: number,
   REFRESH_VALID_TIME: number
@@ -39,9 +39,7 @@ export interface ConfigOptions extends ObjectAny {
   DATABASE: DatabaseOptions,
   REDIS: RedisOptions,
   WX: WXOptions,
-  TOKEN: TokenOptions,
+  TOKEN: ConfigTokenOptions,
   ALLOW_MULTIPLE: boolean,
   BASE_URL: string,
-  TERMINALS: string[],
-  METHODS: string[],
 }

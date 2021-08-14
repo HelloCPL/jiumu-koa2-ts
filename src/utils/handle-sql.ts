@@ -15,17 +15,12 @@ interface paramsOptions {
   data: ObjectAny
 }
 
-interface ReturnOptions {
-  sql: string,
-  data: any[]
-}
-
 /**
  * 处理 UPDATE 更新语句可更新值
  * options.valid 有效的参数名集合 可带表名、指定数据key，如 pas t1.pas pas:password
  * options.data 传参对象
 */
-export const getUpdateSetData = (options: paramsOptions): ReturnOptions => {
+export const getUpdateSetData = (options: paramsOptions): SQLParamsOptions => {
   let sql: string = ''
   let data: any[] = []
   options.valid.forEach((key) => {
@@ -46,7 +41,7 @@ export const getUpdateSetData = (options: paramsOptions): ReturnOptions => {
  * connector 参数间的连接符
  * prefix sql为真时是否添加前缀
 */
-export const getSelectWhereData = (options: paramsOptions, connector: string = 'AND', prefix?: string): ReturnOptions => {
+export const getSelectWhereData = (options: paramsOptions, connector: string = 'AND', prefix?: string): SQLParamsOptions => {
   let sql: string = ''
   let data: any[] = []
   options.valid.forEach((key) => {
@@ -70,7 +65,7 @@ export const getSelectWhereData = (options: paramsOptions, connector: string = '
  * connector 参数间的连接符
  * prefix sql为真时是否添加前缀
 */
-export const getSelectWhereAsKeywordData = (options: paramsOptions, connector: string = 'OR', prefix?: string): ReturnOptions => {
+export const getSelectWhereAsKeywordData = (options: paramsOptions, connector: string = 'OR', prefix?: string): SQLParamsOptions => {
   let sql: string = ''
   let data: any[] = []
   options.valid.forEach((key) => {

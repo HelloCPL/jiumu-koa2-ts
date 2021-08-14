@@ -6,10 +6,9 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doUserRegisterExist, doUserLoginNoExist } from '../../controller/users/convert'
+import { doUserRegisterConvert, doUserLoginConvert } from '../../controller/users/convert'
 import { doUserRegister } from '../../controller/users/register'
 import { doUserLogin } from '../../controller/users/login'
-
 
 @Prefix('user')
 export default class API {
@@ -20,7 +19,7 @@ export default class API {
     unless: true
   })
   @Required(['phone', 'password'])
-  @Convert(doUserRegisterExist)
+  @Convert(doUserRegisterConvert)
   async doUserRegister(ctx: Context, next: Next) {
     await doUserRegister(ctx, next)
   }
@@ -32,7 +31,7 @@ export default class API {
     unless: true
   })
   @Required(['phone', 'password'])
-  @Convert(doUserLoginNoExist)
+  @Convert(doUserLoginConvert)
   async doUserLogin(ctx: Context, next: Next) {
     await doUserLogin(ctx, next)
   }

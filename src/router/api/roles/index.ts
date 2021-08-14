@@ -6,7 +6,7 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doRoleAddExist, doRoleUpdateNoExist, doRoleDeleteNoExist } from '../../controller/roles/convert'
+import { doRoleAddConvert, doRoleUpdateConvert, doRoleDeleteConvert } from '../../controller/roles/convert'
 import { doRoleAdd } from '../../controller/roles/add'
 import { doRoleUpdate } from '../../controller/roles/update'
 import { doRoleDelete } from '../../controller/roles/delete'
@@ -20,7 +20,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['code', 'label'])
-  @Convert(doRoleAddExist)
+  @Convert(doRoleAddConvert)
   async doRoleAdd(ctx: Context, next: Next) {
     await doRoleAdd(ctx, next)
   }
@@ -31,7 +31,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doRoleUpdateNoExist)
+  @Convert(doRoleUpdateConvert)
   async doRoleUpdate(ctx: Context, next: Next) {
     await doRoleUpdate(ctx, next)
   }
@@ -42,7 +42,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doRoleDeleteNoExist)
+  @Convert(doRoleDeleteConvert)
   async doRoleDelete(ctx: Context, next: Next) {
     await doRoleDelete(ctx, next)
   }
@@ -66,4 +66,3 @@ export default class API {
     await doRoleGetList(ctx, next)
   }
 }
-
