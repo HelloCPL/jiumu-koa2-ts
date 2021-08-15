@@ -13,7 +13,7 @@ import { Rule, LinValidator } from '../lib/lin-validator'
 import _ from 'lodash'
 import { ExceptionHttp, ExceptionParameter } from '../utils/http-exception'
 import { Message } from '../enums'
-import { getByParentCode } from '../router/controller/tags/get'
+import { getTagByParentCode } from '../router/controller/tags/get'
 import { TagOptions } from '../router/controller/tags/interface'
 
 type RulesOptions = any[]
@@ -117,7 +117,7 @@ export const validateRange = async (info: RangeOptions) => {
         }
       })
     } else if (_.isString(info.range)) {
-      const res = await getByParentCode(info.range)
+      const res = await getTagByParentCode(info.range)
       if (res && res.length) {
         const codes = _getTagsCode(res)
         if (codes.indexOf(info.value) !== -1)
