@@ -70,7 +70,7 @@
 
 - `pc | web | app | wechat` 端
 - 删除角色
-- 注意：当角色有角色-权限关联、用户角色关联时不能删除，只有解除关联后可删除
+- 注意：当角色有角色-权限关联、用户-角色关联、角色-菜单关联时不能删除，只有解除关联后可删除
 
 #### 请求
 
@@ -142,7 +142,8 @@
 - 获取角色列表
 - 若传了`userId`，优先级1，增加`checked` 字段，表示是否与该用户关联
 - 若传了`permissionId`，优先级2，增加`checked` 字段，表示是否与该权限关联
-- `userId`、`permissionId`间只需传其中一个
+- 若传了`menuId`，优先级3，增加`checked` 字段，表示是否与该菜单关联
+- `userId`、`permissionId`、`menuId`间只需传其中一个
 - 返回数组或[]
 
 #### 请求
@@ -159,6 +160,7 @@
 | keyword | string | 否 | 关键字 |
 | userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联 |
 | permissionId | string | 否 | 权限id，会增加`checked` 字段，表示是否与该权限关联  |
+| menuId | string | 否 | 菜单id，会增加`checked` 字段，表示是否与该菜单关联  |
 
 #### 返回示例
 

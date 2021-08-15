@@ -11,11 +11,12 @@ import { getSelectWhereAsKeywordData } from '../../../utils/handle-sql'
 import { RoleOptions, RoleParamsOptions, RoleReturnOptions } from './interface'
 import { getAllRoleByPermissionId } from '../roles-permissions/get'
 import { getAllRoleByUserId } from '../users-roles/get'
+import { getAllRoleByMenuId } from '../roles-menus/get'
 import _ from 'lodash'
 
 // 获取指定的某个角色
 export const doRoleGetOne = async (ctx: Context, next: Next) => {
-  const data = await getOne(ctx.params.id)
+  const data = await getMenuOne(ctx.params.id)
   throw new Success({ data });
 }
 
@@ -27,7 +28,12 @@ export const doRoleGetList = async (ctx: Context, next: Next) => {
     keyword: ctx.params.keyword
   }
   const data = await getList(parmas)
-  if (ctx.params.permissionId) {
+  if (ctx.params.menuId) {
+    // 增加`checked` 字段，表示是否与该菜单关联
+    const menuList = await getAllRoleByMenuId({ menuId: ctx.params.menuId })
+    const menuIdsList = _.map(menuList, item => item.id)
+    _handleRoleData(data.data, menuIdsList)
+  } else if (ctx.params.permissionId) {
     // 增加`checked` 字段，表示是否与该权限关联
     const roleList = await getAllRoleByPermissionId({ permissionId: ctx.params.permissionId })
     const roleIdsList = _.map(roleList, item => item.id)
@@ -44,7 +50,7 @@ export const doRoleGetList = async (ctx: Context, next: Next) => {
 /**
  * 获取指定的某个角色，返回对象或null
 */
-export const getOne = async (id: string): Promise<RoleOptions | null> => {
+export const getMenuOne = async (id: string): Promise<RoleOptions | null> => {
   const sql: string = `SELECT * FROM roles WHERE code = ? OR id = ?`
   const data = [id, id]
   let res: any = await query(sql, data)

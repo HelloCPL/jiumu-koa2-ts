@@ -9,13 +9,18 @@ import { Message } from '../../../enums'
 import { isExist, isExistHasChildren } from '../convert'
 import { getByCode } from './get'
 import { TagOptions } from './interface'
+import { ExceptionParameter } from '../../../utils/http-exception';
 
 /**
  * 新增时 
+ * code 必须为真
  * 判断标签是否已存在
  * 若 parentCode 为真，再判断 parentCode 是否不存在
 */
 export const doTagAddConvert = async (ctx: Context, next: Next) => {
+  // code 必须为真
+  if (!ctx.params.code)
+    throw new ExceptionParameter({ message: 'code参数值必须为真' })
   //  判断标签是否已存在
   await isExist({
     table: 'tags',
@@ -37,11 +42,15 @@ export const doTagAddConvert = async (ctx: Context, next: Next) => {
 
 /**
  * 修改时 
+ * 若传 code 其中 code 值必须为真
  * 判断标签是否不存在，
  * 若修改 code 判断 code 除自身外是否存在
  * 若 parentCode 为真，判断 parentCode 是否不存在
 */
 export async function doTagUpdateConvert(ctx: Context, next: Next) {
+  // 若传 code 其中 code 值必须为真
+  if (ctx.params.hasOwnProperty('code') && !ctx.params.code)
+    throw new ExceptionParameter({ message: 'code参数值必须为真' })
   // 判断标签是否不存在，
   await isExist({
     table: 'tags',
@@ -92,7 +101,7 @@ export async function doTagDeleteConvert(ctx: Context, next: Next) {
     table: 'tags',
     where: { key: 'id', value: ctx.params.id },
     throwType: true,
-    message: Message.relevantChildren
+    message: Message.relevantHasChildren
   })
   // 再判断是否有 users-tags 用户-标签关联
   const tagInfo = <TagOptions>await getByCode(ctx.params.id)

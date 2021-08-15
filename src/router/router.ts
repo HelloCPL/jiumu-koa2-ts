@@ -67,23 +67,27 @@ export const Required = (params: string[]): MethodDecorator => (target: any, key
 }
 // 校验必传参数
 function _handleRequiredParams(params: string[]): ValidatorOptions[] {
-  return params.map(item => {
-    let i: number = item.indexOf('&')
-    let key: string
-    let rule: string
-    if (i !== -1) {
-      key = item.substring(0, i)
-      rule = item.substring(i + 1)
-    } else {
-      key = item
-      rule = 'isLength'
-    }
-    return {
-      key,
-      // @ts-ignore 
-      rules: [rule, MessageParameter[rule] || Message.parameter]
+  let data: ValidatorOptions[] = []
+  params.forEach(item => {
+    if (item) {
+      let i: number = item.indexOf('&')
+      let key: string
+      let rule: string
+      if (i !== -1) {
+        key = item.substring(0, i)
+        rule = item.substring(i + 1)
+      } else {
+        key = item
+        rule = 'isLength'
+      }
+      data.push({
+        key,
+        // @ts-ignore 
+        rules: [rule, MessageParameter[rule] || Message.parameter]
+      })
     }
   })
+  return data
 }
 
 /**

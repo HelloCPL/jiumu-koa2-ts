@@ -1,5 +1,5 @@
 /**
- * @description 标签新增
+ * @description 菜单新增
  * @author chen
  * @update 2021-08-07 15:15:08
 */
@@ -11,13 +11,13 @@ import { Terminal } from "../../../enums";
 import { formatDate, getUuId } from "../../../utils/tools";
 
 /**
- * 标签新增
+ * 菜单新增
 */
-export const doTagAdd = async (ctx: Context, next: Next) => {
+export const doMenuAdd = async (ctx: Context, next: Next) => {
   const parentCode: number = ctx.params.parentCode || ''
   const sort: number = ctx.params.sort || 1
   const currentTime = formatDate(new Date())
-  const sql: string = `INSERT tags (id, parent_code, code, label, sort, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  const sql: string = `INSERT menus (id, parent_code, code, label, sort, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
   const data = [getUuId(), parentCode, ctx.params.code, ctx.params.label, sort, currentTime, currentTime, Terminal[ctx.terminal], ctx.params.remarks]
   await query(sql, data)
   throw new Success();

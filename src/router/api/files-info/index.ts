@@ -54,7 +54,7 @@ export default class API {
     await doFileGetListByUserId(ctx, next)
   }
 
-  // 5 获取指定本用户的所有文件/图片列表 返回数组或[]
+  // 5 获取本用户的所有文件/图片列表 返回数组或[]
   @Request({
     path: 'get/list/self',
     methods: ['post', 'get'],

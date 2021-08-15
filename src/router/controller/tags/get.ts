@@ -21,7 +21,7 @@ export const doTagGetByCode = async (ctx: Context, next: Next) => {
 // 获取某类标签
 export const doTagGetByParentCode = async (ctx: Context, next: Next) => {
   const parentCode = ctx.params.parentCode || ''
-  const data = await getByParentCode(parentCode)
+  const data = await getTagByParentCode(parentCode)
   if (parentCode == '8888' && ctx.params.userId) {
     // 增加`checked` 字段，表示是否与该用户关联
     const userList = await getAllTagByUserId({ userId: ctx.params.userId })
@@ -46,7 +46,7 @@ export const getByCode = async (code: string): Promise<TagOptions | null> => {
 /**
  * 获取某类标签，返回数组或[]
 */
-export const getByParentCode = async (parentCode: string): Promise<TagListOptions[]> => {
+export const getTagByParentCode = async (parentCode: string): Promise<TagListOptions[]> => {
   let data: TagCustomOptions[] = [{ code: parentCode, children: [] }]
   const _handleGetData = async (arr: TagCustomOptions[]) => {
     for (let i = 0, len = arr.length; i < len; i++) {

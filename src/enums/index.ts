@@ -48,20 +48,26 @@ export enum Message {
   unexistPermission = '权限标识不存在',
   existRole = '角色标识已存在',
   unexistRole = '角色标识不存在',
+  existMenus = '菜单标识已存在',
+  unexistMenus = '菜单标识不存在',
   existRolePermission = '角色-权限关联标识已存在',
   unexistRolePermission = '角色-权限关联标识不存在',
+  existRoleMenu = '角色-菜单关联标识已存在',
+  unexistRoleMenu = '角色-菜单关联标识不存在',
   existUserPermission = '用户-权限关联标识已存在',
   unexistUserPermission = '用户-权限关联标识不存在',
   existUserRole = '用户-角色关联标识已存在',
   unexistUserRole = '用户-角色关联标识不存在',
   existUserTag = '用户-特殊标签关联标识已存在',
   unexistUserTag = '用户-特殊标签关联标识不存在',
+  
 
-  relevantChildren = '有子级关联，操作失败',
+  relevantHasChildren = '有子级关联，请解除子级关联后再操作',
+  relevantNoParent = '父级未关联，请关联父级后再操作',
   relevantRolePermission = '角色-权限有关联，请解除关联后再操作',
-  relevantUserPermission = '用户-权限有关联，请解除关联后再操作',
   relevantUserRole = '用户-角色有关联，请解除关联后再操作',
   relevantUserTag = '用户-标签有关联，请解除关联后再操作',
+  relevantRoleMenu = '角色-菜单有关联，请解除关联后再操作',
 }
 
 /**

@@ -15,22 +15,26 @@ import _ from 'lodash'
 
 // 获取指定的某个权限
 export const doPermissionGetOne = async (ctx: Context, next: Next) => {
-  const data = await getOne(ctx.params.id)
+  const data = await getPermissionOne(ctx.params.id)
   throw new Success({ data });
 }
 
 // 获取某类权限
 export const doPermissionGetByParentCode = async (ctx: Context, next: Next) => {
   const parentCode = ctx.params.parentCode || ''
-  let data: PermissionListOptions[] = await getByParentCode(parentCode)
+  let data: PermissionListOptions[] = await getPermissionByParentCode(parentCode)
   if (ctx.params.userId) {
     // 若传 userId 增加`checked` 字段，表示是否与该用户关联
     const userRoleList = await getAllRoleByUserId({ userId: ctx.params.userId })
     const roleIds = _.join(_.map(userRoleList, item => item.id))
-    await _handleRolePermission(data, roleIds)
+    const rolePermissionList = await getAllPermissionByRoleId({ roleIds: roleIds })
+    const rolePermissionIds = _.map(rolePermissionList, item => item.id)
+    _handleRolePermission(data, rolePermissionIds)
   } else if (ctx.params.roleId) {
     // 若传 roleId 增加`checked` 字段，表示是否与该角色关联
-    await _handleRolePermission(data, ctx.params.roleId)
+    const rolePermissionList = await getAllPermissionByRoleId({ roleId: ctx.params.roleId })
+    const rolePermissionIds = _.map(rolePermissionList, item => item.id)
+    _handleRolePermission(data, rolePermissionIds)
   }
   throw new Success({ data })
 }
@@ -39,7 +43,7 @@ export const doPermissionGetByParentCode = async (ctx: Context, next: Next) => {
 /**
  * 获取指定的某个权限，返回对象或null
 */
-export const getOne = async (id: string): Promise<PermissionOptions | null> => {
+export const getPermissionOne = async (id: string): Promise<PermissionOptions | null> => {
   const sql: string = `SELECT * FROM permissions WHERE code = ? OR id = ?`
   const data = [id, id]
   let res: any = await query(sql, data)
@@ -50,7 +54,7 @@ export const getOne = async (id: string): Promise<PermissionOptions | null> => {
 /**
  * 获取某类权限，返回数组或[]
 */
-export const getByParentCode = async (parentCode: string): Promise<PermissionListOptions[]> => {
+export const getPermissionByParentCode = async (parentCode: string): Promise<PermissionListOptions[]> => {
   let data: PermissionCustomOptions[] = [{ code: parentCode, children: [] }]
   const _handleGetData = async (arr: PermissionCustomOptions[]) => {
     for (let i = 0, len = arr.length; i < len; i++) {
@@ -60,7 +64,7 @@ export const getByParentCode = async (parentCode: string): Promise<PermissionLis
         noThrow: true
       })
       if (hasChildren) {
-        const sql = `SELECT * FROM permissions WHERE parent_code = ? ORDER BY sort`
+        const sql = `SELECT * FROM permissions WHERE parent_code = ? ORDER BY sort, update_time DESC`
         const res: PermissionCustomOptions[] = <PermissionCustomOptions[]>await query(sql, arr[i].code)
         arr[i].children = res
         await _handleGetData(arr[i].children)
@@ -75,13 +79,11 @@ export const getByParentCode = async (parentCode: string): Promise<PermissionLis
   return targetData
 }
 
-// 处理权限是否与角色/用户关联
-async function _handleRolePermission(data: PermissionListOptions[], roleId: string) {
-  const rolePermissionList = await getAllPermissionByRoleId({ roleIds: roleId })
-  const rolePermissionIds: string[] = rolePermissionList.map(item => item.id)
+// 处理权限是否与角色/权限关联
+function _handleRolePermission(data: PermissionListOptions[], targetData: string[]) {
   const _handleList = (arr: PermissionListOptions[]) => {
     arr.forEach(item => {
-      if (rolePermissionIds.indexOf(item.id) === -1)
+      if (targetData.indexOf(item.id) === -1)
         item.checked = false
       else item.checked = true
       if (item.children && item.children.length)

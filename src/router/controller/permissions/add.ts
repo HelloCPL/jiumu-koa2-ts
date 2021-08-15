@@ -14,7 +14,7 @@ import { formatDate, getUuId } from "../../../utils/tools";
  * 权限新增
 */
 export const doPermissionAdd = async (ctx: Context, next: Next) => {
-  const parentCode: string = ctx.params.parentCode || '0'
+  const parentCode: string = ctx.params.parentCode || ''
   const href: string = ctx.params.href || '#'
   const sort: number = ctx.params.sort || 1
   const currentTime = formatDate(new Date())

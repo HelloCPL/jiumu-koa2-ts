@@ -56,6 +56,7 @@ export async function doRoleUpdateConvert(ctx: Context, next: Next) {
  * 判断角色是否不存在
  * 再判断是否有 roles-permissions 角色-权限关联
  * 再判断是否有 users-roles 用户-角色关联
+ * 再判断是否有 roles-menus 角色-菜单关联
 */
 export async function doRoleDeleteConvert(ctx: Context, next: Next) {
   // 判断角色是否不存在
@@ -78,6 +79,13 @@ export async function doRoleDeleteConvert(ctx: Context, next: Next) {
     where: [{ key: 'role_id', value: ctx.params.id }],
     throwType: true,
     message: Message.relevantUserRole
+  })
+  // 再判断是否有 users-roles 用户-角色关联
+  await isExist({
+    table: 'roles_menus',
+    where: [{ key: 'role_id', value: ctx.params.id }],
+    throwType: true,
+    message: Message.relevantRoleMenu
   })
   await next()
 }
