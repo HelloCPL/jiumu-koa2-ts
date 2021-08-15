@@ -35,4 +35,15 @@ export default class API {
   async doUserLogin(ctx: Context, next: Next) {
     await doUserLogin(ctx, next)
   }
+
+  // 3 修改本用户基本信息
+  // 4 修改本用户账号
+  // 5 修改本用户密码
+  // 6 修改指定用户基本信息
+  // 7 获取本用户信息
+  // 8 获取指定用户基本信息
+  // 9 获取用户列表基本信息
+
+  // 10 根据tokenRefresh更新token
+  // 11 退出登录
 }
