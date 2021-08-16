@@ -11,6 +11,7 @@ import _ from 'lodash'
 import { UserOptions } from '../users/interface'
 import { TagOptions } from '../tags/interface'
 import { UserTagOptions, UserTagByTagCodeParams, UserTagByUserIdParams } from './interface'
+import { getFileById } from '../files-info/get'
 
 // 获取指定用户关联的所有特殊标签
 export const doUserTagGetAllTagByUserId = async (ctx: Context, next: Next) => {
@@ -73,8 +74,11 @@ export const getAllUserByTagCode = async (options: UserTagByTagCodeParams): Prom
     res = _.uniqBy(res, 'user_id')
     // 获取关联的用户列表
     const UserIds: string = _.join(_.map(res, item => item.user_id))
-    const sql2: string = `SELECT id, phone, username, sex, birthday, avatar, professional, address, create_time, update_time, terminal, remarks FROM users WHERE FIND_IN_SET(id, ?) ORDER BY update_time DESC`
+    const sql2: string = `SELECT t1.id, t1.phone, t1.username, t1.sex, t2.label as sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code  WHERE FIND_IN_SET(t1.id, ?) ORDER BY t1.update_time DESC`
     targetData = <UserOptions[]>await query(sql2, UserIds)
+    for (let i = 0, len = targetData.length; i < len; i++) {
+      targetData[i]['avatar'] = await getFileById(targetData[i]['avatar'], targetData[i]['id'])
+    }
   }
   return targetData
 }

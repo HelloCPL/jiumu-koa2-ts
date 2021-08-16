@@ -72,19 +72,17 @@ function _handleRequiredParams(params: string[]): ValidatorOptions[] {
     if (item) {
       let i: number = item.indexOf('&')
       let key: string
-      let rule: string
+      let rules: any[] = []
       if (i !== -1) {
         key = item.substring(0, i)
-        rule = item.substring(i + 1)
+        let rule = item.substring(i + 1)
+        // @ts-ignore 
+        rules.push(rule, MessageParameter[rule] || Message.parameter)
       } else {
         key = item
-        rule = 'isLength'
+        rules = ['isLength', MessageParameter.isLength, { min: 1 }]
       }
-      data.push({
-        key,
-        // @ts-ignore 
-        rules: [rule, MessageParameter[rule] || Message.parameter]
-      })
+      data.push({ key, rules })
     }
   })
   return data

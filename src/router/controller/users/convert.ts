@@ -7,7 +7,10 @@
 import { Context, Next } from 'koa'
 import { Message } from '../../../enums'
 import { isExist } from '../convert'
-
+import { validateRange } from '../../../utils/validator'
+import { query } from '../../../db'
+import { decrypt } from '../../../utils/crypto'
+import { ExceptionParameter } from '../../../utils/http-exception'
 /**
  * 注册
  * 判断用户是否已存在
@@ -37,3 +40,59 @@ export async function doUserLoginConvert(ctx: Context, next: Next) {
   })
   await next()
 }
+
+/**
+ * 修改本用户/指定用户基本信息时
+ * 如果传了 sex 判断是否为系统标签200范围
+ * 如果传了 avatar 判断文件id是否不存在
+*/
+export async function doUserUpdateBaseSelfConvert(ctx: Context, next: Next) {
+  // 如果传了 sex 判断是否为系统标签200范围
+  if (ctx.params.sex) {
+    await validateRange({
+      value: ctx.params.sex,
+      range: '200',
+      message: 'sex参数必须为系统标签200范围'
+    })
+  }
+  // 如果传了 avatar 判断文件id是否不存在
+  if (ctx.params.avatar) {
+    await isExist({
+      table: 'files_info',
+      where: [{ key: 'id', value: ctx.params.avatar }],
+      throwType: false,
+      message: Message.unexistFile
+    })
+  }
+  await next()
+}
+
+/**
+ * 仅指定用户基本信息时
+ * 判断用户是否不存在
+*/
+export async function doUserUpdateBaseConvert(ctx: Context, next: Next) {
+  // 判断用户是否不存在
+  await isExist({
+    table: 'users',
+    where: [{ key: 'id', value: ctx.params.id }],
+    throwType: false,
+    message: Message.unexistUser
+  })
+  await next()
+}
+
+/**
+ * 修改本用户密码
+ * 校验密码是否正确
+*/
+export async function doUserCheckPasswordConvert(ctx: Context, next: Next) {
+  const sql = `SELECT password FROM users WHERE id = ?`
+  const res: any = await query(sql, ctx.user.id)
+  const originPassowrd: string = decrypt(res[0]['password'])
+  if (!(ctx.params.password && originPassowrd && ctx.params.password === originPassowrd))
+    throw new ExceptionParameter({ message: Message.errorPassword })
+  await next()
+}
+
+

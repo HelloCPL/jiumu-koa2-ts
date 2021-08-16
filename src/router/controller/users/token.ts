@@ -91,7 +91,7 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
 }
 
 // 获取保存 token 的 key 
-function _getTokenKey(info: TokenSaveParamsOptions): string {
+export function _getTokenKey(info: TokenSaveParamsOptions): string {
   if (Config.ALLOW_MULTIPLE)
     return `${info.id}_${info.terminal}_${info['user-agent']}_${info.key}`
   else

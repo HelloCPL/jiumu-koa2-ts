@@ -10,7 +10,7 @@
 import { Context, Next } from 'koa'
 import { analysisToken } from '../../router/controller/users/token'
 import { Code, Message } from '../../enums'
-import { ExceptionHttp } from '../../utils/http-exception'
+import { ExceptionAuthFailed } from '../../utils/http-exception'
 import { getSuffix } from '../../utils/tools';
 import { query } from '../../db';
 import { decrypt } from '../../utils/crypto';
@@ -28,7 +28,7 @@ export const verifyRoute = async (ctx: Context, next: Next) => {
       ctx.user = tokenInfo.data
     } else {
       Logger.request(ctx)
-      throw new ExceptionHttp(tokenInfo)
+      throw new ExceptionAuthFailed(tokenInfo)
     }
   }
   Logger.request(ctx)

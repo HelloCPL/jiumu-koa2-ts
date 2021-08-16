@@ -26,8 +26,8 @@ export const getUpdateSetData = (options: paramsOptions): SQLParamsOptions => {
   options.valid.forEach((key) => {
     const keys: KeyOptions = _findKeys(key)
     if (options.data.hasOwnProperty(keys.dataKey)) {
-      if (data.length === 0) sql += ` \`${keys.sqlKey}\` = ? `
-      else sql += ` , \`${keys.sqlKey}\` = ? `
+      if (data.length === 0) sql += ` ${keys.sqlKey} = ? `
+      else sql += ` , ${keys.sqlKey} = ? `
       data.push(options.data[keys.dataKey])
     }
   })
@@ -49,8 +49,8 @@ export const getSelectWhereData = (options: paramsOptions, connector: string = '
     // 传参有参数且值为真或0或false
     const flag = options.data.hasOwnProperty(keys.dataKey) && (options.data[keys.dataKey] || options.data[keys.dataKey] === 0 || options.data[keys.dataKey] === false)
     if (flag) {
-      if (data.length === 0) sql += ` \`${keys.sqlKey}\` = ? `
-      else sql += ` ${connector} \`${keys.dataKey}\` = ? `
+      if (data.length === 0) sql += ` ${keys.sqlKey} = ? `
+      else sql += ` ${connector} ${keys.dataKey} = ? `
       data.push(options.data[keys.dataKey])
     }
   })
@@ -73,8 +73,8 @@ export const getSelectWhereAsKeywordData = (options: paramsOptions, connector: s
     // keyword为真或0或false
     const flag = options.data.keyword || options.data.keyword === 0 || options.data.keyword === false
     if (flag) {
-      if (data.length === 0) sql += ` \`${keys.sqlKey}\` LIKE ? `
-      else sql += ` ${connector} \`${keys.dataKey}\` LIKE ? `
+      if (data.length === 0) sql += ` ${keys.sqlKey} LIKE ? `
+      else sql += ` ${connector} ${keys.sqlKey} LIKE ? `
       data.push(`%${options.data.keyword}%`)
     }
   })

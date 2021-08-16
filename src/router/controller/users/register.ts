@@ -23,21 +23,38 @@ export const doUserRegister = async (ctx: Context, next: Next) => {
   const sql = `INSERT users (id, password, phone,username, create_time, update_time, terminal) VALUES (?,?,?,?,?,?,?)`
   const data = [id, password, ctx.params.phone, '匿名', currentTime, currentTime, Terminal[ctx.terminal]]
   await query(sql, data)
-  // 生成 token
+  // 生成双 token
+  let params = { userId: id, phone: ctx.params.phone }
+  const doubleToken = await handleDoubleToken(ctx, params)
+  throw new Success({ message: Message.register, data: doubleToken })
+}
+
+interface DoubleTokenParams {
+  userId: string,
+  phone: string
+}
+
+export interface DoubleTokenReturn {
+  token: string,
+  tokenRefresh: string
+}
+
+// 生成双token
+export const handleDoubleToken = async (ctx: Context, options: DoubleTokenParams): Promise<DoubleTokenReturn> => {
   const tokenParams = {
-    id,
-    phone: ctx.params.phone,
+    id: options.userId,
+    phone: options.phone,
     validTime: Config.TOKEN.VALID_TIME,
     key: 'token'
   }
   const token = await gernerateToken(ctx, tokenParams)
   // 生成刷新 token
   const tokenRefreshParams = {
-    id,
-    phone: ctx.params.phone,
+    id: options.userId,
+    phone: options.phone,
     validTime: Config.TOKEN.REFRESH_VALID_TIME,
     key: 'token_refresh'
   }
   const tokenRefresh = await gernerateToken(ctx, tokenRefreshParams)
-  throw new Success({ message: Message.register, data: { token, tokenRefresh } })
+  return { token, tokenRefresh }
 }

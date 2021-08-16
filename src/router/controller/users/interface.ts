@@ -14,7 +14,7 @@ export interface UserOptions extends BaseOptions {
   username: string,
   sex?: string,
   birthday?: string,
-  avatar?: string,
+  avatar?: any,
   professional?: string,
   address?: string,
 }
@@ -46,4 +46,17 @@ export interface TokenSaveParamsOptions {
   terminal: TerminalType,
   'user-agent': string,
   key: string
+}
+
+// 获取用户列表参数类型
+export interface UserListParams {
+  pageNo: number,
+  pageSize: number,
+  keyword?: string
+}
+
+// 获取用户列表返回类型
+export interface UserListReturn {
+  total: number,
+  data: UserOptions[]
 }

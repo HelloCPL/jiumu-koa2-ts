@@ -8,13 +8,13 @@ import { Success } from '../../../utils/http-exception'
 import { query } from "../../../db";
 import { Context, Next } from 'koa';
 import _ from 'lodash'
-import { MenuOptions } from '../menus/interface'
+import { MenuOptions, MenuListOptions } from '../menus/interface'
 import { RoleOptions } from '../roles/interface'
 import { RoleMenuOptions, RoleMenuByRoleIdParams, RoleMenuByMenuIdParams } from './interface'
 
 // 获取指定角色关联的所有菜单
 export const doRoleMenugetAllMenuByRoleId = async (ctx: Context, next: Next) => {
-  const data = await getAllMenuByRoleId({ roleId: ctx.params.roleId })
+  const data = await getAllMenuByRoleId({ roleId: ctx.params.roleId }, ctx.params.isTree)
   throw new Success({ data });
 }
 
@@ -27,8 +27,9 @@ export const doRoleMenuGetAllRoleByMenuId = async (ctx: Context, next: Next) => 
 
 /**
  * 根据 roleId/roleIds 获取所有关联的菜单列表，返回数组或[]
+ * 参数 isTree 菜单是否为树结构
 */
-export const getAllMenuByRoleId = async (options: RoleMenuByRoleIdParams): Promise<MenuOptions[]> => {
+export const getAllMenuByRoleId = async (options: RoleMenuByRoleIdParams, isTree?: boolean): Promise<MenuOptions[] | MenuListOptions[]> => {
   let sql = `SELECT * FROM roles_menus WHERE `
   let data: any[] = []
   if (options.roleId) {
@@ -49,6 +50,7 @@ export const getAllMenuByRoleId = async (options: RoleMenuByRoleIdParams): Promi
     const sql2: string = `SELECT * FROM menus WHERE FIND_IN_SET(id, ?) ORDER BY sort, update_time DESC`
     targetData = <MenuOptions[]>await query(sql2, menuIds)
   }
+  if (isTree) return _handleAllMenuHierarchy(targetData)
   return targetData
 }
 
@@ -77,4 +79,28 @@ export const getAllRoleByMenuId = async (options: RoleMenuByMenuIdParams): Promi
     targetData = <RoleOptions[]>await query(sql2, roleIds)
   }
   return targetData
+}
+
+// 处理菜单树结构层级问题
+function _handleAllMenuHierarchy(menus: MenuOptions[]): MenuListOptions[] {
+  let data: MenuListOptions[] = []
+  // 取一级菜单
+  menus.forEach(item => {
+    item.children = []
+    if (!item.parent_code) {
+      data.push(<MenuListOptions>{ ...item })
+    }
+  })
+  const _handleList = (arr: MenuListOptions[]) => {
+    arr.forEach(list => {
+      let children = <MenuListOptions[]>menus.filter(item => item.parent_code === list.code)
+      console.log(children);
+
+      list.children = children
+      if (list.children && list.children.length)
+        _handleList(list.children)
+    })
+  }
+  _handleList(data)
+  return data
 }

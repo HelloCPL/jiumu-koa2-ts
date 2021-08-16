@@ -28,6 +28,7 @@ export enum Message {
 
   register = '注册成功',
   login = '登录成功',
+  exit = '退出成功',
 
   noToken = '权限不足，令牌不存在',
   errorDevice = '登录设备异常，请重新登录',
@@ -40,8 +41,10 @@ export enum Message {
   dbExecTrancStart = '服务器发生错误：事务开启失败',
   dbExecTrancPerform = '服务器发生错误：事务执行失败',
 
-  existUser = '用户已存在',
-  unexistUser = '用户不存在',
+  existFile = '文件已存在',
+  unexistFile = '文件不存在',
+  existUser = '用户账号已存在',
+  unexistUser = '用户账号不存在',
   existTag = '标签标识已存在',
   unexistTag = '标签标识不存在',
   existPermission = '权限标识已存在',

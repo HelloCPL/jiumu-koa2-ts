@@ -35,12 +35,12 @@ class ValidatorParam extends LinValidator {
     if (_.isArray(rule.rules[0])) {
       rule.rules.forEach((item: any) => {
         ruleList.push(
-          new Rule(item[0], item[1])
+          new Rule(item[0], item[1], item[2])
         )
       })
     } else {
       ruleList.push(
-        new Rule(rule.rules[0], rule.rules[1])
+        new Rule(rule.rules[0], rule.rules[1], rule.rules[2])
       )
     }
     // @ts-ignore

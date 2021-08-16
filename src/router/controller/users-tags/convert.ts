@@ -28,7 +28,7 @@ export const doUserTagAddConvert = async (ctx: Context, next: Next) => {
   await validateRange({
     value: ctx.params.tagCode,
     range: '8888',
-    message: 'tagCode必须为特殊标签8888下的标签'
+    message: 'tagCode参数必须为特殊标签8888范围'
   })
   // 判断用户-特殊标签关联是否已存在
   await isExist({
@@ -67,7 +67,7 @@ export async function doUserTagGetAllUserByTagCodeConvert(ctx: Context, next: Ne
   await validateRange({
     value: ctx.params.tagCode,
     range: '8888',
-    message: 'tagCode必须为特殊标签8888下的标签'
+    message: 'tagCode参数必须为特殊标签8888范围'
   })
   await next()
 }

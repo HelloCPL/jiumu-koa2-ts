@@ -6,11 +6,10 @@
 
 import { Context, Next } from "koa";
 import { Success, ExceptionParameter } from '../../../utils/http-exception'
-import { gernerateToken } from './token'
 import { decrypt } from '../../../utils/crypto'
 import { query } from "../../../db";
 import { Message } from "../../../enums";
-import Config from '../../../config'
+import { handleDoubleToken } from './register'
 
 /**
  * 用户登录
@@ -22,22 +21,9 @@ export const doUserLogin = async (ctx: Context, next: Next) => {
   const res: any = await query(sql, phone)
   const originPassowrd: string = decrypt(res[0]['password'])
   if (password && originPassowrd && password === originPassowrd) {
-    // 生成 token
-    const tokenParams = {
-      id: res[0]['id'],
-      phone,
-      validTime: Config.TOKEN.VALID_TIME,
-      key: 'token'
-    }
-    const token = await gernerateToken(ctx, tokenParams)
-    // 生成刷新 token
-    const tokenRefreshParams = {
-      id: res[0]['id'],
-      phone,
-      validTime: Config.TOKEN.REFRESH_VALID_TIME,
-      key: 'token_refresh'
-    }
-    const tokenRefresh = await gernerateToken(ctx, tokenRefreshParams)
-    throw new Success({ message: Message.login, data: { token, tokenRefresh } })
+    // 生成双 token
+    let params = { userId: res[0]['id'], phone: phone }
+    const doubleToken = await handleDoubleToken(ctx, params)
+    throw new Success({ message: Message.login, data: doubleToken })
   } else throw new ExceptionParameter({ message: Message.errorPassword })
 }

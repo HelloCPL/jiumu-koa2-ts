@@ -35,7 +35,7 @@ export const doUserPermissionAddConvert = async (ctx: Context, next: Next) => {
   await validateRange({
     value: ctx.params.status,
     range: '100',
-    message: 'status参数必须为系统标签100下的标签'
+    message: 'status参数必须为系统标签100范围'
   })
   // 判断用户-权限关联是否已存在
   await isExist({
@@ -88,7 +88,7 @@ export const doUserPermissionUpdateConvert = async (ctx: Context, next: Next) =>
     await validateRange({
       value: ctx.params.status,
       range: '100',
-      message: 'status参数必须为系统标签100下的范围'
+      message: 'status参数必须为系统标签100范围'
     })
   }
   await next()

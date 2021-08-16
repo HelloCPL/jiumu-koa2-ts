@@ -128,18 +128,31 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-      "phone": "root",
-      "username": "超级管理员",
-      "sex": "1",
-      "birthday": "2000-12-15 00:00:00",
-      "avatar": null,
-      "professional": "打工人",
-      "address": "广东",
-      "createTime": "2021-08-10 09:54:37",
-      "updateTime": "2021-08-10 09:54:37",
+      "id": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
+      "phone": "15820291405",
+      "username": "陈一支",
+      "sex": "201",
+      "birthday": "2021-08-10 00:00:00",
+      "avatar": {
+        "id": "7d1b48cb-2b82-49de-953a-83b174b0f40d",
+        "filePath": "http://localhost:3030/files/6116b140-f9eb-11eb-957c-5ba7f06be854.png?vt=xYWx9Gh58FGM/tF6LPAJiw==&uid=bdSXpWAwve+kayTb5UHBxdbYvCniR19YvOPanH3zpv7HfE7JCa7mW1xwlvtu0RyX",
+        "fileName": "avatar.png",
+        "fileSize": 6210,
+        "suffix": "png",
+        "staticPlace": "files",
+        "createUser": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
+        "isSecret": "1",
+        "checkValidTime": 3,
+        "createTime": "2021-08-10 22:58:10",
+        "terminal": "pc",
+        "remarks": null
+      },
+      "professional": "刺客",
+      "address": "广州",
+      "createTime": "2021-08-09 15:19:54",
+      "updateTime": "2021-08-16 10:53:05",
       "terminal": "pc",
-      "remarks": "超级管理员需配置所有权限和标签"
+      "remarks": "负责改项目的设计、实现、测试、发布"
     }
   ],
   "total": 0
