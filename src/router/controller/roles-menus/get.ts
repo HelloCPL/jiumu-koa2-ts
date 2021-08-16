@@ -11,6 +11,7 @@ import _ from 'lodash'
 import { MenuOptions, MenuListOptions } from '../menus/interface'
 import { RoleOptions } from '../roles/interface'
 import { RoleMenuOptions, RoleMenuByRoleIdParams, RoleMenuByMenuIdParams } from './interface'
+import { getAllRoleByUserId, getAllUserByRoleId } from '../users-roles/get'
 
 // 获取指定角色关联的所有菜单
 export const doRoleMenugetAllMenuByRoleId = async (ctx: Context, next: Next) => {
@@ -24,6 +25,21 @@ export const doRoleMenuGetAllRoleByMenuId = async (ctx: Context, next: Next) => 
   throw new Success({ data });
 }
 
+// 获取指定用户关联的所有菜单
+export const doRoleMenugetAllMenuByUserId = async (ctx: Context, next: Next) => {
+  const userList = await getAllRoleByUserId({ userId: ctx.params.userId })
+  const roleIds = _.join(_.map(userList, item => item.id))
+  const data = await getAllMenuByRoleId({ roleIds: roleIds }, true)
+  throw new Success({ data });
+}
+
+// 获取指定菜单关联的所有用户
+export const doRoleMenuGetAllUserByMenuId = async (ctx: Context, next: Next) => {
+  const roleList = await getAllRoleByMenuId({ menuId: ctx.params.menuId })
+  const roleIds = await _.join(_.map(roleList, item => item.id))
+  const data = await getAllUserByRoleId({ roleIds: roleIds })
+  throw new Success({ data });
+}
 
 /**
  * 根据 roleId/roleIds 获取所有关联的菜单列表，返回数组或[]

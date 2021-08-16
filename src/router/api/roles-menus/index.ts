@@ -9,7 +9,7 @@ import { Prefix, Convert, Request, Required } from '../../router'
 import { doRoleMenuAddConvert, doRoleMenuDeleteConvert } from '../../controller/roles-menus/convert'
 import { doRoleMenuAdd } from '../../controller/roles-menus/add'
 import { doRoleMenuDelete } from '../../controller/roles-menus/delete'
-import { doRoleMenugetAllMenuByRoleId, doRoleMenuGetAllRoleByMenuId } from '../../controller/roles-menus/get'
+import { doRoleMenugetAllMenuByRoleId, doRoleMenuGetAllRoleByMenuId, doRoleMenugetAllMenuByUserId, doRoleMenuGetAllUserByMenuId } from '../../controller/roles-menus/get'
 
 
 @Prefix('role-menu')
@@ -54,5 +54,25 @@ export default class API {
   @Required(['menuId'])
   async doRoleMenuGetAllRoleByMenuId(ctx: Context, next: Next) {
     await doRoleMenuGetAllRoleByMenuId(ctx, next)
+  }
+
+  // 5 获取指定用户关联的所有菜单
+  @Request({
+    path: 'get/allmenu/byuserid',
+    methods: ['get', 'post']
+  })
+  @Required(['userId'])
+  async doRoleMenugetAllMenuByUserId(ctx: Context, next: Next) {
+    await doRoleMenugetAllMenuByUserId(ctx, next)
+  }
+
+  // 6 获取指定菜单关联的所有用户
+  @Request({
+    path: 'get/alluser/bymenuid',
+    methods: ['get', 'post']
+  })
+  @Required(['menuId'])
+  async doRoleMenuGetAllUserByMenuId(ctx: Context, next: Next) {
+    await doRoleMenuGetAllUserByMenuId(ctx, next)
   }
 }

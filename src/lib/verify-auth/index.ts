@@ -10,7 +10,7 @@
 import { Context, Next } from 'koa'
 import { analysisToken } from '../../router/controller/users/token'
 import { Code, Message } from '../../enums'
-import { ExceptionAuthFailed } from '../../utils/http-exception'
+import { ExceptionHttp, ExceptionAuthFailed } from '../../utils/http-exception'
 import { getSuffix } from '../../utils/tools';
 import { query } from '../../db';
 import { decrypt } from '../../utils/crypto';

@@ -10,6 +10,7 @@ import { decrypt } from '../../../utils/crypto'
 import { query } from "../../../db";
 import { Message } from "../../../enums";
 import { handleDoubleToken } from './register'
+import { doLoginInfoAdd } from '../login-info/add'
 
 /**
  * 用户登录
@@ -24,6 +25,8 @@ export const doUserLogin = async (ctx: Context, next: Next) => {
     // 生成双 token
     let params = { userId: res[0]['id'], phone: phone }
     const doubleToken = await handleDoubleToken(ctx, params)
+    // 记录登录状态
+    await doLoginInfoAdd(ctx, next, res[0]['id'])
     throw new Success({ message: Message.login, data: doubleToken })
   } else throw new ExceptionParameter({ message: Message.errorPassword })
 }

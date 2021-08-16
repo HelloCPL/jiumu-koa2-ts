@@ -9,7 +9,7 @@ import { Prefix, Convert, Request, Required } from '../../router'
 import { doRolePermissionAddConvert, doRolePermissionDeleteConvert } from '../../controller/roles-permissions/convert'
 import { doRolePermissionAdd } from '../../controller/roles-permissions/add'
 import { doRolePermissionDelete } from '../../controller/roles-permissions/delete'
-import { doRolePermissiongetAllPermissionByRoleId, doRolePermissionGetAllRoleByPermissionId } from '../../controller/roles-permissions/get'
+import { doRolePermissiongetAllPermissionByRoleId, doRolePermissionGetAllRoleByPermissionId, doRolePermissiongetAllPermissionByUserId, doRolePermissionGetAllUserByPermissionId } from '../../controller/roles-permissions/get'
 
 @Prefix('role-permission')
 export default class API {
@@ -53,5 +53,25 @@ export default class API {
   @Required(['permissionId'])
   async doRolePermissionGetAllRoleByPermissionId(ctx: Context, next: Next) {
     await doRolePermissionGetAllRoleByPermissionId(ctx, next)
+  }
+
+  // 5 获取指定用户关联的所有权限
+  @Request({
+    path: 'get/allpermission/byuserid',
+    methods: ['get', 'post']
+  })
+  @Required(['userId'])
+  async doRolePermissiongetAllPermissionByUserId(ctx: Context, next: Next) {
+    await doRolePermissiongetAllPermissionByUserId(ctx, next)
+  }
+
+  // 6 获取指定权限关联的所有用户
+  @Request({
+    path: 'get/alluser/bypermissionid',
+    methods: ['get', 'post']
+  })
+  @Required(['permissionId'])
+  async doRolePermissionGetAllUserByPermissionId(ctx: Context, next: Next) {
+    await doRolePermissionGetAllUserByPermissionId(ctx, next)
   }
 }

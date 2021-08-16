@@ -12,6 +12,7 @@ import Config from '../../../config'
 import { getUuId, formatDate } from '../../../utils/tools'
 import { encrypt } from '../../../utils/crypto'
 import { query } from '../../../db/index'
+import { doLoginInfoAdd } from '../login-info/add'
 
 /**
  * 用户注册
@@ -26,6 +27,8 @@ export const doUserRegister = async (ctx: Context, next: Next) => {
   // 生成双 token
   let params = { userId: id, phone: ctx.params.phone }
   const doubleToken = await handleDoubleToken(ctx, params)
+  // 记录登录状态
+  await doLoginInfoAdd(ctx, next, id)
   throw new Success({ message: Message.register, data: doubleToken })
 }
 

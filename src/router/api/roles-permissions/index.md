@@ -142,3 +142,105 @@
   "total": 0
 }
 ```
+
+## ---------------- 获取指定用户关联的所有权限 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 获取指定用户关联的所有权限
+- 返回数组或[]
+
+#### 请求
+
+- `get | post` 
+- `role-permission/get/allpermission/byuserid`
+
+#### 参数
+
+| 参数名 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| userId | string | 是 | 用户id |
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": [
+    {
+      "id": "3c47e7be-3327-4ecc-bd6e-0a9618e87227",
+      "parentCode": "0",
+      "code": "permission:update",
+      "label": "权限修改",
+      "href": "/permission/update",
+      "sort": 1,
+      "createTime": "2021-08-12 14:56:32",
+      "updateTime": "2021-08-12 14:56:32",
+      "terminal": "管理端",
+      "remarks": null
+    }
+  ],
+  "total": 0
+}
+```
+
+## ---------------- 获取指定权限关联的所有用户 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 获取指定权限关联的所有用户
+- 返回数组或[]
+
+#### 请求
+
+- `get | post` 
+- `role-permission/get/alluser/bypermissionid`
+
+#### 参数
+
+| 参数名 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| permissionId | string | 是 | 权限id |
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": [
+    {
+      "id": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
+      "phone": "15820291405",
+      "username": "陈一支",
+      "sex": "201",
+      "sexLabel": "男",
+      "birthday": "2021-08-10 00:00:00",
+      "avatar": {
+        "id": "7d1b48cb-2b82-49de-953a-83b174b0f40d",
+        "filePath": "http://localhost:3030/files/6116b140-f9eb-11eb-957c-5ba7f06be854.png?vt=ZHaDPHjad0ueABp1ULkmVw==&uid=bdSXpWAwve+kayTb5UHBxdbYvCniR19YvOPanH3zpv7HfE7JCa7mW1xwlvtu0RyX",
+        "fileName": "avatar.png",
+        "fileSize": 6210,
+        "suffix": "png",
+        "staticPlace": "files",
+        "createUser": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
+        "isSecret": "1",
+        "checkValidTime": 3,
+        "createTime": "2021-08-10 22:58:10",
+        "terminal": "pc",
+        "remarks": null
+      },
+      "professional": "刺客",
+      "address": "广州",
+      "createTime": "2021-08-09 15:19:54",
+      "updateTime": "2021-08-16 10:53:05",
+      "terminal": "pc",
+      "remarks": "负责改项目的设计、实现、测试、发布"
+    }
+  ],
+  "total": 0
+}
+```

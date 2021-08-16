@@ -31,8 +31,8 @@ export const doRoleGetList = async (ctx: Context, next: Next) => {
   if (ctx.params.menuId) {
     // 增加`checked` 字段，表示是否与该菜单关联
     const menuList = await getAllRoleByMenuId({ menuId: ctx.params.menuId })
-    const menuIdsList = _.map(menuList, item => item.id)
-    _handleRoleData(data.data, menuIdsList)
+    const roleIdsList = _.map(menuList, item => item.id)
+    _handleRoleData(data.data, roleIdsList)
   } else if (ctx.params.permissionId) {
     // 增加`checked` 字段，表示是否与该权限关联
     const roleList = await getAllRoleByPermissionId({ permissionId: ctx.params.permissionId })
@@ -41,8 +41,8 @@ export const doRoleGetList = async (ctx: Context, next: Next) => {
   } else if (ctx.params.userId) {
     // 增加`checked` 字段，表示是否与该用户关联
     const userList = await getAllRoleByUserId({ userId: ctx.params.userId })
-    const userIdsList = _.map(userList, item => item.id)
-    _handleRoleData(data.data, userIdsList)
+    const roleIdsList = _.map(userList, item => item.id)
+    _handleRoleData(data.data, roleIdsList)
   }
   throw new Success({ total: data.total, data: data.data });
 }

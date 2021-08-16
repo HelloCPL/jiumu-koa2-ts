@@ -96,19 +96,58 @@
 
 <!-- 先写 users-roles users-tags -->
 <!-- 再优化 permission roles tags 列表获取 -->
-再设计 menus roles-menus
-再写 users login-info
+<!-- 再设计 menus roles-menus -->
+<!-- 再写 users login-info -->
 再写 likes collections
 再写 comments-first comments-second
 再写 权限接口关联的接口请求权限校验
 再写 articles questions sources
 
-权限：编辑，删除，查看分配的用户2，查看分配的角色1
-角色：编辑，删除，查看分配的用户1，查看分配的权限2
-特殊标签：编辑，删除，查看分配的用户
-菜单：编辑，删除，查看分配的用户（仅查看） 查看分配的角色
-用户：编辑，删除，查看分配的标签4，查看分配的权限2，查看分配的角色1，查看分配的菜单3
+角色管理(`role/get/list`)
+    新增(`role/add`)
+    修改(`role/update`)
+    删除(`role/delete`)
+    查看角色详情(`role/get/one`)
+    查看分配用户(`user-role/get/alluser/byroleid`)
+    关联权限(`permission/get/byparentcode` `roleId`)
+        新增角色-权限关联(`role-permission/add`)
+        删除角色-权限关联(`role-permission/delete`)
+    关联菜单(`menu/get/byparentcode` `roleId`)
+        新增角色-菜单关联(`role-menu/add`)
+        删除角色-菜单关联(`role-menu/delete`)
+用户管理(`user/get/list`)
+    修改(`user/update/base`)
+    查看用户详情(`user/get/base`)
+    关联特殊标签(`tag/get/byparentcode` `userId parentCode=8888`)
+        新增用户-特殊标签关联(`user-tag/add`)
+        删除用户-特殊标签关联(`user-tag/delete`)
+    关联角色(`role/get/list` `userId`)
+        新增用户-角色关联(`user-role/add`)
+        删除用户-角色关联(`user-role/delete`)
+    查看分配的权限(`role-permission/get/allpermission/byuserid`)
+    查看分配的菜单(`role-menu/get/allmenu/byuserid`)
+菜单管理(`menu/get/byparentcode`)
+    新增(`menu/add`)
+    修改(`menu/update`)
+    删除(`menu/delete`)
+    查看菜单详情(`menu/get/one`)
+    查看分配角色(`role-menu/get/allrole/bymenuid`)
+    查看分配用户(`role-menu/get/alluser/bymenuid`)
+权限管理(`permission/get/byparentcode`)
+    新增(`permission/add`)
+    修改(`permission/update`)
+    删除(`permission/delete`)
+    查看权限详情(`permission/get/one`)
+    查看分配角色(`role-permission/get/allrole/bypermissionid`)
+    查看分配用户(`role-permission/get/alluser/bypermissionid`)
+标签管理(`tag/get/byparentcode`)
+    新增(`tag/add`)
+    修改(`tag/update`)
+    删除(`tag/delete`)
+    查看标签详情(`tag/get/one`)
+    查看分配用户(`user-tag/get/alluser/bytagcode`)（仅特殊标签可查看）
 
+    
 
 
 

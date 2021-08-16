@@ -11,6 +11,7 @@ import _ from 'lodash'
 import { PermissionOptions } from '../permissions/interface'
 import { RoleOptions } from '../roles/interface'
 import { RolePermissionOptions, RolePermissionByRoleIdParams, RolePermissionByPermissionIdParams } from './interface'
+import { getAllRoleByUserId, getAllUserByRoleId } from '../users-roles/get'
 
 // 获取指定角色关联的所有权限
 export const doRolePermissiongetAllPermissionByRoleId = async (ctx: Context, next: Next) => {
@@ -20,10 +21,25 @@ export const doRolePermissiongetAllPermissionByRoleId = async (ctx: Context, nex
 
 // 获取指定权限关联的所有角色
 export const doRolePermissionGetAllRoleByPermissionId = async (ctx: Context, next: Next) => {
-  const data = await getAllRoleByPermissionId({permissionId: ctx.params.permissionId})
+  const data = await getAllRoleByPermissionId({ permissionId: ctx.params.permissionId })
   throw new Success({ data });
 }
 
+// 获取指定用户关联的所有权限
+export const doRolePermissiongetAllPermissionByUserId = async (ctx: Context, next: Next) => {
+  const userList = await getAllRoleByUserId({ userId: ctx.params.userId })
+  const roleIds = _.join(_.map(userList, item => item.id))
+  const data = await getAllPermissionByRoleId({ roleIds: roleIds })
+  throw new Success({ data });
+}
+
+// 获取指定权限关联的所有用户
+export const doRolePermissionGetAllUserByPermissionId = async (ctx: Context, next: Next) => {
+  const roleList = await getAllRoleByPermissionId({ permissionId: ctx.params.permissionId })
+  const roleIds = await _.join(_.map(roleList, item => item.id))
+  const data = await getAllUserByRoleId({ roleIds: roleIds })
+  throw new Success({ data });
+}
 
 /**
  * 根据 roleId/roleIds 获取所有关联的权限列表，返回数组或[]
