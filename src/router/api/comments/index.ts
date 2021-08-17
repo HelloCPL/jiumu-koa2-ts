@@ -9,7 +9,7 @@ import { Prefix, Convert, Request, Required } from '../../router'
 import { doCommentAddConvert } from '../../controller/comments/convert'
 import { doCommentFirstAdd, doCommentSecondAdd } from '../../controller/comments/add'
 import { doCommentDeleteSelf, doCommentDeleteById } from '../../controller/comments/delete'
-import { doCommentGetListType1, doCommentGetListType2 } from '../../controller/comments/get'
+import { doCommentFirstGetList, doCommentSecondGetList } from '../../controller/comments/get'
 
 @Prefix('comment')
 export default class API {
@@ -60,10 +60,10 @@ export default class API {
   async doCommentGetList(ctx: Context, next: Next) {
     if (ctx.params.type == '501') {
       // 二级评论列表
-      await doCommentGetListType2(ctx, next)
+      await doCommentSecondGetList(ctx, next)
     } else {
       // 一级评论列表
-      await doCommentGetListType1(ctx, next)
+      await doCommentFirstGetList(ctx, next)
     }
   }
 

@@ -211,8 +211,8 @@
 | 字段名称 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | v64 | 是 | 二级评论id |
-| comment_first_target_id | v64 | 是 | 一级评论的目标id，用于统计评论的目标总数 |
-| comment_first_id | v64 | 是 | 一级评论id，用于统计第一级别评论总数 |
+| comment_first_target_id | v64 | 是 | 一级评论的目标id，用于统计评论目标的总数 |
+| comment_first_id | v64 | 是 | 一级评论id，用于统计第一级别评论的评论总数 |
 | reply_comment_id | v64 | 是 | 回复的评论id，即回复哪条评论就是哪条的评论id |
 | reply_content | v255 | 是 | 回复的评论内容 |
 | create_user | v64 | 是 | 创建人id，即回复评论人 |

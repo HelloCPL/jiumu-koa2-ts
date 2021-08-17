@@ -94,7 +94,10 @@
 
 - `pc | web | app | wechat` 端
 - 获取评论列表
+- 注意：一级评论 `children` 字段不包含二级评论，需要根据 `commentCount` 子级评论总数另外请求获取
+- 一级评论 `replyUser` `replyUserName` 回复字段永远为 `null`，同时二级评论的 `commentCount` `children` 子级字段永远为 `0` 和 `[]`
 - 如果获取的是二级评论列表，`type` 传501，`targetId` 则为该条评论的id
+- 一级评论列表按 `点赞总数降序、评论总数降序、评论时间降序` 排序，二级评论按 `评论时间升序` 排序 
 
 #### 请求
 
@@ -116,7 +119,24 @@
 {
   "code": 200,
   "message": "操作成功",
-  "data": null,
-  "total": 0
+  "data": [
+    {
+      "id": "68b69520-cf27-4ca6-a511-d9ba3e79b61f",
+      "targetId": "13",
+      "content": "这是评论2",
+      "createUser": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
+      "createUserName": "陈一支",
+      "createTime": "2021-08-17 15:51:52",
+      "terminal": "管理端",
+      "isLike": "1",
+      "likeCount": 1,
+      "commentCount": 2,
+      "replyUser": null,
+      "replyUserName": null,
+      "isSelf": "1",
+      "children": []
+    }
+  ],
+  "total": 1
 }
 ```

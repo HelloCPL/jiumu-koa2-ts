@@ -98,11 +98,23 @@
 <!-- 再优化 permission roles tags 列表获取 -->
 <!-- 再设计 menus roles-menus -->
 <!-- 再写 users login-info -->
-再写 likes collections
-再写 comments-first comments-second
+<!-- 再写 likes collections -->
+<!-- 再写 comments-first comments-second -->
 再写 权限接口关联的接口请求权限校验
 再写 articles questions sources
 
+用户管理(`user/get/list`)
+    修改(`user/update/base`)
+    查看用户详情(`user/get/base`)
+    关联特殊标签(`tag/get/byparentcode` `userId parentCode=8888`)
+        新增用户-特殊标签关联(`user-tag/add`)
+        删除用户-特殊标签关联(`user-tag/delete`)
+    关联角色(`role/get/list` `userId`)
+        新增用户-角色关联(`user-role/add`)
+        删除用户-角色关联(`user-role/delete`)
+    查看分配的权限(`role-permission/get/allpermission/byuserid`)
+    查看分配的菜单(`role-menu/get/allmenu/byuserid`)
+    查看用户登录记录(`login/info/get/list`)
 角色管理(`role/get/list`)
     新增(`role/add`)
     修改(`role/update`)
@@ -115,17 +127,6 @@
     关联菜单(`menu/get/byparentcode` `roleId`)
         新增角色-菜单关联(`role-menu/add`)
         删除角色-菜单关联(`role-menu/delete`)
-用户管理(`user/get/list`)
-    修改(`user/update/base`)
-    查看用户详情(`user/get/base`)
-    关联特殊标签(`tag/get/byparentcode` `userId parentCode=8888`)
-        新增用户-特殊标签关联(`user-tag/add`)
-        删除用户-特殊标签关联(`user-tag/delete`)
-    关联角色(`role/get/list` `userId`)
-        新增用户-角色关联(`user-role/add`)
-        删除用户-角色关联(`user-role/delete`)
-    查看分配的权限(`role-permission/get/allpermission/byuserid`)
-    查看分配的菜单(`role-menu/get/allmenu/byuserid`)
 菜单管理(`menu/get/byparentcode`)
     新增(`menu/add`)
     修改(`menu/update`)
