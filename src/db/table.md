@@ -219,3 +219,17 @@
 | reply_user | v64 | 是 | 被回复的目标人id |
 | create_time | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |
+
+#### 16 tags_custom 用户自定义标签信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 用户自定义标签id |
+| label | v64 | 是 | 自定义标签名称 |
+| sort | mediumint | 否 | 排序，越小越前 |
+| create_user | v64 | 是 | 创建用户 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |

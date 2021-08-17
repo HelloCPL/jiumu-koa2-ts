@@ -14,7 +14,7 @@ import _ from 'lodash'
 
 // 获取指定的某个标签
 export const doTagGetByCode = async (ctx: Context, next: Next) => {
-  const data = await getByCode(ctx.params.code)
+  const data = await getTagByCode(ctx.params.code)
   throw new Success({ data });
 }
 
@@ -35,7 +35,7 @@ export const doTagGetByParentCode = async (ctx: Context, next: Next) => {
 /**
  * 获取指定的某个标签，返回对象或null
 */
-export const getByCode = async (code: string): Promise<TagOptions | null> => {
+export const getTagByCode = async (code: string): Promise<TagOptions | null> => {
   const sql: string = `SELECT * FROM tags WHERE code = ? OR id = ?`
   const data = [code, code]
   let res: any = await query(sql, data)
