@@ -27,7 +27,7 @@ export const doRoleGetList = async (ctx: Context, next: Next) => {
     pageSize: ctx.params.pageSize * 1 || 10,
     keyword: ctx.params.keyword
   }
-  const data = await getList(parmas)
+  const data = await getMenuList(parmas)
   if (ctx.params.menuId) {
     // 增加`checked` 字段，表示是否与该菜单关联
     const menuList = await getAllRoleByMenuId({ menuId: ctx.params.menuId })
@@ -61,7 +61,7 @@ export const getMenuOne = async (id: string): Promise<RoleOptions | null> => {
 /**
  * 获取角色列表
 */
-export const getList = async (params: RoleParamsOptions): Promise<RoleReturnOptions> => {
+export const getMenuList = async (params: RoleParamsOptions): Promise<RoleReturnOptions> => {
   const pageNo = (params.pageNo - 1) * params.pageSize
   const sqlParams = getSelectWhereAsKeywordData({
     valid: ['label'],

@@ -113,7 +113,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 | -->
 
-#### users-roles 用户-角色关联信息表
+#### 8 users-roles 用户-角色关联信息表
 
 - 说明
 
@@ -122,5 +122,100 @@
 | id | v64 | 是 | 角色-权限关联id |
 | user_id | v64 | 是 | 用户id |
 | role_id | v64 | 是 | 角色id |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+#### 9 users-tags 用户-特殊标签关联信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 角色-特殊标签关联id |
+| user_id | v64 | 是 | 用户id |
+| tag_code | v64 | 是 | 特殊标签code |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+#### 10 menus 菜单信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 菜单id |
+| parent_code | v64 | 否 | 父级code |
+| code | v64 | 是 | 菜单code，唯一索引 |
+| label | v64 | 是 | 菜单描述 |
+| create_time | v64 | 是 | 创建时间 |
+| updatetime | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
+
+#### 11 roles-menus 角色-菜单关联信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 角色-菜单关联id |
+| role_id | v64 | 是 | 角色id |
+| menu_id | v64 | 是 | 菜单id |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+#### 12 likes 点赞信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 点赞id |
+| target_id | v64 | 是 | 点赞的目标id |
+| create_user | v64 | 是 | 创建人id |
+| type | v64 | 是 | 点赞来源类型，使用系统标签资源来源标签500范围 |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+#### 13 collections 收藏信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 收藏id |
+| target_id | v64 | 是 | 收藏的目标id |
+| create_user | v64 | 是 | 创建人id |
+| type | v64 | 是 | 收藏来源类型，使用系统标签资源来源标签500范围 |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+#### 14 comments_first 一级评论信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 一级评论id |
+| target_id | v64 | 是 | 评论的目标id |
+| content | v255 | 是 | 评论内容 |
+| create_user | v64 | 是 | 创建人id |
+| type | v64 | 是 | 评论来源类型，使用系统标签资源来源标签500范围，用于后面评论统计 |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+#### 15 comments_second 二级评论信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 二级评论id |
+| comment_first_target_id | v64 | 是 | 一级评论的目标id，用于统计评论的目标总数 |
+| comment_first_id | v64 | 是 | 一级评论id，用于统计第一级别评论总数 |
+| reply_comment_id | v64 | 是 | 回复的评论id，即回复哪条评论就是哪条的评论id |
+| reply_content | v255 | 是 | 回复的评论内容 |
+| create_user | v64 | 是 | 创建人id，即回复评论人 |
+| reply_user | v64 | 是 | 被回复的目标人id |
 | create_time | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |

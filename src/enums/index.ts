@@ -63,6 +63,11 @@ export enum Message {
   unexistUserRole = '用户-角色关联标识不存在',
   existUserTag = '用户-特殊标签关联标识已存在',
   unexistUserTag = '用户-特殊标签关联标识不存在',
+  existLike = '你已点赞，无须重复点赞',
+  unexistLike = '你未点赞，无须取消',
+  existCollection = '你已收藏，无须重复收藏',
+  unexistCollection = '你未收藏，无须取消',
+  unexistComment = '评论不存在',
   
 
   relevantHasChildren = '有子级关联，请解除子级关联后再操作',
