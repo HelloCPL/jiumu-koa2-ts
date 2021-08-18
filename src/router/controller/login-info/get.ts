@@ -28,7 +28,7 @@ export const getLoginInfoList = async (params: LoginInfoListParams): Promise<Log
   const pageNo = (params.pageNo - 1) * params.pageSize
   const sql1 = `SELECT COUNT(id) as total FROM login_info WHERE user_id = ?`
   const data1 = [params.userId]
-  const sql2 = `SELECT t1.id, t1.user_id, t2.username, t1.user_agent, t1.create_time, t1.terminal FROM login_info t1 LEFT JOIN users t2 ON t1.user_id = t2.id WHERE user_id = ?  ORDER BY update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, t1.user_id, t2.username, t1.user_agent, t1.ip, t1.create_time, t1.terminal FROM login_info t1 LEFT JOIN users t2 ON t1.user_id = t2.id WHERE user_id = ?  ORDER BY update_time DESC LIMIT ?, ?`
   const data2 = [params.userId, pageNo, params.pageSize]
   const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])
   return {

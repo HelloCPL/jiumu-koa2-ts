@@ -44,7 +44,6 @@ export async function doUserLoginConvert(ctx: Context, next: Next) {
 /**
  * 修改本用户/指定用户基本信息时
  * 如果传了 sex 判断是否为系统标签200范围
- * 如果传了 avatar 判断文件id是否不存在
 */
 export async function doUserUpdateBaseSelfConvert(ctx: Context, next: Next) {
   // 如果传了 sex 判断是否为系统标签200范围
@@ -53,15 +52,6 @@ export async function doUserUpdateBaseSelfConvert(ctx: Context, next: Next) {
       value: ctx.params.sex,
       range: '200',
       message: 'sex参数必须为系统标签200范围'
-    })
-  }
-  // 如果传了 avatar 判断文件id是否不存在
-  if (ctx.params.avatar) {
-    await isExist({
-      table: 'files_info',
-      where: [{ key: 'id', value: ctx.params.avatar }],
-      throwType: false,
-      message: Message.unexistFile
     })
   }
   await next()

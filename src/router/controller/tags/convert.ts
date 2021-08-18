@@ -7,7 +7,7 @@
 import { Context, Next } from 'koa'
 import { Message } from '../../../enums'
 import { isExist, isExistHasChildren } from '../convert'
-import { getByCode } from './get'
+import { getTagByCode } from './get'
 import { TagOptions } from './interface'
 import { ExceptionParameter } from '../../../utils/http-exception';
 
@@ -104,7 +104,7 @@ export async function doTagDeleteConvert(ctx: Context, next: Next) {
     message: Message.relevantHasChildren
   })
   // 再判断是否有 users-tags 用户-标签关联
-  const tagInfo = <TagOptions>await getByCode(ctx.params.id)
+  const tagInfo = <TagOptions>await getTagByCode(ctx.params.id)
   await isExist({
     table: 'users_tags',
     where: [{ key: 'tag_code', value: tagInfo.code }],

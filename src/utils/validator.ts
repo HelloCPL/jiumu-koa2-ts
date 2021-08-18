@@ -91,43 +91,56 @@ interface RangeOptions {
   value: any, // 校验值
   range: any[] | string, // 校验范围，自定义数据数组或指定标签
   message?: string,
-  noThrow?: boolean, // 不抛出错误
   default?: any, // 默认值
 }
 
 /**
- * 校验指定参数是否在指定范围内容，并返回指定参数
+ * 校验指定参数是否在指定范围内容，如果不在默认抛出错误
+ * 如果 noThrow=true 返回指定参数
+ * 如果 data 参数是数组，如果 noThrow=true 则返回对应数量的指定参数
 */
-export const validateRange = async (info: RangeOptions) => {
-  let flag = false
-  if (info.value || info.value === 0 || info.value === false) {
-    if (_.isArray(info.range)) {
-      // @ts-ignore 
-      info.range.find(val => {
-        if (_.isBoolean(info.value)) {
-          if (info.value === val) {
-            flag = true
-            return true
+export const validateRange = async (data: RangeOptions | RangeOptions[], noThrow?: boolean) => {
+  const _handleValid = async (info: RangeOptions) => {
+    let flag = false
+    if (info.value || info.value === 0 || info.value === false) {
+      if (_.isArray(info.range)) {
+        // @ts-ignore 
+        info.range.find(val => {
+          if (_.isBoolean(info.value)) {
+            if (info.value === val) {
+              flag = true
+              return true
+            }
+          } else {
+            if (info.value == val) {
+              flag = true
+              return true
+            }
           }
-        } else {
-          if (info.value == val) {
+        })
+      } else if (_.isString(info.range)) {
+        const res = await getTagByParentCode(info.range)
+        if (res && res.length) {
+          const codes = _getTagsCode(res)
+          if (codes.indexOf(info.value) !== -1)
             flag = true
-            return true
-          }
         }
-      })
-    } else if (_.isString(info.range)) {
-      const res = await getTagByParentCode(info.range)
-      if (res && res.length) {
-        const codes = _getTagsCode(res)
-        if (codes.indexOf(info.value) !== -1)
-          flag = true
       }
     }
+    if (flag) return info.value
+    else if (noThrow) return info.default
+    else throw new ExceptionParameter({ message: info.message || Message.parameter })
   }
-  if (flag) return info.value
-  else if (info.noThrow) return info.default
-  else throw new ExceptionParameter({ message: info.message || Message.parameter })
+  if (_.isArray(data)) {
+    let targetData: any[] = []
+    for (let i = 0, len = data.length; i < len; i++) {
+      const value = await _handleValid(data[i])
+      targetData.push(value)
+    }
+    return targetData
+  } else {
+    return await _handleValid(data)
+  }
 }
 
 // 获取标签指定 code 一维数据列表

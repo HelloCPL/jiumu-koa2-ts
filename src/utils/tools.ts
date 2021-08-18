@@ -13,6 +13,7 @@
  *   formatDate // 格式化日期
  *   getKey // 获取 key
  *   getTerminal // 获取路径 terminal
+ *   getIP // 获取路径 terminal
 */
 
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid'
@@ -133,4 +134,9 @@ export const getTerminal = (ctx: Context): TerminalType => {
   const url: string = ctx.request.url
   const terminal: TerminalType = <TerminalType>url.substring(1, url.indexOf('/', 1)).toLowerCase()
   return terminal
+}
+
+// 获取客户端IP
+export const getIP = (ctx: Context) => {
+  return ctx.ip || ctx.req.headers['x-forwarded-for'] || ctx.req.socket.remoteAddress
 }

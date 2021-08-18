@@ -57,7 +57,7 @@ export default class API {
     await doTagCustomGetIds(ctx, next)
   }
 
-  // 5 获取指定用户自定义标签
+  // 5 获取指定用户自定义标签列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post']

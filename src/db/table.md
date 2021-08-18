@@ -19,7 +19,20 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 2 files_info 文件信息表
+#### 2 login_info 登录记录信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 登录记录id |
+| user_id | v64 | 是 | 登录用户id  |
+| user_agent | v64 | 是 | 登录设备  |
+| ip | v4 | 否 | 访问IP |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+#### 3 files_info 文件信息表
 
 - 说明
 
@@ -38,7 +51,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 3 tags 标签信息表
+#### 4 tags 标签信息表
 
 - 说明
 
@@ -54,7 +67,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 4 permissions 权限信息表
+#### 5 permissions 权限信息表
 
 - 说明
 
@@ -71,7 +84,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 5 roles 角色信息表
+#### 6 roles 角色信息表
 
 - 说明
 
@@ -86,7 +99,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 6 roles-permissions 角色-权限关联信息表
+#### 7 roles-permissions 角色-权限关联信息表
 
 - 说明
 
@@ -97,21 +110,6 @@
 | permission_id | v64 | 是 | 权限id |
 | create_time | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |
-
-<!-- #### 7 users-permissions 用户-权限关联额外标签信息表
-
-- 说明 废弃
-
-| 字段名称 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 角色-权限关联id |
-| user_id | v64 | 是 | 用户id |
-| permission_id | v64 | 是 | 权限id |
-| status | v64 | 是 | 额外权限状态，使用系统状态标签 1 启用 0 禁用 |
-| create_time | v64 | 是 | 创建时间 |
-| update_time | v64 | 是 | 更新时间 |
-| terminal | v64 | 是 | 操作终端 |
-| remarks | v255 | 否 | 备注 | -->
 
 #### 8 users-roles 用户-角色关联信息表
 
@@ -229,7 +227,33 @@
 | id | v64 | 是 | 用户自定义标签id |
 | label | v64 | 是 | 自定义标签名称 |
 | sort | mediumint | 否 | 排序，越小越前 |
+| type | v64 | 否 | 自定义类型，用户可通过自定义type，获取列表时传type以区分不同的用户自定义标签 |
 | create_user | v64 | 是 | 创建用户 |
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
+
+#### 17 articles 博客文章信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 博客文章id |
+| title | 255 | 是 | 标题 |
+| content | text | 是 | 内容 |
+| content_type | v64 | 是 | 内容类型，取系统标签400范围 |
+| cover_img | v64 | 否 | 封面图，图片id，只传一个 |
+| attachment | v255 | 否 | 附件，文件id，多个逗号隔开，最多3个 |
+| type | v64 | 是 | 文章类型，取系统标签300范围 |
+| classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
+| is_draft | v4 | 是 | 是否草稿，1 是 0 否，默认0 |
+| is_secret | v4 | 否 | 是否为私密文章，1 是 0 否，默认0 |
+| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| sort | mediumint | 否 | 排序，越小越前 |
+| create_user | v64 | 是 | 创建用户 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
+

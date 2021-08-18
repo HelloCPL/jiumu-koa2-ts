@@ -16,7 +16,7 @@ import { getUpdateSetData } from '../../../utils/handle-sql'
 export const doTagCustomUpdate = async (ctx: Context, next: Next) => {
   ctx.params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
-    valid: ['label', 'sort', 'update_time'],
+    valid: ['label', 'sort', 'type', 'update_time'],
     data: ctx.params
   })
   const sql: string = `UPDATE tags_custom SET ${sqlParams.sql} WHERE id = ? AND create_user = ?`

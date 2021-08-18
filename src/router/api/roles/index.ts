@@ -17,7 +17,7 @@ export default class API {
   // 1 角色新增
   @Request({
     path: 'add',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
   })
   @Required(['code', 'label'])
   @Convert(doRoleAddConvert)

@@ -93,6 +93,9 @@
     在 `router/api` 目录按数据表名称构建路由功能模块接口，其中 `index.md` 为该模块 `api` 的使用说明文档
     在 `router/controller` 目录构建对应名称的业务处理模块目录，主要实现业务逻辑处理、数据库查询和数据返回等，其中 `convert.ts` 为该模块的中间件方法集合，一般用于数据校验，其他业务方法细分至每个单独的文件，一般以 `增(add) 删(delete) 查(get) 改(update)` 划分
 
+#### 设计特别说明
+
+  - `附件id` 不作存不存在校验，但`系统标签code` 会作是否存在校验
 
 <!-- 先写 users-roles users-tags -->
 <!-- 再优化 permission roles tags 列表获取 -->
