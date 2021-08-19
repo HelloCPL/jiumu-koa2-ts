@@ -97,7 +97,6 @@
 - 注意：一级评论 `children` 字段不包含二级评论，需要根据 `commentCount` 子级评论总数另外请求获取
 - 一级评论 `replyUser` `replyUserName` 回复字段永远为 `null`，同时二级评论的 `commentCount` `children` 子级字段永远为 `0` 和 `[]`
 - 如果获取的是二级评论列表，`type` 传501，`targetId` 则为该条评论的id
-- 一级评论列表按 `点赞总数降序、评论总数降序、评论时间降序` 排序，二级评论按 `评论时间升序` 排序 
 
 #### 请求
 
@@ -112,6 +111,28 @@
 | type | string | 是 | 评论来源，使用系统标签500范围，如果获取二级评论 type 必须为501 |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
+
+#### 返回字段说明
+
+- 返回数组或[]
+- 一级评论列表按 `likeCount点赞总数降序、commentCount评论总数降序、createTime评论时间降序` 排序，二级评论按 `createTime评论时间升序` 排序 
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 评论id |
+| targetId | string | 评论目标id |
+| content | string | 内容 |
+| createUser | string | 评论者id |
+| createUserName | string | 评论者姓名 |
+| createTime | string | 创建时间 |
+| terminal | string | 操作终端 |
+| isLike | string | 是否点赞，1 是 0 否 |
+| likeCount | number | 点赞总数 |
+| commentCount | number | 收藏总数 |
+| replyUser | string | 回复的人id |
+| replyUserName | string | 回复的人姓名 |
+| isSelf | string | 是否本人的评论，1 是 0 否 |
+| children | array/[] | 子级，需另外获取 |
 
 #### 返回示例
 

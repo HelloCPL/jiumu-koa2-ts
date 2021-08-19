@@ -115,6 +115,22 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 菜单 id 或 code |
 
+#### 返回字段说明
+
+- 返回对象或null
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 菜单id |
+| parentCode | string | 父级菜单code |
+| code | string | 菜单code |
+| label | string | 菜单描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
+
 #### 返回示例
 
 ```
@@ -145,7 +161,6 @@
 - 若传了`roleId`，优先级1，增加`checked` 字段，表示是否与该角色关联
 - 若传了`userId`，优先级2，增加`checked` 字段，表示是否与该用户关联，但不可直接关联
 - `roleId`、`userId`间只需传其中一个
-- 返回数组或[]，数组有子级
 
 #### 请求
 
@@ -159,6 +174,24 @@
 | parentCode | string | 否 | 父级菜单code，不传获取全部菜单 |
 | roleId | string | 否 | 角色id，会增加`checked` 字段，表示是否与该角色关联 |
 | userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联，但不可直接关联 |
+
+#### 返回字段说明
+
+- 返回数组或[]，数组有子级
+- 按 `sort升序、updateTime更新时间降序` 排序
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 菜单id |
+| parentCode | string | 父级菜单code |
+| code | string | 菜单code |
+| label | string | 菜单描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
+| children | array/[] | 子级 |
 
 #### 返回示例
 

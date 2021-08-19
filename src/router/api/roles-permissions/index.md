@@ -65,7 +65,6 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定角色关联的所有权限
-- 返回数组或[]
 
 #### 请求
 
@@ -77,6 +76,21 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | roleId | string | 是 | 角色id |
+
+- 返回数组或[]
+- 按 `sort升序、updateTime更新时间降序` 排序
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 权限id |
+| parentCode | string | 父级权限code |
+| code | string | 权限code |
+| label | string | 权限描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 
@@ -108,7 +122,6 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定权限关联的所有角色
-- 返回数组或[]
 
 #### 请求
 
@@ -120,6 +133,22 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | permissionId | string | 是 | 权限id |
+
+#### 返回字段说明
+
+- 返回数组或[]
+- 按 `sort升序、updateTime更新时间降序` 排序
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 角色id |
+| code | string | 角色code |
+| label | string | 角色描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 
@@ -149,7 +178,6 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定用户关联的所有权限
-- 返回数组或[]
 
 #### 请求
 
@@ -161,6 +189,21 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | userId | string | 是 | 用户id |
+
+- 返回数组或[]
+- 按 `sort升序、updateTime更新时间降序` 排序
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 权限id |
+| parentCode | string | 父级权限code |
+| code | string | 权限code |
+| label | string | 权限描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 
@@ -192,7 +235,6 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定权限关联的所有用户
-- 返回数组或[]
 
 #### 请求
 
@@ -204,6 +246,27 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | permissionId | string | 是 | 权限id |
+
+#### 返回字段说明
+
+- 返回数组或[]
+- 按 `updateTime更新时间降序` 排序
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 用户id |
+| phone | string | 用户账号（即手机号） |
+| username | string | 用户名称 |
+| sex | string | 性别标签code |
+| sexLabel | string | 性别标签说明 |
+| birthday | string | 生日 |
+| avatar | object/null | 头像文件对象 |
+| professional | string | 职位 |
+| address | string | 地址 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 

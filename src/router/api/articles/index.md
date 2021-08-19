@@ -114,8 +114,7 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取指定的博客文章，返回对象或null
-- `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
+- 获取指定的博客文章
 
 #### 请求
 
@@ -128,7 +127,10 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 博客文章id |
 
-#### 返回对象参数说明
+#### 返回字段说明
+
+- 返回对象或null
+- `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
 
  参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
@@ -145,7 +147,7 @@
 | isDraft | string | 是否草稿，1 是 0 否 |
 | isSecret | string | 是否为私密文章，1 是 0 否 |
 | isTop | string | 是否置顶，1 是 0 否 |
-| sort | string | 排序，值越小越前，默认1 |
+| sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
 | createTime | string | 创建时间 |
@@ -153,11 +155,11 @@
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
 | isLike | string | 是否点赞，1 是 0 否 |
-| likeCount | string | 点赞总数 |
+| likeCount | number | 点赞总数 |
 | isCollection | string | 是否收藏，1 是 0 否 |
-| likeCount | string | 收藏总数 |
+| likeCount | number | 收藏总数 |
 | isSelf | string | 是否本人的博客文章，1 是 0 否 |
-| commentCount | string | 收藏总数 |
+| commentCount | number | 收藏总数 |
 
 #### 返回示例
 
@@ -239,8 +241,8 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取自己的博客文章列表，返回数组或[]
-- `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
+- 获取自己的博客文章列表
+
 
 #### 请求
 
@@ -258,7 +260,11 @@
 | isDraft | string | 否 | 是否草稿，1 是 0 否，默认0 |
 | isSecret | string | 否 | 是否为私密文章，1 是 0 否，默认0 |
 
-#### 返回数组对象参数说明
+#### 返回字段说明
+
+- 返回数组或[]
+- 按 `isTop是否置顶、sort降序、likeCount点赞总数升序、collectionCount收藏总数升序、updateTime更新时间升序` 排序
+- `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
 
  参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
@@ -275,15 +281,19 @@
 | isDraft | string | 是否草稿，1 是 0 否 |
 | isSecret | string | 是否为私密文章，1 是 0 否 |
 | isTop | string | 是否置顶，1 是 0 否 |
-| sort | string | 排序，值越小越前，默认1 |
+| sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 | isLike | string | 是否点赞，1 是 0 否 |
-| likeCount | string | 点赞总数 |
+| likeCount | number | 点赞总数 |
 | isCollection | string | 是否收藏，1 是 0 否 |
-| likeCount | string | 收藏总数 |
+| likeCount | number | 收藏总数 |
 | isSelf | string | 是否本人的博客文章，1 是 0 否 |
-| commentCount | string | 收藏总数 |
+| commentCount | number | 收藏总数 |
 
 #### 返回示例
 
@@ -367,8 +377,7 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取所有的博客文章列表，返回数组或[]
-- `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
+- 获取所有的博客文章列表
 
 #### 请求
 
@@ -386,7 +395,11 @@
 | isDraft | string | 否 | 是否草稿，1 是 0 否，默认0 |
 | isSecret | string | 否 | 是否为私密文章，1 是 0 否，默认0 |
 
-#### 返回数组对象参数说明
+#### 返回字段说明
+
+- 返回数组或[]
+- 按 `isTop是否置顶、sort降序、likeCount点赞总数升序、collectionCount收藏总数升序、updateTime更新时间升序` 排序
+- `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
 
  参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
@@ -403,15 +416,19 @@
 | isDraft | string | 是否草稿，1 是 0 否 |
 | isSecret | string | 是否为私密文章，1 是 0 否 |
 | isTop | string | 是否置顶，1 是 0 否 |
-| sort | string | 排序，值越小越前，默认1 |
+| sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 | isLike | string | 是否点赞，1 是 0 否 |
-| likeCount | string | 点赞总数 |
+| likeCount | number | 点赞总数 |
 | isCollection | string | 是否收藏，1 是 0 否 |
-| likeCount | string | 收藏总数 |
+| likeCount | number | 收藏总数 |
 | isSelf | string | 是否本人的博客文章，1 是 0 否 |
-| commentCount | string | 收藏总数 |
+| commentCount | number | 收藏总数 |
 
 #### 返回示例
 

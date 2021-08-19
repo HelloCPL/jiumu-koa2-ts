@@ -66,7 +66,6 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定用户关联的所有特殊标签，只返回指定用户所包含的特殊标签
-- 返回数组或[]
 
 #### 请求
 
@@ -78,6 +77,22 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | userId | string | 是 | 用户id |
+
+#### 返回字段说明
+
+- 返回数组或[]
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 特殊标签id |
+| parentCode | string | 父级特殊标签code |
+| code | string | 特殊标签code |
+| label | string | 特殊标签描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 
@@ -109,7 +124,6 @@
 - `pc | web | app | wechat` 端
 - 获取指定特殊标签关联的所有用户
 - 注意：只有特殊标签才可获取
-- 返回数组或[]
 
 #### 请求
 
@@ -121,6 +135,27 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | tagCode | string | 是 | 特殊标签code |
+
+#### 返回字段说明
+
+- 返回数组或[]
+- 按 `updateTime更新时间降序` 排序
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 用户id |
+| phone | string | 用户账号（即手机号） |
+| username | string | 用户名称 |
+| sex | string | 性别标签code |
+| sexLabel | string | 性别标签说明 |
+| birthday | string | 生日 |
+| avatar | object/null | 头像文件对象 |
+| professional | string | 职位 |
+| address | string | 地址 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 

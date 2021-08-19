@@ -101,7 +101,6 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定的某个角色
-- 返回对象或null
 
 #### 请求
 
@@ -113,6 +112,21 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 角色 id 或 code |
+
+#### 返回字段说明
+
+- 返回对象或null
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 角色id |
+| code | string | 角色code |
+| label | string | 角色描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 
@@ -144,7 +158,6 @@
 - 若传了`permissionId`，优先级2，增加`checked` 字段，表示是否与该权限关联
 - 若传了`menuId`，优先级3，增加`checked` 字段，表示是否与该菜单关联
 - `userId`、`permissionId`、`menuId`间只需传其中一个
-- 返回数组或[]
 
 #### 请求
 
@@ -161,6 +174,22 @@
 | userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联 |
 | permissionId | string | 否 | 权限id，会增加`checked` 字段，表示是否与该权限关联  |
 | menuId | string | 否 | 菜单id，会增加`checked` 字段，表示是否与该菜单关联  |
+
+#### 返回字段说明
+
+- 返回数组或[]
+- 按 `sort升序、updateTime更新时间降序` 排序
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 角色id |
+| code | string | 角色code |
+| label | string | 角色描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 

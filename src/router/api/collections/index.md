@@ -78,7 +78,10 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 
-#### 返回数组对象参数说明
+#### 返回字段说明
+
+- 返回数组或[]
+- 按 `createTime创建时间降序` 排序
 
  参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
@@ -132,6 +135,22 @@
 | userId | string | 是 | 用户id |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
+
+#### 返回字段说明
+
+- 返回数组或[]
+- 按 `createTime创建时间降序` 排序
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 收藏id |
+| targetId | string | 收藏目标id |
+| createUser | string | 收藏者id |
+| createUserName | string | 收藏者名字 |
+| type | string | 收藏来源类型标签code |
+| typeLabel | string | 收藏来源类型标签说明 |
+| createTime | string | 创建时间 |
+| terminal | string | 操作终端 |
 
 #### 返回示例
 

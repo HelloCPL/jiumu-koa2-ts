@@ -97,7 +97,6 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定用户自定义标签，仅可获取自己创建的自定义标签
-- 返回数组或[]
 
 #### 请求
 
@@ -110,6 +109,20 @@
 |:---:|:---:|:---:|:---:|
 | ids | string | 是 | 用户自定义标签 id 集合，多个用逗号隔开 |
 
+#### 返回字段说明
+
+- 返回数组或[]
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 用户自定义标签id |
+| label | string | 用户自定义标签描述 |
+| type | string | 用户自定义类型 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+
 #### 返回示例
 
 ```
@@ -120,6 +133,7 @@
     {
       "id": "c3221e5e-bb1a-4220-b178-26d37fa1ade0",
       "label": "java",
+      "type": "classify",
       "sort": 1,
       "createTime": "2021-08-18 03:12:05",
       "updateTime": "2021-08-18 03:12:05",
@@ -137,7 +151,6 @@
 - `pc | web | app | wechat` 端
 - 获取用户自定义标签列表，仅可获取自己创建的自定义标签
 - 若传 `type` 只会获取对应 `type` 类型的自定义标签列表， `type` 值由前端新增编辑时自定义
-- 返回数组或[]
 
 #### 请求
 
@@ -152,6 +165,20 @@
 | pageSize | number | 否 | 每页页数，默认 10 |
 | type | string | 否 | 自定义类型，若传只会获取对应 `type` 类型的自定义标签列表 |
 
+#### 返回字段说明
+
+- 返回数组或[]
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 用户自定义标签id |
+| label | string | 用户自定义标签描述 |
+| type | string | 用户自定义类型 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+
 #### 返回示例
 
 ```
@@ -162,6 +189,7 @@
     {
       "id": "329573a2-fd89-4fbf-aef6-3a0b7bc5abc3",
       "label": "vue",
+      "type": "classify",
       "sort": 1,
       "createTime": "2021-08-18 03:11:20",
       "updateTime": "2021-08-18 03:11:20",

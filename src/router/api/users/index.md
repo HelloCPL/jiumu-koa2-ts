@@ -18,6 +18,15 @@
 | phone | string | 是 | 手机号 |
 | password | string | 是 | 密码 |
 
+#### 返回字段说明
+
+- 返回对象或null
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| token | string | token |
+| tokenRefresh | string | 刷新token |
+
 #### 返回示例
 
 ```
@@ -50,6 +59,15 @@
 |:---:|:---:|:---:|:---:|
 | phone | string | 是 | 手机号 |
 | password | string | 是 | 密码 |
+
+#### 返回字段说明
+
+- 返回对象或null
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| token | string | token |
+| tokenRefresh | string | 刷新token |
 
 #### 返回示例
 
@@ -117,6 +135,15 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | phone | string | 是 | 要修改的用户账号 |
+
+#### 返回字段说明
+
+- 返回对象或null
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| token | string | token |
+| tokenRefresh | string | 刷新token |
 
 #### 返回示例
 
@@ -212,6 +239,18 @@
 
 #### 参数
 - 无
+
+#### 返回字段说明
+
+- 返回对象或null
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| userInfo | object/null | 用户基本信息 |
+| roles | array/[] | 用户拥有的所有角色 |
+| permissions | array/[] | 用户拥有的所有权限 |
+| menus | array/[] | 用户拥有的所有菜单 |
+| tags | array/[] | 用户拥有的所有特殊标签 |
 
 #### 返回示例
 
@@ -336,6 +375,26 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 用户id |
 
+#### 返回字段说明
+
+- 返回对象或null
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 用户id |
+| phone | string | 用户账号（即手机号） |
+| username | string | 用户名称 |
+| sex | string | 性别标签code |
+| sexLabel | string | 性别标签说明 |
+| birthday | string | 生日 |
+| avatar | object/null | 头像文件对象 |
+| professional | string | 职位 |
+| address | string | 地址 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
+
 #### 返回示例
 
 ```
@@ -393,6 +452,27 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 
+#### 返回字段说明
+
+- 返回数组或[]
+- 按 `updateTime更新时间降序` 排序
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 用户id |
+| phone | string | 用户账号（即手机号） |
+| username | string | 用户名称 |
+| sex | string | 性别标签code |
+| sexLabel | string | 性别标签说明 |
+| birthday | string | 生日 |
+| avatar | object/null | 头像文件对象 |
+| professional | string | 职位 |
+| address | string | 地址 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
+
 #### 返回示例
 
 ```
@@ -447,6 +527,16 @@
 
 #### 参数
 - 将`tokenRefresh`放在`header`请求头`authorization`上即可
+
+
+#### 返回字段说明
+
+- 返回对象或null
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| token | string | token |
+| tokenRefresh | string | 刷新token |
 
 #### 返回示例
 

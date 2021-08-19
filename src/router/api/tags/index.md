@@ -102,7 +102,6 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定的某个标签
-- 返回对象或null
 
 #### 请求
 
@@ -114,6 +113,22 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | code | string | 是 | 标签 code 或 id |
+
+#### 返回字段说明
+
+- 返回对象或null
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 标签id |
+| parentCode | string | 父级标签code |
+| code | string | 标签code |
+| label | string | 标签描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 
@@ -143,7 +158,6 @@
 - `pc | web | app | wechat` 端
 - 获取指定的获取某类标签
 - 若传了`userId`，增加`checked` 字段，表示是否与该用户关联，仅`parentCode=8888`时有效
-- 返回数组或[]，数组有子级
 
 #### 请求
 
@@ -156,6 +170,23 @@
 |:---:|:---:|:---:|:---:|
 | parentCode | string | 否 | 父级标签code，不传获取全部标签 |
 | userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联，仅`parentCode=8888`时有效 |
+
+#### 返回字段说明
+
+- 返回数组或[]，数组有子级
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 标签id |
+| parentCode | string | 父级标签code |
+| code | string | 标签code |
+| label | string | 标签描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
+| children | array/[] | 子级 |
 
 #### 返回示例
 

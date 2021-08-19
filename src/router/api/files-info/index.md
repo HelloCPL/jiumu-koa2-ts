@@ -21,6 +21,25 @@
 | staticPlace | string | 否 | 文件存放位置 可选 `files images videos editors` 默认 `files` ，`query` 传参 |
 | remarks | string | 否 | 备注说明 `query` 传参 |
 
+#### 返回字段说明
+
+- 返回数组或[]
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 文件id |
+| filePath | string | 文件完整路径 |
+| fileName | string | 文件名称 |
+| fileSize | number | 文件大小，单位 B |
+| suffix | string | 文件后缀 |
+| staticPlace | string | 文件存放位置 |
+| createUser | string | 创建者 |
+| isSecret | string | 是否私密文件，1 是 0 否 |
+| checkValidTime | string | 如果为私密链接查看有效期，单位天 |
+| createTime | string | 创建时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
+
 #### 返回示例
 
 ```
@@ -96,6 +115,26 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 图片id |
 
+#### 返回字段说明
+
+- 返回对象或null
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 文件id |
+| filePath | string | 文件完整路径 |
+| fileName | string | 文件名称 |
+| fileSize | number | 文件大小，单位 B |
+| suffix | string | 文件后缀 |
+| staticPlace | string | 文件存放位置 |
+| createUser | string | 创建者 |
+| isSecret | string | 是否私密文件，1 是 0 否 |
+| checkValidTime | string | 如果为私密链接查看有效期，单位天 |
+| createTime | string | 创建时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
+
+
 #### 返回示例
 
 ```
@@ -139,6 +178,25 @@
 | pageNo | number | 否 | 页码，默认1 |
 | pageSize | number | 否 | 每页页数，默认10 |
 | suffix | string | 否 | 指定后缀类型，多个用逗号隔开 如 'png,docx' |
+
+#### 返回字段说明
+
+- 返回数组或[]
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 文件id |
+| filePath | string | 文件完整路径 |
+| fileName | string | 文件名称 |
+| fileSize | number | 文件大小，单位 B |
+| suffix | string | 文件后缀 |
+| staticPlace | string | 文件存放位置 |
+| createUser | string | 创建者 |
+| isSecret | string | 是否私密文件，1 是 0 否 |
+| checkValidTime | string | 如果为私密链接查看有效期，单位天 |
+| createTime | string | 创建时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 
