@@ -47,7 +47,7 @@ export async function doUserLoginConvert(ctx: Context, next: Next) {
 */
 export async function doUserUpdateBaseSelfConvert(ctx: Context, next: Next) {
   // 如果传了 sex 判断是否为系统标签200范围
-  if (ctx.params.sex) {
+  if (ctx.params.hasOwnProperty('sex')) {
     await validateRange({
       value: ctx.params.sex,
       range: '200',

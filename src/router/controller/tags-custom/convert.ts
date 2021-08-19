@@ -8,7 +8,7 @@ import { Context, Next } from 'koa'
 import { Message } from '../../../enums'
 import { isExist } from '../convert'
 import { query } from '../../../db';
-import { ExceptionParameter } from '../../../utils/http-exception';
+import { ExceptionParameter, ExceptionForbidden } from '../../../utils/http-exception';
 
 /**
  * 新增时 
@@ -42,9 +42,9 @@ export const doTagCustomUpdateConvert = async (ctx: Context, next: Next) => {
     throw new ExceptionParameter({ message: Message.unexistTag })
   // 判断是否为用户本人创建的自定义标签
   if (res[0]['create_user'] !== ctx.user.id)
-    throw new ExceptionParameter({ message: Message.forbidden })
+    throw new ExceptionForbidden({ message: Message.forbidden })
   // 如果 label 为真，判断除自身外是否存在
-  if (ctx.params.label) {
+  if (ctx.params.hasOwnProperty('label')) {
     await isExist({
       table: 'tags_custom',
       where: [
@@ -72,6 +72,6 @@ export const doTagCustomDeleteConvert = async (ctx: Context, next: Next) => {
     throw new ExceptionParameter({ message: Message.unexistTag })
   // 判断是否为用户本人创建的自定义标签
   if (res[0]['create_user'] !== ctx.user.id)
-    throw new ExceptionParameter({ message: Message.forbidden })
+    throw new ExceptionForbidden({ message: Message.forbidden })
   await next()
 }

@@ -13,7 +13,7 @@ import { getSelectWhereData } from '../../../utils/handle-sql';
 
 // 获取指定用户自定义标签
 export const doTagCustomGetIds = async (ctx: Context, next: Next) => {
-  const data = await getTagCustomByIds(ctx.user.id, ctx.params.ids)
+  const data = await getTagCustomByIds(ctx.params.ids, ctx.user.id)
   throw new Success({ data });
 }
 
@@ -33,7 +33,7 @@ export const doTagCustomGetList = async (ctx: Context, next: Next) => {
 /**
  * 获取指定用户自定义标签，返回数组或[]
 */
-export const getTagCustomByIds = async (userId: string, ids: string): Promise<TagCustomOptions[]> => {
+export const getTagCustomByIds = async (ids: string, userId: string): Promise<TagCustomOptions[]> => {
   const sql: string = `SELECT id, label, sort, create_time, update_time, terminal FROM tags_custom WHERE FIND_IN_SET(id, ?) AND create_user = ?`
   const data = [ids, userId]
   let res: any = await query(sql, data)

@@ -37,7 +37,7 @@ export async function doRoleUpdateConvert(ctx: Context, next: Next) {
     message: Message.unexistRole
   })
   // 若修改 code 再判断 code 除自身外是否存在
-  if (ctx.params.code) {
+  if (ctx.params.hasOwnProperty('code')) {
     await isExist({
       table: 'roles',
       where: [

@@ -5,14 +5,12 @@
 */
 
 // 评论对象接口类型
-export interface CommentOptions {
+export interface CommentOptions extends BaseOptions {
   id: string,
   target_id: string,
   content: string,
   create_user: string,
   create_user_name: string,
-  create_time: string,
-  terminal: string,
   is_like?: string,
   like_count?: number,
   comment_count?: number,

@@ -5,7 +5,7 @@
 */
 
 import { Context, Next } from "koa";
-import { ExceptionParameter, Success } from '../../../utils/http-exception'
+import { ExceptionForbidden, Success } from '../../../utils/http-exception'
 import { query } from "../../../db";
 import { Message } from "../../../enums";
 import { _findCommentById } from './add'
@@ -28,7 +28,7 @@ export const doCommentDeleteSelf = async (ctx: Context, next: Next) => {
     await query(sql2, data2)
     throw new Success();
   }
-  throw new ExceptionParameter({ message: Message.forbidden })
+  throw new ExceptionForbidden({ message: Message.forbidden })
 }
 
 /**
@@ -48,5 +48,5 @@ export const doCommentDeleteById = async (ctx: Context, next: Next) => {
     await query(sql2, data2)
     throw new Success();
   }
-  throw new ExceptionParameter({ message: Message.forbidden })
+  throw new ExceptionForbidden({ message: Message.forbidden })
 }

@@ -68,7 +68,8 @@ export enum Message {
   existCollection = '你已收藏，无须重复收藏',
   unexistCollection = '你未收藏，无须取消',
   unexistComment = '评论不存在',
-  
+  unexistArticle = '文章不存在',
+
 
   relevantHasChildren = '有子级关联，请解除子级关联后再操作',
   relevantNoParent = '父级未关联，请关联父级后再操作',

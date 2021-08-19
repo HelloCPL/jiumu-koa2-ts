@@ -50,7 +50,7 @@ export const getSelectWhereData = (options: paramsOptions, connector: string = '
     const flag = options.data.hasOwnProperty(keys.dataKey) && (options.data[keys.dataKey] || options.data[keys.dataKey] === 0 || options.data[keys.dataKey] === false)
     if (flag) {
       if (data.length === 0) sql += ` ${keys.sqlKey} = ? `
-      else sql += ` ${connector} ${keys.dataKey} = ? `
+      else sql += ` ${connector} ${keys.sqlKey} = ? `
       data.push(options.data[keys.dataKey])
     }
   })

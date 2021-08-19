@@ -110,8 +110,6 @@ function _handleAllMenuHierarchy(menus: MenuOptions[]): MenuListOptions[] {
   const _handleList = (arr: MenuListOptions[]) => {
     arr.forEach(list => {
       let children = <MenuListOptions[]>menus.filter(item => item.parent_code === list.code)
-      console.log(children);
-
       list.children = children
       if (list.children && list.children.length)
         _handleList(list.children)

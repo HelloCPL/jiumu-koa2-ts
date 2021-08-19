@@ -29,7 +29,7 @@ export const doTagAddConvert = async (ctx: Context, next: Next) => {
     message: Message.existTag
   })
   // 若 parentCode 为真，再判断 parentCode 是否不存在
-  if (ctx.params.parentCode) {
+  if (ctx.params.hasOwnProperty('parentCode')) {
     await isExist({
       table: 'tags',
       where: [{ key: 'code', value: ctx.params.parentCode }],
@@ -59,7 +59,7 @@ export async function doTagUpdateConvert(ctx: Context, next: Next) {
     message: Message.unexistTag
   })
   // 若修改 code 判断 code 除自身外是否存在
-  if (ctx.params.code) {
+  if (ctx.params.hasOwnProperty('code')) {
     await isExist({
       table: 'tags',
       where: [
@@ -71,7 +71,7 @@ export async function doTagUpdateConvert(ctx: Context, next: Next) {
     })
   }
   // 若 parentCode 为真，判断 parentCode 是否不存在
-  if (ctx.params.parentCode) {
+  if (ctx.params.hasOwnProperty('parentCode')) {
     await isExist({
       table: 'tags',
       where: [{ key: 'code', value: ctx.params.parentCode }],

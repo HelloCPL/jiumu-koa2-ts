@@ -27,7 +27,7 @@ export const doMenuAddConvert = async (ctx: Context, next: Next) => {
     message: Message.existMenus
   })
   // 若 parentCode 为真，判断 parentCode 是否不存在
-  if (ctx.params.parentCode) {
+  if (ctx.params.hasOwnProperty('parentCode')) {
     await isExist({
       table: 'menus',
       where: [{ key: 'code', value: ctx.params.parentCode }],
@@ -57,7 +57,7 @@ export async function doMenuUpdateConvert(ctx: Context, next: Next) {
     message: Message.unexistMenus
   })
   // 若修改 code 再判断 code 除自身外是否存在
-  if (ctx.params.code) {
+  if (ctx.params.hasOwnProperty('code')) {
     await isExist({
       table: 'menus',
       where: [
@@ -69,7 +69,7 @@ export async function doMenuUpdateConvert(ctx: Context, next: Next) {
     })
   }
   // 若 parentCode 为真，判断 parentCode 是否不存在
-  if (ctx.params.parentCode) {
+  if (ctx.params.hasOwnProperty('parentCode')) {
     await isExist({
       table: 'menus',
       where: [{ key: 'code', value: ctx.params.parentCode }],

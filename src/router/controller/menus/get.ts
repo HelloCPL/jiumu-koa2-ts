@@ -64,8 +64,6 @@ export const getMenuByParentCode = async (parentCode: string): Promise<MenuListO
         where: { key: 'code', value: arr[i].code },
         noThrow: true
       })
-      console.log(123123);
-      console.log(hasChildren);
       if (hasChildren) {
         const sql = `SELECT * FROM menus WHERE parent_code = ? ORDER BY sort, update_time DESC`
         const res: MenuListOptions[] = <MenuListOptions[]>await query(sql, arr[i].code)

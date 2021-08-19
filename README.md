@@ -95,7 +95,13 @@
 
 #### 设计特别说明
 
-  - `附件id` 不作存不存在校验，但`系统标签code` 会作是否存在校验
+  - `附件id` `用户自定义标签id` 不作是否存在校验；`系统标签code` `['1', '0']指定范围` 会作是否存在校验
+
+  - `ctx` 自定义挂载说明
+    `ctx.terminal` // 访问终端，所有路由均挂载
+    `ctx.data` // 包含不同传参方法的访问参数，所有路由均挂载
+    `ctx.params` // 自动根据请求方式获取的访问参数，所有路由均挂载
+    `ctx.user` // 根据token解析的用户信息，只有 `unless=false` 被拦截（即带token解析）的路由挂载
 
 <!-- 先写 users-roles users-tags -->
 <!-- 再优化 permission roles tags 列表获取 -->
@@ -104,7 +110,9 @@
 <!-- 再写 likes collections -->
 <!-- 再写 comments-first comments-second -->
 再写 权限接口关联的接口请求权限校验
-再写 articles questions sources
+<!-- 再写 articles  -->
+questions 
+sources
 
 用户管理(`user/get/list`)
     修改(`user/update/base`)

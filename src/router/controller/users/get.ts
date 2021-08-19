@@ -22,7 +22,6 @@ export const doUserGetSelf = async (ctx: Context, next: Next) => {
   // 获取用户拥有的所有角色列表
   const roles = await getAllRoleByUserId({ userId: ctx.user.id })
   const roleIds = _.join(_.map(roles, item => item.id))
-  console.log(roleIds);
   // 获取用户拥有的所有权限列表
   const permissions = await getAllPermissionByRoleId({ roleIds })
   // 获取用户拥有的所有菜单列表
@@ -73,9 +72,6 @@ export const getUserList = async (options: UserListParams): Promise<UserListRetu
   }, 'OR', 'WHERE')
   const sql1 = `SELECT COUNT(t1.id) as total FROM users t1 ${sqlParams.sql}`
   const data1 = [...sqlParams.data]
-  console.log(sql1);
-  console.log(data1);
-
   const sql2: string = `SELECT t1.id, t1.phone, t1.username, t1.sex, t2.label as sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code ${sqlParams.sql} ORDER BY t1.update_time DESC LIMIT ?, ?`
   const data2 = [...sqlParams.data, pageNo, options.pageSize]
   const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])

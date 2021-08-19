@@ -20,7 +20,7 @@ export const doCommentFirstGetList = async (ctx: Context, next: Next) => {
   const data2 = [ctx.user.id, ...data1, pageNo, pageSize]
   const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])
   const comemntList: CommentOptions[] = res[1]
-  _handleCommentFristList(ctx, comemntList)
+  _handleCommentFristList(comemntList, ctx.user.id)
   throw new Success({ total: res[0][0]['total'], data: comemntList });
 }
 
@@ -35,12 +35,12 @@ export const doCommentSecondGetList = async (ctx: Context, next: Next) => {
   const data2 = [ctx.user.id, ...data1, pageNo, pageSize]
   const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])
   const comemntList: CommentOptions[] = res[1]
-  _handleCommentSecondList(ctx, comemntList)
+  _handleCommentSecondList(comemntList, ctx.user.id)
   throw new Success({ total: res[0][0]['total'], data: comemntList });
 }
 
 // 处理一级评论列表
-function _handleCommentFristList(ctx: Context, data: CommentOptions[]) {
+function _handleCommentFristList(data: CommentOptions[], userId: string) {
   data.forEach(item => {
     // 处理是否点赞
     if (item.is_like) item.is_like = '1'
@@ -49,7 +49,7 @@ function _handleCommentFristList(ctx: Context, data: CommentOptions[]) {
     item.reply_user = null
     item.reply_user_name = null
     // 处理是否为自己的评论
-    if (item.create_user === ctx.user.id) item.is_self = '1'
+    if (item.create_user === userId) item.is_self = '1'
     else item.is_self = '0'
     // 添加子级
     item.children = []
@@ -57,7 +57,7 @@ function _handleCommentFristList(ctx: Context, data: CommentOptions[]) {
 }
 
 // 处理二级评论列表
-function _handleCommentSecondList(ctx: Context, data: CommentOptions[]) {
+function _handleCommentSecondList(data: CommentOptions[], userId: string) {
   data.forEach(item => {
     // 处理是否点赞
     if (item.is_like) item.is_like = '1'
@@ -68,7 +68,7 @@ function _handleCommentSecondList(ctx: Context, data: CommentOptions[]) {
       item.reply_user_name = null
     }
     // 处理是否为自己的评论
-    if (item.create_user === ctx.user.id) item.is_self = '1'
+    if (item.create_user === userId) item.is_self = '1'
     else item.is_self = '0'
     // 添加子级
     item.comment_count = 0
