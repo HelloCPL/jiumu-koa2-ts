@@ -103,6 +103,8 @@
     `ctx.params` // 自动根据请求方式获取的访问参数，所有路由均挂载
     `ctx.user` // 根据token解析的用户信息，只有 `unless=false` 被拦截（即带token解析）的路由挂载
 
+  - 如果表字段有 `is_secret` 字段，如果 `is_secret=1`，不管获取指定一个或获取列表，只有本人可获取，包括 `files_info articles questions sources`
+
 <!-- 先写 users-roles users-tags -->
 <!-- 再优化 permission roles tags 列表获取 -->
 <!-- 再设计 menus roles-menus -->
