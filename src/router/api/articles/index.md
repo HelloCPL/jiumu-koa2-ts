@@ -257,8 +257,8 @@
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
 | type | string | 否 | 文章类型，取系统标签300范围 |
-| isDraft | string | 否 | 是否草稿，1 是 0 否，默认0 |
-| isSecret | string | 否 | 是否为私密文章，1 是 0 否，默认0 |
+| isDraft | string | 否 | 是否草稿，1 是 0 否 |
+| isSecret | string | 否 | 是否为私密文章，1 是 0 否 |
 
 #### 返回字段说明
 
@@ -372,12 +372,12 @@
 }
 ```
 
-## ---------------- 获取自己的博客文章列表 ---------------------
+## ---------------- 获取博客文章列表 ---------------------
 
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取所有的博客文章列表
+- 获取博客文章列表，如果创建者非本人则仅可获取 `isSecret=0` 的数据
 
 #### 请求
 
@@ -391,9 +391,10 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
+| userId | string | 否 | 指定用户id |
 | type | string | 否 | 文章类型，取系统标签300范围 |
-| isDraft | string | 否 | 是否草稿，1 是 0 否，默认0 |
-| isSecret | string | 否 | 是否为私密文章，1 是 0 否，默认0 |
+| isDraft | string | 否 | 是否草稿，1 是 0 否 |
+| isSecret | string | 否 | 是否为私密文章，1 是 0 否，一般只传 0，其中 1 只对自己发布的文章才有权限查看 |
 
 #### 返回字段说明
 

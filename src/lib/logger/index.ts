@@ -10,6 +10,7 @@ import _ from 'lodash'
 import { Context } from 'koa'
 import Config from '../../config'
 import { ParamsOptions, QueryParamsOptions, LoggerOptions } from './interface'
+import { getIP } from '../../utils/tools'
 
 // 加载配置文件
 log4js.configure(logConfig)
@@ -25,7 +26,7 @@ const formatLogger: LoggerOptions = {
     logText += `\n\n[请求日志信息]`
     logText += `\n  [requestStartTime]: ${global.requestStart},`
     logText += `\n  [requestOriginalUrl]: ${ctx.originalUrl},`
-    logText += `\n  [requestIP]: ${ctx.ip},`
+    logText += `\n  [requestIP]: ${getIP(ctx)},`
     if (ctx.user)
       logText += `\n  [requestUser]: ${_getDataToString(ctx.user)},`
     logText += `\n  [requestAPI]: ${ctx.url},`

@@ -257,3 +257,42 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
+#### 18 questions 问答信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 问答id |
+| title | 255 | 是 | 标题 |
+| content | text | 是 | 内容 |
+| classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
+| is_draft | v4 | 是 | 是否草稿，1 是 0 否，默认0 |
+| is_secret | v4 | 否 | 是否为私密问答，1 是 0 否，默认0 |
+| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| sort | mediumint | 否 | 排序，越小越前 |
+| create_user | v64 | 是 | 创建用户 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
+
+#### 19 sources 资源信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 资源id |
+| title | 255 | 是 | 标题 |
+| attachment | v255 | 否 | 资源文件id，多个逗号隔开，最多3个 |
+| classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
+| is_secret | v4 | 否 | 是否为私密问答，1 是 0 否，默认0 |
+| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| sort | mediumint | 否 | 排序，越小越前 |
+| create_user | v64 | 是 | 创建用户 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
+

@@ -95,7 +95,7 @@ export const doArticleUpdateConvert = async (ctx: Context, next: Next) => {
 }
 
 /**
- * 修改时 
+ * 删除时 
  * 判断博客文章是否不存在，且是否为自己发布的博客文章
 */
 export const doArticleDeleteConvert = async (ctx: Context, next: Next) => {
