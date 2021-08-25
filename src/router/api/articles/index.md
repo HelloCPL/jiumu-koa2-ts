@@ -270,11 +270,7 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 博客文章id |
 | title | string | 标题 |
-| content | string | 内容 |
-| contentType | string | 内容类型标签code |
-| contentTypeLabel | string | 内容类型标签说明 |
 | coverImg | object/null | 封面图，文件对象/null |
-| attachment | array/[] | 附件，文件数组/[] |
 | type | string | 文章类型标签code |
 | typeLabel | string | 文章类型标签说明 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
@@ -305,9 +301,6 @@
     {
       "id": "5c5c2ee8-d440-472f-adfb-33a98145a260",
       "title": "大标题ceshi",
-      "content": "内容asdfasdfasdfasdfasdf",
-      "contentType": "402",
-      "contentTypeLabel": "Markdown编辑器",
       "coverImg": {
         "id": "19b340ee-c271-4219-98d9-531f16ebc2d0",
         "filePath": "http://localhost:3030/files/01e94470-f9ba-11eb-ab65-0190628cb5e3.png",
@@ -322,22 +315,6 @@
         "terminal": "pc",
         "remarks": null
       },
-      "attachment": [
-        {
-          "id": "19b340ee-c271-4219-98d9-531f16ebc2d0",
-          "filePath": "http://localhost:3030/files/01e94470-f9ba-11eb-ab65-0190628cb5e3.png",
-          "fileName": "avatar6.png",
-          "fileSize": 28326,
-          "suffix": "png",
-          "staticPlace": "files",
-          "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-          "isSecret": "0",
-          "checkValidTime": 3,
-          "createTime": "2021-08-10 17:04:45",
-          "terminal": "pc",
-          "remarks": null
-        }
-      ],
       "type": "301",
       "typeLabel": "原创",
       "classify": [
@@ -406,11 +383,7 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 博客文章id |
 | title | string | 标题 |
-| content | string | 内容 |
-| contentType | string | 内容类型标签code |
-| contentTypeLabel | string | 内容类型标签说明 |
 | coverImg | object/null | 封面图，文件对象/null |
-| attachment | array/[] | 附件，文件数组/[] |
 | type | string | 文章类型标签code |
 | typeLabel | string | 文章类型标签说明 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
@@ -441,9 +414,6 @@
     {
       "id": "33812e97-4c7f-4ce3-8f1a-588abf4be8df",
       "title": "标题哈哈哈咿呀呀咿呀呀",
-      "content": "内容呀呀呀呀嘎嘎嘎",
-      "contentType": "402",
-      "contentTypeLabel": "Markdown编辑器",
       "coverImg": {
         "id": "19b340ee-c271-4219-98d9-531f16ebc2d0",
         "filePath": "http://localhost:3030/files/01e94470-f9ba-11eb-ab65-0190628cb5e3.png",
@@ -458,22 +428,6 @@
         "terminal": "pc",
         "remarks": null
       },
-      "attachment": [
-        {
-          "id": "19b340ee-c271-4219-98d9-531f16ebc2d0",
-          "filePath": "http://localhost:3030/files/01e94470-f9ba-11eb-ab65-0190628cb5e3.png",
-          "fileName": "avatar6.png",
-          "fileSize": 28326,
-          "suffix": "png",
-          "staticPlace": "files",
-          "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-          "isSecret": "0",
-          "checkValidTime": 3,
-          "createTime": "2021-08-10 17:04:45",
-          "terminal": "pc",
-          "remarks": null
-        }
-      ],
       "type": "301",
       "typeLabel": "原创",
       "classify": [

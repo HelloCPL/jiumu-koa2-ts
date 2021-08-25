@@ -200,7 +200,6 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 资源id |
 | title | string | 标题 |
-| attachment | array/[] | 资源文件 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
 | isSecret | string | 是否为私密资源，1 是 0 否 |
 | isTop | string | 是否置顶，1 是 0 否 |
@@ -228,22 +227,6 @@
     {
       "id": "714ca62a-cd26-4504-bcfa-352e12bf8be1",
       "title": "资源标题6",
-      "attachment": [
-        {
-          "id": "df12a740-3ccb-451e-80e9-df21608453f6",
-          "filePath": "http://localhost:3030/files/424f8090-f9b7-11eb-ad7b-f9f5bf6514d6.png",
-          "fileName": "avatar6.png",
-          "fileSize": 28326,
-          "suffix": "png",
-          "staticPlace": "files",
-          "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-          "isSecret": "0",
-          "checkValidTime": 3,
-          "createTime": "2021-08-10 16:45:05",
-          "terminal": "pc",
-          "remarks": null
-        }
-      ],
       "classify": [
         {
           "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
@@ -306,7 +289,6 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 资源id |
 | title | string | 标题 |
-| attachment | array/[] | 资源文件 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
 | isSecret | string | 是否为私密资源，1 是 0 否 |
 | isTop | string | 是否置顶，1 是 0 否 |
@@ -332,22 +314,6 @@
     {
       "id": "44a34814-b345-442a-b4ac-597340d80d85",
       "title": "资源标题7",
-      "attachment": [
-        {
-          "id": "df12a740-3ccb-451e-80e9-df21608453f6",
-          "filePath": "http://localhost:3030/files/424f8090-f9b7-11eb-ad7b-f9f5bf6514d6.png",
-          "fileName": "avatar6.png",
-          "fileSize": 28326,
-          "suffix": "png",
-          "staticPlace": "files",
-          "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-          "isSecret": "0",
-          "checkValidTime": 3,
-          "createTime": "2021-08-10 16:45:05",
-          "terminal": "pc",
-          "remarks": null
-        }
-      ],
       "classify": [
         {
           "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
