@@ -32,39 +32,8 @@ export const doTagCustomAddConvert = async (ctx: Context, next: Next) => {
  * 修改时 
  * 判断自定义标签是否不存在
  * 判断是否为用户本人创建的自定义标签
- * 如果 label 为真，判断除自身外是否存在
 */
 export const doTagCustomUpdateConvert = async (ctx: Context, next: Next) => {
-  //  判断自定义标签是否不存在
-  const sql = `SELECT id, create_user FROM tags_custom WHERE id = ?`
-  const res: any = await query(sql, ctx.params.id)
-  if (!(res && res.length))
-    throw new ExceptionParameter({ message: Message.unexistTag })
-  // 判断是否为用户本人创建的自定义标签
-  if (res[0]['create_user'] !== ctx.user.id)
-    throw new ExceptionForbidden({ message: Message.forbidden })
-  // 如果 label 为真，判断除自身外是否存在
-  if (ctx.params.hasOwnProperty('label')) {
-    await isExist({
-      table: 'tags_custom',
-      where: [
-        { key: 'label', value: ctx.params.label },
-        { key: 'create_user', value: ctx.user.id },
-        { key: 'id', value: ctx.params.id, connector: '!=' },
-      ],
-      throwType: true,
-      message: Message.existTag
-    })
-  }
-  await next()
-}
-
-/**
- * 删除时 
- * 判断自定义标签是否不存在
- * 判断是否为用户本人创建的自定义标签
-*/
-export const doTagCustomDeleteConvert = async (ctx: Context, next: Next) => {
   //  判断自定义标签是否不存在
   const sql = `SELECT id, create_user FROM tags_custom WHERE id = ?`
   const res: any = await query(sql, ctx.params.id)

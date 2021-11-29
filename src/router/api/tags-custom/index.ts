@@ -6,7 +6,7 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doTagCustomAddConvert, doTagCustomUpdateConvert, doTagCustomDeleteConvert } from '../../controller/tags-custom/convert'
+import { doTagCustomAddConvert, doTagCustomUpdateConvert } from '../../controller/tags-custom/convert'
 import { doTagCustomAdd } from '../../controller/tags-custom/add'
 import { doTagCustomUpdate } from '../../controller/tags-custom/update'
 import { doTagCustomDelete } from '../../controller/tags-custom/delete'
@@ -42,7 +42,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doTagCustomDeleteConvert)
+  @Convert(doTagCustomUpdateConvert)
   async doTagCustomDelete(ctx: Context, next: Next) {
     await doTagCustomDelete(ctx, next)
   }

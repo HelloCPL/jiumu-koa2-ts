@@ -109,6 +109,7 @@ async function _handleSource(datas: SourceOptions | SourceOptions[], userId: str
     // 处理自定义标签
     if (data.classify)
       data.classify = await getTagCustomByIds(data.classify, data.create_user)
+    else data.classify = []
     // 处理是否为自己发布
     if (data.create_user === userId) data.is_self = '1'
     else data.is_self = '0'

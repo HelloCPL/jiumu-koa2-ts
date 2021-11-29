@@ -22,7 +22,7 @@
 | isDraft | string | 是 | 是否草稿，1 是 0 否，默认0 |
 | coverImg | string | 否 | 封面图，图片id，只传一个 |
 | attachment | string | 否 | 附件，文件id，多个逗号隔开，最多3个 |
-| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个 |
+| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用articleClassify |
 | isSecret | string | 否 | 是否为私密文章，1 是 0 否，默认0 |
 | isTop | string | 否 | 是否置顶，1 是 0 否，默认0 |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
@@ -63,7 +63,7 @@
 | isDraft | string | 否 | 是否草稿，1 是 0 否，默认0 |
 | coverImg | string | 否 | 封面图，图片id，只传一个 |
 | attachment | string | 否 | 附件，文件id，多个逗号隔开，最多3个 |
-| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个 |
+| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用articleClassify |
 | isSecret | string | 否 | 是否为私密文章，1 是 0 否，默认0 |
 | isTop | string | 否 | 是否置顶，1 是 0 否，默认0 |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
@@ -157,9 +157,9 @@
 | isLike | string | 是否点赞，1 是 0 否 |
 | likeCount | number | 点赞总数 |
 | isCollection | string | 是否收藏，1 是 0 否 |
-| likeCount | number | 收藏总数 |
+| collectionCount | number | 收藏总数 |
 | isSelf | string | 是否本人的博客文章，1 是 0 否 |
-| commentCount | number | 收藏总数 |
+| commentCount | number | 评论总数 |
 
 #### 返回示例
 
@@ -210,6 +210,7 @@
         "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
         "label": "前端",
         "sort": 1,
+        "type": 'articleClassify',
         "createTime": "2021-08-18 03:10:58",
         "updateTime": "2021-08-18 03:10:58",
         "terminal": "管理端"
@@ -322,6 +323,7 @@
           "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
           "label": "前端",
           "sort": 1,
+          "type": 'articleClassify',
           "createTime": "2021-08-18 03:10:58",
           "updateTime": "2021-08-18 03:10:58",
           "terminal": "管理端"
@@ -435,6 +437,7 @@
           "id": "3b526adf-a90d-405e-9758-6bff1bf01489",
           "label": "java",
           "sort": 1,
+          "type": 'articleClassify',
           "createTime": "2021-08-18 03:11:31",
           "updateTime": "2021-08-18 03:11:31",
           "terminal": "管理端"

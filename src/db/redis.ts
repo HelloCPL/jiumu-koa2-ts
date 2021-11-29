@@ -43,7 +43,13 @@ export const clientSet = (key: string, value: any) => {
   return new Promise((resolve, reject) => {
     const options = _handleSetItem(key, value)
     redisClient.set(options.key, options.value, (err: any) => {
-      if (err) reject(err)
+      if (err) {
+        Logger.error({
+          message: 'redis 发生错误',
+          error: err
+        })
+        reject(err)
+      }
       // @ts-ignore 
       else resolve(null)
 
@@ -65,7 +71,13 @@ export const clientGet = (key: string) => {
   key = getKey(key)
   return new Promise((resolve, reject) => {
     redisClient.get(key, (err: any, value) => {
-      if (err) reject(err)
+      if (err) {
+        Logger.error({
+          message: 'redis 发生错误',
+          error: err
+        })
+        reject(err)
+      }
       else resolve(_handleGetItem(value))
     })
   })
@@ -91,13 +103,19 @@ export const clientDel = (key: string) => {
   return new Promise((resolve, reject) => {
     try {
       redisClient.del(key, (err: any) => {
-        if (err) reject(err)
+        if (err) {
+          Logger.error({
+            message: 'redis 发生错误',
+            error: err
+          })
+          reject(err)
+        }
         // @ts-ignore 
         else resolve(null)
       })
     } catch (e) {
       // @ts-ignore 
-      resolve(null)
+      reject(e)
     }
   })
 }

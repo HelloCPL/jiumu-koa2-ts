@@ -66,6 +66,8 @@ const formatLogger: LoggerOptions = {
     logText += `\n\n!!!!!!!!!! 错误日志信息开始 ${global.requestCount} !!!!!!!!!!`
     logText = _handleParamsOptions(logText, options)
     logText += `\n!!!!!!!!!! 错误日志信息结束 ${global.requestCount} !!!!!!!!!!`
+    console.log(options.error);
+    console.log(logText);
     infoLogger.info(logText)
   }
 }

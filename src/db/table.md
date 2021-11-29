@@ -227,7 +227,7 @@
 | id | v64 | 是 | 用户自定义标签id |
 | label | v64 | 是 | 自定义标签名称 |
 | sort | mediumint | 否 | 排序，越小越前 |
-| type | v64 | 否 | 自定义类型，用户可通过自定义type，获取列表时传type以区分不同的用户自定义标签 |
+| type | v64 | 否 | 自定义类型，用户可通过自定义type，获取列表时传type以区分不同的用户自定义标签，一般由前端定义 |
 | create_user | v64 | 是 | 创建用户 |
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |

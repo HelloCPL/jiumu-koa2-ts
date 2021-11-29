@@ -18,7 +18,7 @@
 | title | string | 是 | 问答标题 |
 | content | string | 是 | 内容 |
 | isDraft | string | 是 | 是否草稿，1 是 0 否，默认0 |
-| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个 |
+| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用questionClassify |
 | isSecret | string | 否 | 是否为私密问答，1 是 0 否，默认0 |
 | isTop | string | 否 | 是否置顶，1 是 0 否，默认0 |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
@@ -55,7 +55,7 @@
 | title | string | 否 | 问答标题 |
 | content | string | 否 | 内容 |
 | isDraft | string | 否 | 是否草稿，1 是 0 否 |
-| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个 |
+| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用questionClassify |
 | isSecret | string | 否 | 是否为私密问答，1 是 0 否 |
 | isTop | string | 否 | 是否置顶，1 是 0 否 |
 | sort | mediumint | 否 | 排序，值越小越前 |
@@ -161,6 +161,7 @@
         "id": "493f5144-45fb-477a-9b48-1f6a92f057e4",
         "label": "js",
         "sort": 1,
+        "type": 'questionClassify',
         "createTime": "2021-08-18 03:11:26",
         "updateTime": "2021-08-18 03:11:26",
         "terminal": "管理端"
@@ -254,6 +255,7 @@
           "id": "493f5144-45fb-477a-9b48-1f6a92f057e4",
           "label": "js",
           "sort": 1,
+          "type": 'questionClassify',
           "createTime": "2021-08-18 03:11:26",
           "updateTime": "2021-08-18 03:11:26",
           "terminal": "管理端"
@@ -349,6 +351,7 @@
           "id": "493f5144-45fb-477a-9b48-1f6a92f057e4",
           "label": "js",
           "sort": 1,
+          "type": 'questionClassify',
           "createTime": "2021-08-18 03:11:26",
           "updateTime": "2021-08-18 03:11:26",
           "terminal": "管理端"

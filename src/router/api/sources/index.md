@@ -17,7 +17,7 @@
 |:---:|:---:|:---:|:---:|
 | title | string | 是 | 资源标题 |
 | attachment | string | 是 | 资源文件id，多个逗号隔开，最多5个 |
-| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个 |
+| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用sourceClassify |
 | isSecret | string | 否 | 是否为私密资源，1 是 0 否，默认0 |
 | isTop | string | 否 | 是否置顶，1 是 0 否，默认0 |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
@@ -54,7 +54,7 @@
 | id | string | 是 | 资源id |
 | title | string | 否 | 资源标题 |
 | attachment | string | 否 | 资源文件id，多个逗号隔开，最多5个 |
-| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个 |
+| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用sourceClassify |
 | isSecret | string | 否 | 是否为私密资源，1 是 0 否 |
 | isTop | string | 否 | 是否置顶，1 是 0 否 |
 | sort | mediumint | 否 | 排序，值越小越前 |
@@ -145,6 +145,7 @@
         "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
         "label": "前端",
         "sort": 1,
+        "type": 'sourceClassify',
         "createTime": "2021-08-18 03:10:58",
         "updateTime": "2021-08-18 03:10:58",
         "terminal": "管理端"
@@ -232,6 +233,7 @@
           "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
           "label": "前端",
           "sort": 1,
+          "type": 'sourceClassify',
           "createTime": "2021-08-18 03:10:58",
           "updateTime": "2021-08-18 03:10:58",
           "terminal": "管理端"
@@ -319,6 +321,7 @@
           "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
           "label": "前端",
           "sort": 1,
+          "type": 'sourceClassify',
           "createTime": "2021-08-18 03:10:58",
           "updateTime": "2021-08-18 03:10:58",
           "terminal": "管理端"

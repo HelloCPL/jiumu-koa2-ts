@@ -33,7 +33,7 @@ export async function catchError(ctx: Context, next: Next) {
       let data = {
         code: Code.error,
         message: Code.error,
-        data: null,
+        data: error,
         total: 0
       }
       ctx.body = data

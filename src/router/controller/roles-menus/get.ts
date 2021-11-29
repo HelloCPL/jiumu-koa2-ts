@@ -99,19 +99,34 @@ export const getAllRoleByMenuId = async (options: RoleMenuByMenuIdParams): Promi
 
 // 处理菜单树结构层级问题
 function _handleAllMenuHierarchy(menus: MenuOptions[]): MenuListOptions[] {
-  let data: MenuListOptions[] = []
   // 取一级菜单
-  menus.forEach(item => {
-    item.children = []
-    if (!item.parent_code) {
-      data.push(<MenuListOptions>{ ...item })
+  let data: MenuListOptions[] = [],
+    i = 0,
+    len = menus.length
+  for (i; i < len; i++) {
+    menus[i].children = []
+    if (!menus[i].parent_code) {
+      let obj = menus.splice(i, 1)
+      data.push(<MenuListOptions>{ ...obj[0] })
+      i--
+      len--
     }
-  })
+  }
   const _handleList = (arr: MenuListOptions[]) => {
     arr.forEach(list => {
-      let children = <MenuListOptions[]>menus.filter(item => item.parent_code === list.code)
+      let children: MenuListOptions[] = [],
+        i2 = 0,
+        len2 = menus.length
+      for (i2; i2 < len2; i2++) {
+        if (menus[i2].parent_code === list.code) {
+          let obj = menus.splice(i2, 1)
+          children.push(<MenuListOptions>{ ...obj[0] })
+          i2--
+          len2--
+        }
+      }
       list.children = children
-      if (list.children && list.children.length)
+      if (menus.length && list.children && list.children.length)
         _handleList(list.children)
     })
   }

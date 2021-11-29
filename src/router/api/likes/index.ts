@@ -20,7 +20,7 @@ export default class API {
   })
   @Required(['targetId', 'type'])
   @Convert(doLikeAddConvert)
-  async doLikeAdd(ctx: Context, next: Next) {
+  async doLieAdd(ctx: Context, next: Next) {
     await doLikeAdd(ctx, next)
   }
 

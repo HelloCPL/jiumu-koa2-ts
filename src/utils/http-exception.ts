@@ -34,7 +34,6 @@ export class ExceptionHttp extends Error {
     this.data = this.formatData(config.data)
     this.code = config.code || Code.error
     this.total = config.total || 0
-    this.formatDataKey()
   }
 
   // 格式化返回数据 若为对象，属性名统一转成驼峰命名

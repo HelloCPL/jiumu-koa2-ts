@@ -71,6 +71,7 @@ export enum Message {
   unexistArticle = '文章不存在',
   unexistQuestion = '问答不存在',
   unexistSource = '资源不存在',
+  unexistNovel = '小说不存在',
 
 
   relevantHasChildren = '有子级关联，请解除子级关联后再操作',

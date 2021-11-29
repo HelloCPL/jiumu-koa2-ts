@@ -34,7 +34,7 @@ export const doTagCustomGetList = async (ctx: Context, next: Next) => {
  * 获取指定用户自定义标签，返回数组或[]
 */
 export const getTagCustomByIds = async (ids: string, userId: string): Promise<TagCustomOptions[]> => {
-  const sql: string = `SELECT id, label, sort, create_time, update_time, terminal FROM tags_custom WHERE FIND_IN_SET(id, ?) AND create_user = ?`
+  const sql: string = `SELECT id, label, sort, type, create_time, update_time, terminal FROM tags_custom WHERE FIND_IN_SET(id, ?) AND create_user = ?`
   const data = [ids, userId]
   let res: any = await query(sql, data)
   return res
@@ -49,7 +49,7 @@ export const getTagCustomList = async (options: TagCustomListParams): Promise<Ta
   }, 'AND', 'AND')
   const sql1 = `SELECT COUNT(id) as total FROM tags_custom WHERE create_user = ? ${sqlParams.sql}`
   const data1 = [options.userId, ...sqlParams.data]
-  const sql2 = `SELECT id, label, sort, create_time, update_time, terminal FROM tags_custom WHERE create_user = ? ${sqlParams.sql} ORDER BY sort LIMIT ?, ?`
+  const sql2 = `SELECT id, label, sort, type, create_time, update_time, terminal FROM tags_custom WHERE create_user = ? ${sqlParams.sql} ORDER BY sort LIMIT ?, ?`
   const data2 = [...data1, pageNo, options.pageSize]
   const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])
   return {

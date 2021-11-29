@@ -8,7 +8,7 @@
 export interface RoleMenuOptions extends BaseOptions {
   id: string,
   role_id: string,
-  menu_id: string,
+  menu_id: string
 }
 
 // 角色-菜单关联获取关联菜单参数接口类型
