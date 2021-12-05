@@ -10,7 +10,7 @@ import { doTagCustomAddConvert, doTagCustomUpdateConvert } from '../../controlle
 import { doTagCustomAdd } from '../../controller/tags-custom/add'
 import { doTagCustomUpdate } from '../../controller/tags-custom/update'
 import { doTagCustomDelete } from '../../controller/tags-custom/delete'
-import { doTagCustomGetIds, doTagCustomGetList } from '../../controller/tags-custom/get'
+import { doTagCustomGetIdsSelf, doTagCustomGetListSelf, doTagCustomGetList } from '../../controller/tags-custom/get'
 
 @Prefix('tag/custom')
 export default class API {
@@ -47,17 +47,26 @@ export default class API {
     await doTagCustomDelete(ctx, next)
   }
 
-  // 4 获取指定用户自定义标签
+  // 4 获取我的指定一个或多个自定义标签
   @Request({
-    path: 'get/byids',
+    path: 'get/byids/self',
     methods: ['get', 'post']
   })
   @Required(['ids'])
-  async doTagCustomGetIds(ctx: Context, next: Next) {
-    await doTagCustomGetIds(ctx, next)
+  async doTagCustomGetIdsSelf(ctx: Context, next: Next) {
+    await doTagCustomGetIdsSelf(ctx, next)
   }
 
-  // 5 获取指定用户自定义标签列表
+  // 5 获取我的自定义标签列表
+  @Request({
+    path: 'get/list/self',
+    methods: ['get', 'post']
+  })
+  async doTagCustomGetListSelf(ctx: Context, next: Next) {
+    await doTagCustomGetListSelf(ctx, next)
+  }
+
+  // 6 获取所有自定义标签列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post']

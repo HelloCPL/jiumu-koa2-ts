@@ -151,6 +151,60 @@
 }
 ```
 
+## ---------------- 获取我的所有标签 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 获取我的所有标签
+
+#### 请求
+
+- `get | post` 
+- `tag/get/all/self`
+
+#### 参数
+无
+
+#### 返回字段说明
+
+- 返回数组或[]
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 标签id |
+| parentCode | string | 父级标签code |
+| code | string | 标签code |
+| label | string | 标签描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": [
+    {
+      "id": "6be39cf2-1e7a-48f9-bd3d-8a0bd8f67ae4",
+      "parentCode": "8888",
+      "code": "8003",
+      "label": "名人",
+      "sort": 1,
+      "createTime": "2021-08-13 15:51:19",
+      "updateTime": "2021-08-13 15:51:19",
+      "terminal": "管理端",
+      "remarks": null
+    }
+  ],
+  "total": 0
+}
+```
+
 ## ---------------- 获取某类标签 ---------------------
 
 #### 简要描述

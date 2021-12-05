@@ -148,6 +148,58 @@
 }
 ```
 
+## ---------------- 获取我的所有角色列表 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 获取我的所有角色列表
+
+#### 请求
+
+- `get | post` 
+- `role/get/all/self`
+
+#### 参数
+无
+
+#### 返回字段说明
+
+- 返回数组或[]
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 角色id |
+| code | string | 角色code |
+| label | string | 角色描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": [
+    {
+      "id": "b7ca5db8-9daf-4791-98ac-14006742d7c1",
+      "code": "testers",
+      "label": "测试人员",
+      "sort": 2,
+      "createTime": "2021-08-12 16:05:23",
+      "updateTime": "2021-08-12 16:12:22",
+      "terminal": "管理端",
+      "remarks": null
+    }
+  ],
+  "total": 0
+}
+```
+
 ## ---------------- 获取角色列表 ---------------------
 
 #### 简要描述
@@ -178,7 +230,9 @@
 #### 返回字段说明
 
 - 返回数组或[]
-- 按 `sort升序、updateTime更新时间降序` 排序
+- 排序规则 
+  `搜索相似度(label)降序`
+  `sort升序、updateTime更新时间降序`
 
  参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|

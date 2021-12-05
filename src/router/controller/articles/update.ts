@@ -16,7 +16,7 @@ import { getUpdateSetData } from '../../../utils/handle-sql'
 export const doArticleUpdate = async (ctx: Context, next: Next) => {
   ctx.params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
-    valid: ['title', 'content', 'content_type', 'type', 'is_draft', 'cover_img', 'attachment', 'classify', 'is_secret', 'is_top', 'sort', 'update_time', 'remarks'],
+    valid: ['title', 'content', 'content_type', 'type', 'is_draft', 'cover_img', 'attachment', 'classify', 'is_secret', 'sort', 'update_time', 'remarks'],
     data: ctx.params
   })
   const sql: string = `UPDATE articles SET ${sqlParams.sql} WHERE id = ?`

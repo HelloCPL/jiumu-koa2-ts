@@ -7,7 +7,7 @@
 import { Success } from '../../../utils/http-exception'
 import { query, execTrans } from "../../../db";
 import { Context, Next } from 'koa';
-import { getSelectWhereAsKeywordData } from '../../../utils/handle-sql'
+import { getSelectWhereAsKeywordData, getOrderByKeyword } from '../../../utils/handle-sql'
 import { RoleOptions, RoleParamsOptions, RoleReturnOptions } from './interface'
 import { getAllRoleByPermissionId } from '../roles-permissions/get'
 import { getAllRoleByUserId } from '../users-roles/get'
@@ -17,6 +17,13 @@ import _ from 'lodash'
 // 获取指定的某个角色
 export const doRoleGetOne = async (ctx: Context, next: Next) => {
   const data = await getMenuOne(ctx.params.id)
+  throw new Success({ data });
+}
+
+// 我的所有角色
+export const doRoleGetAllSelf = async (ctx: Context, next: Next) => {
+  // const data = await getMenuOne(ctx.params.id)
+  const data = await getAllRoleByUserId({ userId: ctx.user.id })
   throw new Success({ data });
 }
 
@@ -63,13 +70,20 @@ export const getMenuOne = async (id: string): Promise<RoleOptions | null> => {
 */
 export const getMenuList = async (params: RoleParamsOptions): Promise<RoleReturnOptions> => {
   const pageNo = (params.pageNo - 1) * params.pageSize
+  // 处理搜索
   const sqlParams = getSelectWhereAsKeywordData({
     valid: ['label'],
-    data: params
-  }, 'OR', 'WHERE')
+    data: params,
+    prefix: 'WHERE'
+  })
+  // 处理搜索排序
+  const orderParams = getOrderByKeyword({
+    valid: ['label'],
+    data: params,
+  })
   const sql1 = `SELECT COUNT(id) as total FROM roles ${sqlParams.sql}`
   const data1 = [...sqlParams.data]
-  const sql2 = `SELECT * FROM roles ${sqlParams.sql} ORDER BY sort, update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT id, code, ${orderParams.orderValid} sort, create_time, update_time, terminal, remarks FROM roles ${sqlParams.sql} ORDER BY ${orderParams.orderSql} sort, update_time DESC LIMIT ?, ?`
   const data2 = [...data1, pageNo, params.pageSize]
   const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])
   return {

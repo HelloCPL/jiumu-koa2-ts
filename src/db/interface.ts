@@ -9,7 +9,8 @@ import { ExceptionOptions } from '../utils/http-exception'
 export interface ErrorOptions extends ExceptionOptions {
   err?: any,
   sql?: string,
-  data?: any
+  data?: any,
+  code?: number
 }
 
 // 事务查询接口

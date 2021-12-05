@@ -10,7 +10,7 @@ import { doArticleAddConvert, doArticleUpdateConvert, doArticleDeleteConvert } f
 import { doArticleAdd } from '../../controller/articles/add'
 import { doArticleUpdate } from '../../controller/articles/update'
 import { doArticleDelete } from '../../controller/articles/delete'
-import { doArticleGetOne, doArticleGetListSelf, doArticleGetList } from '../../controller/articles/get'
+import { doArticleGetOne, doArticleGetList } from '../../controller/articles/get'
 
 
 @Prefix('article')
@@ -64,16 +64,29 @@ export default class API {
     methods: ['get', 'post'],
   })
   async doArticleGetListSelf(ctx: Context, next: Next) {
-    await doArticleGetListSelf(ctx, next)
+    ctx.params.userId = ctx.user.id
+    await doArticleGetList(ctx, next)
   }
 
-  // 6 获取所有博客文章列表
+  // 6 获取指定用户非草稿的博客文章列表
+  @Request({
+    path: 'get/list/byuserid',
+    methods: ['get', 'post'],
+  })
+  @Required(['userId'])
+  async doArticleGetListByUserId(ctx: Context, next: Next) {
+    ctx.params.isDraft = '0'
+    await doArticleGetList(ctx, next)
+  }
+
+  // 7 获取所有非草稿的博客文章列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post'],
   })
   async doArticleGetList(ctx: Context, next: Next) {
+    ctx.params.userId = null
+    ctx.params.isDraft = '0'
     await doArticleGetList(ctx, next)
   }
-
 }

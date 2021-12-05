@@ -8,7 +8,7 @@ import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
 import { doCommentAddConvert } from '../../controller/comments/convert'
 import { doCommentFirstAdd, doCommentSecondAdd } from '../../controller/comments/add'
-import { doCommentDeleteSelf, doCommentDeleteById } from '../../controller/comments/delete'
+import { doCommentDeleteById } from '../../controller/comments/delete'
 import { doCommentFirstGetList, doCommentSecondGetList } from '../../controller/comments/get'
 
 @Prefix('comment')
@@ -37,7 +37,8 @@ export default class API {
   })
   @Required(['id'])
   async doCommentDeleteSelf(ctx: Context, next: Next) {
-    await doCommentDeleteSelf(ctx, next)
+    ctx.params.userId = ctx.user.id
+    await doCommentDeleteById(ctx, next)
   }
 
   // 3 删除指定某条评论，不管谁的评论均可删除
@@ -48,6 +49,7 @@ export default class API {
   })
   @Required(['id'])
   async doCommentDeleteById(ctx: Context, next: Next) {
+    ctx.params.userId = null
     await doCommentDeleteById(ctx, next)
   }
 
@@ -58,6 +60,9 @@ export default class API {
   })
   @Required(['targetId', 'type'])
   async doCommentGetList(ctx: Context, next: Next) {
+    if (ctx.params.targetId === 'answer')
+      ctx.params.targetId = null
+    ctx.params.userId = null
     if (ctx.params.type == '501') {
       // 二级评论列表
       await doCommentSecondGetList(ctx, next)
@@ -65,6 +70,32 @@ export default class API {
       // 一级评论列表
       await doCommentFirstGetList(ctx, next)
     }
+  }
+
+  // 5 获取我的问答列表
+  @Request({
+    path: 'get/answer/list/self',
+    methods: ['get', 'post']
+  })
+  async doCommentGetAnswerListSelf(ctx: Context, next: Next) {
+    // 一级评论列表
+    ctx.params.targetId = 'answer'
+    ctx.params.userId = ctx.user.id
+    ctx.params.type = '502'
+    await doCommentFirstGetList(ctx, next)
+  }
+
+  // 6 获取所有的问答列表
+  @Request({
+    path: 'get/answer/list',
+    methods: ['get', 'post']
+  })
+  async doCommentGetAnswerList(ctx: Context, next: Next) {
+    ctx.params.targetId = 'answer'
+    ctx.params.userId = null
+    ctx.params.type = '502'
+    // 一级评论列表
+    await doCommentFirstGetList(ctx, next)
   }
 
 }

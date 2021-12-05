@@ -13,10 +13,11 @@ export interface TagCustomOptions extends BaseOptions {
 
 // 用户自定义标签列表获取参数类型
 export interface TagCustomListParams {
-  userId: string,
   pageNo: number,
   pageSize: number,
-  type?: string
+  userId?: string,
+  type?: string,
+  keyword?: string
 }
 
 // 用户自定义标签列表获取返回类型

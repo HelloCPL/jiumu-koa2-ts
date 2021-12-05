@@ -14,13 +14,15 @@ export interface PermissionOptions extends BaseOptions {
   sort?: number,
 }
 
-// 权限数组接口类型
-export interface PermissionListOptions extends PermissionOptions {
-  children: PermissionListOptions[]
+// 权限参数类型
+export interface PermissionParmsOptions {
+  pageNo: number,
+  pageSize: number,
+  keyword?: string
 }
 
-// 自定义权限接口
-export interface PermissionCustomOptions extends ObjectAny {
-  code: string,
-  children: PermissionCustomOptions[]
+// 权限列表返回
+export interface PermissionReturnOptions {
+  total: number,
+  data: PermissionOptions[]
 }

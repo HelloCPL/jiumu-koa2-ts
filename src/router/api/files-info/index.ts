@@ -55,11 +55,11 @@ export default class API {
   }
 
   // 5 获取本用户的所有文件/图片列表 返回数组或[]
-  @Request({
-    path: 'get/list/self',
-    methods: ['post', 'get'],
-  })
-  async doFileGetListSelf(ctx: Context, next: Next) {
-    await doFileGetListSelf(ctx, next)
-  }
+  // @Request({
+  //   path: 'get/list/self',
+  //   methods: ['post', 'get'],
+  // })
+  // async doFileGetListSelf(ctx: Context, next: Next) {
+  //   await doFileGetListSelf(ctx, next)
+  // }
 }

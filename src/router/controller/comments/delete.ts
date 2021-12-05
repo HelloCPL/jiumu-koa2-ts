@@ -12,40 +12,25 @@ import { _findCommentById } from './add'
 import { CommentFindResult } from './interface'
 
 /**
- * 删除自己的某条评论
-*/
-export const doCommentDeleteSelf = async (ctx: Context, next: Next) => {
-  const commentInfo = <CommentFindResult>await _findCommentById(ctx.params.id)
-  if (commentInfo.flag === 1 && commentInfo.reply_user === ctx.user.id) {
-    const sql1: string = `DELETE FROM comments_first WHERE id = ? AND create_user = ?`
-    const data1 = [ctx.params.id, ctx.user.id]
-    await query(sql1, data1)
-    throw new Success();
-  }
-  if (commentInfo.flag === 2 && commentInfo.reply_user === ctx.user.id) {
-    const sql2: string = `DELETE FROM comments_second WHERE id = ? AND create_user = ?`
-    const data2 = [ctx.params.id, ctx.user.id]
-    await query(sql2, data2)
-    throw new Success();
-  }
-  throw new ExceptionForbidden({ message: Message.forbidden })
-}
-
-/**
- * 删除指定某条评论，不管谁的评论均可删除
+ * 删除指定某条评论
 */
 export const doCommentDeleteById = async (ctx: Context, next: Next) => {
   const commentInfo = <CommentFindResult>await _findCommentById(ctx.params.id)
+  let sql = ''
+  let data = []
+  let sqlWhere = ''
+  if (ctx.params.userId)
+    sqlWhere = ' AND create_user = ?'
   if (commentInfo.flag === 1) {
-    const sql1: string = `DELETE FROM comments_first WHERE id = `
-    const data1 = [ctx.params.id]
-    await query(sql1, data1)
-    throw new Success();
+    sql = `DELETE FROM comments_first WHERE id = ? ${sqlWhere}`
+    data = [ctx.params.id, ctx.params.userId]
   }
   if (commentInfo.flag === 2) {
-    const sql2: string = `DELETE FROM comments_second WHERE id = ?`
-    const data2 = [ctx.params.id]
-    await query(sql2, data2)
+    sql = `DELETE FROM comments_second WHERE id = ? ${sqlWhere}`
+    data = [ctx.params.id, ctx.params.userId]
+  }
+  if (sql) {
+    await query(sql, data)
     throw new Success();
   }
   throw new ExceptionForbidden({ message: Message.forbidden })

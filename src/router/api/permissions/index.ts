@@ -10,7 +10,8 @@ import { doPermissionAddConvert, doPermissionUpdateConvert, doPermissionDeleteCo
 import { doPermissionAdd } from '../../controller/permissions/add'
 import { doPermissionUpdate } from '../../controller/permissions/update'
 import { doPermissionDelete } from '../../controller/permissions/delete'
-import { doPermissionGetOne, doPermissionGetByParentCode } from '../../controller/permissions/get'
+import { doPermissionGetOne, doPermissionGetList } from '../../controller/permissions/get'
+import { doRolePermissiongetAllPermissionByUserId } from '../../controller/roles-permissions/get';
 
 @Prefix('permission')
 export default class API {
@@ -57,12 +58,22 @@ export default class API {
     await doPermissionGetOne(ctx, next)
   }
 
-  // 5 获取某类权限
+  // 5 获取我的所有权限列表
   @Request({
-    path: 'get/byparentcode',
+    path: 'get/all/self',
     methods: ['get', 'post']
   })
-  async doPermissionGetByParentCode(ctx: Context, next: Next) {
-    await doPermissionGetByParentCode(ctx, next)
+  async doPermissionGetAllSelf(ctx: Context, next: Next) {
+    ctx.params.userId = ctx.user.id
+    await doRolePermissiongetAllPermissionByUserId(ctx, next)
+  }
+
+  // 6 获取权限列表
+  @Request({
+    path: 'get/list',
+    methods: ['get', 'post']
+  })
+  async doPermissionGetList(ctx: Context, next: Next) {
+    await doPermissionGetList(ctx, next)
   }
 }

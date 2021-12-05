@@ -11,6 +11,7 @@ import { doMenuAdd } from '../../controller/menus/add'
 import { doMenuUpdate } from '../../controller/menus/update'
 import { doMenuDelete } from '../../controller/menus/delete'
 import { doMenuGetOne, doMenuGetByParentCode } from '../../controller/menus/get'
+import { doRoleMenugetAllMenuByUserId } from '../../controller/roles-menus/get';
 
 @Prefix('menu')
 export default class API {
@@ -57,7 +58,17 @@ export default class API {
     await doMenuGetOne(ctx, next)
   }
 
-  // 5 获取某类菜单
+  // 5 获取我的所有菜单
+  @Request({
+    path: 'get/all/self',
+    methods: ['get', 'post']
+  })
+  async doMenuGetAllSelf(ctx: Context, next: Next) {
+    ctx.params.userId = ctx.user.id
+    await doRoleMenugetAllMenuByUserId(ctx, next)
+  }
+
+  // 6 获取某类菜单
   @Request({
     path: 'get/byparentcode',
     methods: ['get', 'post']

@@ -69,13 +69,15 @@ export const getQuestionList = async (options: QuestionListParams): Promise<Ques
   // 处理keyword参数
   const sqlParamsKeyword = getSelectWhereAsKeywordData({
     valid: ['t1.title', 't4.username'],
-    data: options
-  }, 'OR', 'AND')
+    data: options,
+    prefix: 'AND'
+  })
   // 处理普通where参数
   const sqlParams = getSelectWhereData({
     valid: ['t1.create_user', 't1.is_draft'],
-    data: options
-  }, 'AND', 'AND')
+    data: options,
+    prefix: 'AND'
+  })
   let whereSQL = ''
   let whereData: any[] = []
   if (options.hasOwnProperty('isSecret')) {

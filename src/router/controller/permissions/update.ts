@@ -16,7 +16,7 @@ import { getUpdateSetData } from '../../../utils/handle-sql'
 export const doPermissionUpdate = async (ctx: Context, next: Next) => {
   ctx.params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
-    valid: ['code', 'parent_code', 'label', 'href', 'sort', 'update_time', 'remarks'],
+    valid: ['code', 'label', 'href', 'sort', 'update_time', 'remarks'],
     data: ctx.params
   })
   const sql: string = `UPDATE permissions SET ${sqlParams.sql} WHERE id = ?`

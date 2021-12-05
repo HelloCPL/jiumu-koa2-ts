@@ -18,6 +18,12 @@ export const doTagGetByCode = async (ctx: Context, next: Next) => {
   throw new Success({ data });
 }
 
+// 获取我的所有标签
+export const doTagGetAllSelf = async (ctx: Context, next: Next) => {
+  const data = await getAllTagByUserId({ userId: ctx.user.id })
+  throw new Success({ data });
+}
+
 // 获取某类标签
 export const doTagGetByParentCode = async (ctx: Context, next: Next) => {
   const parentCode = ctx.params.parentCode || ''

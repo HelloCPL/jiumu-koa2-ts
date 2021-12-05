@@ -49,8 +49,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 菜单id |
-| code | string | 是 | 菜单code，不能重复 |
-| label | string | 是 | 菜单说明 |
+| code | string | 否 | 菜单code，不能重复 |
+| label | string | 否 | 菜单说明 |
 | parent_code | string | 否 | 父级菜单code |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
@@ -123,6 +123,7 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 菜单id |
 | parentCode | string | 父级菜单code |
+| parentLabel | string | 父级菜单描述 |
 | code | string | 菜单code |
 | label | string | 菜单描述 |
 | sort | number | 排序，值越小越前 |
@@ -140,6 +141,7 @@
   "data": {
     "id": "be9dc1de-2046-46c3-8d32-ffe2b3e29558",
     "parentCode": "system",
+    "parentLabel": "系统标签",
     "code": "system-user",
     "label": "用户管理",
     "sort": 1,
@@ -148,6 +150,64 @@
     "terminal": "管理端",
     "remarks": null
   },
+  "total": 0
+}
+```
+
+## ---------------- 获取我的所有菜单 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 获取我的所有菜单
+
+#### 请求
+
+- `get | post` 
+- `menu/get/all/self`
+
+#### 参数
+无
+
+#### 返回字段说明
+
+- 返回数组或[]，数组有子级
+
+ 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | string | 菜单id |
+| parentCode | string | 父级菜单code |
+| parentLabel | string | 父级菜单描述 |
+| code | string | 菜单code |
+| label | string | 菜单描述 |
+| sort | number | 排序，值越小越前 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
+| children | array/[] | 子级 |
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": [
+    {
+      "id": "11db4b95-a51a-493e-918a-ecc517417dda",
+      "parentCode": "system",
+      "parentLabel", "用户管理",
+      "code": "system-tag",
+      "label": "标签管理",
+      "sort": 1,
+      "createTime": "2021-08-15 01:06:15",
+      "updateTime": "2021-08-15 01:06:15",
+      "terminal": "管理端",
+      "remarks": null,
+      "children": []
+    }
+  ],
   "total": 0
 }
 ```
@@ -178,12 +238,12 @@
 #### 返回字段说明
 
 - 返回数组或[]，数组有子级
-- 按 `sort升序、updateTime更新时间降序` 排序
 
  参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 菜单id |
 | parentCode | string | 父级菜单code |
+| parentLabel | string | 父级菜单描述 |
 | code | string | 菜单code |
 | label | string | 菜单描述 |
 | sort | number | 排序，值越小越前 |
@@ -203,6 +263,7 @@
     {
       "id": "11db4b95-a51a-493e-918a-ecc517417dda",
       "parentCode": "system",
+      "parentLabel", "用户管理",
       "code": "system-tag",
       "label": "标签管理",
       "sort": 1,

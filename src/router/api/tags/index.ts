@@ -10,7 +10,7 @@ import { doTagAddConvert, doTagUpdateConvert, doTagDeleteConvert } from '../../c
 import { doTagAdd } from '../../controller/tags/add'
 import { doTagUpdate } from '../../controller/tags/update'
 import { doTagDelete } from '../../controller/tags/delete'
-import { doTagGetByCode, doTagGetByParentCode } from '../../controller/tags/get'
+import { doTagGetByCode, doTagGetAllSelf, doTagGetByParentCode } from '../../controller/tags/get'
 
 @Prefix('tag')
 export default class API {
@@ -57,7 +57,16 @@ export default class API {
     await doTagGetByCode(ctx, next)
   }
 
-  // 5 获取某类标签
+  // 5 获取我的所有标签
+  @Request({
+    path: 'get/all/self',
+    methods: ['get', 'post']
+  })
+  async doTagGetAllSelf(ctx: Context, next: Next) {
+    await doTagGetAllSelf(ctx, next)
+  }
+
+  // 6 获取某类标签
   @Request({
     path: 'get/byparentcode',
     methods: ['get', 'post']

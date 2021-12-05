@@ -10,7 +10,7 @@ import { doRoleAddConvert, doRoleUpdateConvert, doRoleDeleteConvert } from '../.
 import { doRoleAdd } from '../../controller/roles/add'
 import { doRoleUpdate } from '../../controller/roles/update'
 import { doRoleDelete } from '../../controller/roles/delete'
-import { doRoleGetOne, doRoleGetList } from '../../controller/roles/get'
+import { doRoleGetOne, doRoleGetAllSelf, doRoleGetList } from '../../controller/roles/get'
 
 @Prefix('role')
 export default class API {
@@ -57,7 +57,16 @@ export default class API {
     await doRoleGetOne(ctx, next)
   }
 
-  // 5 获取所有角色
+  // 5 我的所有角色
+  @Request({
+    path: 'get/all/self',
+    methods: ['get', 'post']
+  })
+  async doRoleGetAllSelf(ctx: Context, next: Next) {
+    await doRoleGetAllSelf(ctx, next)
+  }
+
+  // 6 获取所有角色
   @Request({
     path: 'get/list',
     methods: ['get', 'post']

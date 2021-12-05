@@ -45,7 +45,7 @@ export const doMenuGetByParentCode = async (ctx: Context, next: Next) => {
  * 获取指定的某个菜单，返回对象或null
 */
 export const getMenuOne = async (id: string): Promise<MenuOptions | null> => {
-  const sql: string = `SELECT * FROM menus WHERE code = ? OR id = ?`
+  const sql: string = `SELECT t1.id, t1.parent_code, t2.label as parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.code = ? OR t1.id = ?`
   const data = [id, id]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -65,7 +65,7 @@ export const getMenuByParentCode = async (parentCode: string): Promise<MenuListO
         noThrow: true
       })
       if (hasChildren) {
-        const sql = `SELECT * FROM menus WHERE parent_code = ? ORDER BY sort, update_time DESC`
+        const sql = `SELECT t1.id, t1.parent_code, t2.label as parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.parent_code = ?`
         const res: MenuListOptions[] = <MenuListOptions[]>await query(sql, arr[i].code)
         arr[i].children = res
         await _handleGetData(arr[i].children)

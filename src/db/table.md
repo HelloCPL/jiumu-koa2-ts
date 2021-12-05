@@ -196,9 +196,10 @@
 |:---:|:---:|:---:|:---:|
 | id | v64 | 是 | 一级评论id |
 | target_id | v64 | 是 | 评论的目标id |
-| content | v255 | 是 | 评论内容 |
+| content | text | 是 | 评论内容 |
 | create_user | v64 | 是 | 创建人id |
 | type | v64 | 是 | 评论来源类型，使用系统标签资源来源标签500范围，用于后面评论统计 |
+| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
 | create_time | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |
 
@@ -212,7 +213,7 @@
 | comment_first_target_id | v64 | 是 | 一级评论的目标id，用于统计评论目标的总数 |
 | comment_first_id | v64 | 是 | 一级评论id，用于统计第一级别评论的评论总数 |
 | reply_comment_id | v64 | 是 | 回复的评论id，即回复哪条评论就是哪条的评论id |
-| reply_content | v255 | 是 | 回复的评论内容 |
+| reply_content | text | 是 | 回复的评论内容 |
 | create_user | v64 | 是 | 创建人id，即回复评论人 |
 | reply_user | v64 | 是 | 被回复的目标人id |
 | create_time | v64 | 是 | 创建时间 |

@@ -8,19 +8,22 @@ import { Context, Next } from 'koa'
 import { LinValidator } from '../lin-validator'
 import { DataOptions } from './interface'
 import { getTerminal } from '../../utils/tools'
+import xss from '../../utils/xss'
+import _ from 'lodash'
 
 /**
  * 挂载参数
  * 即 ctx.data 包含 {body query path header}
 */
 export const mountParameter = async (ctx: Context, next: Next) => {
+  // 记录日志
+  global.requestCount++
+  global.requestStart = process.hrtime.bigint()
+  // 处理参数
   const v: any = await new LinValidator().validate(ctx)
   ctx.data = <DataOptions>v.data
   ctx.params = getParams(ctx)
   ctx.terminal = getTerminal(ctx)
-  // 记录日志
-  global.requestCount++
-  global.requestStart = process.hrtime.bigint()
   await next()
 }
 
@@ -35,5 +38,28 @@ export const getParams = (ctx: Context): ObjectAny => {
     params = ctx.data.query
   else if (ctx.request.method === 'POST' || ctx.request.method === 'PUT')
     params = { ...ctx.data.query, ...ctx.data.body }
+  handleXSS(params)
   return params
+}
+
+// 递归对参数进行xss处理
+function handleXSS(obj: any) {
+  // 如果是对象
+  if (_.isPlainObject(obj)) {
+    for (let key in (<ObjectAny>obj)) {
+      if (_.isString(obj[key])) {
+        obj[key] = xss.process(obj[key])
+      } else if (_.isPlainObject(obj[key]) || _.isArray(obj[key])) {
+        handleXSS(obj[key])
+      }
+    }
+  } else if (_.isArray(obj)) {
+    for (let key = 0, len = obj.length; key < len; key++) {
+      if (_.isString(obj[key])) {
+        obj[key] = xss.process(obj[key])
+      } else if (_.isPlainObject(obj[key]) || _.isArray(obj[key])) {
+        handleXSS(obj[key])
+      }
+    }
+  }
 }
