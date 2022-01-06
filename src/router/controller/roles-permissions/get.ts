@@ -28,7 +28,7 @@ export const doRolePermissionGetAllRoleByPermissionId = async (ctx: Context, nex
 // 获取指定用户关联的所有权限
 export const doRolePermissiongetAllPermissionByUserId = async (ctx: Context, next: Next) => {
   const userList = await getAllRoleByUserId({ userId: ctx.params.userId })
-  const roleIds = _.join(_.map(userList, item => item.id))
+  const roleIds = _.join(_.map(userList.data, item => item.id))
   const data = await getAllPermissionByRoleId({ roleIds: roleIds })
   throw new Success({ data });
 }

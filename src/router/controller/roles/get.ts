@@ -13,6 +13,7 @@ import { getAllRoleByPermissionId } from '../roles-permissions/get'
 import { getAllRoleByUserId } from '../users-roles/get'
 import { getAllRoleByMenuId } from '../roles-menus/get'
 import _ from 'lodash'
+import { UserRoleByUserIdParams } from '../users-roles/interface';
 
 // 获取指定的某个角色
 export const doRoleGetOne = async (ctx: Context, next: Next) => {
@@ -20,11 +21,16 @@ export const doRoleGetOne = async (ctx: Context, next: Next) => {
   throw new Success({ data });
 }
 
-// 我的所有角色
+// 我的角色列表
 export const doRoleGetAllSelf = async (ctx: Context, next: Next) => {
   // const data = await getMenuOne(ctx.params.id)
-  const data = await getAllRoleByUserId({ userId: ctx.user.id })
-  throw new Success({ data });
+  const params: UserRoleByUserIdParams = {
+    userId: ctx.params.id,
+    pageNo: ctx.params.pageNo * 1 || 1,
+    pageSize: ctx.params.pageSize * 1 || 10,
+  }
+  const data = await getAllRoleByUserId(params)
+  throw new Success( data )
 }
 
 // 获取角色列表
@@ -48,7 +54,7 @@ export const doRoleGetList = async (ctx: Context, next: Next) => {
   } else if (ctx.params.userId) {
     // 增加`checked` 字段，表示是否与该用户关联
     const userList = await getAllRoleByUserId({ userId: ctx.params.userId })
-    const roleIdsList = _.map(userList, item => item.id)
+    const roleIdsList = _.map(userList.data, item => item.id)
     _handleRoleData(data.data, roleIdsList)
   }
   throw new Success({ total: data.total, data: data.data });
@@ -81,7 +87,7 @@ export const getMenuList = async (params: RoleParamsOptions): Promise<RoleReturn
     valid: ['label'],
     data: params,
   })
-  const sql1 = `SELECT COUNT(id) as total FROM roles ${sqlParams.sql}`
+  const sql1 = `SELECT COUNT(id) AS total FROM roles ${sqlParams.sql}`
   const data1 = [...sqlParams.data]
   const sql2 = `SELECT id, code, ${orderParams.orderValid} sort, create_time, update_time, terminal, remarks FROM roles ${sqlParams.sql} ORDER BY ${orderParams.orderSql} sort, update_time DESC LIMIT ?, ?`
   const data2 = [...data1, pageNo, params.pageSize]

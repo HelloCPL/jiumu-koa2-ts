@@ -17,7 +17,7 @@ import { CommentFindResult } from './interface'
 export const doCommentDeleteById = async (ctx: Context, next: Next) => {
   const commentInfo = <CommentFindResult>await _findCommentById(ctx.params.id)
   let sql = ''
-  let data = []
+  let data: any = []
   let sqlWhere = ''
   if (ctx.params.userId)
     sqlWhere = ' AND create_user = ?'

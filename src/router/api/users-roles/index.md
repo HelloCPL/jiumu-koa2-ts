@@ -9,7 +9,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-role/add`
 
 #### 参数
@@ -40,7 +40,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-role/delete`
 
 #### 参数
@@ -69,7 +69,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-role/get/allrole/byuserid`
 
 #### 参数
@@ -77,6 +77,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | userId | string | 是 | 用户id |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 #### 返回字段说明
 
@@ -125,7 +127,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-role/get/alluser/byroleid`
 
 #### 参数

@@ -50,7 +50,7 @@ export const clientSet = (key: string, value: any) => {
         })
         reject(err)
       }
-      // @ts-ignore 
+      // @ts-ignore
       else resolve(null)
 
     })
@@ -92,7 +92,7 @@ function _handleGetItem(value: any): any {
   try {
     value = JSON.parse(value)
   } catch (e) {
-    // 
+    //
   }
   return value
 }
@@ -110,11 +110,11 @@ export const clientDel = (key: string) => {
           })
           reject(err)
         }
-        // @ts-ignore 
+        // @ts-ignore
         else resolve(null)
       })
     } catch (e) {
-      // @ts-ignore 
+      // @ts-ignore
       reject(e)
     }
   })

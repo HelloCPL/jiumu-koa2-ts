@@ -28,7 +28,7 @@ export const doRoleMenuGetAllRoleByMenuId = async (ctx: Context, next: Next) => 
 // 获取指定用户关联的所有菜单
 export const doRoleMenugetAllMenuByUserId = async (ctx: Context, next: Next) => {
   const userList = await getAllRoleByUserId({ userId: ctx.params.userId })
-  const roleIds = _.join(_.map(userList, item => item.id))
+  const roleIds = _.join(_.map(userList.data, item => item.id))
   const data = await getAllMenuByRoleId({ roleIds: roleIds }, true)
   throw new Success({ data });
 }

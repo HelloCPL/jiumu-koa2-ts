@@ -30,7 +30,7 @@ export const doPermissionGetList = async (ctx: Context, next: Next) => {
   if (ctx.params.userId) {
     // 若传 userId 增加`checked` 字段，表示是否与该用户关联
     const userRoleList = await getAllRoleByUserId({ userId: ctx.params.userId })
-    const roleIds = _.join(_.map(userRoleList, item => item.id))
+    const roleIds = _.join(_.map(userRoleList.data, item => item.id))
     const rolePermissionList = await getAllPermissionByRoleId({ roleIds: roleIds })
     const rolePermissionIdsList = _.map(rolePermissionList, item => item.id)
     _handleRolePermission(data.data, rolePermissionIdsList)
@@ -71,7 +71,7 @@ export const getPermissionList = async (params: PermissionParmsOptions): Promise
     valid: ['label'],
     data: params,
   })
-  const sql1 = `SELECT COUNT(id) as total FROM permissions ${sqlParams.sql}`
+  const sql1 = `SELECT COUNT(id) AS total FROM permissions ${sqlParams.sql}`
   const data1 = [...sqlParams.data]
   const sql2 = `SELECT id, code, ${orderParams.orderValid} href, sort, create_time, update_time, terminal, remarks FROM permissions ${sqlParams.sql} ORDER BY ${orderParams.orderSql} sort, update_time DESC LIMIT ?, ?`
   const data2 = [...data1, pageNo, params.pageSize]

@@ -21,7 +21,7 @@ export const doUserGetSelf = async (ctx: Context, next: Next) => {
   const userInfo = await getUserOne(ctx.user.id)
   // 获取用户拥有的所有角色列表
   const roles = await getAllRoleByUserId({ userId: ctx.user.id })
-  const roleIds = _.join(_.map(roles, item => item.id))
+  const roleIds = _.join(_.map(roles.data, item => item.id))
   // 获取用户拥有的所有权限列表
   const permissions = await getAllPermissionByRoleId({ roleIds })
   // 获取用户拥有的所有菜单列表
@@ -52,7 +52,7 @@ export const doUserGetList = async (ctx: Context, next: Next) => {
  * 获取指定的某个用户，返回对象或null
 */
 export const getUserOne = async (id: string): Promise<UserOptions | null> => {
-  const sql: string = `SELECT t1.id, t1.phone, t1.username, t1.sex, t2.label as sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code WHERE t1.id = ?`
+  const sql: string = `SELECT t1.id, t1.phone, t1.username, t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code WHERE t1.id = ?`
   const res: any = await query(sql, id)
   if (res && res.length) {
     let userInfo: UserOptions = <UserOptions>res[0]
@@ -77,9 +77,9 @@ export const getUserList = async (options: UserListParams): Promise<UserListRetu
     valid: ['t1.(phone)', 't1.username'],
     data: options,
   })
-  const sql1 = `SELECT COUNT(t1.id) as total FROM users t1 ${sqlParams.sql}`
+  const sql1 = `SELECT COUNT(t1.id) AS total FROM users t1 ${sqlParams.sql}`
   const data1 = [...sqlParams.data]
-  const sql2: string = `SELECT t1.id, ${orderParams.orderValid} t1.sex, t2.label as sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.update_time DESC LIMIT ?, ?`
+  const sql2: string = `SELECT t1.id, ${orderParams.orderValid} t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.update_time DESC LIMIT ?, ?`
   const data2 = [...sqlParams.data, pageNo, options.pageSize]
   const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])
   const targetData: UserOptions[] = <UserOptions[]>res[1]

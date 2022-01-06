@@ -14,11 +14,15 @@ export interface UserRoleOptions extends BaseOptions {
 // 用户-角色关联获取关联角色参数接口类型
 export interface UserRoleByRoleIdParams {
   roleId?: string,
-  roleIds?: string
+  roleIds?: string,
+  pageNo?: number,
+  pageSize?: number
 }
 
 // 用户-角色关联获取关联用户参数接口类型
 export interface UserRoleByUserIdParams {
   userId?: string,
-  userIds?: string
+  userIds?: string,
+  pageNo?: number,
+  pageSize?: number
 }

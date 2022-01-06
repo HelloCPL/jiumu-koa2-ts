@@ -57,9 +57,9 @@ export default class API {
     await doRoleGetOne(ctx, next)
   }
 
-  // 5 我的所有角色
+  // 5 我的角色列表
   @Request({
-    path: 'get/all/self',
+    path: 'get/list/self',
     methods: ['get', 'post']
   })
   async doRoleGetAllSelf(ctx: Context, next: Next) {

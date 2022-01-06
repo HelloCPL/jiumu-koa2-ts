@@ -5,23 +5,33 @@
 */
 
 import { Success } from '../../../utils/http-exception'
-import { query } from "../../../db";
+import { query, execTrans } from "../../../db";
 import { Context, Next } from 'koa';
 import _ from 'lodash'
-import { RoleOptions } from '../roles/interface'
+import { RoleOptions, RoleReturnOptions } from '../roles/interface'
 import { UserOptions } from '../users/interface'
 import { UserRoleOptions, UserRoleByRoleIdParams, UserRoleByUserIdParams } from './interface'
 import { getFileById } from '../files-info/get'
 
 // 获取指定权限关联的所有角色
 export const doUserRoleGetAllRoleByUserId = async (ctx: Context, next: Next) => {
-  const data = await getAllRoleByUserId({ userId: ctx.params.userId })
+  const params: UserRoleByUserIdParams = {
+    userId: ctx.params.userId,
+    pageNo: ctx.params.pageNo * 1 || 1,
+    pageSize: ctx.params.pageSize * 1 || 10,
+  }
+  const data = await getAllRoleByUserId(params)
   throw new Success({ data });
 }
 
 // 获取指定角色关联的所有用户
 export const doUserRoleGetAllUserByRoleId = async (ctx: Context, next: Next) => {
-  const data = await getAllUserByRoleId({ roleId: ctx.params.roleId })
+  const params: UserRoleByRoleIdParams = {
+    roleId: ctx.params.roleId,
+    pageNo: ctx.params.pageNo * 1 || 1,
+    pageSize: ctx.params.pageSize * 1 || 10,
+  }
+  const data = await getAllUserByRoleId(params)
   throw new Success({ data });
 }
 
@@ -29,28 +39,30 @@ export const doUserRoleGetAllUserByRoleId = async (ctx: Context, next: Next) => 
 /**
  * 根据 userId/userIds 获取所有关联的角色列表，返回数据或[]
 */
-export const getAllRoleByUserId = async (options: UserRoleByUserIdParams): Promise<RoleOptions[]> => {
-  let sql = `SELECT * FROM users_roles WHERE `
-  let data: any[] = []
+export const getAllRoleByUserId = async (options: UserRoleByUserIdParams): Promise<RoleReturnOptions> => {
+  options.pageNo = options.pageNo || 1
+  options.pageSize = options.pageSize || 10
+  const pageNo = (options.pageNo - 1) * options.pageSize
+  let whereSQL = ''
+  let whereData = []
   if (options.userId) {
-    sql += 'user_id = ?'
-    data.push(options.userId)
+    whereSQL= 't1.user_id = ?'
+    whereData.push(options.userId)
   } else if (options.userIds) {
-    sql += 'FIND_IN_SET(user_id, ?)'
-    data.push(options.userIds)
-  } else return []
-  // 先获取指定用户关联的所有角色
-  let res: UserRoleOptions[] = <UserRoleOptions[]>await query(sql, data)
-  let targetData: RoleOptions[] = []
-  if (res && res.length) {
-    // 去重
-    res = _.uniqBy(res, 'role_id')
-    // 获取关联的角色列表
-    const roleIds: string = _.join(_.map(res, item => item.role_id))
-    const sql2: string = `SELECT * FROM roles WHERE FIND_IN_SET(id, ?) ORDER BY sort, update_time DESC`
-    targetData = <RoleOptions[]>await query(sql2, roleIds)
+    whereSQL= 'FIND_IN_SET(t1.user_id, ?)'
+    whereData.push(options.userIds)
   }
-  return targetData
+  const sql1 = `SELECT COUNT(t1.id) AS total FROM users_roles t1 WHERE ${whereSQL}`
+  const sql2 = `SELECT t2.id, t2.code, t2.label, t2.sort, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_roles t1 WHERE ${whereSQL} LEFT JOIN roles t2 ON t1.role_id = t2.id LIMIT ?, ?`
+
+  const res:any = await execTrans([
+    {sql: sql1, data: [...whereSQL]},
+    {sql: sql2, data: [...whereSQL, pageNo, options.pageSize]}
+  ])
+  return {
+    total: res[0][0]['total'],
+    data: res[1]
+  }
 }
 
 /**
@@ -74,7 +86,7 @@ export const getAllUserByRoleId = async (options: UserRoleByRoleIdParams): Promi
     res = _.uniqBy(res, 'user_id')
     // 获取关联的用户列表
     const userIds: string = _.join(_.map(res, item => item.user_id))
-    const sql2: string = `SELECT t1.id, t1.phone, t1.username, t1.sex, t2.label as sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code  WHERE FIND_IN_SET(t1.id, ?) ORDER BY t1.update_time DESC`
+    const sql2: string = `SELECT t1.id, t1.phone, t1.username, t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code  WHERE FIND_IN_SET(t1.id, ?) ORDER BY t1.update_time DESC`
     targetData = <UserOptions[]>await query(sql2, userIds)
     for (let i = 0, len = targetData.length; i < len; i++) {
       targetData[i]['avatar'] = await getFileById(targetData[i]['avatar'], targetData[i]['id'])
