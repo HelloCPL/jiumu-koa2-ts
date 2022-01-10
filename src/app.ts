@@ -14,7 +14,6 @@ import InitGlobal from './global'
 import { catchError } from './lib/catch-error'
 import { Route } from './router'
 import Static from 'koa-static'
-import path from 'path'
 import { verifyStatic } from './lib/verify-auth'
 import { initCompress } from './lib/compress'
 
@@ -40,9 +39,8 @@ route.init()
  * 设置静态资源访问
  * 访问如 http://localhost:3000/files/395d00a0-6918-11eb-a413-3be76f9212d3.jpg
 */
-const staticPath = path.join(__dirname, '../static/')
 app.use(verifyStatic) // 校验静态资源访问权限
-app.use(Static(staticPath))
+app.use(Static(Config.STATIC_URL))
 // 启用 gizp 压缩
 initCompress(app)
 

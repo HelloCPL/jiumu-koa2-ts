@@ -42,4 +42,5 @@ export interface ConfigOptions extends ObjectAny {
   TOKEN: ConfigTokenOptions,
   ALLOW_MULTIPLE: boolean,
   BASE_URL: string,
+  STATIC_URL: string
 }

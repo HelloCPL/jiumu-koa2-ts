@@ -103,6 +103,20 @@ export function getSuffix(path: string, separator = '.'): string {
   return suffix
 }
 
+// 根据文件名获取资源存放位置
+export function getStaticPlace(fileName: string) {
+  const suffix = getSuffix(fileName)
+  const imagesSuffix = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'tiff', 'dxf', 'cgm', 'cdr', 'eps', 'emf', 'pict', 'raw',]
+  const videoSuffix = ['wmv', 'asf', 'asx', 'rm', 'ram', 'rmvb', 'mpg', 'mpeg', 'mpe', '3gp', 'mov', 'mp4', 'm4v', 'avi', 'dat', 'mkv', 'flv', 'vob', 'qt', 'navi', 'divx']
+  if (imagesSuffix.indexOf(suffix) !== -1) {
+    return 'images'
+  } else if (videoSuffix.indexOf(suffix) !== -1) {
+    return 'videos'
+  } else {
+    return 'files'
+  }
+}
+
 // 生成唯一id标识
 export function getUuId(): string {
   return uuidv4()

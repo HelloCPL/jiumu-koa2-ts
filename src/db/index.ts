@@ -33,14 +33,14 @@ const pool: Pool = MySQL.createPool({
  * 普通查询
  * 参数 sql 查询语句；data? 查询数据 字符串或数据
 */
-export function query(sql: string, data?: any) {
+export function query(sql: string, data?: any, noThrow?: boolean) {
   return new Promise((resolve, reject) => {
     pool.query(sql, data, async (err, results: any) => {
       if (err)
         return _throwError(reject, { sql, data, err })
       // 新增或更新或删除数据失败抛出错误
       const sqlStr = sql.toUpperCase()
-      if ((sqlStr.startsWith('INSERT') || sqlStr.startsWith('UPDATE') || sqlStr.startsWith('DELETE')) && results.affectedRows == 0)
+      if ((sqlStr.startsWith('INSERT') || sqlStr.startsWith('UPDATE') || sqlStr.startsWith('DELETE')) && results.affectedRows == 0 && !noThrow)
         return _throwError(reject, { message: Message.errorDoing, sql, data, err })
       // 记录日志
       Logger.query({ message: Message.success, sql, data })
@@ -106,7 +106,7 @@ function _handleExceTransSQLParams(reject: any, connection: PoolConnection, sqlL
         else {
           // 新增或更新或删除数据失败抛出错误
           const sqlStr = item.sql.toUpperCase()
-          if ((sqlStr.startsWith('INSERT') || sqlStr.startsWith('UPDATE') || sqlStr.startsWith('DELETE')) && results.affectedRows == 0)
+          if ((sqlStr.startsWith('INSERT') || sqlStr.startsWith('UPDATE') || sqlStr.startsWith('DELETE')) && results.affectedRows == 0 && !item.noThrow)
             _handleExceTransRollback(reject, connection, {
               message: Message.errorDoing,
               sql: item.sql,

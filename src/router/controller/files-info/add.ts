@@ -9,13 +9,15 @@ import path from 'path'
 import { Context, Next } from "koa";
 import { Success } from '../../../utils/http-exception'
 import { validateRange } from '../../../utils/validator'
-import { getFileRandomName, getSuffix, getUuId, formatDate } from "../../../utils/tools";
+import { getFileRandomName, getSuffix, getUuId, formatDate, getStaticPlace } from "../../../utils/tools";
 import { query } from "../../../db";
 import { File } from 'formidable'
 import _ from 'lodash'
 import { getFileById } from './get'
 import { Terminal } from '../../../enums';
 import { FileInfoOptions } from './interface'
+import { dirExist } from '../../../utils/dir-exist';
+import Config from '../../../config'
 
 /**
  * 文件上传 可上传一个或多个文件 返回数组格式
@@ -42,21 +44,25 @@ export const doFileAdd = async (ctx: Context, next: Next) => {
 async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | null> {
   const params: any = await validateRange([
     { value: ctx.data.query.isSecret, range: ['0', '1'], default: '0' },
-    { value: ctx.data.query.staticPlace, range: ['files', 'images', 'videos', 'editors'], default: 'files' }
+    { value: ctx.data.query.staticPlace, range: ['files', 'images', 'videos', 'editors', 'sources'], default: '' }
   ], true)
   const isSecret = params[0]
-  const staticPlace = params[1]
+  const staticPlace = params[1] || getStaticPlace(<string>file.name)
+  const createTime = formatDate(new Date())
   // 先写入数据库
   const id = getUuId()
   // @ts-ignore 
   const filePath = getFileRandomName(file.name)
-  const sql = `INSERT files_info (id, file_path, file_name, file_size, suffix,  static_place, create_user, is_secret, create_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  const sql = `INSERT files_info (id, file_path, file_name, file_size, suffix,static_place, create_user, is_secret, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   // @ts-ignore 
-  const data = [id, filePath, file.name, file.size, getSuffix(file.name), staticPlace, ctx.user.id, isSecret, formatDate(new Date()), Terminal[ctx.terminal], ctx.data.query.remarks]
+  const data = [id, filePath, file.name, file.size, getSuffix(file.name), staticPlace, ctx.user.id, isSecret, createTime, createTime, Terminal[ctx.terminal], ctx.data.query.remarks]
   await query(sql, data)
   // 再创建可读流
   const reader: ReadStream = fs.createReadStream(file.path)
-  const savePath = path.join(__dirname, `../../../../static/${staticPlace}`, filePath)
+  const dir = path.join(Config.STATIC_URL, `${staticPlace}`)
+  // 判断目录是否存在，不存在则创建
+  await dirExist(dir)
+  const savePath = path.join(dir, filePath)
   const upStream: WriteStream = fs.createWriteStream(savePath)
   reader.pipe(upStream)
   const fileInfo = await getFileById(id, ctx.user.id)

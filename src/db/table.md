@@ -48,6 +48,7 @@
 | is_secret | v64 | 否 | 是否为私密文件，默认0 |
 | check_valid_time | mediumint | 是 | 为私密文件时链接有效时间，单位天，默认3天 |
 | create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 

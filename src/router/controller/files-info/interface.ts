@@ -11,6 +11,7 @@ export interface FileInfoOptions extends BaseOptions {
   file_name?: string,
   file_size?: number,
   suffix?: string,
+  type?: string,
   static_place: string,
   create_user: string,
   is_secret?: string,
@@ -28,4 +29,12 @@ export interface FileListParamsOptions {
 export interface FileListReturnOptions {
   total: number,
   data: FileInfoOptions[]
+}
+
+// 文件修改参数接口类型
+export interface FileUpdateOptions {
+  ids: string,
+  isSecret?: string,
+  remarks?: string,
+  updateTime?: string
 }

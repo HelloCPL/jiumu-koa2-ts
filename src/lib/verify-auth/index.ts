@@ -48,7 +48,7 @@ function _getFullPath(path: string): string {
 */
 export const verifyStatic = async (ctx: Context, next: Next) => {
   const url: string = ctx.request.url
-  if (url.startsWith('/files/') || url.startsWith('/images/') || url.startsWith('/videos/') || url.startsWith('/editors/')) {
+  if (url.startsWith('/files/') || url.startsWith('/images/') || url.startsWith('/videos/') || url.startsWith('/editors/') || url.startsWith('/sources/')) {
     let filePath = getSuffix(_getFullPath(url), '/')
     const sql: string = `SELECT is_secret, create_user FROM files_info WHERE file_path = ?`
     const res: any = await query(sql, filePath)

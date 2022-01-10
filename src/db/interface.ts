@@ -16,5 +16,6 @@ export interface ErrorOptions extends ExceptionOptions {
 // 事务查询接口
 export interface SQLOptions {
   sql: string,
-  data?: any[] | string
+  data?: any[] | string,
+  noThrow?: boolean
 }
