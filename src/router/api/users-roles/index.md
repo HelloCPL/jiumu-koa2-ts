@@ -104,17 +104,17 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "17e64a2d-7813-4700-be4e-dfaa454a5c47",
-      "code": "workers",
-      "label": "工作人员",
+      "id": "d6bb3323-b581-4b46-b7e4-4da9a899ea6c",
+      "code": "super",
+      "label": "超级管理员",
       "sort": 1,
-      "createTime": "2021-08-12 16:05:48",
-      "updateTime": "2021-08-12 16:05:48",
+      "createTime": "2021-08-12 16:00:37",
+      "updateTime": "2021-08-12 16:00:37",
       "terminal": "管理端",
       "remarks": null
     }
   ],
-  "total": 0
+  "total": 3
 }
 ```
 

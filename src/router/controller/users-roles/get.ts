@@ -21,7 +21,7 @@ export const doUserRoleGetAllRoleByUserId = async (ctx: Context, next: Next) => 
     pageSize: ctx.params.pageSize * 1 || 10,
   }
   const data = await getAllRoleByUserId(params)
-  throw new Success({ data });
+  throw new Success(data);
 }
 
 // 获取指定角色关联的所有用户
@@ -53,11 +53,11 @@ export const getAllRoleByUserId = async (options: UserRoleByUserIdParams): Promi
     whereData.push(options.userIds)
   }
   const sql1 = `SELECT COUNT(t1.id) AS total FROM users_roles t1 WHERE ${whereSQL}`
-  const sql2 = `SELECT t2.id, t2.code, t2.label, t2.sort, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_roles t1 WHERE ${whereSQL} LEFT JOIN roles t2 ON t1.role_id = t2.id LIMIT ?, ?`
+  const sql2 = `SELECT t2.id, t2.code, t2.label, t2.sort, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_roles t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE ${whereSQL} LIMIT ?, ?`
 
   const res:any = await execTrans([
-    {sql: sql1, data: [...whereSQL]},
-    {sql: sql2, data: [...whereSQL, pageNo, options.pageSize]}
+    {sql: sql1, data: [...whereData]},
+    {sql: sql2, data: [...whereData, pageNo, options.pageSize]}
   ])
   return {
     total: res[0][0]['total'],

@@ -2,7 +2,7 @@
  * @description: 路由统一注册
  * @author chen
  * @update 2021-08-06 16:09:23
-*/
+ */
 
 import Koa from 'koa'
 import Router from 'koa-router'
@@ -17,8 +17,8 @@ const router = new Router()
 
 /**
  * 定义固定的前缀字段
-*/
-export const symbolRoutePrefix: symbol = Symbol("routePrefix");
+ */
+export const symbolRoutePrefix: symbol = Symbol('routePrefix')
 
 export class Route {
   // 存储修饰后的路由
@@ -33,10 +33,10 @@ export class Route {
 
   /**
    * 自动注册路由 初始化
-  */
+   */
   init() {
     // 加载 api 接口
-    glob.sync(path.join(__dirname, './api/**/*.js')).forEach(item => {
+    glob.sync(path.join(__dirname, './api/**/*.js')).forEach((item) => {
       require(item)
     })
     for (let [config, controller] of Route.__DecoratedRouters) {
@@ -51,17 +51,16 @@ export class Route {
 
       //  拼接路由集合
       const routePaths: string[] = []
-      config.terminals.forEach(value => {
+      config.terminals.forEach((value) => {
         routePaths.push(toPath(value, config.target[symbolRoutePrefix], config.path))
       })
       // 不做校验的路由集合
-      if (config.unless)
-        global.unlessPath.push(...routePaths)
+      if (config.unless) global.unlessPath.push(...routePaths)
 
       // 匹配路由
-      controllers.forEach(_controller => {
-        routePaths.forEach(path => {
-          config.methods.forEach(method => {
+      controllers.forEach((_controller) => {
+        routePaths.forEach((path) => {
+          config.methods.forEach((method) => {
             // @ts-ignore
             this.router[method](path, _controller)
           })
@@ -70,6 +69,7 @@ export class Route {
     }
 
     // 组装匹配好的路由
+
     this.app.use(this.router.routes())
     // 处理不存在的路由
     this.app.use(this.router.allowedMethods())
