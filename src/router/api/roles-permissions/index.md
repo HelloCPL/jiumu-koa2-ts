@@ -9,7 +9,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `role-permission/add`
 
 #### 参数
@@ -39,7 +39,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `role-permission/delete`
 
 #### 参数
@@ -68,7 +68,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `role-permission/get/allpermission/byroleid`
 
 #### 参数
@@ -76,6 +76,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | roleId | string | 是 | 角色id |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 - 返回数组或[]
 - 按 `sort升序、updateTime更新时间降序` 排序
@@ -83,9 +85,9 @@
  参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 权限id |
-| parentCode | string | 父级权限code |
 | code | string | 权限code |
 | label | string | 权限描述 |
+| href | string | 关联权限路径 |
 | sort | number | 排序，值越小越前 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
@@ -100,19 +102,18 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "3c47e7be-3327-4ecc-bd6e-0a9618e87227",
-      "parentCode": "0",
-      "code": "permission:update",
-      "label": "权限修改",
-      "href": "/permission/update",
+      "id": "50253b99-c288-4206-b730-350157a1b56a",
+      "code": "permission:get:byparentcode",
+      "label": "获取某类权限",
+      "href": "/permission/get/byparentcode",
       "sort": 1,
-      "createTime": "2021-08-12 14:56:32",
-      "updateTime": "2021-08-12 14:56:32",
+      "createTime": "2021-08-12 15:08:06",
+      "updateTime": "2021-08-12 15:08:06",
       "terminal": "管理端",
       "remarks": null
     }
   ],
-  "total": 0
+  "total": 4
 }
 ```
 
@@ -125,7 +126,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `role-permission/get/allrole/bypermissionid`
 
 #### 参数
@@ -133,6 +134,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | permissionId | string | 是 | 权限id |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 #### 返回字段说明
 
@@ -181,7 +184,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `role-permission/get/allpermission/byuserid`
 
 #### 参数
@@ -189,6 +192,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | userId | string | 是 | 用户id |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 - 返回数组或[]
 - 按 `sort升序、updateTime更新时间降序` 排序
@@ -196,9 +201,9 @@
  参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 权限id |
-| parentCode | string | 父级权限code |
 | code | string | 权限code |
 | label | string | 权限描述 |
+| href | string | 关联权限路径 |
 | sort | number | 排序，值越小越前 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
@@ -213,19 +218,18 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "3c47e7be-3327-4ecc-bd6e-0a9618e87227",
-      "parentCode": "0",
-      "code": "permission:update",
-      "label": "权限修改",
-      "href": "/permission/update",
+      "id": "50253b99-c288-4206-b730-350157a1b56a",
+      "code": "permission:get:byparentcode",
+      "label": "获取某类权限",
+      "href": "/permission/get/byparentcode",
       "sort": 1,
-      "createTime": "2021-08-12 14:56:32",
-      "updateTime": "2021-08-12 14:56:32",
+      "createTime": "2021-08-12 15:08:06",
+      "updateTime": "2021-08-12 15:08:06",
       "terminal": "管理端",
       "remarks": null
     }
   ],
-  "total": 0
+  "total": 4
 }
 ```
 
@@ -238,7 +242,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `role-permission/get/alluser/bypermissionid`
 
 #### 参数
@@ -246,6 +250,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | permissionId | string | 是 | 权限id |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 #### 返回字段说明
 

@@ -23,3 +23,8 @@ export interface MenuCustomOptions extends ObjectAny {
   code: string,
   children: MenuCustomOptions[]
 }
+
+export interface MenuReturnOptions {
+  total: number,
+  data: MenuOptions[]
+}
