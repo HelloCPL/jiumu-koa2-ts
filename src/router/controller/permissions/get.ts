@@ -29,16 +29,16 @@ export const doPermissionGetList = async (ctx: Context, next: Next) => {
   const data = await getPermissionList(parmas)
   if (ctx.params.userId) {
     // 若传 userId 增加`checked` 字段，表示是否与该用户关联
-    const userRoleList = await getAllRoleByUserId({ userId: ctx.params.userId })
-    const roleIds = _.join(_.map(userRoleList.data, item => item.id))
-    const rolePermissionList = await getAllPermissionByRoleId({ roleIds: roleIds })
-    const rolePermissionIdsList = _.map(rolePermissionList, item => item.id)
-    _handleRolePermission(data.data, rolePermissionIdsList)
+    // const userRoleList = await getAllRoleByUserId({ userId: ctx.params.userId })
+    // const roleIds = _.join(_.map(userRoleList.data, item => item.id))
+    // const rolePermissionList = await getAllPermissionByRoleId({ roleIds: roleIds })
+    // const rolePermissionIdsList = _.map(rolePermissionList, item => item.id)
+    // _handleRolePermission(data.data, rolePermissionIdsList)
   } else if (ctx.params.roleId) {
     // 若传 roleId 增加`checked` 字段，表示是否与该角色关联
-    const rolePermissionList = await getAllPermissionByRoleId({ roleId: ctx.params.roleId })
-    const rolePermissionIds = _.map(rolePermissionList, item => item.id)
-    _handleRolePermission(data.data, rolePermissionIds)
+    // const rolePermissionList = await getAllPermissionByRoleId({ roleId: ctx.params.roleId })
+    // const rolePermissionIds = _.map(rolePermissionList, item => item.id)
+    // _handleRolePermission(data.data, rolePermissionIds)
   }
   throw new Success({ total: data.total, data: data.data })
 }

@@ -91,6 +91,7 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 菜单id |
 | parentCode | string | 父级菜单code |
+| parentLabel | string | 父级菜单描述 |
 | code | string | 菜单code |
 | label | string | 菜单描述 |
 | sort | number | 排序，值越小越前 |
@@ -109,6 +110,7 @@
     {
       "id": "d0cf5069-07cc-4d4c-8793-e8853b9a6f56",
       "parentCode": "",
+      "parentLabel": null,
       "code": "system",
       "label": "系统管理",
       "sort": 1,
@@ -139,6 +141,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | menuId | string | 是 | 菜单id |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 #### 返回字段说明
 
@@ -195,6 +199,9 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | userId | string | 是 | 用户id |
+| isTree | boolean | 否 | 返回菜单是否为树结构，默认 0 ，注意：isTree 为 1 时分页参数无效|
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 #### 返回字段说明
 
@@ -205,6 +212,7 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 菜单id |
 | parentCode | string | 父级菜单code |
+| parentLabel | string | 父级菜单描述 |
 | code | string | 菜单code |
 | label | string | 菜单描述 |
 | sort | number | 排序，值越小越前 |
@@ -212,7 +220,7 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| children | array/[] | 子级 |
+| children | array/[] | 子级 isTree 树级结构时有 |
 
 #### 返回示例
 
@@ -222,32 +230,19 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "d0cf5069-07cc-4d4c-8793-e8853b9a6f56",
-      "parentCode": "",
-      "code": "system",
-      "label": "系统管理",
+      "id": "be9dc1de-2046-46c3-8d32-ffe2b3e29558",
+      "parentCode": "system",
+      "parentLabel": "系统管理",
+      "code": "system-user",
+      "label": "用户管理",
       "sort": 1,
-      "createTime": "2021-08-15 01:04:40",
-      "updateTime": "2021-08-15 01:04:40",
+      "createTime": "2021-08-15 01:05:17",
+      "updateTime": "2021-08-15 01:05:17",
       "terminal": "管理端",
-      "remarks": null,
-      "children": [
-        {
-          "id": "be9dc1de-2046-46c3-8d32-ffe2b3e29558",
-          "parentCode": "system",
-          "code": "system-user",
-          "label": "用户管理",
-          "sort": 1,
-          "createTime": "2021-08-15 01:05:17",
-          "updateTime": "2021-08-15 01:05:17",
-          "terminal": "管理端",
-          "remarks": null,
-          "children": []
-        }
-      ]
-    }
+      "remarks": null
+    },
   ],
-  "total": 0
+  "total": 3
 }
 ```
 
@@ -268,6 +263,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | menuId | string | 是 | 菜单id |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 #### 返回字段说明
 
@@ -326,6 +323,6 @@
       "remarks": "负责改项目的设计、实现、测试、发布"
     }
   ],
-  "total": 0
+  "total": 2
 }
 ```

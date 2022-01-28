@@ -11,7 +11,6 @@ import { Context, Next } from 'koa';
 import { MenuOptions, MenuListOptions, MenuCustomOptions } from './interface'
 import { getAllMenuByRoleId } from '../roles-menus/get'
 import { getAllRoleByUserId } from '../users-roles/get'
-// import { getAllPermissionByRoleId } from '../roles-permissions/get'
 import _ from 'lodash'
 
 // 获取指定的某个菜单
@@ -26,16 +25,16 @@ export const doMenuGetByParentCode = async (ctx: Context, next: Next) => {
   let data: MenuListOptions[] = await getMenuByParentCode(parentCode)
   if (ctx.params.userId) {
     // 若传 userId 增加`checked` 字段，表示是否与该用户关联
-    const userRoleList = await getAllRoleByUserId({ userId: ctx.params.userId })
-    const roleIds = _.join(_.map(userRoleList.data, item => item.id))
-    const roleMenuList = await getAllMenuByRoleId({ roleIds: roleIds })
-    const roleMenuIds = _.map(roleMenuList, item => item.id)
-    _handleRoleMenu(data, roleMenuIds)
+    // const userRoleList = await getAllRoleByUserId({ userId: ctx.params.userId })
+    // const roleIds = _.join(_.map(userRoleList.data, item => item.id))
+    // const roleMenuList = await getAllMenuByRoleId({ roleIds: roleIds })
+    // const roleMenuIds = _.map(roleMenuList, item => item.id)
+    // _handleRoleMenu(data, roleMenuIds)
   } else if (ctx.params.roleId) {
     // 若传 roleId 增加`checked` 字段，表示是否与该角色关联
-    const roleMenuList = await getAllMenuByRoleId({ roleId: ctx.params.roleId })
-    const roleMenuIds = _.map(roleMenuList, item => item.id)
-    _handleRoleMenu(data, roleMenuIds)
+    // const roleMenuList = await getAllMenuByRoleId({ roleId: ctx.params.roleId })
+    // const roleMenuIds = _.map(roleMenuList, item => item.id)
+    // _handleRoleMenu(data, roleMenuIds)
   }
   throw new Success({ data })
 }
