@@ -11,7 +11,6 @@ import { Context, Next } from 'koa';
 import { MenuOptions, MenuListOptions, MenuCustomOptions } from './interface'
 import { getAllMenuByRoleId } from '../roles-menus/get'
 import { getAllRoleByUserId } from '../users-roles/get'
-// import { getAllPermissionByRoleId } from '../roles-permissions/get'
 import _ from 'lodash'
 
 // 获取指定的某个菜单
@@ -26,16 +25,16 @@ export const doMenuGetByParentCode = async (ctx: Context, next: Next) => {
   let data: MenuListOptions[] = await getMenuByParentCode(parentCode)
   if (ctx.params.userId) {
     // 若传 userId 增加`checked` 字段，表示是否与该用户关联
-    const userRoleList = await getAllRoleByUserId({ userId: ctx.params.userId })
-    const roleIds = _.join(_.map(userRoleList, item => item.id))
-    const roleMenuList = await getAllMenuByRoleId({ roleIds: roleIds })
-    const roleMenuIds = _.map(roleMenuList, item => item.id)
-    _handleRoleMenu(data, roleMenuIds)
+    // const userRoleList = await getAllRoleByUserId({ userId: ctx.params.userId })
+    // const roleIds = _.join(_.map(userRoleList.data, item => item.id))
+    // const roleMenuList = await getAllMenuByRoleId({ roleIds: roleIds })
+    // const roleMenuIds = _.map(roleMenuList, item => item.id)
+    // _handleRoleMenu(data, roleMenuIds)
   } else if (ctx.params.roleId) {
     // 若传 roleId 增加`checked` 字段，表示是否与该角色关联
-    const roleMenuList = await getAllMenuByRoleId({ roleId: ctx.params.roleId })
-    const roleMenuIds = _.map(roleMenuList, item => item.id)
-    _handleRoleMenu(data, roleMenuIds)
+    // const roleMenuList = await getAllMenuByRoleId({ roleId: ctx.params.roleId })
+    // const roleMenuIds = _.map(roleMenuList, item => item.id)
+    // _handleRoleMenu(data, roleMenuIds)
   }
   throw new Success({ data })
 }
@@ -45,7 +44,7 @@ export const doMenuGetByParentCode = async (ctx: Context, next: Next) => {
  * 获取指定的某个菜单，返回对象或null
 */
 export const getMenuOne = async (id: string): Promise<MenuOptions | null> => {
-  const sql: string = `SELECT t1.id, t1.parent_code, t2.label as parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.code = ? OR t1.id = ?`
+  const sql: string = `SELECT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.code = ? OR t1.id = ?`
   const data = [id, id]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -65,7 +64,7 @@ export const getMenuByParentCode = async (parentCode: string): Promise<MenuListO
         noThrow: true
       })
       if (hasChildren) {
-        const sql = `SELECT t1.id, t1.parent_code, t2.label as parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.parent_code = ?`
+        const sql = `SELECT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.parent_code = ?`
         const res: MenuListOptions[] = <MenuListOptions[]>await query(sql, arr[i].code)
         arr[i].children = res
         await _handleGetData(arr[i].children)

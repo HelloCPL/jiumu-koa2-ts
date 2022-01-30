@@ -9,7 +9,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-role/add`
 
 #### 参数
@@ -40,7 +40,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-role/delete`
 
 #### 参数
@@ -69,7 +69,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-role/get/allrole/byuserid`
 
 #### 参数
@@ -77,6 +77,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | userId | string | 是 | 用户id |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 #### 返回字段说明
 
@@ -102,17 +104,17 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "17e64a2d-7813-4700-be4e-dfaa454a5c47",
-      "code": "workers",
-      "label": "工作人员",
+      "id": "d6bb3323-b581-4b46-b7e4-4da9a899ea6c",
+      "code": "super",
+      "label": "超级管理员",
       "sort": 1,
-      "createTime": "2021-08-12 16:05:48",
-      "updateTime": "2021-08-12 16:05:48",
+      "createTime": "2021-08-12 16:00:37",
+      "updateTime": "2021-08-12 16:00:37",
       "terminal": "管理端",
       "remarks": null
     }
   ],
-  "total": 0
+  "total": 3
 }
 ```
 
@@ -125,7 +127,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-role/get/alluser/byroleid`
 
 #### 参数
@@ -133,6 +135,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | roleId | string | 是 | 角色id |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 #### 返回字段说明
 
@@ -190,6 +194,6 @@
       "remarks": "负责改项目的设计、实现、测试、发布"
     }
   ],
-  "total": 0
+  "total": 3
 }
 ```

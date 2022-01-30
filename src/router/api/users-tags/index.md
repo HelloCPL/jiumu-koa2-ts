@@ -9,7 +9,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-tag/add`
 
 #### 参数
@@ -40,7 +40,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-tag/delete`
 
 #### 参数
@@ -69,7 +69,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-tag/get/alltag/byuserid`
 
 #### 参数
@@ -77,6 +77,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | userId | string | 是 | 用户id |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 #### 返回字段说明
 
@@ -86,6 +88,7 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 特殊标签id |
 | parentCode | string | 父级特殊标签code |
+| parentLabel | string | 父级特殊标签描述 |
 | code | string | 特殊标签code |
 | label | string | 特殊标签描述 |
 | sort | number | 排序，值越小越前 |
@@ -102,18 +105,19 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "6be39cf2-1e7a-48f9-bd3d-8a0bd8f67ae4",
+      "id": "2906d294-a11d-4f82-a601-988013e6dd01",
       "parentCode": "8888",
-      "code": "8003",
-      "label": "名人",
+      "parentLabel": "特殊标签",
+      "code": "8001",
+      "label": "大咖",
       "sort": 1,
-      "createTime": "2021-08-13 15:51:19",
-      "updateTime": "2021-08-13 15:51:19",
+      "createTime": "2021-08-13 15:51:34",
+      "updateTime": "2021-08-13 15:51:34",
       "terminal": "管理端",
       "remarks": null
     }
   ],
-  "total": 0
+  "total": 3
 }
 ```
 
@@ -127,7 +131,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `user-tag/get/alluser/bytagcode`
 
 #### 参数
@@ -135,6 +139,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | tagCode | string | 是 | 特殊标签code |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
 
 #### 返回字段说明
 
@@ -192,6 +198,6 @@
       "remarks": "负责改项目的设计、实现、测试、发布"
     }
   ],
-  "total": 0
+  "total": 2
 }
 ```

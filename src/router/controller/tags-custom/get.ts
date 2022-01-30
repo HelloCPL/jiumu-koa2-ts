@@ -78,7 +78,7 @@ export const getTagCustomList = async (options: TagCustomListParams): Promise<Ta
     data: options,
   })
   const extraValid = options.userId ? '' : 'create_user,'
-  const sql1 = `SELECT COUNT(id) as total FROM tags_custom ${sqlParams.sql} ${sqlParamsKeyword.sql}`
+  const sql1 = `SELECT COUNT(id) AS total FROM tags_custom ${sqlParams.sql} ${sqlParamsKeyword.sql}`
   const data1 = [...sqlParams.data, ...sqlParamsKeyword.data]
   const sql2 = `SELECT id, ${orderParams.orderValid} sort, type, ${extraValid} create_time, update_time, terminal FROM tags_custom ${sqlParams.sql} ${sqlParamsKeyword.sql} ORDER BY ${orderParams.orderSql} sort, update_time DESC LIMIT ?, ?`
   const data2 = [...data1, pageNo, options.pageSize]

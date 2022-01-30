@@ -13,7 +13,7 @@ import { getMenuByParentCode } from '../menus/get'
 import { MenuListOptions } from '../menus/interface'
 
 /**
- * 新增时 
+ * 新增时
  * 先判断角色是否不存在
  * 再判断菜单是否不存在
  * 获取其父级菜单，如果父级菜单，判断父级菜单是否不存在
@@ -35,7 +35,7 @@ export const doRoleMenuAddConvert = async (ctx: Context, next: Next) => {
     message: Message.unexistMenus
   })
   // 获取其父级菜单，如果父级菜单，判断父级菜单是否不存在
-  const sql = `SELECT t2.id as parentMenuId FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.id = ?`
+  const sql = `SELECT t2.id AS parentMenuId FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.id = ?`
   const res: any = await query(sql, ctx.params.menuId)
   if (res && res.length && res[0]['parentMenuId']) {
     await isExist({
@@ -62,7 +62,7 @@ export const doRoleMenuAddConvert = async (ctx: Context, next: Next) => {
 }
 
 /**
- * 删除时 
+ * 删除时
  * 判断角色-菜单关联是否不存在
  * 获取其子级菜单列表，判断子级菜单是否与该角色有关联
 */
@@ -87,7 +87,7 @@ export async function doRoleMenuDeleteConvert(ctx: Context, next: Next) {
   await next()
 }
 
-// 处理子级菜单 ids 
+// 处理子级菜单 ids
 function _handleMenuList(data: MenuListOptions[]): string {
   let menuIdList: string[] = []
   const _handleList = ((arr: MenuListOptions[]) => {

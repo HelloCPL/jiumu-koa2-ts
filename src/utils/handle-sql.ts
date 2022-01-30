@@ -110,7 +110,7 @@ interface OrderReturnOptions {
 /**
  * @author chen
  * @params options.valid 需要模糊查询的字段 如 username t1.username
- * 
+ *
  * @description 模糊搜索时返回搜索替换字段和排序条件
  * @update 2021-12-04 19:53:51
 */
@@ -131,12 +131,12 @@ export const getOrderByKeyword = (options: OrderParamsOptions): OrderReturnOptio
   options.valid.forEach((key) => {
     const { sqlKey, dataKey } = _findKeys(key)
     if (flag) {
-      orderValid += ` REPLACE(${sqlKey}, '${keyword}', "<span data-search-key='search' style='color: ${color}'>${keyword}</span>") as ${dataKey}, `
+      orderValid += ` REPLACE(${sqlKey}, '${keyword}', "<span data-search-key='search' style='color: ${color}'>${keyword}</span>") AS ${dataKey}, `
       let sql = ` (select LENGTH(${sqlKey}) - LENGTH(REPLACE(${sqlKey}, '${keyword}', ''))) DESC `
       if (orderSql) orderSql += ` , ${sql} `
       else orderSql += sql
     } else {
-      orderValid += ` ${sqlKey} as ${dataKey}, `
+      orderValid += ` ${sqlKey} AS ${dataKey}, `
     }
   })
   orderSql && prefix ? orderSql = ` ${prefix} ${orderSql} ` : ''
