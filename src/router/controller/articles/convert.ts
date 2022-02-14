@@ -83,14 +83,6 @@ export const doArticleUpdateConvert = async (ctx: Context, next: Next) => {
       message: `isSecret参数必须为['1', '0']范围`
     })
   }
-  // 若传 isTop 判断 isTop 是否 ['1', '0'] 范围
-  if (ctx.params.hasOwnProperty('isTop')) {
-    await validateRange({
-      value: ctx.params.isTop,
-      range: ['1', '0'],
-      message: `isTop参数必须为['1', '0']范围`
-    })
-  }
   await next()
 }
 

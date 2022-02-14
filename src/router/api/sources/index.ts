@@ -6,11 +6,11 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doSourceUpdateConvert, doSourceDeleteConvert } from '../../controller/sources/convert'
+import { doSourceAddConvert, doSourceUpdateConvert, doSourceDeleteConvert } from '../../controller/sources/convert'
 import { doSourceAdd } from '../../controller/sources/add'
 import { doSourceUpdate } from '../../controller/sources/update'
 import { doSourceDelete } from '../../controller/sources/delete'
-import { doSourceGetOne, doSourceGetListSelf, doSourceGetList } from '../../controller/sources/get'
+import { doSourceGetOne, doSourceGetList } from '../../controller/sources/get'
 
 @Prefix('source')
 export default class API {
@@ -19,7 +19,8 @@ export default class API {
     path: 'add',
     methods: ['get', 'post'],
   })
-  @Required(['title', 'attachment'])
+  @Required(['title', 'attachment', 'type'])
+  @Convert(doSourceAddConvert)
   async doSourceAdd(ctx: Context, next: Next) {
     await doSourceAdd(ctx, next)
   }
@@ -62,15 +63,27 @@ export default class API {
     methods: ['get', 'post'],
   })
   async doSourceGetListSelf(ctx: Context, next: Next) {
-    await doSourceGetListSelf(ctx, next)
+    ctx.params.userId = ctx.user.id
+    await doSourceGetList(ctx, next)
   }
 
-  // 6 获取所有问答列表
+  // 6 获取指定用户的资源列表
+  @Request({
+    path: 'get/list/byuserid',
+    methods: ['get', 'post'],
+  })
+  @Required(['userId'])
+  async doSourceGetListByUserId(ctx: Context, next: Next) {
+    await doSourceGetList(ctx, next)
+  }
+
+  // 7 获取所有问答列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post'],
   })
   async doSourceGetList(ctx: Context, next: Next) {
+    ctx.params.userId = null
     await doSourceGetList(ctx, next)
   }
 

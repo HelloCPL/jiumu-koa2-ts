@@ -177,19 +177,20 @@ export const getAllUserByMenuId = async (options: RoleMenuByMenuIdParams): Promi
 // 处理菜单树结构层级问题
 function getTree(menus: MenuOptions[]): MenuListOptions[] | any {
   // 处理一级菜单
-  let originData = <MenuListOptions[]>menus.map((item) => {
+  let originData: MenuListOptions[] = <MenuListOptions[]>menus.map((item) => {
     return {
       ...item,
-      checked: item.checked ? 1 : 0,
+      checked: item.checked ? '1' : '0',
       parent_code: item.parent_code || '',
       children: [],
     }
   })
   // 判断自身或子级是否有选中
-  const isValid = (code: string) => {
+  const isValid = (code: string): boolean => {
     let flag = false
+    // @ts-ignore
     originData.find((item) => {
-      if (item.code === code && item.checked) {
+      if (item.code === code && item.checked === '1') {
         flag = true
         return true
       } else if (item.parent_code === code) {
@@ -207,7 +208,7 @@ function getTree(menus: MenuOptions[]): MenuListOptions[] | any {
           let obj = originData.splice(i, 1)[0]
           i--
           obj.children = _getTree(obj.code)
-          delete obj.checked
+          // delete obj.checked
           data.push(obj)
         }
       }

@@ -366,17 +366,18 @@
 #### 请求
 
 - `get | post` 
-- `article/get/list/self`
+- `article/get/list/byuserid`
 
 #### 参数
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
+| userId | string | 是 | 指定用户id |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
 | type | string | 否 | 文章类型，取系统标签300范围 |
-| isSecret | string | 否 | 是否为私密文章，1 是 0 否 |
+| isSecret | string | 否 | 是否为私密文章，1 是 0 否，其中 1 只对自己发布的文章才有权限查看 |
 
 #### 返回字段说明
 
@@ -495,7 +496,7 @@
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
 | type | string | 否 | 文章类型，取系统标签300范围 |
-| isSecret | string | 否 | 是否为私密文章，1 是 0 否，一般只传 0，其中 1 只对自己发布的文章才有权限查看 |
+| isSecret | string | 否 | 是否为私密文章，1 是 0 否，其中 1 只对自己发布的文章才有权限查看 |
 
 #### 返回字段说明
 

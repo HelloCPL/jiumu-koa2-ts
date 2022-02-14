@@ -17,7 +17,7 @@
 |:---:|:---:|:---:|:---:|
 | code | string | 是 | 标签code，不能重复 |
 | label | string | 是 | 标签说明 |
-| parent_code | string | 否 | 父级标签code |
+| parentCode | string | 否 | 父级标签code |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 
@@ -51,7 +51,7 @@
 | id | string | 是 | 标签id |
 | code | string | 否 | 标签code，不能重复 |
 | label | string | 否 | 标签说明 |
-| parent_code | string | 否 | 父级标签code |
+| parentCode | string | 否 | 父级标签code |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 

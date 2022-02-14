@@ -6,9 +6,10 @@
 
 import { Context, Next } from "koa";
 import { Success } from '../../../utils/http-exception'
-import { query } from "../../../db";
+import { execTrans } from "../../../db";
 import { formatDate } from "../../../utils/tools";
 import { getUpdateSetData } from '../../../utils/handle-sql'
+import { SQLOptions } from "../../../db/interface";
 
 /**
  * 资源修改
@@ -16,11 +17,21 @@ import { getUpdateSetData } from '../../../utils/handle-sql'
 export const doSourceUpdate = async (ctx: Context, next: Next) => {
   ctx.params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
-    valid: ['title', 'attachment', 'classify', 'is_secret', 'is_top', 'sort', 'update_time', 'remarks'],
+    valid: ['title', 'attachment', 'type', 'classify', 'is_secret', 'sort', 'update_time', 'remarks'],
     data: ctx.params
   })
   const sql: string = `UPDATE sources SET ${sqlParams.sql} WHERE id = ?`
   const data = [...sqlParams.data, ctx.params.id]
-  await query(sql, data)
+  let sqlList: SQLOptions[] = [{ sql, data }]
+  if (ctx.params.hasOwnProperty('isSecret') && ctx.params._type === '701') {
+    const sql1: string = `UPDATE files_info t1 SET t1.is_secret = ? WHERE FIND_IN_SET(t1.id, (SELECT t2.attachment FROM sources t2 WHERE t2.id = ?)) AND t1.create_user = ?`
+    const data1 = [ctx.params.isSecret, ctx.params.id, ctx.user.id]
+    sqlList.push({
+      sql: sql1,
+      data: data1,
+      noThrow: true
+    })
+  }
+  await execTrans(sqlList)
   throw new Success();
 }

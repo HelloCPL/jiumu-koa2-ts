@@ -29,6 +29,7 @@ export interface SourceListParams {
   pageSize: number,
   userId: string,
   keyword?: string,
+  type?: string,
   createUser?: string,
   isSecret?:string
 }

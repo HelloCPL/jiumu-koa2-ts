@@ -15,7 +15,6 @@ import { ExceptionParameter, ExceptionForbidden } from '../../../utils/http-exce
  * 判断问答是否不存在，且是否为自己发布的问答
  * 若传 isDraft 判断 isDraft 是否 ['1', '0'] 范围
  * 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
- * 若传 isTop 判断 isTop 是否 ['1', '0'] 范围
 */
 export const doQuestionUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断问答是否不存在
@@ -40,14 +39,6 @@ export const doQuestionUpdateConvert = async (ctx: Context, next: Next) => {
       value: ctx.params.isSecret,
       range: ['1', '0'],
       message: `isSecret参数必须为['1', '0']范围`
-    })
-  }
-  // 若传 isTop 判断 isTop 是否 ['1', '0'] 范围
-  if (ctx.params.hasOwnProperty('isTop')) {
-    await validateRange({
-      value: ctx.params.isTop,
-      range: ['1', '0'],
-      message: `isTop参数必须为['1', '0']范围`
     })
   }
   await next()

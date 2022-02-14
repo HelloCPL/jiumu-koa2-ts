@@ -50,7 +50,7 @@ export const doTagCustomGetList = async (ctx: Context, next: Next) => {
  * 获取指定用户的自定义标签，返回数组或[]
 */
 export const getTagCustomByIds = async (ids: string, userId: string): Promise<TagCustomOptions[]> => {
-  const sql: string = `SELECT id, label, sort, type, create_time, update_time, terminal FROM tags_custom WHERE FIND_IN_SET(id, ?) AND create_user = ?`
+  const sql: string = `SELECT t1.id, t1.label, t1.sort, t1.type, t1.create_time, t1.update_time, t1.terminal, t1.create_user, t2.username AS create_user_name FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE FIND_IN_SET(t1.id, ?) AND t1.create_user = ?`
   const data = [ids, userId]
   let res: any = await query(sql, data)
   return res
@@ -61,26 +61,26 @@ export const getTagCustomList = async (options: TagCustomListParams): Promise<Ta
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理筛选参数
   const sqlParams = getSelectWhereData({
-    valid: ['type', 'create_user:userId'],
+    valid: ['t1.type', 't1.create_user:userId'],
     data: options,
     prefix: 'WHERE'
   })
   // 处理搜索
   const prefix = sqlParams.sql ? 'AND' : 'WHERE'
   const sqlParamsKeyword = getSelectWhereAsKeywordData({
-    valid: ['label'],
+    valid: ['t1.label'],
     data: options,
     prefix
   })
   // 处理搜索排序
   const orderParams = getOrderByKeyword({
-    valid: ['label'],
+    valid: ['t1.label'],
     data: options,
   })
-  const extraValid = options.userId ? '' : 'create_user,'
-  const sql1 = `SELECT COUNT(id) AS total FROM tags_custom ${sqlParams.sql} ${sqlParamsKeyword.sql}`
+  const extraValid = options.userId ? '' : 't1.create_user,'
+  const sql1 = `SELECT COUNT(t1.id) AS total FROM tags_custom t1 ${sqlParams.sql} ${sqlParamsKeyword.sql}`
   const data1 = [...sqlParams.data, ...sqlParamsKeyword.data]
-  const sql2 = `SELECT id, ${orderParams.orderValid} sort, type, ${extraValid} create_time, update_time, terminal FROM tags_custom ${sqlParams.sql} ${sqlParamsKeyword.sql} ORDER BY ${orderParams.orderSql} sort, update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.sort, t1.type, ${extraValid} t1.create_time, t1.update_time, t1.terminal, t1.create_user, t2.username AS create_user_name FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id ${sqlParams.sql} ${sqlParamsKeyword.sql} ORDER BY ${orderParams.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
   const data2 = [...data1, pageNo, options.pageSize]
   const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])
   return {

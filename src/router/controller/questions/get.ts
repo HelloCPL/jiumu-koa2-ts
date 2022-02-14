@@ -9,28 +9,13 @@ import { query, execTrans } from "../../../db";
 import { Context, Next } from 'koa';
 import { QuestionOptions, QuestionListParams, QuestionListReturn } from './interface'
 import { getTagCustomByIds } from '../tags-custom/get'
-import { getSelectWhereAsKeywordData, getSelectWhereData } from '../../../utils/handle-sql';
+import { getSelectWhereAsKeywordData, getSelectWhereData, getOrderByKeyword } from '../../../utils/handle-sql';
 import _ from 'lodash';
 
 // 获取指定的某个问答
 export const doQuestionGetOne = async (ctx: Context, next: Next) => {
   const data = await getQuestionOne(ctx.params.id, ctx.user.id)
   throw new Success({ data });
-}
-
-// 获取自己的问答列表
-export const doQuestionGetListSelf = async (ctx: Context, next: Next) => {
-  const params: QuestionListParams = {
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
-    keyword: ctx.params.keyword,
-    userId: ctx.user.id,
-    createUser: ctx.user.id,
-  }
-  if (ctx.params.hasOwnProperty('isDraft')) params.isDraft = ctx.params.isDraft
-  if (ctx.params.hasOwnProperty('isSecret')) params.isSecret = ctx.params.isSecret
-  const data = await getQuestionList(params)
-  throw new Success(data);
 }
 
 // 获取所有问答列表
@@ -40,10 +25,10 @@ export const doQuestionGetList = async (ctx: Context, next: Next) => {
     pageSize: ctx.params.pageSize * 1 || 10,
     keyword: ctx.params.keyword,
     userId: ctx.user.id,
+    createUser: ctx.params.userId,
+    isDraft: ctx.params.isDraft,
+    isSecret: ctx.params.isSecret
   }
-  if (ctx.params.hasOwnProperty('userId')) params.createUser = ctx.params.userId
-  if (ctx.params.hasOwnProperty('isDraft')) params.isDraft = ctx.params.isDraft
-  if (ctx.params.hasOwnProperty('isSecret')) params.isSecret = ctx.params.isSecret
   const data = await getQuestionList(params)
   throw new Success(data);
 }
@@ -68,9 +53,14 @@ export const getQuestionList = async (options: QuestionListParams): Promise<Ques
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理keyword参数
   const sqlParamsKeyword = getSelectWhereAsKeywordData({
-    valid: ['t1.title', 't4.username'],
+    valid: ['t4.(username)', 't1.title'],
     data: options,
     prefix: 'AND'
+  })
+  // 处理搜索排序
+  const orderParams = getOrderByKeyword({
+    valid: ['t4.(username):createUserName', 't1.title'],
+    data: options,
   })
   // 处理普通where参数
   const sqlParams = getSelectWhereData({
@@ -80,22 +70,27 @@ export const getQuestionList = async (options: QuestionListParams): Promise<Ques
   })
   let whereSQL = ''
   let whereData: any[] = []
-  if (options.hasOwnProperty('isSecret')) {
-    if (options.isSecret == '1') {
-      whereSQL = `WHERE (t1.is_secret = 1 AND t1.create_user = ?)`
-      whereData.push(options.userId)
-    } else {
-      whereSQL = `WHERE t1.is_secret = 0`
-    }
+  if (options.isSecret == '1') {
+    whereSQL = `WHERE (t1.is_secret = 1 AND t1.create_user = ?)`
+    whereData.push(options.userId)
+  } else if (options.isSecret == '0') {
+    whereSQL = `WHERE t1.is_secret = 0`
   } else {
     whereSQL = `WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
     whereData.push(options.userId)
   }
   whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql}`
   whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data]
+  // 处理排序规则语句
+  let orderSql
+  if (options.createUser) {
+    orderSql = `${orderParams.orderSql} t1.is_top DESC, t1.sort, like_count DESC, collection_count DESC, t1.update_time DESC`
+  } else {
+    orderSql = `t1.is_top DESC, like_count DESC, ${orderParams.orderSql}  collection_count DESC, t1.update_time DESC, t1.sort`
+  }
   const sql1 = `SELECT COUNT(t1.id) AS total FROM questions t1 LEFT JOIN users t4 ON t1.create_user = t4.id ${whereSQL}`
   const data1 = [...whereData]
-  const sql2 = `SELECT t1.id, t1.title, t1.content,  t1.classify, t1.is_draft, t1.is_secret, t1.is_top, t1.sort, t1.create_user, t4.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t5.id AS is_like, (SELECT COUNT(t6.id) FROM likes t6 WHERE t6.target_id = t1.id) AS like_count, t7.id AS is_collection, (SELECT COUNT(t8.id) FROM collections t8 WHERE t8.target_id = t1.id) AS collection_count, (SELECT COUNT(t9.id) FROM comments_first t9 WHERE t9.target_id = t1.id) AS comment_count1, (SELECT COUNT(t10.id) FROM comments_second t10 WHERE t10.comment_first_target_id = t1.id) AS comment_count2 FROM questions t1 LEFT JOIN users t4 ON t1.create_user = t4.id LEFT JOIN likes t5 ON (t1.id = t5.target_id AND t5.create_user = ?) LEFT JOIN collections t7 ON (t1.id = t7.target_id AND t7.create_user = ?) ${whereSQL} ORDER BY t1.is_top DESC, t1.sort, like_count DESC, collection_count DESC, t1.update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.content,  t1.classify, t1.is_draft, t1.is_secret, t1.is_top, t1.sort, t1.create_user, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t5.id AS is_like, (SELECT COUNT(t6.id) FROM likes t6 WHERE t6.target_id = t1.id) AS like_count, t7.id AS is_collection, (SELECT COUNT(t8.id) FROM collections t8 WHERE t8.target_id = t1.id) AS collection_count, (SELECT COUNT(t9.id) FROM comments_first t9 WHERE t9.target_id = t1.id) AS comment_count1, (SELECT COUNT(t10.id) FROM comments_second t10 WHERE t10.comment_first_target_id = t1.id) AS comment_count2 FROM questions t1 LEFT JOIN users t4 ON t1.create_user = t4.id LEFT JOIN likes t5 ON (t1.id = t5.target_id AND t5.create_user = ?) LEFT JOIN collections t7 ON (t1.id = t7.target_id AND t7.create_user = ?) ${whereSQL} ORDER BY ${orderSql}  LIMIT ?, ?`
   const data2 = [options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])
   const questionList: QuestionOptions[] = res[1]

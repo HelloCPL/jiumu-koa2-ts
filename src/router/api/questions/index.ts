@@ -10,7 +10,7 @@ import { doQuestionUpdateConvert, doQuestionDeleteConvert } from '../../controll
 import { doQuestionAdd } from '../../controller/questions/add'
 import { doQuestionUpdate } from '../../controller/questions/update'
 import { doQuestionDelete } from '../../controller/questions/delete'
-import { doQuestionGetOne, doQuestionGetListSelf, doQuestionGetList } from '../../controller/questions/get'
+import { doQuestionGetOne, doQuestionGetList } from '../../controller/questions/get'
 
 
 @Prefix('question')
@@ -63,15 +63,29 @@ export default class API {
     methods: ['get', 'post'],
   })
   async doQuestionGetListSelf(ctx: Context, next: Next) {
-    await doQuestionGetListSelf(ctx, next)
+    ctx.params.userId = ctx.user.id
+    await doQuestionGetList(ctx, next)
   }
 
-  // 6 获取所有问答列表
+  // 6 获取指定用户非草稿的问答列表
+  @Request({
+    path: 'get/list/byuserid',
+    methods: ['get', 'post'],
+  })
+  @Required(['userId'])
+  async doQuestionGetListByUserId(ctx: Context, next: Next) {
+    ctx.params.isDraft = '0'
+    await doQuestionGetList(ctx, next)
+  }
+
+  // 7 获取所有问答列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post'],
   })
   async doQuestionGetList(ctx: Context, next: Next) {
+    ctx.params.userId = null
+    ctx.params.isDraft = '0'
     await doQuestionGetList(ctx, next)
   }
 }

@@ -12,17 +12,31 @@ import { ExceptionParameter, ExceptionForbidden } from '../../../utils/http-exce
 
 
 /**
+ * 新增时
+ * 判断 type 是否系统标签300范围
+*/
+export const doSourceAddConvert = async (ctx: Context, next: Next) => {
+  await validateRange({
+    value: ctx.params.type,
+    range: '700',
+    message: 'type参数必须为系统标签700范围'
+  })
+  await next()
+}
+
+/**
  * 修改时 
  * 判断资源是否不存在，且是否为自己发布的资源
  * 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
- * 若传 isTop 判断 isTop 是否 ['1', '0'] 范围
+ * 若传 type 判断type是否系统标签700范围
 */
 export const doSourceUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断资源是否不存在
-  const sql = `SELECT id, create_user FROM sources WHERE id = ?`
+  const sql = `SELECT id, create_user, type FROM sources WHERE id = ?`
   const res: any = await query(sql, ctx.params.id)
   if (!(res && res.length))
     throw new ExceptionParameter({ message: Message.unexistSource })
+  ctx.params._type = ctx.params.type || res[0]['type']
   // 是否为自己发布的资源
   if (res[0]['create_user'] !== ctx.user.id)
     throw new ExceptionForbidden({ message: Message.forbidden })
@@ -34,12 +48,12 @@ export const doSourceUpdateConvert = async (ctx: Context, next: Next) => {
       message: `isSecret参数必须为['1', '0']范围`
     })
   }
-  // 若传 isTop 判断 isTop 是否 ['1', '0'] 范围
-  if (ctx.params.hasOwnProperty('isTop')) {
+  // 若传 type 判断type是否系统标签700范围
+  if (ctx.params.hasOwnProperty('type')) {
     await validateRange({
-      value: ctx.params.isTop,
-      range: ['1', '0'],
-      message: `isTop参数必须为['1', '0']范围`
+      value: ctx.params.type,
+      range: '700',
+      message: 'type参数必须为系统标签700范围'
     })
   }
   await next()

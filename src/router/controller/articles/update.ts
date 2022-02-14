@@ -6,9 +6,10 @@
 
 import { Context, Next } from "koa";
 import { Success } from '../../../utils/http-exception'
-import { query } from "../../../db";
+import { execTrans } from "../../../db";
 import { formatDate } from "../../../utils/tools";
 import { getUpdateSetData } from '../../../utils/handle-sql'
+import { SQLOptions } from "../../../db/interface";
 
 /**
  * 博客文章修改
@@ -21,12 +22,13 @@ export const doArticleUpdate = async (ctx: Context, next: Next) => {
   })
   const sql: string = `UPDATE articles SET ${sqlParams.sql} WHERE id = ?`
   const data = [...sqlParams.data, ctx.params.id]
-  await query(sql, data)
+  let sqlList: SQLOptions[] = [{ sql, data }]
   // 同步更新文件公开性
-  if (ctx.params.isSecret) {
+  if (ctx.params.hasOwnProperty('isSecret')) {
     const sql1: string = `UPDATE files_info t1 SET t1.is_secret = ? WHERE (FIND_IN_SET(t1.id, (SELECT t2.cover_img FROM articles t2 WHERE t2.id = ?)) OR FIND_IN_SET(t1.id, (SELECT t3.attachment FROM articles t3 WHERE t3.id = ?))) AND t1.create_user = ?`
     const data1 = [ctx.params.isSecret, ctx.params.id, ctx.params.id, ctx.user.id]
-    await query(sql1, data1, true)
+    sqlList.push({ sql: sql1, data: data1, noThrow: true })
   }
+  await execTrans(sqlList)
   throw new Success();
 }
