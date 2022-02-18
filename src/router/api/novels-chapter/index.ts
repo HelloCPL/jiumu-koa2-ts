@@ -6,19 +6,30 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doNovelChapterAddConvert } from '../../controller/novels-chapter/convert'
+import { doNovelChapterAddConvert, doNovelChapterUpdateConvert } from '../../controller/novels-chapter/convert'
 import { doNovelChapterAdd } from '../../controller/novels-chapter/add'
 
 @Prefix('novel-chapter')
-export default class {
+export default class API {
   // 1. 新增章节
   @Request({
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['novelId', 'title', 'content', 'sort'])
+  @Required(['novelId', 'title', 'content', 'sort', 'isDraft'])
   @Convert(doNovelChapterAddConvert)
   async doNovelChapterAdd(ctx: Context, next: Next) {
+    await doNovelChapterAdd(ctx, next)
+  }
+
+  // 2. 章节修改
+  @Request({
+    path: 'add',
+    methods: ['get', 'post']
+  })
+  @Required(['id'])
+  @Convert(doNovelChapterUpdateConvert)
+  async doNovelChapterUpdate(ctx: Context, next: Next) {
     await doNovelChapterAdd(ctx, next)
   }
 }

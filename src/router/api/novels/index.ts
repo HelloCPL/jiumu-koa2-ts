@@ -2,7 +2,7 @@
  * @description: 小说管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
@@ -10,7 +10,7 @@ import { doNovelAddConvert, doNovelUpdateConvert, doNovelDeleteConvert } from '.
 import { doNovelAdd } from '../../controller/novels/add'
 import { doNovelUpdate } from '../../controller/novels/update'
 import { doNovelDelete } from '../../controller/novels/delete'
-import { doNovelGetOne, doNovelGetListSelf } from '../../controller/novels/get'
+import { doNovelGetOne, doNovelGetList } from '../../controller/novels/get'
 
 @Prefix('novel')
 export default class API {
@@ -63,6 +63,29 @@ export default class API {
     methods: ['get', 'post'],
   })
   async doNovelGetListSelf(ctx: Context, next: Next) {
-    await doNovelGetListSelf(ctx, next)
+    ctx.params.userId = ctx.user.id
+    await doNovelGetList(ctx, next)
+  }
+
+  // 6 获取指定用户所有非草稿的小说列表
+  @Request({
+    path: 'get/list/byuserid',
+    methods: ['get', 'post'],
+  })
+  @Required(['userId'])
+  async doNovelGetListByUserId(ctx: Context, next: Next) {
+    ctx.params.isDraft = '0'
+    await doNovelGetList(ctx, next)
+  }
+
+  // 7 获取所有的非草稿小说列表
+  @Request({
+    path: 'get/list',
+    methods: ['get', 'post'],
+  })
+  async doNovelGetList(ctx: Context, next: Next) {
+    ctx.params.userId = null
+    ctx.params.isDraft = '0'
+    await doNovelGetList(ctx, next)
   }
 }

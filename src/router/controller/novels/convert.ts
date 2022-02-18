@@ -12,7 +12,7 @@ import { ExceptionParameter, ExceptionForbidden } from '../../../utils/http-exce
 import { isExist } from '../convert'
 
 /**
- * 新增时 
+ * 新增时
  * 如果小说类型为真 判断 type 是否系统标签600范围
 */
 export const doNovelAddConvert = async (ctx: Context, next: Next) => {
@@ -29,7 +29,7 @@ export const doNovelAddConvert = async (ctx: Context, next: Next) => {
 }
 
 /**
- * 编辑时 
+ * 编辑时
  * 判断小说是否不存在，且是否为自己发布的小说
  * 如果小说类型为真 判断 type 是否系统标签600范围
  * 若传 isDraft 判断 isDraft 是否 ['1', '0'] 范围
@@ -72,11 +72,10 @@ export const doNovelUpdateConvert = async (ctx: Context, next: Next) => {
 }
 
 /**
- * 删除时 
+ * 删除时
  * 判断小说是否不存在
  * 是否为自己发布的小说
  * 判断小说章节是否存在
- * 判断小说笔记是否存在
 */
 export const doNovelDeleteConvert = async (ctx: Context, next: Next) => {
   // 判断小说是否不存在
@@ -95,15 +94,6 @@ export const doNovelDeleteConvert = async (ctx: Context, next: Next) => {
     ],
     throwType: true,
     message: '该小说存在章节，请删除所有章节后再操作'
-  })
-  // 判断小说笔记是否存在
-  await isExist({
-    table: 'novels_note',
-    where: [
-      { key: 'novel_id', value: ctx.params.id },
-    ],
-    throwType: true,
-    message: '该小说存在笔记，请删除所有笔记后再操作'
   })
   await next()
 }

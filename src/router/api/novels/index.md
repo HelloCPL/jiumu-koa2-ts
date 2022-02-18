@@ -8,7 +8,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `novel/add`
 
 #### 参数
@@ -44,7 +44,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `novel/update`
 
 #### 参数
@@ -77,11 +77,11 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 删除小说，仅本人且没有小说章节、没有小说笔记时可删除
+- 删除小说，仅本人且没有小说章节时可删除
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `novel/delete`
 
 #### 参数
@@ -110,7 +110,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `novel/get/one`
 
 #### 参数
@@ -154,42 +154,44 @@
   "code": 200,
   "message": "操作成功",
   "data": {
-    "id": "57a4146f-cb43-424b-bd6d-d1c7e6d1e1a5",
-    "name": "小说5",
-    "introduce": "这个一条凡人通仙的路5",
+    "id": "0a5ee84e-7d7c-4ca5-ae1d-2567ec8ab8f0",
+    "name": "连续载体2",
+    "introduce": "连续载体简介2",
     "classify": [
       {
-        "id": "d2ce20ca-98e5-4833-afa6-8c636d3f1973",
-        "label": "美术",
+        "id": "c3221e5e-bb1a-4220-b178-26d37fa1ade0",
+        "label": "java",
         "sort": 1,
         "type": null,
-        "createTime": "2021-08-18 03:12:22",
-        "updateTime": "2021-08-18 03:12:22",
-        "terminal": "管理端"
+        "createTime": "2021-08-18 03:12:05",
+        "updateTime": "2021-08-18 03:12:05",
+        "terminal": "管理端",
+        "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+        "createUserName": "超级管理员"
       }
     ],
-    "type": "504",
-    "typeLabel": "小说来源",
-    "author": "一支4",
+    "type": "602",
+    "typeLabel": "科技",
+    "author": "张三",
+    "isTop": "0",
     "isSecret": "0",
     "isDraft": "0",
     "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
     "createUserName": "超级管理员",
-    "createTime": "2021-09-03 17:48:38",
-    "updateTime": "2021-09-03 17:48:38",
+    "createTime": "2022-02-18 09:46:00",
+    "updateTime": "2022-02-18 09:46:00",
     "terminal": "管理端",
-    "remarks": null,
+    "remarks": "备注",
     "isLike": "1",
-    "likeCount": 2,
-    "isCollection": "0",
-    "collectionCount": 0,
+    "likeCount": 1,
+    "isCollection": "1",
+    "collectionCount": 1,
     "isSelf": "1",
-    "commentCount": 1
+    "commentCount": 2
   },
   "total": 0
 }
 ```
-
 
 ## ---------------- 获取自己的小说列表 ---------------------
 
@@ -198,10 +200,9 @@
 - `pc | web | app | wechat` 端
 - 获取自己的小说列表
 
-
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `novel/get/list/self`
 
 #### 参数
@@ -217,6 +218,15 @@
 
 #### 返回字段说明
 
+- 返回数组或[]
+- 排序规则
+   `搜索相似度(连载名称 作者 简介 createUserName全等搜索)降序`
+   `isTop是否置顶`
+   `likeCount点赞总数降序`
+   `collectionCount收藏总数降序`
+   `updateTime更新时间降序`
+- `classify` 字段为用户自定义标签列表数组或[]
+
 - 返回数组或[]，具体字段看上一个接口字段说明
 
 #### 返回示例
@@ -227,29 +237,210 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "57a4146f-cb43-424b-bd6d-d1c7e6d1e1a5",
-      "name": "小说5",
-      "introduce": "这个一条凡人通仙的路5",
-      "classify": [],
-      "type": "504",
-      "typeLabel": "小说来源",
-      "author": "一支4",
+      "id": "9e232a68-d0db-45bd-8ba7-e29cc1b70921",
+      "name": "连续载体1",
+      "author": "张三",
+      "createUserName": "超级管理员",
+      "introduce": "连续载体简介1",
+      "classify": [
+        {
+          "id": "d2ce20ca-98e5-4833-afa6-8c636d3f1973",
+          "label": "美术",
+          "sort": 1,
+          "type": null,
+          "createTime": "2021-08-18 03:12:22",
+          "updateTime": "2021-08-18 03:12:22",
+          "terminal": "管理端",
+          "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+          "createUserName": "超级管理员"
+        }
+      ],
+      "type": "601",
+      "typeLabel": "灵幻",
+      "isTop": "0",
       "isSecret": "0",
       "isDraft": "0",
       "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-      "createUserName": "超级管理员",
-      "createTime": "2021-09-03 17:48:38",
-      "updateTime": "2021-09-03 17:48:38",
+      "createTime": "2022-02-18 09:45:08",
+      "updateTime": "2022-02-18 09:50:46",
       "terminal": "管理端",
-      "remarks": null,
-      "isLike": "1",
-      "likeCount": 2,
+      "remarks": "备注",
+      "isLike": "0",
+      "likeCount": 0,
       "isCollection": "0",
       "collectionCount": 0,
       "isSelf": "1",
-      "commentCount": 1
+      "commentCount": 0
     }
   ],
   "total": 3
+}
+```
+
+## ---------------- 获取指定用户的非草稿小说列表 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 获取指定用户的非草稿小说列表，如果为私密小说只可获取本人发布的小说
+- 只有超级管理员可置顶
+
+#### 请求
+
+- `get | post`
+- `novel/get/list/byuserid`
+#### 参数
+
+| 参数名 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| userId | string | 是 | 用户ID |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
+| keyword | string | 否 | 关键字 |
+| type | string | 否 | 小说类型，取系统标签300范围 |
+| isSecret | string | 否 | 是否为私密小说，1 是 0 否 |
+
+#### 返回字段说明
+
+- 返回数组或[]
+- 排序规则
+   `搜索相似度(连载名称 作者 简介 createUserName全等搜索)降序`
+   `isTop是否置顶`
+   `likeCount点赞总数降序`
+   `collectionCount收藏总数降序`
+   `updateTime更新时间降序`
+- `classify` 字段为用户自定义标签列表数组或[]
+
+- 返回数组或[]，具体字段看上一个接口字段说明
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": [
+    {
+      "id": "9e232a68-d0db-45bd-8ba7-e29cc1b70921",
+      "name": "连续载体1",
+      "author": "张三",
+      "createUserName": "超级管理员",
+      "introduce": "连续载体简介1",
+      "classify": [
+        {
+          "id": "d2ce20ca-98e5-4833-afa6-8c636d3f1973",
+          "label": "美术",
+          "sort": 1,
+          "type": null,
+          "createTime": "2021-08-18 03:12:22",
+          "updateTime": "2021-08-18 03:12:22",
+          "terminal": "管理端",
+          "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+          "createUserName": "超级管理员"
+        }
+      ],
+      "type": "601",
+      "typeLabel": "灵幻",
+      "isTop": "0",
+      "isSecret": "0",
+      "isDraft": "0",
+      "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+      "createTime": "2022-02-18 09:45:08",
+      "updateTime": "2022-02-18 09:50:46",
+      "terminal": "管理端",
+      "remarks": "备注",
+      "isLike": "0",
+      "likeCount": 0,
+      "isCollection": "0",
+      "collectionCount": 0,
+      "isSelf": "1",
+      "commentCount": 0
+    }
+  ],
+  "total": 3
+}
+```
+
+## ---------------- 获取所有用户的非草稿小说列表 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 获取所有用户的非草稿小说列表，如果为私密小说只可获取本人发布的小说
+- 只有超级管理员可置顶
+
+#### 请求
+
+- `get | post`
+- `novel/get/list/byuserid`
+
+#### 参数
+
+| 参数名 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
+| keyword | string | 否 | 关键字 |
+| type | string | 否 | 小说类型，取系统标签300范围 |
+| isSecret | string | 否 | 是否为私密小说，1 是 0 否 |
+
+#### 返回字段说明
+
+- 返回数组或[]
+- 排序规则
+   `isTop是否置顶`
+   `likeCount点赞总数降序`
+   `搜索相似度(连载名称 作者 简介 createUserName全等搜索)降序`
+   `collectionCount收藏总数降序`
+   `updateTime更新时间降序`
+- `classify` 字段为用户自定义标签列表数组或[]
+
+- 返回数组或[]，具体字段看上一个接口字段说明
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": [
+    {
+      "id": "9e232a68-d0db-45bd-8ba7-e29cc1b70921",
+      "name": "连续载体1",
+      "author": "张三",
+      "createUserName": "超级管理员",
+      "introduce": "连续载体简介1",
+      "classify": [
+        {
+          "id": "d2ce20ca-98e5-4833-afa6-8c636d3f1973",
+          "label": "美术",
+          "sort": 1,
+          "type": null,
+          "createTime": "2021-08-18 03:12:22",
+          "updateTime": "2021-08-18 03:12:22",
+          "terminal": "管理端",
+          "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+          "createUserName": "超级管理员"
+        }
+      ],
+      "type": "601",
+      "typeLabel": "灵幻",
+      "isTop": "0",
+      "isSecret": "0",
+      "isDraft": "0",
+      "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+      "createTime": "2022-02-18 09:45:08",
+      "updateTime": "2022-02-18 09:50:46",
+      "terminal": "管理端",
+      "remarks": "备注",
+      "isLike": "0",
+      "likeCount": 0,
+      "isCollection": "0",
+      "collectionCount": 0,
+      "isSelf": "1",
+      "commentCount": 0
+    }
+  ],
+  "total": 5
 }
 ```
