@@ -20,9 +20,13 @@ export interface NovelOptions extends BaseOptions {
   is_self?: string,
   is_like?: string,
   like_count?: number,
+  chapter_like_count?: number,
   is_collection?: string,
   collection_count?: number,
-  comment_count?: number
+  chapter_collection_count?: number,
+  comment_count?: number,
+  chapter_comment_count?:number,
+  chapter_count?: number
 }
 
 // 获取列表参数类型接口

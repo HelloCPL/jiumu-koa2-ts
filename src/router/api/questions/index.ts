@@ -67,7 +67,7 @@ export default class API {
     await doQuestionGetList(ctx, next)
   }
 
-  // 6 获取指定用户非草稿的问答列表
+  // 6 获取指定用户非草稿且公开的问答列表
   @Request({
     path: 'get/list/byuserid',
     methods: ['get', 'post'],
@@ -75,10 +75,11 @@ export default class API {
   @Required(['userId'])
   async doQuestionGetListByUserId(ctx: Context, next: Next) {
     ctx.params.isDraft = '0'
+    ctx.params.isSecret = '0'
     await doQuestionGetList(ctx, next)
   }
 
-  // 7 获取所有问答列表
+  // 7 获取所有非草稿且公开问答列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post'],
@@ -86,6 +87,7 @@ export default class API {
   async doQuestionGetList(ctx: Context, next: Next) {
     ctx.params.userId = null
     ctx.params.isDraft = '0'
+    ctx.params.isSecret = '0'
     await doQuestionGetList(ctx, next)
   }
 }

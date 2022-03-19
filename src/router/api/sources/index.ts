@@ -67,23 +67,25 @@ export default class API {
     await doSourceGetList(ctx, next)
   }
 
-  // 6 获取指定用户的资源列表
+  // 6 获取指定用户公开的资源列表
   @Request({
     path: 'get/list/byuserid',
     methods: ['get', 'post'],
   })
   @Required(['userId'])
   async doSourceGetListByUserId(ctx: Context, next: Next) {
+    ctx.params.isSecret = '0'
     await doSourceGetList(ctx, next)
   }
 
-  // 7 获取所有问答列表
+  // 7 获取所有公开的问答列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post'],
   })
   async doSourceGetList(ctx: Context, next: Next) {
     ctx.params.userId = null
+    ctx.params.isSecret = '0'
     await doSourceGetList(ctx, next)
   }
 

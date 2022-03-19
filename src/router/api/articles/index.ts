@@ -68,7 +68,7 @@ export default class API {
     await doArticleGetList(ctx, next)
   }
 
-  // 6 获取指定用户非草稿的博客文章列表
+  // 6 获取指定用户非草稿且公开的博客文章列表
   @Request({
     path: 'get/list/byuserid',
     methods: ['get', 'post'],
@@ -76,10 +76,11 @@ export default class API {
   @Required(['userId'])
   async doArticleGetListByUserId(ctx: Context, next: Next) {
     ctx.params.isDraft = '0'
+    ctx.params.isSecret = '0'
     await doArticleGetList(ctx, next)
   }
 
-  // 7 获取所有非草稿的博客文章列表
+  // 7 获取所有非草稿且公开的博客文章列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post'],
@@ -87,6 +88,7 @@ export default class API {
   async doArticleGetList(ctx: Context, next: Next) {
     ctx.params.userId = null
     ctx.params.isDraft = '0'
+    ctx.params.isSecret = '0'
     await doArticleGetList(ctx, next)
   }
 }

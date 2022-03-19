@@ -6,8 +6,11 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doNovelChapterAddConvert, doNovelChapterUpdateConvert } from '../../controller/novels-chapter/convert'
+import { doNovelChapterAddConvert, doNovelChapterUpdateConvert, doNovelChapterDeleteConvert } from '../../controller/novels-chapter/convert'
 import { doNovelChapterAdd } from '../../controller/novels-chapter/add'
+import { doNovelChapterUpdate } from '../../controller/novels-chapter/update'
+import { doNovelChapterDelete } from '../../controller/novels-chapter/delete'
+import { doNovelChapterGetOne, doNovelChapterGetList } from '../../controller/novels-chapter/get'
 
 @Prefix('novel-chapter')
 export default class API {
@@ -24,13 +27,45 @@ export default class API {
 
   // 2. 章节修改
   @Request({
-    path: 'add',
+    path: 'update',
     methods: ['get', 'post']
   })
   @Required(['id'])
   @Convert(doNovelChapterUpdateConvert)
   async doNovelChapterUpdate(ctx: Context, next: Next) {
-    await doNovelChapterAdd(ctx, next)
+    await doNovelChapterUpdate(ctx, next)
   }
+
+  // 3. 章节删除
+  @Request({
+    path: 'delete',
+    methods: ['get', 'post']
+  })
+  @Required(['id'])
+  @Convert(doNovelChapterDeleteConvert)
+  async doNovelChapterDelete(ctx: Context, next: Next) {
+    await doNovelChapterDelete(ctx, next)
+  }
+
+  // 4. 获取指定的小说章节
+  @Request({
+    path: 'get/one',
+    methods: ['get', 'post']
+  })
+  @Required(['id'])
+  async doNovelChapterGetOne(ctx: Context, next: Next) {
+    await doNovelChapterGetOne(ctx, next)
+  }
+
+  // 5. 获取指定小说所有的章节列表
+  @Request({
+    path: 'get/list',
+    methods: ['get', 'post']
+  })
+  @Required(['novelId'])
+  async doNovelChapterGetList(ctx: Context, next: Next) {
+    await doNovelChapterGetList(ctx, next)
+  }
+
 }
 

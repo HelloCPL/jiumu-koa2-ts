@@ -67,7 +67,7 @@ export default class API {
     await doNovelGetList(ctx, next)
   }
 
-  // 6 获取指定用户所有非草稿的小说列表
+  // 6 获取指定用户所有非草稿且公开的小说列表
   @Request({
     path: 'get/list/byuserid',
     methods: ['get', 'post'],
@@ -75,10 +75,11 @@ export default class API {
   @Required(['userId'])
   async doNovelGetListByUserId(ctx: Context, next: Next) {
     ctx.params.isDraft = '0'
+    ctx.params.isSecret = '0'
     await doNovelGetList(ctx, next)
   }
 
-  // 7 获取所有的非草稿小说列表
+  // 7 获取所有的非草稿且公开小说列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post'],
@@ -86,6 +87,7 @@ export default class API {
   async doNovelGetList(ctx: Context, next: Next) {
     ctx.params.userId = null
     ctx.params.isDraft = '0'
+    ctx.params.isSecret = '0'
     await doNovelGetList(ctx, next)
   }
 }

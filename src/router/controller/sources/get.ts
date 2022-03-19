@@ -97,7 +97,7 @@ export const getSourceList = async (options: SourceListParams): Promise<SourceLi
   const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])
   const sourceList: SourceOptions[] = res[1]
   await _handleSource(sourceList, options.userId)
-  throw new Success({ total: res[0][0]['total'], data: sourceList });
+  return { total: res[0][0]['total'], data: sourceList }
 }
 
 // 处理资源数据
