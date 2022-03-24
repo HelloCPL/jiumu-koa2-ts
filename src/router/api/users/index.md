@@ -22,7 +22,7 @@
 
 - 返回对象或null
 
- 参数名 | 类型 | 说明 |
+| 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | token | string | token |
 | tokenRefresh | string | 刷新token |
@@ -64,7 +64,7 @@
 
 - 返回对象或null
 
- 参数名 | 类型 | 说明 |
+| 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | token | string | token |
 | tokenRefresh | string | 刷新token |
@@ -140,7 +140,7 @@
 
 - 返回对象或null
 
- 参数名 | 类型 | 说明 |
+| 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | token | string | token |
 | tokenRefresh | string | 刷新token |
@@ -244,7 +244,7 @@
 
 - 返回对象或null
 
- 参数名 | 类型 | 说明 |
+| 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | userInfo | object/null | 用户基本信息 |
 | roles | array/[] | 用户拥有的所有角色 |
@@ -379,7 +379,7 @@
 
 - 返回对象或null
 
- 参数名 | 类型 | 说明 |
+| 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 用户id |
 | phone | string | 用户账号（即手机号） |
@@ -459,7 +459,7 @@
   `搜索相似度(phone全等搜索 username)降序`
   `updateTime更新时间降序`
 
- 参数名 | 类型 | 说明 |
+| 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 用户id |
 | phone | string | 用户账号（即手机号） |
@@ -535,7 +535,7 @@
 
 - 返回对象或null
 
- 参数名 | 类型 | 说明 |
+| 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | token | string | token |
 | tokenRefresh | string | 刷新token |

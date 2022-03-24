@@ -31,7 +31,6 @@ export const doNovelGetList = async (ctx: Context, next: Next) => {
     isSecret: ctx.params.isSecret,
   }
   const data = await getNovelList(params)
-  console.log(data)
   throw new Success(data)
 }
 
@@ -105,7 +104,7 @@ export const getNovelList = async (options: NovelListParams): Promise<NovelListR
   const data2 = [options.userId, options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
-    { sql: sql2, data: data2 },
+    { sql: sql2, data: data2 }
   ])
   const novelList: NovelOptions[] = res[1]
   await _handleNovel(novelList, options.userId)

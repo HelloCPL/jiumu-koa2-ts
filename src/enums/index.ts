@@ -74,6 +74,7 @@ export enum Message {
   unexistNovel = '连续载体不存在',
   unexistNovelChapter = '章节不存在',
   existNovelChapterSort = '章节序号已存在，请使用其他序号',
+  unexistNovelNote = '笔记不存在',
 
 
   relevantHasChildren = '有子级关联，请解除子级关联后再操作',
@@ -105,7 +106,6 @@ export enum Code {
 */
 export enum MessageParameter {
   isLength = '参数必传',
-  isString = '参数必须为字符串',
   isBoolean = '参数必须为boolean类型',
   isInt = '参数必须为整型',
   isFloat = '参数必须为浮点型',

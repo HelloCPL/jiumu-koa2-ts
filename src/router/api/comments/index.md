@@ -120,7 +120,7 @@
   一级评论列表 `是否置顶、likeCount点赞总数降序、commentCount评论总数降序、createTime评论时间升序` 
   二级评论 `是否置顶、createTime评论时间升序` 
 
- 参数名 | 类型 | 说明 |
+| 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 评论id |
 | targetId | string | 评论目标id |
@@ -194,7 +194,7 @@
 - 排序规则
   `是否置顶、likeCount点赞总数降序、commentCount评论总数降序、createTime评论时间升序` 
 
- 参数名 | 类型 | 说明 |
+| 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 评论id |
 | targetId | string | 评论目标id |
@@ -269,7 +269,7 @@
 - 排序规则
   `是否置顶、likeCount点赞总数降序、commentCount评论总数降序、createTime评论时间升序` 
 
- 参数名 | 类型 | 说明 |
+| 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 评论id |
 | targetId | string | 评论目标id |

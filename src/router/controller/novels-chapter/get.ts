@@ -8,8 +8,6 @@ import { Success } from '../../../utils/http-exception'
 import { query, execTrans } from '../../../db'
 import { Context, Next } from 'koa'
 import { NovelChapterOptions, NovelChapterListParams, NovelChapterListReturn } from './interface'
-import { getTagCustomByIds } from '../tags-custom/get'
-import { getOrderByKeyword, getSelectWhereAsKeywordData, getSelectWhereData } from '../../../utils/handle-sql'
 import _ from 'lodash'
 
 // 获取指定的某个小说

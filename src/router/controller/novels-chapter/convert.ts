@@ -45,24 +45,20 @@ export const doNovelChapterAddConvert = async (ctx: Context, next: Next) => {
  */
 export const doNovelChapterUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断章节是否不存在，且是否为自己的章节
-  console.log(111)
   const sql: string = `SELECT id, novel_id FROM novels_chapter WHERE id = ? AND create_user = ?`
   const data = [ctx.params.id, ctx.user.id]
   const res: any = await query(sql, data)
   if (!(res && res.length)) {
     throw new ExceptionParameter({ message: Message.unexistNovelChapter })
   }
-  console.log(222)
   // 若传 sort 判断 sort 是否除自己外已存在
   if (ctx.params.hasOwnProperty('sort')) {
     const sql1: string = `SELECT id FROM novels_chapter WHERE novel_id = ? AND id != ? AND sort = ? AND create_user = ?`
     const data1 = [res[0].novel_id, ctx.params.id, ctx.params.sort, ctx.user.id]
     const res1: any = await query(sql1, data1)
-    console.log(res1)
     if (res1 && res1.length)
       throw new ExceptionParameter({ message: Message.existNovelChapterSort })
   }
-  console.log(333)
   // 若传 isDraft 判断 isDraft 是否['1', '0'] 范围
   if (ctx.params.hasOwnProperty('isDraft')) {
     await validateRange({

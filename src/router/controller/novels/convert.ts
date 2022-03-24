@@ -24,7 +24,6 @@ export const doNovelAddConvert = async (ctx: Context, next: Next) => {
       message: 'type参数必须为系统标签600范围'
     })
   }
-
   await next()
 }
 

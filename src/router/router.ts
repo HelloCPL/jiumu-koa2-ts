@@ -50,8 +50,8 @@ export const Request = (options: RequestOptions): MethodDecorator => (target: an
 
 /**
  * @author chen
- * @params params 必传参数列表，如需指定类型，用 &+类型 拼接成字符串
- * 如 @Required(['id', 'age&isInt', 'type&isBoolean'])
+ * @params params 必传参数列表，如需指定类型，用 &+类型 拼接成字符串，如果拼接的为数字则直接指定最小长度
+ * 如 @Required(['id', 'age&isInt', 'type&isBoolean', 'name&isString', 'title&12'])
  * @description 校验必传参数 方法装饰器
  * @update 2021-01-22 16:25:57
 */
@@ -73,11 +73,21 @@ function _handleRequiredParams(params: string[]): ValidatorOptions[] {
       let i: number = item.indexOf('&')
       let key: string
       let rules: any[] = []
+      let params = {}
+      let message = ''
       if (i !== -1) {
         key = item.substring(0, i)
-        let rule = item.substring(i + 1)
-        // @ts-ignore 
-        rules.push(rule, MessageParameter[rule] || Message.parameter)
+        let rule: string = item.substring(i + 1)
+        if (Number(rule)) {
+          let min = Number(rule)
+          rule = 'isLength'
+          message = `参数长度必须大于${min}`
+          params = { min }
+        }
+        if (rule) {
+          // @ts-ignore 
+          rules.push(rule, message || MessageParameter[rule] || Message.parameter, params)
+        }
       } else {
         key = item
         rules = ['isLength', MessageParameter.isLength, { min: 1 }]
