@@ -10,7 +10,7 @@
 */
 
 import { Context } from 'koa'
-import CONFIG from '../../../config'
+import { TOKEN, IS_VERIFY_TOKEN_BY_REDIS, IS_ALLOW_MULTIPLE_LOGIN } from '../../../config'
 import JWT from 'jsonwebtoken'
 import { Base64 } from 'js-base64'
 import BasicAuth from 'basic-auth'
@@ -33,7 +33,7 @@ export const gernerateToken = async (ctx: Context, info: TokenParamsOptions): Pr
     terminal: ctx.terminal,
     'user-agent': uuid
   }
-  const token: string = JWT.sign(payload, CONFIG.TOKEN.SECRET_KEY, { expiresIn: info.validTime })
+  const token: string = JWT.sign(payload, TOKEN.SECRET_KEY, { expiresIn: info.validTime })
   // 保存到 redis 
   const tokenKey = _getTokenKey({
     id: payload.id,
@@ -58,8 +58,8 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
   const tokenInfo: TokenOptions = <TokenOptions>JWT.decode(token)
   try {
     // 校验 token 是否有效 并获取解析后的信息
-    const tokenVerify: TokenOptions = <TokenOptions>JWT.verify(token, CONFIG.TOKEN.SECRET_KEY)
-    if (CONFIG.IS_VERIFY_TOKEN_BY_REDIS) {
+    const tokenVerify: TokenOptions = <TokenOptions>JWT.verify(token, TOKEN.SECRET_KEY)
+    if (IS_VERIFY_TOKEN_BY_REDIS) {
       // redis在线校验token信息
 
       // 获取redis同步的token信息
@@ -80,7 +80,7 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
         return { message: Message.errorDevice, code: Code.forbidden }
       // 校验是否允许多平台登录
       if (tokenVerify['user-agent'] !== tokenRedisInfo['user-agent'] || token !== tokenRedis) {
-        if (CONFIG.IS_ALLOW_MULTIPLE_LOGIN)
+        if (IS_ALLOW_MULTIPLE_LOGIN)
           return { message: Message.errorDevice, code: Code.forbidden }
         else
           return { message: Message.errorLogin, code: Code.forbidden }
@@ -99,7 +99,7 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
     // iat 开始有效时间
     if (key === 'token' && tokenInfo && tokenInfo.iat) {
       const currentDateValue = dayjs().unix()
-      const iat = tokenInfo.iat + CONFIG.TOKEN.REFRESH_VALID_TIME
+      const iat = tokenInfo.iat + TOKEN.REFRESH_VALID_TIME
       if (currentDateValue < iat)
         return { message: Message.authRefresh, code: Code.authRefresh }
     }
@@ -110,7 +110,7 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
 
 // 获取保存 token 的 key 
 export function _getTokenKey(info: TokenSaveParamsOptions): string {
-  if (CONFIG.IS_ALLOW_MULTIPLE_LOGIN)
+  if (IS_ALLOW_MULTIPLE_LOGIN)
     return `${info.id}_${info.terminal}_${info['user-agent']}_${info.key}`
   else
     return `${info.id}_${info.terminal}_${info.key}`

@@ -17,8 +17,7 @@ import { decrypt } from '../../utils/crypto';
 import dayjs from 'dayjs'
 import Logger from '../logger'
 import { getAllPermissionByUserId } from '../../router/controller/roles-permissions/get';
-import CONFIG from '../../config'
-import { PermissionReturnOptions } from '../../router/controller/permissions/interface';
+import { IS_VERIFY_API_PERMISSION, IS_VERIFY_STATIC_PERMISSION } from '../../config'
 
 /**
  * 拦截普通路由请求 token 权限
@@ -29,7 +28,7 @@ export const verifyRoute = async (ctx: Context, next: Next) => {
     const tokenInfo = await analysisToken(ctx)
     if (tokenInfo.code === Code.success) {
       ctx.user = tokenInfo.data
-      if (CONFIG.IS_VERIFY_API_PERMISSION) {
+      if (IS_VERIFY_API_PERMISSION) {
         await verifyApiByUser(ctx, next)
       }
     } else {
@@ -79,7 +78,7 @@ async function verifyApiByUser(ctx: Context, next: Next) {
  * 拦截静态资源访问权限
 */
 export const verifyStatic = async (ctx: Context, next: Next) => {
-  if (CONFIG.IS_VERIFY_STATIC_PERMISSION) {
+  if (IS_VERIFY_STATIC_PERMISSION) {
     const url: string = ctx.request.url
     if (url.startsWith('/files/') || url.startsWith('/images/') || url.startsWith('/videos/') || url.startsWith('/editors/') || url.startsWith('/sources/')) {
       let filePath = getSuffix(_getFullPath(url), '/')

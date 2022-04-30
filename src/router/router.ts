@@ -18,7 +18,6 @@ import { sureIsArray } from '../utils/tools'
 // import { _getUserId } from '../utils/users'
 import { RequestOptions, RouteOptions } from './interface'
 import { MessageParameter, Message } from '../enums'
-import Config from '../config'
 
 /**
  * @author chen

@@ -4,7 +4,7 @@
  * @update 2021-03-11 16:31:23
 */
 
-import CONFIG from '../../config'
+import { LOGS_URL } from '../../config'
 
 import path from 'path'
 
@@ -18,7 +18,7 @@ export default {
     "rule-console": { "type": "console" },
     "infoLogger": {
       "type": "dateFile",
-      "filename": path.join(CONFIG.LOGS_URL, infoPath, infoFileName),
+      "filename": path.join(LOGS_URL, infoPath, infoFileName),
       "pattern": "-yyyy-MM-dd-hh.log",
       "alwaysIncludePattern": true,
       "encoding": "utf-8",
@@ -34,7 +34,7 @@ export default {
     // "errorLogger": { "appenders": ["errorLogger"], "level": "all" },
     "http": { "appenders": ["infoLogger"], "level": "info" }
   },
-  "baseLogPath": CONFIG.LOGS_URL
+  "baseLogPath": LOGS_URL
 }
 
 

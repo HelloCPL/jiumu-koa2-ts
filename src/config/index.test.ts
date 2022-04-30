@@ -49,11 +49,11 @@ function createConfig(): ConfigOptions {
   }
 
   try {
-    const SECRET_CONFIG = require('./secret')
-    console.log(222, SECRET_CONFIG)
-    config.DATABASE = SECRET_CONFIG.DATABASE
-    config.REDIS = SECRET_CONFIG.REDIS
-    config.WX = SECRET_CONFIG.WX
+    let secretConfig = require('./secret')
+    secretConfig = secretConfig.default || secretConfig
+    config.DATABASE = secretConfig.DATABASE
+    config.REDIS = secretConfig.REDIS
+    config.WX = secretConfig.WX
   } catch (e) { }
 
   return config

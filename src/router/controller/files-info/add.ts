@@ -17,7 +17,7 @@ import { getFileById } from './get'
 import { Terminal } from '../../../enums';
 import { FileInfoOptions } from './interface'
 import { dirExist } from '../../../utils/dir-exist';
-import Config from '../../../config'
+import { STATIC_URL } from '../../../config'
 
 /**
  * 文件上传 可上传一个或多个文件 返回数组格式
@@ -59,7 +59,7 @@ async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | n
   await query(sql, data)
   // 再创建可读流
   const reader: ReadStream = fs.createReadStream(file.path)
-  const dir = path.join(Config.STATIC_URL, `${staticPlace}`)
+  const dir = path.join(STATIC_URL, `${staticPlace}`)
   // 判断目录是否存在，不存在则创建
   await dirExist(dir)
   const savePath = path.join(dir, filePath)

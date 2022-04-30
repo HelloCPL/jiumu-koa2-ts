@@ -9,12 +9,11 @@
 */
 
 import Redis, { RedisClient } from 'redis'
-import CONFIG from '../config'
+import { IS_VERIFY_TOKEN_BY_REDIS, REDIS } from '../config'
 import _ from 'lodash'
 import { getKey } from '../utils/tools'
 import Logger from '../lib/logger'
 import { RedisOptions } from './interface'
-const { IS_VERIFY_TOKEN_BY_REDIS, REDIS } = CONFIG
 
 function createRedis() {
   let redisClient: RedisClient | null = null

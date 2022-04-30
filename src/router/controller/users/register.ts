@@ -8,7 +8,7 @@ import { Context, Next } from "koa";
 import { Message, Terminal } from '../../../enums'
 import { Success } from '../../../utils/http-exception'
 import { gernerateToken } from './token'
-import Config from '../../../config'
+import { TOKEN } from '../../../config'
 import { getUuId, formatDate } from '../../../utils/tools'
 import { encrypt } from '../../../utils/crypto'
 import { query } from '../../../db/index'
@@ -47,7 +47,7 @@ export const handleDoubleToken = async (ctx: Context, options: DoubleTokenParams
   const tokenParams = {
     id: options.userId,
     phone: options.phone,
-    validTime: Config.TOKEN.VALID_TIME,
+    validTime: TOKEN.VALID_TIME,
     key: 'token'
   }
   const token = await gernerateToken(ctx, tokenParams)
@@ -55,7 +55,7 @@ export const handleDoubleToken = async (ctx: Context, options: DoubleTokenParams
   const tokenRefreshParams = {
     id: options.userId,
     phone: options.phone,
-    validTime: Config.TOKEN.REFRESH_VALID_TIME,
+    validTime: TOKEN.REFRESH_VALID_TIME,
     key: 'token_refresh'
   }
   const tokenRefresh = await gernerateToken(ctx, tokenRefreshParams)

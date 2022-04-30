@@ -9,13 +9,11 @@
 
 import MySQL, { Pool, PoolConnection } from 'mysql2'
 import Async from 'async'
-import Config from '../config/index'
+import { DATABASE } from '../config'
 import { ExceptionHttp } from '../utils/http-exception'
 import { SQLOptions, ErrorOptions } from './interface'
 import { Message } from '../enums'
 import Logger from '../lib/logger'
-
-const DATABASE = Config.DATABASE
 
 /**
  * 创建连接池

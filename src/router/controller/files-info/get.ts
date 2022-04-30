@@ -6,7 +6,7 @@
 
 import { Context, Next } from "koa";
 import { query, execTrans } from "../../../db";
-import Config from "../../../config";
+import { BASE_URL } from "../../../config";
 import dayjs from "dayjs";
 import { encrypt } from "../../../utils/crypto";
 import { Success } from "../../../utils/http-exception";
@@ -87,7 +87,7 @@ export const getFileByIds = async (fileIds: string, userId?: string): Promise<Fi
  * 否则正常返回
 */
 function _handleFile(file: FileInfoOptions): FileInfoOptions | null {
-  file.file_path = Config.BASE_URL + file.static_place + '/' + file.file_path
+  file.file_path = BASE_URL + file.static_place + '/' + file.file_path
   if (file.is_secret === '1') {
     let queryParams = '?'
     // 添加用户标识和链接有效期

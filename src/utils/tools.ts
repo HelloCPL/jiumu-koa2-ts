@@ -19,7 +19,7 @@
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid'
 import _ from 'lodash'
 import dayjs from 'dayjs'
-import Config from '../config'
+import { ENV } from '../config'
 import { Context } from 'koa'
 import { TerminalType } from '../enums'
 
@@ -140,7 +140,7 @@ export function formatDate(date: any, format = 'YYYY-MM-DD HH:mm:ss'): string {
 
 // 获取 key
 export const getKey = (key: string): string => {
-  return `${Config.ENV}_jiumu_koa2_ts_${key}`
+  return `${ENV}_jiumu_koa2_ts_${key}`
 }
 
 // 获取路径 terminal

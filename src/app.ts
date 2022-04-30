@@ -9,7 +9,7 @@ import Koa from 'koa'
 import Http from 'http'
 import KoaCors from '@koa/cors'
 import KoaBody from 'koa-body'
-import CONFIG from './config'
+import { MAX_FIELDS_SIZE, STATIC_URL, PORT, BASE_URL } from './config'
 import InitGlobal from './global'
 import { catchError } from './lib/catch-error'
 import { Route } from './router'
@@ -25,7 +25,7 @@ app.use(KoaCors())
 app.use(KoaBody({
   multipart: true,
   formidable: {
-    maxFieldsSize: CONFIG.MAX_FIELDS_SIZE// 设置上传文件大小最大限制
+    maxFieldsSize: MAX_FIELDS_SIZE// 设置上传文件大小最大限制
   }
 }))
 // 初始化全局变量/常量
@@ -40,10 +40,10 @@ route.init()
  * 访问如 http://localhost:3000/files/395d00a0-6918-11eb-a413-3be76f9212d3.jpg
 */
 app.use(verifyStatic) // 校验静态资源访问权限
-app.use(Static(CONFIG.STATIC_URL))
+app.use(Static(STATIC_URL))
 // 启用 gizp 压缩
 initCompress(app)
 
-Http.createServer(app.callback()).listen(CONFIG.PORT, () => {
-  console.log(`${CONFIG.BASE_URL} is running...`);
+Http.createServer(app.callback()).listen(PORT, () => {
+  console.log(`${BASE_URL} is running...`);
 })

@@ -9,7 +9,7 @@
 
 
 import CryptoJS from 'crypto-js'
-import Config from '../config/index'
+import { CRYPTOJS_KEY, CRYPTOJS_IV } from '../config'
 
 /**
  * crypto-js 加密方法
@@ -18,8 +18,8 @@ import Config from '../config/index'
 export function encrypt(str: string, keyStr?: string, ivStr?: string): string {
   if (!str) return str
   try {
-    keyStr = keyStr ? keyStr : Config.CRYPTOJS_KEY
-    ivStr = ivStr ? ivStr : Config.CRYPTOJS_IV
+    keyStr = keyStr ? keyStr : CRYPTOJS_KEY
+    ivStr = ivStr ? ivStr : CRYPTOJS_IV
     let key = CryptoJS.enc.Utf8.parse(keyStr)
     let iv = CryptoJS.enc.Utf8.parse(ivStr)
     let srcs = CryptoJS.enc.Utf8.parse(str);
@@ -39,8 +39,8 @@ export function encrypt(str: string, keyStr?: string, ivStr?: string): string {
 export function decrypt(str: string, keyStr?: string, ivStr?: string): string {
   if (!str) return str
   try {
-    keyStr = keyStr ? keyStr : Config.CRYPTOJS_KEY
-    ivStr = ivStr ? ivStr : Config.CRYPTOJS_IV
+    keyStr = keyStr ? keyStr : CRYPTOJS_KEY
+    ivStr = ivStr ? ivStr : CRYPTOJS_IV
     let key = CryptoJS.enc.Utf8.parse(keyStr)
     let iv = CryptoJS.enc.Utf8.parse(ivStr)
     let descyptStr = CryptoJS.AES.decrypt(str, key, {
