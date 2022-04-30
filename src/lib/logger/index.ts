@@ -33,7 +33,7 @@ const formatLogger: LoggerOptions = {
     logText += `\n  [requestMethod]: ${ctx.method},`
     logText += `\n  [requestParameters]: ${_getDataToString(ctx.data)}`
     logText = _handleParamsOptions(logText, options)
-    if (Config.ENV === 'dev') console.log(logText);
+    if (Config.IS_PRINT_LOG) console.log(logText);
     infoLogger.info(logText)
   },
 
@@ -47,7 +47,7 @@ const formatLogger: LoggerOptions = {
     logText += `\n  [totalTime]: ${Number(costTime) / 1e6}毫秒`
     logText = _handleParamsOptions(logText, options)
     logText += `\n\n---------- 接口响应结束 ${global.requestCount} ----------`
-    if (Config.ENV === 'dev') console.log(logText);
+    if (Config.IS_PRINT_LOG) console.log(logText);
     infoLogger.info(logText)
   },
 
@@ -56,7 +56,7 @@ const formatLogger: LoggerOptions = {
     let logText = ''
     logText += `\n\n[数据库查询日志信息]`
     logText = _handleParamsOptions(logText, options)
-    if (Config.ENV === 'dev') console.log(logText);
+    if (Config.IS_PRINT_LOG) console.log(logText);
     infoLogger.info(logText)
   },
 

@@ -8,54 +8,103 @@
  *   clientDel // 删除 redis 值
 */
 
-import Redis from 'redis'
-import Config from '../config'
+import Redis, { RedisClient } from 'redis'
+import CONFIG from '../config'
 import _ from 'lodash'
 import { getKey } from '../utils/tools'
 import Logger from '../lib/logger'
-const REDIS = Config.REDIS
+import { RedisOptions } from './interface'
+const { IS_VERIFY_TOKEN_BY_REDIS, REDIS } = CONFIG
 
-interface RedisOptions {
-  key: string,
-  value: any
-}
-
-// 创建 redis 连接
-const redisClient = Redis.createClient(REDIS.PORT, REDIS.HOST)
-
-// 登录
-redisClient.auth(REDIS.PASSWORD, () => {
-  console.log('redis 登录成功');
-})
-
-// 监听 redis 错误事件
-redisClient.on('error', err => {
-  // Logger.error('redis 发生错误', err, 'redis 发生错误')
-  Logger.error({
-    message: 'redis 发生错误',
-    error: err
-  })
-})
-
-// 保存 redis 值
-export const clientSet = (key: string, value: any) => {
-  key = getKey(key)
-  return new Promise((resolve, reject) => {
-    const options = _handleSetItem(key, value)
-    redisClient.set(options.key, options.value, (err: any) => {
-      if (err) {
-        Logger.error({
-          message: 'redis 发生错误',
-          error: err
-        })
-        reject(err)
-      }
-      // @ts-ignore
-      else resolve(null)
-
+function createRedis() {
+  let redisClient: RedisClient | null = null
+  if (IS_VERIFY_TOKEN_BY_REDIS) {
+    redisClient = Redis.createClient(REDIS.PORT, REDIS.HOST)
+    // 登录
+    redisClient.auth(REDIS.PASSWORD, () => {
+      console.log('redis 登录成功');
     })
-  })
+    // 监听 redis 错误事件
+    redisClient.on('error', err => {
+      // Logger.error('redis 发生错误', err, 'redis 发生错误')
+      Logger.error({
+        message: 'redis 发生错误',
+        error: err
+      })
+    })
+  }
+  // 保存 redis 值
+  const clientSet = (key: string, value: any): Promise<any> | undefined => {
+    if (redisClient) {
+      key = getKey(key)
+      return new Promise((resolve, reject) => {
+        const options = _handleSetItem(key, value)
+        // @ts-ignore
+        redisClient.set(options.key, options.value, (err: any) => {
+          if (err) {
+            Logger.error({
+              message: 'redis 发生错误',
+              error: err
+            })
+            reject(err)
+          }
+          else resolve(null)
+        })
+      })
+    }
+  }
+
+  // 获取 redis 值
+  const clientGet = (key: string): Promise<any> | undefined => {
+    if (redisClient) {
+      key = getKey(key)
+      return new Promise((resolve, reject) => {
+        // @ts-ignore
+        redisClient.get(key, (err: any, value) => {
+          if (err) {
+            Logger.error({
+              message: 'redis 发生错误',
+              error: err
+            })
+            reject(err)
+          }
+          else resolve(_handleGetItem(value))
+        })
+      })
+    }
+  }
+
+  // 删除 redis 值
+  const clientDel = (key: string): Promise<any> | undefined => {
+    if (redisClient) {
+      key = getKey(key)
+      return new Promise((resolve, reject) => {
+        try {
+          // @ts-ignore
+          redisClient.del(key, (err: any) => {
+            if (err) {
+              Logger.error({
+                message: 'redis 发生错误',
+                error: err
+              })
+              reject(err)
+            }
+            else resolve(null)
+          })
+        } catch (e) {
+          reject(e)
+        }
+      })
+    }
+  }
+
+  return {
+    clientSet,
+    clientGet,
+    clientDel
+  }
 }
+
 function _handleSetItem(key: string, value: any): RedisOptions {
   if (_.isObject(value)) value = JSON.stringify(value)
   if (_.isNumber(value)) value = `__number__${value.toString()}`
@@ -66,22 +115,6 @@ function _handleSetItem(key: string, value: any): RedisOptions {
   return { key, value }
 }
 
-// 获取 redis 值
-export const clientGet = (key: string) => {
-  key = getKey(key)
-  return new Promise((resolve, reject) => {
-    redisClient.get(key, (err: any, value) => {
-      if (err) {
-        Logger.error({
-          message: 'redis 发生错误',
-          error: err
-        })
-        reject(err)
-      }
-      else resolve(_handleGetItem(value))
-    })
-  })
-}
 function _handleGetItem(value: any): any {
   if (!value) return value
   if (value.startsWith('__number__')) return Number(value.substring(10))
@@ -97,25 +130,8 @@ function _handleGetItem(value: any): any {
   return value
 }
 
-// 删除 redis 值
-export const clientDel = (key: string) => {
-  key = getKey(key)
-  return new Promise((resolve, reject) => {
-    try {
-      redisClient.del(key, (err: any) => {
-        if (err) {
-          Logger.error({
-            message: 'redis 发生错误',
-            error: err
-          })
-          reject(err)
-        }
-        // @ts-ignore
-        else resolve(null)
-      })
-    } catch (e) {
-      // @ts-ignore
-      reject(e)
-    }
-  })
-}
+export const {
+  clientSet,
+  clientGet,
+  clientDel
+} = createRedis()

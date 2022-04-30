@@ -18,6 +18,7 @@ export enum Message {
   parameter = '参数错误',
   notFound = '资源不存在',
   forbidden = '权限不足',
+  forbiddenApi = '权限不足：用户没有此接口的请求权限',
   authFailed = '授权失败',
   rules = '服务器发生错误，校验规则有误',
   authLogin = '令牌已失效，请重新登录',

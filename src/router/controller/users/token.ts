@@ -10,7 +10,7 @@
 */
 
 import { Context } from 'koa'
-import Config from '../../../config'
+import CONFIG from '../../../config'
 import JWT from 'jsonwebtoken'
 import { Base64 } from 'js-base64'
 import BasicAuth from 'basic-auth'
@@ -19,18 +19,21 @@ import { Message, Code } from '../../../enums'
 import { clientDel, clientSet, clientGet } from '../../../db/redis'
 import dayjs from 'dayjs'
 import { TokenOptions, TokenParamsOptions, TokenSaveParamsOptions } from './interface'
+import { getIP } from '../../../utils/tools';
+import { query } from '../../../db';
 
 /**
  * 生成 token
 */
 export const gernerateToken = async (ctx: Context, info: TokenParamsOptions): Promise<string> => {
+  let uuid = <string>ctx.request.header['user-agent'] + '&&' + getIP(ctx)
   const payload: TokenOptions = {
     id: info.id,
     phone: info.phone,
     terminal: ctx.terminal,
-    'user-agent': <string>ctx.request.header['user-agent']
+    'user-agent': uuid
   }
-  const token: string = JWT.sign(payload, Config.TOKEN.SECRET_KEY, { expiresIn: info.validTime })
+  const token: string = JWT.sign(payload, CONFIG.TOKEN.SECRET_KEY, { expiresIn: info.validTime })
   // 保存到 redis 
   const tokenKey = _getTokenKey({
     id: payload.id,
@@ -54,34 +57,49 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
   const token = tokenOrigin.name
   const tokenInfo: TokenOptions = <TokenOptions>JWT.decode(token)
   try {
-    // 校验 token 是否有效
-    const tokenVerify: TokenOptions = <TokenOptions>JWT.verify(token, Config.TOKEN.SECRET_KEY)
-    // 校验 Headers.Authorization 和 redis 保存的信息是否一致
-    const tokenKey = _getTokenKey({
-      id: tokenVerify.id,
-      terminal: tokenVerify.terminal,
-      'user-agent': tokenVerify['user-agent'],
-      key
-    })
-    let tokenRedis: any = await clientGet(tokenKey)
-    let tokenRedisInfo: TokenOptions = <TokenOptions>JWT.decode(tokenRedis)
-    if (!tokenRedis || !tokenRedisInfo || tokenVerify.phone !== tokenRedisInfo.phone)
-      return { message: Message.authLogin, code: Code.authLogin }
-    // 校验登录设备、请求路径与终端的信息是否一致
-    if (ctx.terminal !== tokenVerify.terminal || ctx.request.header['user-agent'] !== tokenVerify['user-agent'])
-      return { message: Message.errorDevice, code: Code.forbidden }
-    // 校验是否允许多平台登录
-    if (tokenVerify['user-agent'] !== tokenRedisInfo['user-agent'] || token !== tokenRedis) {
-      if (Config.ALLOW_MULTIPLE)
+    // 校验 token 是否有效 并获取解析后的信息
+    const tokenVerify: TokenOptions = <TokenOptions>JWT.verify(token, CONFIG.TOKEN.SECRET_KEY)
+    if (CONFIG.IS_VERIFY_TOKEN_BY_REDIS) {
+      // redis在线校验token信息
+
+      // 获取redis同步的token信息
+      const tokenKey = _getTokenKey({
+        id: tokenVerify.id,
+        terminal: tokenVerify.terminal,
+        'user-agent': tokenVerify['user-agent'],
+        key
+      })
+      let tokenRedis: any = await clientGet(tokenKey)
+      let tokenRedisInfo: TokenOptions = <TokenOptions>JWT.decode(tokenRedis)
+      // 校验用户信息是否一致
+      if (!tokenRedis || !tokenRedisInfo || tokenVerify.phone !== tokenRedisInfo.phone || tokenVerify.id !== tokenRedisInfo.id)
         return { message: Message.authLogin, code: Code.authLogin }
-      else
-        return { message: Message.errorLogin, code: Code.forbidden }
+      // 校验登录设备、请求路径与终端的信息是否一致
+      let uuid = <string>ctx.request.header['user-agent'] + '&&' + getIP(ctx)
+      if (ctx.terminal !== tokenVerify.terminal || uuid !== tokenVerify['user-agent'])
+        return { message: Message.errorDevice, code: Code.forbidden }
+      // 校验是否允许多平台登录
+      if (tokenVerify['user-agent'] !== tokenRedisInfo['user-agent'] || token !== tokenRedis) {
+        if (CONFIG.IS_ALLOW_MULTIPLE_LOGIN)
+          return { message: Message.errorDevice, code: Code.forbidden }
+        else
+          return { message: Message.errorLogin, code: Code.forbidden }
+      }
+    } else if (!tokenVerify.id) {
+      return { message: Message.forbidden, code: Code.forbidden }
+    } else {
+      // mysql校验token用户是否合法
+      const sql = `SELECT id FROM users where id = ?`
+      const res: any = await query(sql, tokenVerify.id)
+      if (!res.length) {
+        return { message: Message.authLogin, code: Code.authLogin }
+      }
     }
   } catch (e) {
     // iat 开始有效时间
     if (key === 'token' && tokenInfo && tokenInfo.iat) {
       const currentDateValue = dayjs().unix()
-      const iat = tokenInfo.iat + Config.TOKEN.REFRESH_VALID_TIME
+      const iat = tokenInfo.iat + CONFIG.TOKEN.REFRESH_VALID_TIME
       if (currentDateValue < iat)
         return { message: Message.authRefresh, code: Code.authRefresh }
     }
@@ -92,7 +110,7 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
 
 // 获取保存 token 的 key 
 export function _getTokenKey(info: TokenSaveParamsOptions): string {
-  if (Config.ALLOW_MULTIPLE)
+  if (CONFIG.IS_ALLOW_MULTIPLE_LOGIN)
     return `${info.id}_${info.terminal}_${info['user-agent']}_${info.key}`
   else
     return `${info.id}_${info.terminal}_${info.key}`

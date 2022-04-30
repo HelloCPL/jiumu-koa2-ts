@@ -19,3 +19,9 @@ export interface SQLOptions {
   data?: any[] | string,
   noThrow?: boolean
 }
+
+// redis参数接口
+export interface RedisOptions {
+  key: string,
+  value: any
+}

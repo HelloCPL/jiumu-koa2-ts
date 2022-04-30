@@ -18,7 +18,7 @@ import Logger from '../lib/logger'
 const DATABASE = Config.DATABASE
 
 /**
- * 创建连接词
+ * 创建连接池
 */
 const pool: Pool = MySQL.createPool({
   host: DATABASE.HOST,

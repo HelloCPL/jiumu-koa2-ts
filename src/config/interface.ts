@@ -34,13 +34,25 @@ export interface ConfigOptions extends ObjectAny {
   ENV: string,
   PORT: number,
   HTTPS_PORT: number,
-  CRYPTOJS_KEY: string,
-  CRYPTOJS_IV: string,
   DATABASE: DatabaseOptions,
   REDIS: RedisOptions,
   WX: WXOptions,
   TOKEN: ConfigTokenOptions,
-  ALLOW_MULTIPLE: boolean,
   BASE_URL: string,
-  STATIC_URL: string
+  STATIC_URL: string,
+  LOGS_URL: string,
+  CRYPTOJS_KEY: string,
+  CRYPTOJS_IV: string,
+  MAX_FIELDS_SIZE: number,
+  IS_ALLOW_MULTIPLE_LOGIN: boolean,
+  IS_VERIFY_TOKEN_BY_REDIS: boolean,
+  IS_VERIFY_API_PERMISSION: boolean,
+  IS_VERIFY_STATIC_PERMISSION: boolean,
+  IS_PRINT_LOG: boolean
+}
+
+export interface SecretConfigOption {
+  DATABASE: DatabaseOptions,
+  REDIS: RedisOptions,
+  WX: WXOptions
 }
