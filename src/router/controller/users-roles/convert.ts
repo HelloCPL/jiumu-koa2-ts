@@ -18,14 +18,14 @@ export const doUserRoleAddConvert = async (ctx: Context, next: Next) => {
   //  判断用户是否不存在
   await isExist({
     table: 'users',
-    where: [{ key: 'id', value: ctx.params.userId }],
+    where: [{ key: 'id', value: ctx._params.userId }],
     throwType: false,
     message: Message.unexistUser
   })
   // 判断角色是否不存在
   await isExist({
     table: 'roles',
-    where: [{ key: 'id', value: ctx.params.roleId }],
+    where: [{ key: 'id', value: ctx._params.roleId }],
     throwType: false,
     message: Message.unexistRole
   })
@@ -33,8 +33,8 @@ export const doUserRoleAddConvert = async (ctx: Context, next: Next) => {
   await isExist({
     table: 'users_roles',
     where: [
-      { key: 'role_id', value: ctx.params.roleId },
-      { key: 'user_id', value: ctx.params.userId },
+      { key: 'role_id', value: ctx._params.roleId },
+      { key: 'user_id', value: ctx._params.userId },
     ],
     throwType: true,
     message: Message.unexistUserRole
@@ -50,7 +50,7 @@ export async function doUserRoleDeleteConvert(ctx: Context, next: Next) {
   // 判断用户-角色关联是否不存在
   await isExist({
     table: 'users_roles',
-    where: [{ key: 'id', value: ctx.params.id }],
+    where: [{ key: 'id', value: ctx._params.id }],
     throwType: false,
     message: Message.unexistRolePermission
   })

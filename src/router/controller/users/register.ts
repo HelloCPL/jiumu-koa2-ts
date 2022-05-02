@@ -19,13 +19,13 @@ import { doLoginInfoAdd } from '../login-info/add'
 */
 export const doUserRegister = async (ctx: Context, next: Next) => {
   const id = getUuId()
-  const password = encrypt(ctx.params.password)
+  const password = encrypt(ctx._params.password)
   const currentTime = formatDate(new Date())
   const sql = `INSERT users (id, password, phone,username, create_time, update_time, terminal) VALUES (?,?,?,?,?,?,?)`
-  const data = [id, password, ctx.params.phone, '匿名', currentTime, currentTime, Terminal[ctx.terminal]]
+  const data = [id, password, ctx._params.phone, '匿名', currentTime, currentTime, Terminal[ctx._terminal]]
   await query(sql, data)
   // 生成双 token
-  let params = { userId: id, phone: ctx.params.phone }
+  let params = { userId: id, phone: ctx._params.phone }
   const doubleToken = await handleDoubleToken(ctx, params)
   // 记录登录状态
   await doLoginInfoAdd(ctx, next, id)

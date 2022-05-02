@@ -15,10 +15,10 @@ import { handleDoubleToken } from './register'
 */
 export const doUserUpdatePhoneSelf = async (ctx: Context, next: Next) => {
   const sql = `UPDATE users SET phone = ? where id = ?`
-  const data = [ctx.params.phone, ctx.user.id]
+  const data = [ctx._params.phone, ctx._user.id]
   await query(sql, data)
   // 生成双 token
-  let params = { userId: ctx.user.id, phone: ctx.params.phone }
+  let params = { userId: ctx._user.id, phone: ctx._params.phone }
   const doubleToken = await handleDoubleToken(ctx, params)
   throw new Success({ data: doubleToken })
 }
@@ -27,9 +27,9 @@ export const doUserUpdatePhoneSelf = async (ctx: Context, next: Next) => {
  * 修改本用户密码
 */
 export const doUserUpdatePasswordSelf = async (ctx: Context, next: Next) => {
-  const newPassword = encrypt(ctx.params.newPassword)
+  const newPassword = encrypt(ctx._params.newPassword)
   const sql = `UPDATE users SET password = ? where id = ?`
-  const data = [newPassword, ctx.user.id]
+  const data = [newPassword, ctx._user.id]
   await query(sql, data)
   throw new Success();
 }

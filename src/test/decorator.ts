@@ -14,6 +14,7 @@
  * 装饰参数： 类本身
 */
 const setMoney = (money: number): ClassDecorator => (target: any) => {
+  console.log('类装饰器')
   target.prototype.money = money
 }
 
@@ -22,6 +23,7 @@ const setMoney = (money: number): ClassDecorator => (target: any) => {
  * 装饰参数： 原型对象 属性名称
 */
 const setBlood = (blood: number): ParameterDecorator => (target: any, key: string | symbol) => {
+  console.log('属性装饰器')
   target[key] = blood
 }
 
@@ -30,8 +32,13 @@ const setBlood = (blood: number): ParameterDecorator => (target: any, key: strin
  * 装饰参数： 原型对象 方法名称 属性描述符
 */
 const locked = (): MethodDecorator => (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-  console.log(`禁止用户更改该方法`);
+  console.log(`方法装饰器1`);
   descriptor.writable = false
+}
+
+const locked2 = (): MethodDecorator => (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
+  console.log(`方法装饰器2`);
+  descriptor.writable = true
 }
 
 /**
@@ -39,7 +46,7 @@ const locked = (): MethodDecorator => (target: any, key: string | symbol, descri
  * 装饰参数： 原型对象 方法名称 参数所在位置
 */
 const param = (): ParameterDecorator => (target: any, key: string | symbol, index: number) => {
-  // console.log('滴滴滴');
+  console.log('参数装饰器');
 }
 
 @setMoney(100)
@@ -50,6 +57,7 @@ class Player {
   blood: number
 
   @locked()
+  @locked2()
   move(@param() index: number) {
     console.log(`走了${index}步`);
   }

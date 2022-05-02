@@ -12,19 +12,19 @@ import _ from 'lodash'
 
 // 获取指定的某个小说
 export const doNovelChapterGetOne = async (ctx: Context, next: Next) => {
-  const data = await getNovelChapterGetOne(ctx.params.id, ctx.user.id)
+  const data = await getNovelChapterGetOne(ctx._params.id, ctx._user.id)
   throw new Success({ data })
 }
 
 // 获取指定小说所有的章节列表
 export const doNovelChapterGetList = async (ctx: Context, next: Next) => {
   const params: NovelChapterListParams = {
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
-    novelId: ctx.params.novelId,
-    userId: ctx.user.id,
-    isDraft: ctx.params.isDraft,
-    isSecret: ctx.params.isSecret,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    novelId: ctx._params.novelId,
+    userId: ctx._user.id,
+    isDraft: ctx._params.isDraft,
+    isSecret: ctx._params.isSecret,
   }
   const data = await getNovelChapterGetList(params)
   throw new Success(data)

@@ -30,7 +30,7 @@ export const gernerateToken = async (ctx: Context, info: TokenParamsOptions): Pr
   const payload: TokenOptions = {
     id: info.id,
     phone: info.phone,
-    terminal: ctx.terminal,
+    terminal: ctx._terminal,
     'user-agent': uuid
   }
   const token: string = JWT.sign(payload, TOKEN.SECRET_KEY, { expiresIn: info.validTime })
@@ -76,7 +76,7 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
         return { message: Message.authLogin, code: Code.authLogin }
       // 校验登录设备、请求路径与终端的信息是否一致
       let uuid = <string>ctx.request.header['user-agent'] + '&&' + getIP(ctx)
-      if (ctx.terminal !== tokenVerify.terminal || uuid !== tokenVerify['user-agent'])
+      if (ctx._terminal !== tokenVerify.terminal || uuid !== tokenVerify['user-agent'])
         return { message: Message.errorDevice, code: Code.forbidden }
       // 校验是否允许多平台登录
       if (tokenVerify['user-agent'] !== tokenRedisInfo['user-agent'] || token !== tokenRedis) {

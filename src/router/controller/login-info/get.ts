@@ -13,9 +13,9 @@ import { LoginInfoListReturn, LoginInfoListParams } from './interface'
 // 获取登录记录
 export const doLoginInfoGetList = async (ctx: Context, next: Next) => {
   const params = {
-    userId: <string>ctx.params.userId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10
+    userId: <string>ctx._params.userId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10
   }
   const data = await getLoginInfoList(params)
   throw new Success(data);

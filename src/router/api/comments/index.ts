@@ -21,7 +21,7 @@ export default class API {
   @Required(['targetId', 'content', 'type'])
   @Convert(doCommentAddConvert)
   async doCommentAdd(ctx: Context, next: Next) {
-    if (ctx.params.type == '501') {
+    if (ctx._params.type == '501') {
       // 新增第二级别评论
       await doCommentSecondAdd(ctx, next)
     } else {
@@ -37,7 +37,7 @@ export default class API {
   })
   @Required(['id'])
   async doCommentDeleteSelf(ctx: Context, next: Next) {
-    ctx.params.userId = ctx.user.id
+    ctx._params.userId = ctx._user.id
     await doCommentDeleteById(ctx, next)
   }
 
@@ -49,7 +49,7 @@ export default class API {
   })
   @Required(['id'])
   async doCommentDeleteById(ctx: Context, next: Next) {
-    ctx.params.userId = null
+    ctx._params.userId = null
     await doCommentDeleteById(ctx, next)
   }
 
@@ -60,10 +60,10 @@ export default class API {
   })
   @Required(['targetId', 'type'])
   async doCommentGetList(ctx: Context, next: Next) {
-    if (ctx.params.targetId === 'answer')
-      ctx.params.targetId = null
-    ctx.params.userId = null
-    if (ctx.params.type == '501') {
+    if (ctx._params.targetId === 'answer')
+      ctx._params.targetId = null
+    ctx._params.userId = null
+    if (ctx._params.type == '501') {
       // 二级评论列表
       await doCommentSecondGetList(ctx, next)
     } else {
@@ -79,9 +79,9 @@ export default class API {
   })
   async doCommentGetAnswerListSelf(ctx: Context, next: Next) {
     // 一级评论列表
-    ctx.params.targetId = 'answer'
-    ctx.params.userId = ctx.user.id
-    ctx.params.type = '502'
+    ctx._params.targetId = 'answer'
+    ctx._params.userId = ctx._user.id
+    ctx._params.type = '502'
     await doCommentFirstGetList(ctx, next)
   }
 
@@ -91,9 +91,9 @@ export default class API {
     methods: ['get', 'post']
   })
   async doCommentGetAnswerList(ctx: Context, next: Next) {
-    ctx.params.targetId = 'answer'
-    ctx.params.userId = null
-    ctx.params.type = '502'
+    ctx._params.targetId = 'answer'
+    ctx._params.userId = null
+    ctx._params.type = '502'
     // 一级评论列表
     await doCommentFirstGetList(ctx, next)
   }

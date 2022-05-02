@@ -15,15 +15,15 @@ import { Message } from "../../../enums";
 */
 export const doUserExit = async (ctx: Context, next: Next) => {
   const tokenKey = _getTokenKey({
-    id: ctx.user.id,
-    terminal: ctx.terminal,
-    'user-agent': ctx.user['user-agent'],
+    id: ctx._user.id,
+    terminal: ctx._terminal,
+    'user-agent': ctx._user['user-agent'],
     key: 'token'
   })
   const tokenRefreshKey = _getTokenKey({
-    id: ctx.user.id,
-    terminal: ctx.terminal,
-    'user-agent': ctx.user['user-agent'],
+    id: ctx._user.id,
+    terminal: ctx._terminal,
+    'user-agent': ctx._user['user-agent'],
     key: 'token_refresh'
   })
   await clientDel(tokenKey)

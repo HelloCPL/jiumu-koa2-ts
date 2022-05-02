@@ -64,7 +64,7 @@ export default class API {
     methods: ['get', 'post']
   })
   async doMenuGetAllSelf(ctx: Context, next: Next) {
-    ctx.params.userId = ctx.user.id
+    ctx._params.userId = ctx._user.id
     await doRoleMenugetAllMenuByUserId(ctx, next)
   }
 

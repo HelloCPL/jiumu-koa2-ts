@@ -17,20 +17,20 @@ import { SQLOptions } from "../../../db/interface";
 */
 export const doSourceAdd = async (ctx: Context, next: Next) => {
   const paramsData = await validateRange([
-    { value: ctx.params.isSecret, range: ['1', '0'], default: '0' }
+    { value: ctx._params.isSecret, range: ['1', '0'], default: '0' }
   ], true)
-  const sort: number = ctx.params.sort || 1
+  const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
-  const params = ctx.params
+  const params = ctx._params
   const sql1: string = `INSERT sources (id, title, type, attachment, classify, is_secret, sort, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-  const data1 = [getUuId(), params.title, params.type, params.attachment, params.classify, paramsData[0], sort, ctx.user.id, currentTime, currentTime, Terminal[ctx.terminal], params.remarks]
+  const data1 = [getUuId(), params.title, params.type, params.attachment, params.classify, paramsData[0], sort, ctx._user.id, currentTime, currentTime, Terminal[ctx._terminal], params.remarks]
   let sqlList: SQLOptions[] = [
     { sql: sql1, data: data1 }
   ]
   // 如果是 701 ，同步静态资源公开性
   if (params.type === '701') {
     const sql2: string = `UPDATE files_info SET is_secret = ? , update_time = ? WHERE create_user = ? AND FIND_IN_SET(id, ?)`
-    const data2 = [paramsData[0], currentTime, ctx.user.id, params.attachment]
+    const data2 = [paramsData[0], currentTime, ctx._user.id, params.attachment]
     sqlList.push({
       sql: sql2,
       data: data2,

@@ -15,28 +15,28 @@ import _ from 'lodash'
 
 // 获取指定的某个权限
 export const doPermissionGetOne = async (ctx: Context, next: Next) => {
-  const data = await getPermissionOne(ctx.params.id)
+  const data = await getPermissionOne(ctx._params.id)
   throw new Success({ data });
 }
 
 // 获取权限列表
 export const doPermissionGetList = async (ctx: Context, next: Next) => {
   const parmas: PermissionParmsOptions = {
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
-    keyword: ctx.params.keyword
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    keyword: ctx._params.keyword
   }
   const data = await getPermissionList(parmas)
-  if (ctx.params.userId) {
+  if (ctx._params.userId) {
     // 若传 userId 增加`checked` 字段，表示是否与该用户关联
-    // const userRoleList = await getAllRoleByUserId({ userId: ctx.params.userId })
+    // const userRoleList = await getAllRoleByUserId({ userId: ctx._params.userId })
     // const roleIds = _.join(_.map(userRoleList.data, item => item.id))
     // const rolePermissionList = await getAllPermissionByRoleId({ roleIds: roleIds })
     // const rolePermissionIdsList = _.map(rolePermissionList, item => item.id)
     // _handleRolePermission(data.data, rolePermissionIdsList)
-  } else if (ctx.params.roleId) {
+  } else if (ctx._params.roleId) {
     // 若传 roleId 增加`checked` 字段，表示是否与该角色关联
-    // const rolePermissionList = await getAllPermissionByRoleId({ roleId: ctx.params.roleId })
+    // const rolePermissionList = await getAllPermissionByRoleId({ roleId: ctx._params.roleId })
     // const rolePermissionIds = _.map(rolePermissionList, item => item.id)
     // _handleRolePermission(data.data, rolePermissionIds)
   }

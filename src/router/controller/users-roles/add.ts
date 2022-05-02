@@ -15,7 +15,7 @@ import { formatDate, getUuId } from "../../../utils/tools";
 */
 export const doUserRoleAdd = async (ctx: Context, next: Next) => {
   const sql: string = `INSERT users_roles (id, role_id, user_id, create_time, terminal) VALUES (?, ?, ?, ?, ?)`
-  const data = [getUuId(), ctx.params.roleId, ctx.params.userId, formatDate(new Date()), Terminal[ctx.terminal]]
+  const data = [getUuId(), ctx._params.roleId, ctx._params.userId, formatDate(new Date()), Terminal[ctx._terminal]]
   await query(sql, data)
   throw new Success();
 }

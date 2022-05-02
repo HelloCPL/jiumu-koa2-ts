@@ -14,13 +14,13 @@ import { getUpdateSetData } from '../../../utils/handle-sql'
  * 菜单修改
 */
 export const doMenuUpdate = async (ctx: Context, next: Next) => {
-  ctx.params.updateTime = formatDate(new Date())
+  ctx._params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
     valid: ['code', 'parent_code', 'label', 'sort', 'update_time', 'remarks'],
-    data: ctx.params
+    data: ctx._params
   })
   const sql: string = `UPDATE menus SET ${sqlParams.sql} WHERE id = ?`
-  const data = [...sqlParams.data, ctx.params.id]
+  const data = [...sqlParams.data, ctx._params.id]
   await query(sql, data)
   throw new Success();
 }

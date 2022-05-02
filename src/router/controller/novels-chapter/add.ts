@@ -16,12 +16,12 @@ import { validateRange } from "../../../utils/validator";
 */
 export const doNovelChapterAdd = async (ctx: Context, next: Next) => {
   const paramsData = await validateRange([
-    { value: ctx.params.isDraft, range: ['1', '0'], default: '0' },
-    { value: ctx.params.isSecret, range: ['1', '0'], default: '0' },
+    { value: ctx._params.isDraft, range: ['1', '0'], default: '0' },
+    { value: ctx._params.isSecret, range: ['1', '0'], default: '0' },
   ], true)
   const sql: string = `INSERT novels_chapter (id, novel_id, title, content, sort, is_secret, is_draft, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   let currentTime = formatDate(new Date())
-  const data = [getUuId(), ctx.params.novelId, ctx.params.title, ctx.params.content, ctx.params.sort, paramsData[1], paramsData[0], ctx.user.id, currentTime, currentTime, Terminal[ctx.terminal], ctx.params.remarks]
+  const data = [getUuId(), ctx._params.novelId, ctx._params.title, ctx._params.content, ctx._params.sort, paramsData[1], paramsData[0], ctx._user.id, currentTime, currentTime, Terminal[ctx._terminal], ctx._params.remarks]
   await query(sql, data)
   throw new Success();
 }

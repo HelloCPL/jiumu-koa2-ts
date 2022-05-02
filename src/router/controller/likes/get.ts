@@ -12,9 +12,9 @@ import { LikeOptions, LikeParams, LikeReturn } from './interface'
 // 根据 userId 获取点赞列表
 export const doLikeGetListSelf = async (ctx: Context, next: Next) => {
   const params = {
-    userId: ctx.user.id,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    userId: ctx._user.id,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   }
   const data = await getLikeList(params)
   throw new Success(data);
@@ -23,9 +23,9 @@ export const doLikeGetListSelf = async (ctx: Context, next: Next) => {
 // 根据 userId 获取点赞列表
 export const doLikeGetList = async (ctx: Context, next: Next) => {
   const params = {
-    userId: ctx.params.userId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    userId: ctx._params.userId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   }
   const data = await getLikeList(params)
   throw new Success(data);

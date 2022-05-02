@@ -23,25 +23,25 @@ export const doRoleMenuAddConvert = async (ctx: Context, next: Next) => {
   // 先判断角色是否不存在
   await isExist({
     table: 'roles',
-    where: [{ key: 'id', value: ctx.params.roleId }],
+    where: [{ key: 'id', value: ctx._params.roleId }],
     throwType: false,
     message: Message.unexistRole
   })
   // 再判断菜单是否不存在
   await isExist({
     table: 'menus',
-    where: [{ key: 'id', value: ctx.params.menuId }],
+    where: [{ key: 'id', value: ctx._params.menuId }],
     throwType: false,
     message: Message.unexistMenus
   })
   // 获取其父级菜单，如果父级菜单，判断父级菜单是否不存在
   const sql = `SELECT t2.id AS parentMenuId FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.id = ?`
-  const res: any = await query(sql, ctx.params.menuId)
+  const res: any = await query(sql, ctx._params.menuId)
   if (res && res.length && res[0]['parentMenuId']) {
     await isExist({
       table: 'roles_menus',
       where: [
-        { key: 'role_id', value: ctx.params.roleId },
+        { key: 'role_id', value: ctx._params.roleId },
         { key: 'menu_id', value: res[0]['parentMenuId'] },
       ],
       throwType: false,
@@ -52,8 +52,8 @@ export const doRoleMenuAddConvert = async (ctx: Context, next: Next) => {
   await isExist({
     table: 'roles_menus',
     where: [
-      { key: 'role_id', value: ctx.params.roleId },
-      { key: 'menu_id', value: ctx.params.menuId },
+      { key: 'role_id', value: ctx._params.roleId },
+      { key: 'menu_id', value: ctx._params.menuId },
     ],
     throwType: true,
     message: Message.existRoleMenu
@@ -69,7 +69,7 @@ export const doRoleMenuAddConvert = async (ctx: Context, next: Next) => {
 export async function doRoleMenuDeleteConvert(ctx: Context, next: Next) {
   // 判断角色-菜单关联是否不存在
   const sql = `SELECT t1.role_id, t1.menu_id, t2.code FROM roles_menus t1 LEFT JOIN menus t2 ON t1.menu_id = t2.id WHERE t1.id = ?`
-  const res: any = await query(sql, ctx.params.id)
+  const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length && res[0]['menu_id']))
     throw new ExceptionParameter({ message: Message.unexistRoleMenu })
   // 获取其子级菜单列表，判断子级菜单是否与该角色有关联

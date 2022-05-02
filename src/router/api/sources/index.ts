@@ -63,7 +63,7 @@ export default class API {
     methods: ['get', 'post'],
   })
   async doSourceGetListSelf(ctx: Context, next: Next) {
-    ctx.params.userId = ctx.user.id
+    ctx._params.userId = ctx._user.id
     await doSourceGetList(ctx, next)
   }
 
@@ -74,7 +74,7 @@ export default class API {
   })
   @Required(['userId'])
   async doSourceGetListByUserId(ctx: Context, next: Next) {
-    ctx.params.isSecret = '0'
+    ctx._params.isSecret = '0'
     await doSourceGetList(ctx, next)
   }
 
@@ -84,8 +84,8 @@ export default class API {
     methods: ['get', 'post'],
   })
   async doSourceGetList(ctx: Context, next: Next) {
-    ctx.params.userId = null
-    ctx.params.isSecret = '0'
+    ctx._params.userId = null
+    ctx._params.isSecret = '0'
     await doSourceGetList(ctx, next)
   }
 

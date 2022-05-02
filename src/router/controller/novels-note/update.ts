@@ -14,13 +14,13 @@ import { getUpdateSetData } from '../../../utils/handle-sql'
  * 笔记修改
 */
 export const doNovelNoteUpdate = async (ctx: Context, next: Next) => {
-  ctx.params.updateTime = formatDate(new Date())
+  ctx._params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
     valid: ['targetIds', 'type', 'title', 'content', 'classify', 'is_secret', 'sort', 'update_time', 'remarks'],
-    data: ctx.params
+    data: ctx._params
   })
   const sql: string = `UPDATE novels_note SET ${sqlParams.sql} WHERE id = ?`
-  const data = [...sqlParams.data, ctx.params.id]
+  const data = [...sqlParams.data, ctx._params.id]
   await query(sql, data)
   throw new Success();
 }

@@ -14,23 +14,23 @@ import _ from 'lodash'
 
 // 获取指定的某个标签
 export const doTagGetByCode = async (ctx: Context, next: Next) => {
-  const data = await getTagByCode(ctx.params.code)
+  const data = await getTagByCode(ctx._params.code)
   throw new Success({ data })
 }
 
 // 获取我的所有标签
 export const doTagGetAllSelf = async (ctx: Context, next: Next) => {
-  const data = await getAllTagByUserId({ userId: ctx.user.id })
+  const data = await getAllTagByUserId({ userId: ctx._user.id })
   throw new Success(data)
 }
 
 // 获取某类标签
 export const doTagGetByParentCode = async (ctx: Context, next: Next) => {
-  const parentCode = ctx.params.parentCode || ''
+  const parentCode = ctx._params.parentCode || ''
   const data = await getTagByParentCode(parentCode)
-  if (parentCode == '8888' && ctx.params.userId) {
+  if (parentCode == '8888' && ctx._params.userId) {
     // 增加`checked` 字段，表示是否与该用户关联
-    // const userList = await getAllTagByUserId({ userId: ctx.params.userId })
+    // const userList = await getAllTagByUserId({ userId: ctx._params.userId })
     // const userIdsList = _.map(userList, item => item.id)
     // _handleRoleData(data, userIdsList)
   }

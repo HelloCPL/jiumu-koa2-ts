@@ -15,24 +15,24 @@ import _ from 'lodash'
 
 // 获取指定的某个菜单
 export const doMenuGetOne = async (ctx: Context, next: Next) => {
-  const data = await getMenuOne(ctx.params.id)
+  const data = await getMenuOne(ctx._params.id)
   throw new Success({ data });
 }
 
 // 获取某类菜单
 export const doMenuGetByParentCode = async (ctx: Context, next: Next) => {
-  const parentCode = ctx.params.parentCode || ''
+  const parentCode = ctx._params.parentCode || ''
   let data: MenuListOptions[] = await getMenuByParentCode(parentCode)
-  if (ctx.params.userId) {
+  if (ctx._params.userId) {
     // 若传 userId 增加`checked` 字段，表示是否与该用户关联
-    // const userRoleList = await getAllRoleByUserId({ userId: ctx.params.userId })
+    // const userRoleList = await getAllRoleByUserId({ userId: ctx._params.userId })
     // const roleIds = _.join(_.map(userRoleList.data, item => item.id))
     // const roleMenuList = await getAllMenuByRoleId({ roleIds: roleIds })
     // const roleMenuIds = _.map(roleMenuList, item => item.id)
     // _handleRoleMenu(data, roleMenuIds)
-  } else if (ctx.params.roleId) {
+  } else if (ctx._params.roleId) {
     // 若传 roleId 增加`checked` 字段，表示是否与该角色关联
-    // const roleMenuList = await getAllMenuByRoleId({ roleId: ctx.params.roleId })
+    // const roleMenuList = await getAllMenuByRoleId({ roleId: ctx._params.roleId })
     // const roleMenuIds = _.map(roleMenuList, item => item.id)
     // _handleRoleMenu(data, roleMenuIds)
   }

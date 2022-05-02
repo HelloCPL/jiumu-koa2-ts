@@ -15,9 +15,9 @@ import { getFileById } from '../files-info/get'
 // 获取指定权限关联的所有角色
 export const doUserRoleGetAllRoleByUserId = async (ctx: Context, next: Next) => {
   const params: UserRoleByUserIdParams = {
-    userId: ctx.params.userId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    userId: ctx._params.userId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   }
   const data = await getAllRoleByUserId(params)
   throw new Success(data)
@@ -26,9 +26,9 @@ export const doUserRoleGetAllRoleByUserId = async (ctx: Context, next: Next) => 
 // 获取指定角色关联的所有用户
 export const doUserRoleGetAllUserByRoleId = async (ctx: Context, next: Next) => {
   const params: UserRoleByRoleIdParams = {
-    roleId: ctx.params.roleId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    roleId: ctx._params.roleId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   }
   const data = await getAllUserByRoleId(params)
   throw new Success(data)

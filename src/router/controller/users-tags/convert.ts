@@ -20,13 +20,13 @@ export const doUserTagAddConvert = async (ctx: Context, next: Next) => {
   // 判断用户是否不存在
   await isExist({
     table: 'users',
-    where: [{ key: 'id', value: ctx.params.userId }],
+    where: [{ key: 'id', value: ctx._params.userId }],
     throwType: false,
     message: Message.unexistUser
   })
   // 判断特殊标签是否不存在
   await validateRange({
-    value: ctx.params.tagCode,
+    value: ctx._params.tagCode,
     range: '8888',
     message: 'tagCode参数必须为特殊标签8888范围'
   })
@@ -34,8 +34,8 @@ export const doUserTagAddConvert = async (ctx: Context, next: Next) => {
   await isExist({
     table: 'users_tags',
     where: [
-      { key: 'tag_code', value: ctx.params.tagCode },
-      { key: 'user_id', value: ctx.params.userId },
+      { key: 'tag_code', value: ctx._params.tagCode },
+      { key: 'user_id', value: ctx._params.userId },
     ],
     throwType: true,
     message: Message.existUserTag
@@ -51,7 +51,7 @@ export async function doUserTagDeleteConvert(ctx: Context, next: Next) {
   // 判断用户-特殊标签关联是否不存在
   await isExist({
     table: 'users_tags',
-    where: [{ key: 'id', value: ctx.params.id }],
+    where: [{ key: 'id', value: ctx._params.id }],
     throwType: false,
     message: Message.unexistUserTag
   })
@@ -65,7 +65,7 @@ export async function doUserTagDeleteConvert(ctx: Context, next: Next) {
 export async function doUserTagGetAllUserByTagCodeConvert(ctx: Context, next: Next) {
   // 判断特殊标签是否不存在
   await validateRange({
-    value: ctx.params.tagCode,
+    value: ctx._params.tagCode,
     range: '8888',
     message: 'tagCode参数必须为特殊标签8888范围'
   })

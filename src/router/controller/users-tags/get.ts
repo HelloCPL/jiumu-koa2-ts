@@ -16,9 +16,9 @@ import { getFileById } from '../files-info/get'
 // 获取指定用户关联的所有特殊标签
 export const doUserTagGetAllTagByUserId = async (ctx: Context, next: Next) => {
   const data = await getAllTagByUserId({
-    userId: ctx.params.userId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    userId: ctx._params.userId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   })
   throw new Success(data)
 }
@@ -26,9 +26,9 @@ export const doUserTagGetAllTagByUserId = async (ctx: Context, next: Next) => {
 // 获取指定特殊标签关联的所有用户
 export const doUserTagGetAllUserByTagCode = async (ctx: Context, next: Next) => {
   const data = await getAllUserByTagCode({
-    tagCode: ctx.params.tagCode,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    tagCode: ctx._params.tagCode,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   })
   throw new Success(data)
 }

@@ -22,7 +22,7 @@ export class LinValidator {
     return {
       body: ctx.request.body,
       query: ctx.request.query,
-      path: ctx.params,
+      path: ctx._params,
       header: ctx.request.header
     }
   }

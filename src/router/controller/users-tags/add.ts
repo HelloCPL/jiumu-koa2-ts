@@ -15,7 +15,7 @@ import { formatDate, getUuId } from "../../../utils/tools";
 */
 export const doUserTagAdd = async (ctx: Context, next: Next) => {
   const sql: string = `INSERT users_tags (id, tag_code, user_id, create_time, terminal) VALUES (?, ?, ?, ?, ?)`
-  const data = [getUuId(), ctx.params.tagCode, ctx.params.userId, formatDate(new Date()), Terminal[ctx.terminal]]
+  const data = [getUuId(), ctx._params.tagCode, ctx._params.userId, formatDate(new Date()), Terminal[ctx._terminal]]
   await query(sql, data)
   throw new Success();
 }

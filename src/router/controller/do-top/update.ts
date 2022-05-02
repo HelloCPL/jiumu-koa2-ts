@@ -22,12 +22,12 @@ const tList: ObjectAny = {
  * 问答、资源文件、小说、博客文章置顶/取消操作
 */
 export const doTopUpdate = async (ctx: Context, next: Next) => {
-  let t = tList[ctx.params.type]
+  let t = tList[ctx._params.type]
   let sqlParams = ''
-  if (ctx.params.type === '502')
+  if (ctx._params.type === '502')
     sqlParams = 'AND type = 502'
   const sql: string = `UPDATE ${t} SET is_top = ? WHERE id = ? ${sqlParams}`
-  const data = [ctx.params.isTop, ctx.params.id]
+  const data = [ctx._params.isTop, ctx._params.id]
   await query(sql, data)
   throw new Success();
 }
@@ -36,7 +36,7 @@ export const doTopUpdate = async (ctx: Context, next: Next) => {
  * 评论置顶/取消操作
 */
 export const doTopUpdateComment = async (ctx: Context, next: Next) => {
-  const commentInfo = <CommentFindResult>await _findCommentById(ctx.params.id)
+  const commentInfo = <CommentFindResult>await _findCommentById(ctx._params.id)
   let sql = ''
   let sql1 = ''
   if (commentInfo.flag === 1) {
@@ -49,17 +49,17 @@ export const doTopUpdateComment = async (ctx: Context, next: Next) => {
     sql = `UPDATE comments_second SET is_top = ? WHERE id = ? `
   }
   // 获取评论目标的用户
-  const res: any = await query(sql1, ctx.params.id)
+  const res: any = await query(sql1, ctx._params.id)
   const type = res[0]['type']
   if (!type || type === '502')
     throw new ExceptionForbidden()
   const t = tList[type]
   const sql2 = `SELECT create_user FROM ${t} WHERE id = ?`
   const res2: any = await query(sql2, res[0]['target_id'])
-  const flag = res2 && res2[0]['create_user'] === ctx.user.id
+  const flag = res2 && res2[0]['create_user'] === ctx._user.id
   if (!flag)
     throw new ExceptionForbidden()
-  const data = [ctx.params.isTop, ctx.params.id]
+  const data = [ctx._params.isTop, ctx._params.id]
   await query(sql, data)
   throw new Success();
 }

@@ -16,8 +16,8 @@ import { doLoginInfoAdd } from '../login-info/add'
  * 用户登录
 */
 export const doUserLogin = async (ctx: Context, next: Next) => {
-  const password: string = ctx.params.password
-  const phone: string = ctx.params.phone
+  const password: string = ctx._params.password
+  const phone: string = ctx._params.phone
   const sql: string = `SELECT id, password FROM users WHERE phone = ?`
   const res: any = await query(sql, phone)
   const originPassowrd: string = decrypt(res[0]['password'])

@@ -16,21 +16,21 @@ import _ from 'lodash';
 
 // 获取指定的某个博客文章
 export const doArticleGetOne = async (ctx: Context, next: Next) => {
-  const data = await getArticleOne(ctx.params.id, ctx.user.id)
+  const data = await getArticleOne(ctx._params.id, ctx._user.id)
   throw new Success({ data });
 }
 
 // 获取博客文章列表
 export const doArticleGetList = async (ctx: Context, next: Next) => {
   const params: ArticleListParams = {
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
-    keyword: ctx.params.keyword,
-    userId: ctx.user.id,
-    createUser: ctx.params.userId,
-    type: ctx.params.type,
-    isDraft: ctx.params.isDraft,
-    isSecret: ctx.params.isSecret
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    keyword: ctx._params.keyword,
+    userId: ctx._user.id,
+    createUser: ctx._params.userId,
+    type: ctx._params.type,
+    isDraft: ctx._params.isDraft,
+    isSecret: ctx._params.isSecret
   }
   const data = await getArticleList(params)
   throw new Success(data);

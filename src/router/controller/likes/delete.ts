@@ -13,7 +13,7 @@ import { query } from "../../../db";
 */
 export const doLikeDelete = async (ctx: Context, next: Next) => {
   const sql: string = `DELETE FROM likes WHERE target_id = ? AND create_user = ?`
-  const data = [ctx.params.targetId, ctx.user.id]
+  const data = [ctx._params.targetId, ctx._user.id]
   await query(sql, data)
   throw new Success();
 }

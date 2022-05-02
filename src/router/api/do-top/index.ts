@@ -20,7 +20,7 @@ export default class API {
   @Required(['id', 'type'])
   @Convert(doTopUpdateConvert)
   async doTopUpdate(ctx: Context, next: Next) {
-    ctx.params.isTop = '1'
+    ctx._params.isTop = '1'
     await doTopUpdate(ctx, next)
   }
 
@@ -32,7 +32,7 @@ export default class API {
   @Required(['id', 'type'])
   @Convert(doTopUpdateConvert)
   async doTopUpdate2(ctx: Context, next: Next) {
-    ctx.params.isTop = '0'
+    ctx._params.isTop = '0'
     await doTopUpdate(ctx, next)
   }
 
@@ -43,7 +43,7 @@ export default class API {
   })
   @Required(['id'])
   async doTopUpdateComment(ctx: Context, next: Next) {
-    ctx.params.isTop = '1'
+    ctx._params.isTop = '1'
     await doTopUpdateComment(ctx, next)
   }
 
@@ -54,7 +54,7 @@ export default class API {
   })
   @Required(['id'])
   async doTopUpdateComment2(ctx: Context, next: Next) {
-    ctx.params.isTop = '0'
+    ctx._params.isTop = '0'
     await doTopUpdateComment(ctx, next)
   }
 }

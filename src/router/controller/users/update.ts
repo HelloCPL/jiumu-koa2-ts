@@ -17,7 +17,7 @@ import { handleDoubleToken } from './register'
  * 修改本用户基本信息
 */
 export const doUserUpdateBaseSelf = async (ctx: Context, next: Next) => {
-  await updateUserBaseByUserId(ctx, ctx.user.id)
+  await updateUserBaseByUserId(ctx, ctx._user.id)
   throw new Success();
 }
 
@@ -25,7 +25,7 @@ export const doUserUpdateBaseSelf = async (ctx: Context, next: Next) => {
  * 修改本用户基本信息
 */
 export const doUserUpdateBase = async (ctx: Context, next: Next) => {
-  await updateUserBaseByUserId(ctx, ctx.params.id)
+  await updateUserBaseByUserId(ctx, ctx._params.id)
   throw new Success();
 }
 
@@ -46,10 +46,10 @@ export const doUserUpdateToken = async (ctx: Context, next: Next) => {
 
 // 根据 userId 修改指定用户基本信息
 export const updateUserBaseByUserId = async (ctx: Context, userId: string): Promise<void> => {
-  ctx.params.updateTime = formatDate(new Date())
+  ctx._params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
     valid: ['username', 'sex', 'birthday', 'avatar', 'professional', 'address', 'update_time', 'remarks'],
-    data: ctx.params
+    data: ctx._params
   })
   const sql: string = `UPDATE users SET ${sqlParams.sql} WHERE id = ?`
   const data = [...sqlParams.data, userId]

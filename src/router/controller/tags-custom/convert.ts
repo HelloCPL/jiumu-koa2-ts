@@ -19,8 +19,8 @@ export const doTagCustomAddConvert = async (ctx: Context, next: Next) => {
   await isExist({
     table: 'tags_custom',
     where: [
-      { key: 'label', value: ctx.params.label },
-      { key: 'create_user', value: ctx.user.id },
+      { key: 'label', value: ctx._params.label },
+      { key: 'create_user', value: ctx._user.id },
     ],
     throwType: true,
     message: Message.existTag
@@ -36,11 +36,11 @@ export const doTagCustomAddConvert = async (ctx: Context, next: Next) => {
 export const doTagCustomUpdateConvert = async (ctx: Context, next: Next) => {
   //  判断自定义标签是否不存在
   const sql = `SELECT id, create_user FROM tags_custom WHERE id = ?`
-  const res: any = await query(sql, ctx.params.id)
+  const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length))
     throw new ExceptionParameter({ message: Message.unexistTag })
   // 判断是否为用户本人创建的自定义标签
-  if (res[0]['create_user'] !== ctx.user.id)
+  if (res[0]['create_user'] !== ctx._user.id)
     throw new ExceptionForbidden({ message: Message.forbidden })
   await next()
 }

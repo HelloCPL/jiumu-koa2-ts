@@ -44,6 +44,7 @@ export interface ConfigOptions extends ObjectAny {
   CRYPTOJS_KEY: string,
   CRYPTOJS_IV: string,
   MAX_FIELDS_SIZE: number,
+  FILE_VAILD_TIME: number,
   IS_ALLOW_MULTIPLE_LOGIN: boolean,
   IS_VERIFY_TOKEN_BY_REDIS: boolean,
   IS_VERIFY_API_PERMISSION: boolean,

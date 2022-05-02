@@ -13,7 +13,7 @@ import _ from 'lodash'
 
 /**
  * 挂载参数
- * 即 ctx.data 包含 {body query path header}
+ * 即 ctx._data 包含 {body query path header}
 */
 export const mountParameter = async (ctx: Context, next: Next) => {
   // 记录日志
@@ -21,23 +21,23 @@ export const mountParameter = async (ctx: Context, next: Next) => {
   global.requestStart = process.hrtime.bigint()
   // 处理参数
   const v: any = await new LinValidator().validate(ctx)
-  ctx.data = <DataOptions>v.data
-  ctx.params = getParams(ctx)
-  ctx.terminal = getTerminal(ctx)
+  ctx._data = <DataOptions>v.data
+  ctx._params = getParams(ctx)
+  ctx._terminal = getTerminal(ctx)
   await next()
 }
 
 /**
  * 根据请求自动获取参数
- * get delete 请求使用 ctx.data.query
- * post put 请求优先使用 ctx.data.body
+ * get delete 请求使用 ctx._data.query
+ * post put 请求优先使用 ctx._data.body
 */
 export const getParams = (ctx: Context): ObjectAny => {
   let params: ObjectAny = {}
   if (ctx.request.method === 'GET' || ctx.request.method === 'DELETE')
-    params = ctx.data.query
+    params = ctx._data.query
   else if (ctx.request.method === 'POST' || ctx.request.method === 'PUT')
-    params = { ...ctx.data.query, ...ctx.data.body }
+    params = { ...ctx._data.query, ...ctx._data.body }
   handleXSS(params)
   return params
 }

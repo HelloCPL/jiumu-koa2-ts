@@ -41,6 +41,7 @@ function createConfig(): ConfigOptions {
     CRYPTOJS_KEY: 'thisisacryptojskey63', // crypto-js 加密字符
     CRYPTOJS_IV: 'thisisacryptojsiv63', // crypto-js 加密字符
     MAX_FIELDS_SIZE: 500 * 1024 * 1024, // 静态资源上传最大文件大小 默认500m
+    FILE_VAILD_TIME: 3 * 24 * 60 * 60 * 1000, // 非公开静态资源链接有效期
     IS_VERIFY_TOKEN_BY_REDIS: true, // 是否使用redis在线校验token信息 为false时将不校验IS_ALLOW_MULTIPLE_LOGIN条件
     IS_ALLOW_MULTIPLE_LOGIN: true, // 同一账号是否允许在不同设备不同平台（如浏览器）同时登录
     IS_VERIFY_API_PERMISSION: false, // 是否校验非公开api的用户请求权限
@@ -49,6 +50,7 @@ function createConfig(): ConfigOptions {
   }
 
   try {
+    // 该文件为自己的服务器/小程序信息
     let secretConfig = require('./secret')
     secretConfig = secretConfig.default || secretConfig
     config.DATABASE = secretConfig.DATABASE

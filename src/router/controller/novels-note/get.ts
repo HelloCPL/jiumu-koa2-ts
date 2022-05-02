@@ -23,19 +23,19 @@ const tList: ObjectAny = {
 
 // 获取指定的某个笔记
 export const doNovelNoteGetOne = async (ctx: Context, next: Next) => {
-  const data = await getNovelNoteGetOne(ctx.params.id, ctx.user.id)
+  const data = await getNovelNoteGetOne(ctx._params.id, ctx._user.id)
   throw new Success({ data })
 }
 
 // 获取指定目标所有的笔记列表
 export const doNovelNoteGetList = async (ctx: Context, next: Next) => {
   const params: NovelNoteListParams = {
-    targetId: ctx.params.targetId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
-    keyword: ctx.params.keyword,
-    userId: ctx.user.id,
-    isSecret: ctx.params.isSecret,
+    targetId: ctx._params.targetId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    keyword: ctx._params.keyword,
+    userId: ctx._user.id,
+    isSecret: ctx._params.isSecret,
   }
   const data = await getNovelNoteGetList(params)
   throw new Success(data)

@@ -19,20 +19,20 @@ import { ExceptionParameter } from '../../../utils/http-exception';
 */
 export const doTagAddConvert = async (ctx: Context, next: Next) => {
   // code 必须为真
-  if (!ctx.params.code)
+  if (!ctx._params.code)
     throw new ExceptionParameter({ message: 'code参数值必须为真' })
   //  判断标签是否已存在
   await isExist({
     table: 'tags',
-    where: [{ key: 'code', value: ctx.params.code }],
+    where: [{ key: 'code', value: ctx._params.code }],
     throwType: true,
     message: Message.existTag
   })
   // 若 parentCode 为真，再判断 parentCode 是否不存在
-  if (ctx.params.hasOwnProperty('parentCode')) {
+  if (ctx._params.hasOwnProperty('parentCode')) {
     await isExist({
       table: 'tags',
-      where: [{ key: 'code', value: ctx.params.parentCode }],
+      where: [{ key: 'code', value: ctx._params.parentCode }],
       throwType: false,
       message: Message.unexistTag
     })
@@ -49,32 +49,32 @@ export const doTagAddConvert = async (ctx: Context, next: Next) => {
 */
 export async function doTagUpdateConvert(ctx: Context, next: Next) {
   // 若传 code 其中 code 值必须为真
-  if (ctx.params.hasOwnProperty('code') && !ctx.params.code)
+  if (ctx._params.hasOwnProperty('code') && !ctx._params.code)
     throw new ExceptionParameter({ message: 'code参数值必须为真' })
   // 判断标签是否不存在，
   await isExist({
     table: 'tags',
-    where: [{ key: 'id', value: ctx.params.id }],
+    where: [{ key: 'id', value: ctx._params.id }],
     throwType: false,
     message: Message.unexistTag
   })
   // 若修改 code 判断 code 除自身外是否存在
-  if (ctx.params.hasOwnProperty('code')) {
+  if (ctx._params.hasOwnProperty('code')) {
     await isExist({
       table: 'tags',
       where: [
-        { key: 'code', value: ctx.params.code },
-        { key: 'id', value: ctx.params.id, connector: '!=' },
+        { key: 'code', value: ctx._params.code },
+        { key: 'id', value: ctx._params.id, connector: '!=' },
       ],
       throwType: true,
       message: Message.existTag
     })
   }
   // 若 parentCode 为真，判断 parentCode 是否不存在
-  if (ctx.params.hasOwnProperty('parentCode')) {
+  if (ctx._params.hasOwnProperty('parentCode')) {
     await isExist({
       table: 'tags',
-      where: [{ key: 'code', value: ctx.params.parentCode }],
+      where: [{ key: 'code', value: ctx._params.parentCode }],
       throwType: false,
       message: Message.unexistTag
     })
@@ -92,19 +92,19 @@ export async function doTagDeleteConvert(ctx: Context, next: Next) {
   // 先判断标签是否不存在
   await isExist({
     table: 'tags',
-    where: [{ key: 'id', value: ctx.params.id }],
+    where: [{ key: 'id', value: ctx._params.id }],
     throwType: false,
     message: Message.unexistTag
   })
   // 再判断是否有子级
   await isExistHasChildren({
     table: 'tags',
-    where: { key: 'id', value: ctx.params.id },
+    where: { key: 'id', value: ctx._params.id },
     throwType: true,
     message: Message.relevantHasChildren
   })
   // 再判断是否有 users-tags 用户-标签关联
-  const tagInfo = <TagOptions>await getTagByCode(ctx.params.id)
+  const tagInfo = <TagOptions>await getTagByCode(ctx._params.id)
   await isExist({
     table: 'users_tags',
     where: [{ key: 'tag_code', value: tagInfo.code }],

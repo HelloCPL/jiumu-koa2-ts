@@ -14,13 +14,13 @@ import { getUpdateSetData } from '../../../utils/handle-sql'
  * 权限修改
 */
 export const doPermissionUpdate = async (ctx: Context, next: Next) => {
-  ctx.params.updateTime = formatDate(new Date())
+  ctx._params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
     valid: ['code', 'label', 'href', 'sort', 'update_time', 'remarks'],
-    data: ctx.params
+    data: ctx._params
   })
   const sql: string = `UPDATE permissions SET ${sqlParams.sql} WHERE id = ?`
-  const data = [...sqlParams.data, ctx.params.id]
+  const data = [...sqlParams.data, ctx._params.id]
   await query(sql, data)
   throw new Success();
 }

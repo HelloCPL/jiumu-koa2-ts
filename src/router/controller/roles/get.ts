@@ -17,17 +17,17 @@ import { UserRoleByUserIdParams } from '../users-roles/interface'
 
 // 获取指定的某个角色
 export const doRoleGetOne = async (ctx: Context, next: Next) => {
-  const data = await getMenuOne(ctx.params.id)
+  const data = await getMenuOne(ctx._params.id)
   throw new Success({ data })
 }
 
 // 我的角色列表
 export const doRoleGetAllSelf = async (ctx: Context, next: Next) => {
-  // const data = await getMenuOne(ctx.params.id)
+  // const data = await getMenuOne(ctx._params.id)
   const params: UserRoleByUserIdParams = {
-    userId: ctx.params.id,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    userId: ctx._params.id,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   }
   const data = await getAllRoleByUserId(params)
   throw new Success(data)
@@ -36,24 +36,24 @@ export const doRoleGetAllSelf = async (ctx: Context, next: Next) => {
 // 获取角色列表
 export const doRoleGetList = async (ctx: Context, next: Next) => {
   const parmas: RoleParamsOptions = {
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
-    keyword: ctx.params.keyword,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    keyword: ctx._params.keyword,
   }
   const data = await getMenuList(parmas)
-  if (ctx.params.menuId) {
+  if (ctx._params.menuId) {
     // 增加`checked` 字段，表示是否与该菜单关联
-    // const menuList = await getAllRoleByMenuId({ menuId: ctx.params.menuId })
+    // const menuList = await getAllRoleByMenuId({ menuId: ctx._params.menuId })
     // const roleIdsList = _.map(menuList, item => item.id)
     // _handleRoleData(data.data, roleIdsList)
-  } else if (ctx.params.permissionId) {
+  } else if (ctx._params.permissionId) {
     // 增加`checked` 字段，表示是否与该权限关联
-    // const roleList = await getAllRoleByPermissionId({ permissionId: ctx.params.permissionId })
+    // const roleList = await getAllRoleByPermissionId({ permissionId: ctx._params.permissionId })
     // const roleIdsList = _.map(roleList, item => item.id)
     // _handleRoleData(data.data, roleIdsList)
-  } else if (ctx.params.userId) {
+  } else if (ctx._params.userId) {
     // 增加`checked` 字段，表示是否与该用户关联
-    // const userList = await getAllRoleByUserId({ userId: ctx.params.userId })
+    // const userList = await getAllRoleByUserId({ userId: ctx._params.userId })
     // const roleIdsList = _.map(userList.data, item => item.id)
     // _handleRoleData(data.data, roleIdsList)
   }

@@ -16,7 +16,7 @@ export const doRoleAddConvert = async (ctx: Context, next: Next) => {
   // 判断角色是否已存在
   await isExist({
     table: 'roles',
-    where: [{ key: 'code', value: ctx.params.code }],
+    where: [{ key: 'code', value: ctx._params.code }],
     throwType: true,
     message: Message.existRole
   })
@@ -32,17 +32,17 @@ export async function doRoleUpdateConvert(ctx: Context, next: Next) {
   // 判断角色是否不存在
   await isExist({
     table: 'roles',
-    where: [{ key: 'id', value: ctx.params.id }],
+    where: [{ key: 'id', value: ctx._params.id }],
     throwType: false,
     message: Message.unexistRole
   })
   // 若修改 code 再判断 code 除自身外是否存在
-  if (ctx.params.hasOwnProperty('code')) {
+  if (ctx._params.hasOwnProperty('code')) {
     await isExist({
       table: 'roles',
       where: [
-        { key: 'code', value: ctx.params.code },
-        { key: 'id', value: ctx.params.id, connector: '!=' }
+        { key: 'code', value: ctx._params.code },
+        { key: 'id', value: ctx._params.id, connector: '!=' }
       ],
       throwType: true,
       message: Message.existRole
@@ -62,28 +62,28 @@ export async function doRoleDeleteConvert(ctx: Context, next: Next) {
   // 判断角色是否不存在
   await isExist({
     table: 'roles',
-    where: [{ key: 'id', value: ctx.params.id }],
+    where: [{ key: 'id', value: ctx._params.id }],
     throwType: false,
     message: Message.unexistRole
   })
   // 再判断是否有 roles-permissions 角色-权限关联
   await isExist({
     table: 'roles_permissions',
-    where: [{ key: 'role_id', value: ctx.params.id }],
+    where: [{ key: 'role_id', value: ctx._params.id }],
     throwType: true,
     message: Message.relevantRolePermission
   })
   // 再判断是否有 users-roles 用户-角色关联
   await isExist({
     table: 'users_roles',
-    where: [{ key: 'role_id', value: ctx.params.id }],
+    where: [{ key: 'role_id', value: ctx._params.id }],
     throwType: true,
     message: Message.relevantUserRole
   })
   // 再判断是否有 users-roles 用户-角色关联
   await isExist({
     table: 'roles_menus',
-    where: [{ key: 'role_id', value: ctx.params.id }],
+    where: [{ key: 'role_id', value: ctx._params.id }],
     throwType: true,
     message: Message.relevantRoleMenu
   })

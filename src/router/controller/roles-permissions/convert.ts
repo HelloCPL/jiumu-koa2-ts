@@ -18,14 +18,14 @@ export const doRolePermissionAddConvert = async (ctx: Context, next: Next) => {
   // 先判断角色是否不存在
   await isExist({
     table: 'roles',
-    where: [{ key: 'id', value: ctx.params.roleId }],
+    where: [{ key: 'id', value: ctx._params.roleId }],
     throwType: false,
     message: Message.unexistRole
   })
   // 再判断权限是否不存在
   await isExist({
     table: 'permissions',
-    where: [{ key: 'id', value: ctx.params.permissionId }],
+    where: [{ key: 'id', value: ctx._params.permissionId }],
     throwType: false,
     message: Message.unexistPermission
   })
@@ -33,8 +33,8 @@ export const doRolePermissionAddConvert = async (ctx: Context, next: Next) => {
   await isExist({
     table: 'roles_permissions',
     where: [
-      { key: 'role_id', value: ctx.params.roleId },
-      { key: 'permission_id', value: ctx.params.permissionId },
+      { key: 'role_id', value: ctx._params.roleId },
+      { key: 'permission_id', value: ctx._params.permissionId },
     ],
     throwType: true,
     message: Message.existRolePermission
@@ -50,7 +50,7 @@ export async function doRolePermissionDeleteConvert(ctx: Context, next: Next) {
   // 判断角色-权限关联是否不存在
   await isExist({
     table: 'roles_permissions',
-    where: [{ key: 'id', value: ctx.params.id }],
+    where: [{ key: 'id', value: ctx._params.id }],
     throwType: false,
     message: Message.unexistRolePermission
   })

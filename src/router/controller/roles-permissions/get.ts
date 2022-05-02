@@ -18,9 +18,9 @@ import { getFileById } from '../files-info/get'
 // 获取指定角色关联的所有权限
 export const doRolePermissiongetAllPermissionByRoleId = async (ctx: Context, next: Next) => {
   const data = await getAllPermissionByRoleId({
-    roleId: ctx.params.roleId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    roleId: ctx._params.roleId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   })
   throw new Success(data)
 }
@@ -28,9 +28,9 @@ export const doRolePermissiongetAllPermissionByRoleId = async (ctx: Context, nex
 // 获取指定权限关联的所有角色
 export const doRolePermissionGetAllRoleByPermissionId = async (ctx: Context, next: Next) => {
   const data = await getAllRoleByPermissionId({
-    permissionId: ctx.params.permissionId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    permissionId: ctx._params.permissionId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   })
   throw new Success(data)
 }
@@ -38,9 +38,9 @@ export const doRolePermissionGetAllRoleByPermissionId = async (ctx: Context, nex
 // 获取指定用户关联的所有权限
 export const doRolePermissiongetAllPermissionByUserId = async (ctx: Context, next: Next) => {
   const data = await getAllPermissionByUserId({
-    userId: ctx.params.userId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    userId: ctx._params.userId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   })
   throw new Success(data)
 }
@@ -48,9 +48,9 @@ export const doRolePermissiongetAllPermissionByUserId = async (ctx: Context, nex
 // 获取指定权限关联的所有用户
 export const doRolePermissionGetAllUserByPermissionId = async (ctx: Context, next: Next) => {
   const data = await getAllUserByPermissionId({
-    permissionId: ctx.params.permissionId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    permissionId: ctx._params.permissionId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   })
   throw new Success(data)
 }

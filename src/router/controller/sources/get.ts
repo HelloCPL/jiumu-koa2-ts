@@ -15,20 +15,20 @@ import _ from 'lodash';
 
 // 获取指定的某个资源
 export const doSourceGetOne = async (ctx: Context, next: Next) => {
-  const data = await getSourceOne(ctx.params.id, ctx.user.id)
+  const data = await getSourceOne(ctx._params.id, ctx._user.id)
   throw new Success({ data });
 }
 
 // 获取问答列表
 export const doSourceGetList = async (ctx: Context, next: Next) => {
   const params: SourceListParams = {
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
-    keyword: ctx.params.keyword,
-    userId: ctx.user.id,
-    createUser: ctx.params.userId,
-    type: ctx.params.type,
-    isSecret: ctx.params.isSecret 
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    keyword: ctx._params.keyword,
+    userId: ctx._user.id,
+    createUser: ctx._params.userId,
+    type: ctx._params.type,
+    isSecret: ctx._params.isSecret 
   }
   const data = await getSourceList(params)
   throw new Success(data);

@@ -19,24 +19,24 @@ import { ExceptionParameter, ExceptionForbidden } from '../../../utils/http-exce
 export const doQuestionUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断问答是否不存在
   const sql = `SELECT id, create_user FROM questions WHERE id = ?`
-  const res: any = await query(sql, ctx.params.id)
+  const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length))
     throw new ExceptionParameter({ message: Message.unexistQuestion })
   // 是否为自己发布的问答
-  if (res[0]['create_user'] !== ctx.user.id)
+  if (res[0]['create_user'] !== ctx._user.id)
     throw new ExceptionForbidden({ message: Message.forbidden })
   // 若传 isDraft 判断 isDraft 是否 ['1', '0'] 范围
-  if (ctx.params.hasOwnProperty('isDraft')) {
+  if (ctx._params.hasOwnProperty('isDraft')) {
     await validateRange({
-      value: ctx.params.isDraft,
+      value: ctx._params.isDraft,
       range: ['1', '0'],
       message: `isDraft参数必须为['1', '0']范围`
     })
   }
   // 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
-  if (ctx.params.hasOwnProperty('isSecret')) {
+  if (ctx._params.hasOwnProperty('isSecret')) {
     await validateRange({
-      value: ctx.params.isSecret,
+      value: ctx._params.isSecret,
       range: ['1', '0'],
       message: `isSecret参数必须为['1', '0']范围`
     })
@@ -51,11 +51,11 @@ export const doQuestionUpdateConvert = async (ctx: Context, next: Next) => {
 export const doQuestionDeleteConvert = async (ctx: Context, next: Next) => {
   // 判断问答是否不存在
   const sql = `SELECT id, create_user FROM questions WHERE id = ?`
-  const res: any = await query(sql, ctx.params.id)
+  const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length))
     throw new ExceptionParameter({ message: Message.unexistQuestion })
   // 是否为自己发布的问答
-  if (res[0]['create_user'] !== ctx.user.id)
+  if (res[0]['create_user'] !== ctx._user.id)
     throw new ExceptionForbidden({ message: Message.forbidden })
   await next()
 }

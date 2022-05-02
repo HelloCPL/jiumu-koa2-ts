@@ -23,8 +23,8 @@ export const doFileDelete = async (ctx: Context, next: Next) => {
   const sql1 = `SELECT file_path, static_place FROM files_info WHERE FIND_IN_SET(id, ?)`
   const sql2 = `DELETE FROM files_info WHERE FIND_IN_SET(id, ?)`
   const res: any = await execTrans([
-    { sql: sql1, data: ctx.params.ids },
-    { sql: sql2, data: ctx.params.ids },
+    { sql: sql1, data: ctx._params.ids },
+    { sql: sql2, data: ctx._params.ids },
   ])
   const filesPath: FileDeleteOptions[] = res[0]
   if (filesPath.length) {

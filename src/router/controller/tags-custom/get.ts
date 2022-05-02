@@ -13,18 +13,18 @@ import { getSelectWhereData, getSelectWhereAsKeywordData, getOrderByKeyword } fr
 
 // 获取我的指定一个或多个自定义标签
 export const doTagCustomGetIdsSelf = async (ctx: Context, next: Next) => {
-  const data = await getTagCustomByIds(ctx.params.ids, ctx.user.id)
+  const data = await getTagCustomByIds(ctx._params.ids, ctx._user.id)
   throw new Success({ data });
 }
 
 // 获取我的自定义标签列表
 export const doTagCustomGetListSelf = async (ctx: Context, next: Next) => {
   let params: TagCustomListParams = {
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
-    userId: ctx.user.id,
-    type: ctx.params.type,
-    keyword: ctx.params.keyword
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    userId: ctx._user.id,
+    type: ctx._params.type,
+    keyword: ctx._params.keyword
   }
   const data = await getTagCustomList(params)
   throw new Success(data);
@@ -33,14 +33,14 @@ export const doTagCustomGetListSelf = async (ctx: Context, next: Next) => {
 // 获取所有自定义标签列表
 export const doTagCustomGetList = async (ctx: Context, next: Next) => {
   let params: TagCustomListParams = {
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
-    type: ctx.params.type,
-    keyword: ctx.params.keyword
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    type: ctx._params.type,
+    keyword: ctx._params.keyword
   }
   const data = await getTagCustomList(params)
   data.data.forEach(item => {
-    item.isSelf = item.create_user === ctx.user.id ? '1' : '0'
+    item.isSelf = item.create_user === ctx._user.id ? '1' : '0'
     delete item.create_user
   })
   throw new Success(data);

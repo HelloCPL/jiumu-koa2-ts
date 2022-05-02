@@ -20,12 +20,12 @@ export const doArticleAddConvert = async (ctx: Context, next: Next) => {
   // 判断 type 是否系统标签300范围
   await validateRange([
     {
-      value: ctx.params.contentType,
+      value: ctx._params.contentType,
       range: '400',
       message: 'contentType参数必须为系统标签400范围'
     },
     {
-      value: ctx.params.type,
+      value: ctx._params.type,
       range: '300',
       message: 'type参数必须为系统标签300范围'
     }
@@ -45,40 +45,40 @@ export const doArticleAddConvert = async (ctx: Context, next: Next) => {
 export const doArticleUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断博客文章是否不存在
   const sql = `SELECT id, create_user FROM articles WHERE id = ?`
-  const res: any = await query(sql, ctx.params.id)
+  const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length))
     throw new ExceptionParameter({ message: Message.unexistArticle })
   // 是否为自己发布的博客文章
-  if (res[0]['create_user'] !== ctx.user.id)
+  if (res[0]['create_user'] !== ctx._user.id)
     throw new ExceptionForbidden({ message: Message.forbidden })
   // 若传 contentType 判断 contentType 是否系统标签400范围
-  if (ctx.params.hasOwnProperty('contentType')) {
+  if (ctx._params.hasOwnProperty('contentType')) {
     await validateRange({
-      value: ctx.params.contentType,
+      value: ctx._params.contentType,
       range: '400',
       message: 'contentType参数必须为系统标签400范围'
     })
   }
   // 若传 type 判断 type 是否系统标签300范围
-  if (ctx.params.hasOwnProperty('type')) {
+  if (ctx._params.hasOwnProperty('type')) {
     await validateRange({
-      value: ctx.params.type,
+      value: ctx._params.type,
       range: '300',
       message: 'type参数必须为系统标签300范围'
     })
   }
   // 若传 isDraft 判断 isDraft 是否 ['1', '0'] 范围
-  if (ctx.params.hasOwnProperty('isDraft')) {
+  if (ctx._params.hasOwnProperty('isDraft')) {
     await validateRange({
-      value: ctx.params.isDraft,
+      value: ctx._params.isDraft,
       range: ['1', '0'],
       message: `isDraft参数必须为['1', '0']范围`
     })
   }
   // 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
-  if (ctx.params.hasOwnProperty('isSecret')) {
+  if (ctx._params.hasOwnProperty('isSecret')) {
     await validateRange({
-      value: ctx.params.isSecret,
+      value: ctx._params.isSecret,
       range: ['1', '0'],
       message: `isSecret参数必须为['1', '0']范围`
     })
@@ -93,11 +93,11 @@ export const doArticleUpdateConvert = async (ctx: Context, next: Next) => {
 export const doArticleDeleteConvert = async (ctx: Context, next: Next) => {
   // 判断博客文章是否不存在
   const sql = `SELECT id, create_user FROM articles WHERE id = ?`
-  const res: any = await query(sql, ctx.params.id)
+  const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length))
     throw new ExceptionParameter({ message: Message.unexistArticle })
   // 是否为自己发布的博客文章
-  if (res[0]['create_user'] !== ctx.user.id)
+  if (res[0]['create_user'] !== ctx._user.id)
     throw new ExceptionForbidden({ message: Message.forbidden })
   await next()
 }

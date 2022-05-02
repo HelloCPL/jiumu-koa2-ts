@@ -14,20 +14,20 @@ import _ from 'lodash';
 
 // 获取指定的某个问答
 export const doQuestionGetOne = async (ctx: Context, next: Next) => {
-  const data = await getQuestionOne(ctx.params.id, ctx.user.id)
+  const data = await getQuestionOne(ctx._params.id, ctx._user.id)
   throw new Success({ data });
 }
 
 // 获取所有问答列表
 export const doQuestionGetList = async (ctx: Context, next: Next) => {
   const params: QuestionListParams = {
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
-    keyword: ctx.params.keyword,
-    userId: ctx.user.id,
-    createUser: ctx.params.userId,
-    isDraft: ctx.params.isDraft,
-    isSecret: ctx.params.isSecret
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    keyword: ctx._params.keyword,
+    userId: ctx._user.id,
+    createUser: ctx._params.userId,
+    isDraft: ctx._params.isDraft,
+    isSecret: ctx._params.isSecret
   }
   const data = await getQuestionList(params)
   throw new Success(data);

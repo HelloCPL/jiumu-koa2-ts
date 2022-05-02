@@ -14,13 +14,13 @@ import { getUpdateSetData } from '../../../utils/handle-sql'
  * 用户自定义标签修改
 */
 export const doTagCustomUpdate = async (ctx: Context, next: Next) => {
-  ctx.params.updateTime = formatDate(new Date())
+  ctx._params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
     valid: ['label', 'sort', 'type', 'update_time'],
-    data: ctx.params
+    data: ctx._params
   })
   const sql: string = `UPDATE tags_custom SET ${sqlParams.sql} WHERE id = ? AND create_user = ?`
-  const data = [...sqlParams.data, ctx.params.id, ctx.user.id]
+  const data = [...sqlParams.data, ctx._params.id, ctx._user.id]
   await query(sql, data)
   throw new Success();
 }

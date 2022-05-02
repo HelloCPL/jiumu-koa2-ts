@@ -27,7 +27,7 @@ export const verifyRoute = async (ctx: Context, next: Next) => {
   if (global.unlessPath.indexOf(url) === -1) {
     const tokenInfo = await analysisToken(ctx)
     if (tokenInfo.code === Code.success) {
-      ctx.user = tokenInfo.data
+      ctx._user = tokenInfo.data
       if (IS_VERIFY_API_PERMISSION) {
         await verifyApiByUser(ctx, next)
       }
@@ -54,7 +54,7 @@ function _getFullPath(path: string): string {
 async function verifyApiByUser(ctx: Context, next: Next) {
   let flag = false
   const res: any = await getAllPermissionByUserId({
-    userId: ctx.user.id,
+    userId: ctx._user.id,
     pageNo: 1,
     pageSize: 100000
   })

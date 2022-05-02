@@ -64,7 +64,7 @@ export default class API {
     methods: ['get', 'post'],
   })
   async doArticleGetListSelf(ctx: Context, next: Next) {
-    ctx.params.userId = ctx.user.id
+    ctx._params.userId = ctx._user.id
     await doArticleGetList(ctx, next)
   }
 
@@ -75,8 +75,8 @@ export default class API {
   })
   @Required(['userId'])
   async doArticleGetListByUserId(ctx: Context, next: Next) {
-    ctx.params.isDraft = '0'
-    ctx.params.isSecret = '0'
+    ctx._params.isDraft = '0'
+    ctx._params.isSecret = '0'
     await doArticleGetList(ctx, next)
   }
 
@@ -86,9 +86,9 @@ export default class API {
     methods: ['get', 'post'],
   })
   async doArticleGetList(ctx: Context, next: Next) {
-    ctx.params.userId = null
-    ctx.params.isDraft = '0'
-    ctx.params.isSecret = '0'
+    ctx._params.userId = null
+    ctx._params.isDraft = '0'
+    ctx._params.isSecret = '0'
     await doArticleGetList(ctx, next)
   }
 }

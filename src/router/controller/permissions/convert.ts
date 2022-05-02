@@ -17,20 +17,20 @@ import { ExceptionParameter } from '../../../utils/http-exception';
 */
 export const doPermissionAddConvert = async (ctx: Context, next: Next) => {
   // code 必须为真
-  if (!ctx.params.code)
+  if (!ctx._params.code)
     throw new ExceptionParameter({ message: 'code参数值必须为真' })
   // 判断权限是否已存在
   await isExist({
     table: 'permissions',
-    where: [{ key: 'code', value: ctx.params.code }],
+    where: [{ key: 'code', value: ctx._params.code }],
     throwType: true,
     message: Message.existPermission
   })
   // 若 parentCode 为真，判断 parentCode 是否不存在
-  if (ctx.params.hasOwnProperty('parentCode')) {
+  if (ctx._params.hasOwnProperty('parentCode')) {
     await isExist({
       table: 'permissions',
-      where: [{ key: 'code', value: ctx.params.parentCode }],
+      where: [{ key: 'code', value: ctx._params.parentCode }],
       throwType: false,
       message: Message.unexistPermission
     })
@@ -47,32 +47,32 @@ export const doPermissionAddConvert = async (ctx: Context, next: Next) => {
 */
 export async function doPermissionUpdateConvert(ctx: Context, next: Next) {
   // 若传 code 其中 code 值必须为真
-  if (ctx.params.hasOwnProperty('code') && !ctx.params.code)
+  if (ctx._params.hasOwnProperty('code') && !ctx._params.code)
     throw new ExceptionParameter({ message: 'code参数值必须为真' })
   // 判断权限是否不存在
   await isExist({
     table: 'permissions',
-    where: [{ key: 'id', value: ctx.params.id }],
+    where: [{ key: 'id', value: ctx._params.id }],
     throwType: false,
     message: Message.unexistPermission
   })
   // 若修改 code 再判断 code 除自身外是否存在
-  if (ctx.params.hasOwnProperty('code')) {
+  if (ctx._params.hasOwnProperty('code')) {
     await isExist({
       table: 'permissions',
       where: [
-        { key: 'code', value: ctx.params.code },
-        { key: 'id', value: ctx.params.id, connector: '!=' },
+        { key: 'code', value: ctx._params.code },
+        { key: 'id', value: ctx._params.id, connector: '!=' },
       ],
       throwType: true,
       message: Message.existPermission
     })
   }
   // 若 parentCode 为真，判断 parentCode 是否不存在
-  if (ctx.params.hasOwnProperty('parentCode')) {
+  if (ctx._params.hasOwnProperty('parentCode')) {
     await isExist({
       table: 'permissions',
-      where: [{ key: 'code', value: ctx.params.parentCode }],
+      where: [{ key: 'code', value: ctx._params.parentCode }],
       throwType: false,
       message: Message.unexistPermission
     })
@@ -90,21 +90,21 @@ export async function doPermissionDeleteConvert(ctx: Context, next: Next) {
   // 先判断权限是否不存在
   await isExist({
     table: 'permissions',
-    where: [{ key: 'id', value: ctx.params.id }],
+    where: [{ key: 'id', value: ctx._params.id }],
     throwType: false,
     message: Message.unexistPermission
   })
   // 再判断是否有子级
   await isExistHasChildren({
     table: 'permissions',
-    where: { key: 'id', value: ctx.params.id },
+    where: { key: 'id', value: ctx._params.id },
     throwType: true,
     message: Message.relevantHasChildren
   })
   // 再判断是否有 roles-permissions 角色-权限关联
   await isExist({
     table: 'roles_permissions',
-    where: [{ key: 'permission_id', value: ctx.params.id }],
+    where: [{ key: 'permission_id', value: ctx._params.id }],
     throwType: true,
     message: Message.relevantRolePermission
   })

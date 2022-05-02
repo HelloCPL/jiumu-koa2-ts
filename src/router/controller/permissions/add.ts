@@ -14,11 +14,11 @@ import { formatDate, getUuId } from "../../../utils/tools";
  * 权限新增
 */
 export const doPermissionAdd = async (ctx: Context, next: Next) => {
-  const href: string = ctx.params.href || '#'
-  const sort: number = ctx.params.sort || 1
+  const href: string = ctx._params.href || '#'
+  const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
   const sql: string = `INSERT permissions (id, code, label, href, sort, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-  const data = [getUuId(), ctx.params.code, ctx.params.label, href, sort, currentTime, currentTime, Terminal[ctx.terminal], ctx.params.remarks]
+  const data = [getUuId(), ctx._params.code, ctx._params.label, href, sort, currentTime, currentTime, Terminal[ctx._terminal], ctx._params.remarks]
   await query(sql, data)
   throw new Success();
 }

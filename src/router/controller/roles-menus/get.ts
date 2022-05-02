@@ -23,11 +23,11 @@ import { getFileById } from '../files-info/get'
 export const doRoleMenugetAllMenuByRoleId = async (ctx: Context, next: Next) => {
   const data = await getAllMenuByRoleId(
     {
-      roleId: ctx.params.roleId,
-      pageNo: ctx.params.pageNo * 1 || 1,
-      pageSize: ctx.params.pageSize * 1 || 10,
+      roleId: ctx._params.roleId,
+      pageNo: ctx._params.pageNo * 1 || 1,
+      pageSize: ctx._params.pageSize * 1 || 10,
     },
-    ctx.params.isTree
+    ctx._params.isTree
   )
   throw new Success(data)
 }
@@ -35,9 +35,9 @@ export const doRoleMenugetAllMenuByRoleId = async (ctx: Context, next: Next) => 
 // 获取指定菜单关联的所有角色
 export const doRoleMenuGetAllRoleByMenuId = async (ctx: Context, next: Next) => {
   const data = await getAllRoleByMenuId({
-    menuId: ctx.params.menuId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    menuId: ctx._params.menuId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   })
   throw new Success(data)
 }
@@ -46,11 +46,11 @@ export const doRoleMenuGetAllRoleByMenuId = async (ctx: Context, next: Next) => 
 export const doRoleMenugetAllMenuByUserId = async (ctx: Context, next: Next) => {
   const data = await getAllMenuByUserId(
     {
-      userId: ctx.params.userId,
-      pageNo: ctx.params.pageNo * 1 || 1,
-      pageSize: ctx.params.pageSize * 1 || 10,
+      userId: ctx._params.userId,
+      pageNo: ctx._params.pageNo * 1 || 1,
+      pageSize: ctx._params.pageSize * 1 || 10,
     },
-    ctx.params.isTree
+    ctx._params.isTree
   )
   throw new Success(data)
 }
@@ -58,9 +58,9 @@ export const doRoleMenugetAllMenuByUserId = async (ctx: Context, next: Next) => 
 // 获取指定菜单关联的所有用户
 export const doRoleMenuGetAllUserByMenuId = async (ctx: Context, next: Next) => {
   const data = await getAllUserByMenuId({
-    menuId: ctx.params.menuId,
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
+    menuId: ctx._params.menuId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
   })
   throw new Success(data)
 }

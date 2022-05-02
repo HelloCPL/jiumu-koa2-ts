@@ -13,6 +13,6 @@ import { query } from "../../../db";
 */
 export const doRolePermissionDelete = async (ctx: Context, next: Next) => {
   const sql: string = `DELETE FROM roles_permissions WHERE id = ?`
-  await query(sql, ctx.params.id)
+  await query(sql, ctx._params.id)
   throw new Success();
 }

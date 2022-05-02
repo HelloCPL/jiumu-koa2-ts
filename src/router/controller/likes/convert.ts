@@ -19,15 +19,15 @@ export const doLikeAddConvert = async (ctx: Context, next: Next) => {
   await isExist({
     table: 'likes',
     where: [
-      { key: 'target_id', value: ctx.params.targetId },
-      { key: 'create_user', value: ctx.user.id },
+      { key: 'target_id', value: ctx._params.targetId },
+      { key: 'create_user', value: ctx._user.id },
     ],
     throwType: true,
     message: Message.existLike
   })
   // 判断点赞来源是否在系统资源来源标签500范围
   await validateRange({
-    value: ctx.params.type,
+    value: ctx._params.type,
     range: '500',
     message: 'type参数必须为系统标签500范围'
   })
@@ -43,8 +43,8 @@ export const doLikeDeleteConvert = async (ctx: Context, next: Next) => {
   await isExist({
     table: 'likes',
     where: [
-      { key: 'target_id', value: ctx.params.targetId },
-      { key: 'create_user', value: ctx.user.id },
+      { key: 'target_id', value: ctx._params.targetId },
+      { key: 'create_user', value: ctx._user.id },
     ],
     throwType: false,
     message: Message.unexistLike

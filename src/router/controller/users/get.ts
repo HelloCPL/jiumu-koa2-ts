@@ -18,30 +18,30 @@ import { getSelectWhereAsKeywordData, getOrderByKeyword } from '../../../utils/h
 
 // 获取本用户信息
 export const doUserGetSelf = async (ctx: Context, next: Next) => {
-  const userInfo = await getUserOne(ctx.user.id)
+  const userInfo = await getUserOne(ctx._user.id)
   // 获取用户拥有的所有角色列表
-  const roles = await getAllRoleByUserId({ userId: ctx.user.id, pageSize: 1000 })
+  const roles = await getAllRoleByUserId({ userId: ctx._user.id, pageSize: 1000 })
   // 获取用户拥有的所有权限列表
-  const permissions = await getAllPermissionByUserId({ userId: ctx.user.id, pageSize: 1000 })
+  const permissions = await getAllPermissionByUserId({ userId: ctx._user.id, pageSize: 1000 })
   // 获取用户拥有的所有菜单列表
-  const menus = await getAllMenuByUserId({ userId: ctx.user.id }, true)
+  const menus = await getAllMenuByUserId({ userId: ctx._user.id }, true)
   // 获取用户拥有的所有特殊标签
-  const tags = await getAllTagByUserId({ userId: ctx.user.id, pageSize: 1000 })
+  const tags = await getAllTagByUserId({ userId: ctx._user.id, pageSize: 1000 })
   throw new Success({ data: { userInfo, roles: roles.data, permissions: permissions.data, menus: menus.data, tags: tags.data } })
 }
 
 // 获取指定用户基本信息
 export const doUserGetBase = async (ctx: Context, next: Next) => {
-  const data = await getUserOne(ctx.params.id)
+  const data = await getUserOne(ctx._params.id)
   throw new Success({ data })
 }
 
 // 获取用户列表基本信息
 export const doUserGetList = async (ctx: Context, next: Next) => {
   let params = {
-    pageNo: ctx.params.pageNo * 1 || 1,
-    pageSize: ctx.params.pageSize * 1 || 10,
-    keyword: ctx.params.keyword,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    keyword: ctx._params.keyword,
   }
   const data = await getUserList(params)
   throw new Success(data)

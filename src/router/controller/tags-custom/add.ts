@@ -14,10 +14,10 @@ import { formatDate, getUuId } from "../../../utils/tools";
  * 用户自定义标签新增
 */
 export const doTagCustomAdd = async (ctx: Context, next: Next) => {
-  const sort: number = ctx.params.sort || 1
+  const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
   const sql: string = `INSERT tags_custom (id, label, sort, type, create_user, create_time, update_time, terminal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-  const data = [getUuId(), ctx.params.label, sort, ctx.params.type, ctx.user.id, currentTime, currentTime, Terminal[ctx.terminal]]
+  const data = [getUuId(), ctx._params.label, sort, ctx._params.type, ctx._user.id, currentTime, currentTime, Terminal[ctx._terminal]]
   await query(sql, data)
   throw new Success();
 }

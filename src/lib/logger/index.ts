@@ -27,11 +27,11 @@ const formatLogger: LoggerOptions = {
     logText += `\n  [requestStartTime]: ${global.requestStart},`
     logText += `\n  [requestOriginalUrl]: ${ctx.originalUrl},`
     logText += `\n  [requestIP]: ${getIP(ctx)},`
-    if (ctx.user)
-      logText += `\n  [requestUser]: ${_getDataToString(ctx.user)},`
+    if (ctx._user)
+      logText += `\n  [requestUser]: ${_getDataToString(ctx._user)},`
     logText += `\n  [requestAPI]: ${ctx.url},`
     logText += `\n  [requestMethod]: ${ctx.method},`
-    logText += `\n  [requestParameters]: ${_getDataToString(ctx.data)}`
+    logText += `\n  [requestParameters]: ${_getDataToString(ctx._data)}`
     logText = _handleParamsOptions(logText, options)
     if (IS_PRINT_LOG) console.log(logText);
     infoLogger.info(logText)

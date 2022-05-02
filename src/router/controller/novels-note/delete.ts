@@ -13,6 +13,6 @@ import { query } from "../../../db";
 */
 export const doNovelNoteDelete = async (ctx: Context, next: Next) => {
   const sql: string = `DELETE FROM novels_note WHERE id = ?`
-  await query(sql, ctx.params.id)
+  await query(sql, ctx._params.id)
   throw new Success();
 }
