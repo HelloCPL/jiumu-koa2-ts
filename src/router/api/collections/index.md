@@ -84,7 +84,7 @@
 - 按 `createTime创建时间降序` 排序
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 收藏id |
 | targetId | string | 收藏目标id |
 | createUser | string | 收藏者id |
@@ -142,7 +142,7 @@
 - 按 `createTime创建时间降序` 排序
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 收藏id |
 | targetId | string | 收藏目标id |
 | createUser | string | 收藏者id |

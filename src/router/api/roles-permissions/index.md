@@ -83,7 +83,7 @@
 - 按 `sort升序、updateTime更新时间降序` 排序
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 权限id |
 | code | string | 权限code |
 | label | string | 权限描述 |
@@ -143,7 +143,7 @@
 - 按 `sort升序、updateTime更新时间降序` 排序
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 角色id |
 | code | string | 角色code |
 | label | string | 角色描述 |
@@ -199,7 +199,7 @@
 - 按 `sort升序、updateTime更新时间降序` 排序
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 权限id |
 | code | string | 权限code |
 | label | string | 权限描述 |
@@ -259,7 +259,7 @@
 - 按 `updateTime更新时间降序` 排序
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 用户id |
 | phone | string | 用户账号（即手机号） |
 | username | string | 用户名称 |

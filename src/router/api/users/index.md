@@ -23,7 +23,7 @@
 - 返回对象或null
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | token | string | token |
 | tokenRefresh | string | 刷新token |
 
@@ -65,7 +65,7 @@
 - 返回对象或null
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | token | string | token |
 | tokenRefresh | string | 刷新token |
 
@@ -141,7 +141,7 @@
 - 返回对象或null
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | token | string | token |
 | tokenRefresh | string | 刷新token |
 
@@ -245,7 +245,7 @@
 - 返回对象或null
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | userInfo | object/null | 用户基本信息 |
 | roles | array/[] | 用户拥有的所有角色 |
 | permissions | array/[] | 用户拥有的所有权限 |
@@ -380,7 +380,7 @@
 - 返回对象或null
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 用户id |
 | phone | string | 用户账号（即手机号） |
 | username | string | 用户名称 |
@@ -460,7 +460,7 @@
   `updateTime更新时间降序`
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 用户id |
 | phone | string | 用户账号（即手机号） |
 | username | string | 用户名称 |
@@ -536,7 +536,7 @@
 - 返回对象或null
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | token | string | token |
 | tokenRefresh | string | 刷新token |
 

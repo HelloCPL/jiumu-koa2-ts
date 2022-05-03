@@ -120,7 +120,7 @@
 - 返回对象或null
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 菜单id |
 | parentCode | string | 父级菜单code |
 | parentLabel | string | 父级菜单描述 |
@@ -174,7 +174,7 @@
 - 返回数组或[]，数组有子级
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 菜单id |
 | parentCode | string | 父级菜单code |
 | parentLabel | string | 父级菜单描述 |
@@ -239,7 +239,7 @@
 - 返回数组或[]，数组有子级
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 菜单id |
 | parentCode | string | 父级菜单code |
 | parentLabel | string | 父级菜单描述 |

@@ -27,7 +27,7 @@
 - 按 `createTime创建时间降序` 排序
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 登录id |
 | userId | string | 登录用户id |
 | username | string | 登录用户姓名 |

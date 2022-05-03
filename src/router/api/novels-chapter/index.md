@@ -122,7 +122,7 @@
 - 返回对象或null
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 小说章节id |
 | novelId | string | 小说id |
 | novelName | string | 小说名称 |
@@ -206,7 +206,7 @@
    `sort升序`
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 小说章节id |
 | novelId | string | 小说id |
 | novelName | string | 小说名称 |

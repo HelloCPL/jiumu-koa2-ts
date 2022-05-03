@@ -84,7 +84,7 @@
 - 按 `createTime创建时间降序` 排序
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 点赞id |
 | targetId | string | 点赞目标id |
 | createUser | string | 点赞者id |
@@ -143,7 +143,7 @@
 - 按 `createTime创建时间降序` 排序
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 点赞id |
 | targetId | string | 点赞目标id |
 | createUser | string | 点赞者id |

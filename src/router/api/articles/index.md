@@ -131,7 +131,7 @@
 - `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 博客文章id |
 | title | string | 标题 |
 | content | string | 内容 |
@@ -272,7 +272,7 @@
 - `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 博客文章id |
 | title | string | 标题 |
 | coverImg | object/null | 封面图，文件对象/null |
@@ -391,7 +391,7 @@
 - `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 博客文章id |
 | title | string | 标题 |
 | coverImg | object/null | 封面图，文件对象/null |
@@ -509,7 +509,7 @@
 - `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
 
 | 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 | id | string | 博客文章id |
 | title | string | 标题 |
 | coverImg | object/null | 封面图，文件对象/null |
