@@ -24,7 +24,7 @@ import { IS_VERIFY_API_PERMISSION, IS_VERIFY_STATIC_PERMISSION } from '../../con
 */
 export const verifyRoute = async (ctx: Context, next: Next) => {
   const url = _getFullPath(ctx.request.url)
-  if (global.unlessPath.indexOf(url) === -1) {
+  if (global._unlessPath.indexOf(url) === -1) {
     const tokenInfo = await analysisToken(ctx)
     if (tokenInfo.code === Code.success) {
       ctx._user = tokenInfo.data

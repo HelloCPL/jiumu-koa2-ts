@@ -17,13 +17,14 @@ import _ from 'lodash'
 */
 export const mountParameter = async (ctx: Context, next: Next) => {
   // 记录日志
-  global.requestCount++
-  global.requestStart = process.hrtime.bigint()
+  global._requestCount++
+  global._requestStart = process.hrtime.bigint()
   // 处理参数
   const v: any = await new LinValidator().validate(ctx)
   ctx._data = <DataOptions>v.data
   ctx._params = getParams(ctx)
   ctx._terminal = getTerminal(ctx)
+  global._results = {}
   await next()
 }
 

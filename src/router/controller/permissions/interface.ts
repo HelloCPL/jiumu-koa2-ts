@@ -18,7 +18,9 @@ export interface PermissionOptions extends BaseOptions {
 export interface PermissionParmsOptions {
   pageNo: number,
   pageSize: number,
-  keyword?: string
+  keyword?: string,
+  userId?: string,
+  roleId?: string
 }
 
 // 权限列表返回

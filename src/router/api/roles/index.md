@@ -210,10 +210,9 @@
 
 - `pc | web | app | wechat` 端
 - 获取角色列表
-- 若传了`userId`，优先级1，增加`checked` 字段，表示是否与该用户关联
-- 若传了`permissionId`，优先级2，增加`checked` 字段，表示是否与该权限关联
-- 若传了`menuId`，优先级3，增加`checked` 字段，表示是否与该菜单关联
-- `userId`、`permissionId`、`menuId`间只需传其中一个
+- 若传了`userId`，增加`checkedUserId` 字段，表示是否与该用户关联
+- 若传了`permissionId`，增加`checkedPermissionId` 字段，表示是否与该权限关联
+- 若传了`menuId`，增加`checkedMenuId` 字段，表示是否与该菜单关联
 
 #### 请求
 
@@ -227,9 +226,9 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
-| userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联 |
-| permissionId | string | 否 | 权限id，会增加`checked` 字段，表示是否与该权限关联  |
-| menuId | string | 否 | 菜单id，会增加`checked` 字段，表示是否与该菜单关联  |
+| userId | string | 否 | 用户id，会增加`checkedUserId` 字段，表示是否与该用户关联 |
+| permissionId | string | 否 | 权限id，会增加`checkedPermissionId` 字段，表示是否与该权限关联  |
+| menuId | string | 否 | 菜单id，会增加`checkedMenuId` 字段，表示是否与该菜单关联  |
 
 #### 返回字段说明
 

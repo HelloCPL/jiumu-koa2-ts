@@ -210,9 +210,8 @@
 
 - `pc | web | app | wechat` 端
 - 获取权限列表
-- 若传了`roleId`，优先级1，增加`checked` 字段，表示是否与该角色关联
-- 若传了`userId`，优先级2，增加`checked` 字段，表示是否与该用户关联，但不可直接关联
-- `roleId`、`userId`间只需传其中一个
+- 若传了`roleId`，增加`checkedRoleId` 字段，表示是否与该角色关联
+- 若传了`userId`，增加`checkedUserId` 字段，表示是否与该用户关联，但不可直接关联
 
 #### 请求
 

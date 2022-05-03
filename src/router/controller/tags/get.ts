@@ -6,11 +6,11 @@
 
 import { Success } from '../../../utils/http-exception'
 import { query } from '../../../db'
-import { isExistHasChildren } from '../convert'
 import { Context, Next } from 'koa'
-import { TagOptions, TagListOptions, TagCustomOptions } from './interface'
+import { TagOptions, TagListOptions } from './interface'
 import { getAllTagByUserId } from '../users-tags/get'
 import _ from 'lodash'
+import { getTree } from '../../../utils/tools'
 
 // 获取指定的某个标签
 export const doTagGetByCode = async (ctx: Context, next: Next) => {
@@ -27,13 +27,9 @@ export const doTagGetAllSelf = async (ctx: Context, next: Next) => {
 // 获取某类标签
 export const doTagGetByParentCode = async (ctx: Context, next: Next) => {
   const parentCode = ctx._params.parentCode || ''
-  const data = await getTagByParentCode(parentCode)
-  if (parentCode == '8888' && ctx._params.userId) {
-    // 增加`checked` 字段，表示是否与该用户关联
-    // const userList = await getAllTagByUserId({ userId: ctx._params.userId })
-    // const userIdsList = _.map(userList, item => item.id)
-    // _handleRoleData(data, userIdsList)
-  }
+  let userId = ''
+  if (parentCode == '8888' && ctx._params.userId) userId = ctx._params.userId
+  const data = await getTagByParentCode(parentCode, userId)
   throw new Success({ data })
 }
 
@@ -41,7 +37,7 @@ export const doTagGetByParentCode = async (ctx: Context, next: Next) => {
  * 获取指定的某个标签，返回对象或null
  */
 export const getTagByCode = async (code: string): Promise<TagOptions | null> => {
-  const sql: string = `SELECT t1.id, t1.parent_code, t2.label AS parent_label, t1.label, t1.sort, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM tags t1 LEFT JOIN tags t2 ON t1.parent_code = t2.code WHERE t1.code = ? OR t1.id = ?`
+  const sql: string = `SELECT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM tags t1 LEFT JOIN tags t2 ON t1.parent_code = t2.code WHERE t1.code = ? OR t1.id = ?`
   const data = [code, code]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -51,38 +47,35 @@ export const getTagByCode = async (code: string): Promise<TagOptions | null> => 
 /**
  * 获取某类标签，返回数组或[]
  */
-export const getTagByParentCode = async (parentCode: string): Promise<TagListOptions[]> => {
-  let data: TagCustomOptions[] = [{ code: parentCode, children: [] }]
-  const _handleGetData = async (arr: TagCustomOptions[]) => {
-    for (let i = 0, len = arr.length; i < len; i++) {
-      const hasChildren = <boolean>await isExistHasChildren({
-        table: 'tags',
-        where: { key: 'code', value: arr[i].code },
-        noThrow: true,
-      })
-      if (hasChildren) {
-        const sql = `SELECT * FROM tags WHERE parent_code = ? ORDER BY sort`
-        const res: TagCustomOptions[] = <TagCustomOptions[]>await query(sql, arr[i].code)
-        arr[i].children = res
-        await _handleGetData(arr[i].children)
-      } else arr[i].children = []
+export const getTagByParentCode = async (parentCode: string, userId?: string): Promise<TagListOptions[]> => {
+  if (global._results._tags && global._results._tags.length) {
+    return <TagListOptions[]>getTree({
+      data: global._results._tags,
+      parentCode
+    })
+  } else {
+    let data: any[] = []
+    // 是否与指定用户关联
+    let sqlStr = ''
+    let sqlLeft = ''
+    if (userId) {
+      sqlStr = 't3.id AS checked_user_id,'
+      sqlLeft = 'LEFT JOIN users_tags t3 ON (t3.user_id = ? AND t3.tag_code = t1.code)'
+      data.push(userId)
     }
-  }
-  // 递归查询
-  await _handleGetData(data)
-  // @ts-ignore
-  const targetData: TagListOptions[] = data[0].children
-  return targetData
-}
-
-// 处理角色是否与用户/权限关联
-function _handleRoleData(data: TagListOptions[], targetData: string[]) {
-  const _handleList = (arr: TagListOptions[]) => {
-    arr.forEach((item) => {
-      if (targetData.indexOf(item.id) === -1) item.checked = false
-      else item.checked = true
-      if (item.children && item.children.length) _handleList(item.children)
+    const sql = `SELECT t1.id, t1.parent_code, t2.label as parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, ${sqlStr} t1.terminal, t1.remarks  FROM tags t1 LEFT JOIN tags t2 ON t1.parent_code = t2.code ${sqlLeft}`
+    const res: TagOptions[] = <TagOptions[]>await query(sql, data)
+    // 若与指定用户关联
+    if (userId) {
+      res.forEach(item => {
+        if (item.checked_user_id) item.checked_user_id = '1'
+        else item.checked_user_id = '0'
+      })
+    }
+    global._results._tags = [...res]
+    return <TagListOptions[]>getTree({
+      data: global._results._tags,
+      parentCode
     })
   }
-  _handleList(data)
 }

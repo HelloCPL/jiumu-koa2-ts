@@ -32,7 +32,7 @@ function createConfig(): ConfigOptions {
     },
     TOKEN: { // token 信息配置
       SECRET_KEY: 'dev_jiumu', // key
-      VALID_TIME: 60 * 60 * 24, // token 有效期24小时
+      VALID_TIME: 60 * 60 * 24 * 7, // token 有效期24小时
       REFRESH_VALID_TIME: 60 * 60 * 24 * 7, // 刷新 token 有效期7天
     },
     BASE_URL: 'http://localhost:3030/', // 默认服务路径

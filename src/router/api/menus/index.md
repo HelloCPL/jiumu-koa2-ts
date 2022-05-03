@@ -218,9 +218,8 @@
 
 - `pc | web | app | wechat` 端
 - 获取指定的获取某类菜单
-- 若传了`roleId`，优先级1，增加`checked` 字段，表示是否与该角色关联
-- 若传了`userId`，优先级2，增加`checked` 字段，表示是否与该用户关联，但不可直接关联
-- `roleId`、`userId`间只需传其中一个
+- 若传了`roleId`，增加`checkedRoleId` 字段，表示是否与该角色关联
+- 若传了`userId`，增加`checkedUserId` 字段，表示是否与该用户关联，但不可直接关联
 
 #### 请求
 
@@ -232,8 +231,8 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | parentCode | string | 否 | 父级菜单code，不传获取全部菜单 |
-| roleId | string | 否 | 角色id，会增加`checked` 字段，表示是否与该角色关联 |
-| userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联，但不可直接关联 |
+| roleId | string | 否 | 角色id，会增加`checkedRoleId` 字段，表示是否与该角色关联 |
+| userId | string | 否 | 用户id，会增加`checkedUserId` 字段，表示是否与该用户关联，但不可直接关联 |
 
 #### 返回字段说明
 

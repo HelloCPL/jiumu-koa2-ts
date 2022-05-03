@@ -107,17 +107,24 @@
   - 路由模块（核心）
     定义路由前缀类装饰器(`@Prefix`)、路由请求方法装饰器(`@Request`)、校验路由必传参数及类型方法装饰器(`@Required`)、添加路由自定义中间件方法装饰器(`@Convert`)
     构建 `Route` 自动注册路由类，使用静态属性 `__DecoratedRouters` 保存装饰的路由
-    在 `init` 实例方法中使用 `glob` 插件自动引入 `router/api` 目录下的路由文件，然后遍历 `__DecoratedRouters` 将保存装饰的路由及其中间件方法经过处理后注册路由
+    在 `init` 实例方法中使用 `glob` 插件自动引入 `router/api` 目录下的路由文件，然后遍历 `__DecoratedRouters`，先收集公开路由集合，再挂载自定义中间件，最后经处理后注册路由
       在 `router/api` 目录按数据表名称构建路由功能模块接口，其中 `index.md` 为该模块 `api` 的使用说明文档
       在 `router/controller` 目录构建对应名称的业务处理模块目录，主要实现业务逻辑处理、数据库查询和数据返回等，其中 `convert.ts` 为该模块的中间件方法集合，一般用于数据校验，其他业务方法细分至每个单独的文件，一般以 `增(add) 删(delete) 查(get) 改(update)` 划分
 
 ### 其他设计说明
 
-  - `ctx` 上下文自定义挂载说明
+  - `ctx` 上下文自定义挂载说明，数据仅对一次请求有效
       `ctx._terminal` // 访问终端，所有路由均挂载
       `ctx._data` // 原始访问参数（包含 `{body query path header}`），所有路由均挂载
       `ctx._params` // 处理后的访问参数（仅包含 `{query body}`，其中相同参数名称下 `get` 请求优先使用 `query` 参数、 `post` 请求优先使用 `body` 参数），所有路由均挂载
       `ctx._user` // 根据token解析的用户信息，只有非公开路由接口（即`unless=false`）会挂载
+
+  - `global` 自定义全局变量说明，数据自项目启动后一直有效
+      `global._unlessPath` // 不校验路由集合
+      `global._requestCount` // 记录第几次请求
+      `global._requestStart` // 记录请求开始时间
+      `global._requestEnd` // 记录请求结束时间
+      `global._results` // 缓存结果，一般用于缓存mysql查询，避免重复查询，每次新请求会重置
 
   - 路由接口参数说明
       `附件id` `用户自定义标签id` 参数不作是否存在校验

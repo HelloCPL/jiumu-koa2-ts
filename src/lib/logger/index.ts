@@ -22,9 +22,9 @@ const formatLogger: LoggerOptions = {
   // 普通请求日志
   request(ctx: Context, options?: ParamsOptions) {
     let logText: string = ''
-    logText += `\n\n---------- 接口请求开始 ${global.requestCount} ----------`
+    logText += `\n\n---------- 接口请求开始 ${global._requestCount} ----------`
     logText += `\n\n[请求日志信息]`
-    logText += `\n  [requestStartTime]: ${global.requestStart},`
+    logText += `\n  [requestStartTime]: ${global._requestStart},`
     logText += `\n  [requestOriginalUrl]: ${ctx.originalUrl},`
     logText += `\n  [requestIP]: ${getIP(ctx)},`
     if (ctx._user)
@@ -39,14 +39,14 @@ const formatLogger: LoggerOptions = {
 
   // 响应日志
   response(options: ParamsOptions) {
-    global.requestEnd = process.hrtime.bigint()
-    let costTime = global.requestEnd - global.requestStart
+    global._requestEnd = process.hrtime.bigint()
+    let costTime = global._requestEnd - global._requestStart
     let logText = ''
     logText += `\n\n[响应日志信息]`
-    logText += `\n  [responseEndTime]: ${global.requestEnd}`
+    logText += `\n  [responseEndTime]: ${global._requestEnd}`
     logText += `\n  [totalTime]: ${Number(costTime) / 1e6}毫秒`
     logText = _handleParamsOptions(logText, options)
-    logText += `\n\n---------- 接口响应结束 ${global.requestCount} ----------`
+    logText += `\n\n---------- 接口响应结束 ${global._requestCount} ----------`
     if (IS_PRINT_LOG) console.log(logText);
     infoLogger.info(logText)
   },
@@ -63,9 +63,9 @@ const formatLogger: LoggerOptions = {
   // 错误日志
   error(options: ParamsOptions) {
     let logText = ''
-    logText += `\n\n!!!!!!!!!! 错误日志信息开始 ${global.requestCount} !!!!!!!!!!`
+    logText += `\n\n!!!!!!!!!! 错误日志信息开始 ${global._requestCount} !!!!!!!!!!`
     logText = _handleParamsOptions(logText, options)
-    logText += `\n!!!!!!!!!! 错误日志信息结束 ${global.requestCount} !!!!!!!!!!`
+    logText += `\n!!!!!!!!!! 错误日志信息结束 ${global._requestCount} !!!!!!!!!!`
     console.log(options.error);
     console.log(logText);
     infoLogger.info(logText)

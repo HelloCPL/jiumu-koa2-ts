@@ -69,9 +69,9 @@ interface ExistChildrenOptions extends ExistBaseOptions {
  * 默认自动抛出错误，noThrow 为 true 时返回是否存在
 */
 export const isExistHasChildren = async (options: ExistChildrenOptions) => {
-  options.where.childKey = options.where.childKey || 'code'
-  options.where.parentKey = options.where.parentKey || 'parent_code'
-  const sql = `SELECT t1.id FROM ${options.table} t1 WHERE t1.${options.where.parentKey} IN (SELECT t2.${options.where.childKey} FROM ${options.table} t2 WHERE t2.${options.where.key} = ?)`
+  const childKey = options.where.childKey || 'code'
+  const parentKey = options.where.parentKey || 'parent_code'
+  const sql = `SELECT t1.id FROM ${options.table} t1 WHERE t1.${parentKey} IN (SELECT t2.${childKey} FROM ${options.table} t2 WHERE t2.${options.where.key} = ?)`
   const res: any = await query(sql, options.where.value)
   const _isExist = res && res.length
   if (options.noThrow) {
@@ -84,4 +84,18 @@ export const isExistHasChildren = async (options: ExistChildrenOptions) => {
       throw new ExceptionParameter({ message: options.message || Message.parameter })
     }
   }
+}
+
+/**
+ * 判断指定用户是否为管理员角色
+*/
+export const isSuper = async (userId: string): Promise<boolean> => {
+  let flag = false
+  const sql = `SELECT t1.id FROM users_roles t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t1.user_id  = ? AND t2.code = ?`
+  const data = [userId, 'super']
+  const res: any = await query(sql, data)
+  if (res && res.length) {
+    flag = true
+  }
+  return flag
 }

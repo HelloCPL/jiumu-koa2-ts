@@ -14,6 +14,7 @@
  *   getKey // 获取 key
  *   getTerminal // 获取路径 terminal
  *   getIP // 获取路径 terminal
+ *   getTree // 获取树结构
 */
 
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid'
@@ -153,4 +154,57 @@ export const getTerminal = (ctx: Context): TerminalType => {
 // 获取客户端IP
 export const getIP = (ctx: Context) => {
   return ctx.ip || ctx.req.headers['x-forwarded-for'] || ctx.req.socket.remoteAddress
+}
+
+
+// 获取树结构
+interface TreeOption {
+  data: any[],
+  parentCode: any,
+  parentKey?: string,
+  key?: string
+}
+export const getTree = (option: TreeOption): any[] => {
+  const parentKey = option.parentKey || 'parent_code'
+  const key = option.key || 'code'
+  let trees: any[] = []
+  // 去重
+  let originData = _.uniqBy(option.data, 'id')
+  // 排序
+  if (originData.length) {
+    if (originData[0].update_time) {
+      originData.sort((a, b) => {
+        if (a.update_time > b.update_time) return 1
+        else if (a.update_time < b.update_time) return -1
+        else return 0
+      })
+    }
+    if (originData[0].sort || originData[0].sort === 0) {
+      originData.sort((a, b) => {
+        if (a.sort > b.sort) return 1
+        else if (a.sort < b.sort) return -1
+        else return 0
+      })
+    }
+  }
+  // 获取第一级
+  originData.forEach(item => {
+    item.children = []
+    if ((!option.parentCode && !item[parentKey]) || option.parentCode === item[parentKey]) {
+      trees.push(item)
+    }
+  })
+  // 递归获取子级
+  const findTree = (arr: any[]) => {
+    arr.forEach(list => {
+      originData.forEach(obj => {
+        if (obj[parentKey] === list[key]) {
+          list.children.push(obj)
+        }
+      })
+      if (list.children.length) findTree(list.children)
+    })
+  }
+  findTree(trees)
+  return trees
 }

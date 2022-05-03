@@ -26,10 +26,11 @@ interface SQLParamsOptions extends ObjectAny{
 // 声明命名空间 合并 Global 接口，用于扩展global对象
 declare namespace NodeJS {
   export interface Global {
-    unlessPath: string[];
-    requestCount: number;
-    requestStart: any,
-    requestEnd: any,
+    _unlessPath: string[];
+    _requestCount: number;
+    _requestStart: any,
+    _requestEnd: any,
+    _results: ObjectAny
   }
 }
 

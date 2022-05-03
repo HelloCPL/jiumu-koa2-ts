@@ -6,10 +6,8 @@
 
 import { Context, Next } from 'koa'
 import { validateRange } from '../../../utils/validator'
-import { getAllRoleByUserId } from '../users-roles/get'
-import { RoleReturnOptions } from '../roles/interface'
 import { ExceptionForbidden } from '../../../utils/http-exception'
-import { isExist } from '../convert'
+import { isSuper } from '../convert';
 
 /**
  * 置顶操作时
@@ -26,17 +24,7 @@ export const doTopUpdateConvert = async (ctx: Context, next: Next) => {
     },
   ])
   // 判断是否管理员角色
-  const res: RoleReturnOptions = await getAllRoleByUserId({ userId: ctx._user.id, pageSize: 1000 })
-  let flag = false
-  if (res && res.data.length) {
-    res.data.find((item): boolean => {
-      if (item.code === 'super') {
-        flag = true
-        return true
-      }
-      return false
-    })
-  }
+  let flag = await isSuper(ctx._user.id)
   if (!flag) throw new ExceptionForbidden()
   await next()
 }

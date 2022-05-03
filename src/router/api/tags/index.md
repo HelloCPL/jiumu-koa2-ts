@@ -213,8 +213,8 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取指定的获取某类标签
-- 若传了`userId`，增加`checked` 字段，表示是否与该用户关联，仅`parentCode=8888`时有效
+- 获取指定的获取某类标签，不包含父级标签
+- 若传了`userId`，增加`checkedUserId` 字段，表示是否与该用户关联，仅`parentCode=8888`时有效
 
 #### 请求
 
@@ -226,7 +226,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | parentCode | string | 否 | 父级标签code，不传获取全部标签 |
-| userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联，仅`parentCode=8888`时有效 |
+| userId | string | 否 | 用户id，会增加`checkedUserId` 字段，表示是否与该用户关联，仅`parentCode=8888`时有效 1 关联 0 不关联 |
 
 #### 返回字段说明
 
@@ -254,18 +254,31 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "1fae1396-6d86-4c11-b009-8ee8d8fe2e93",
-      "parentCode": "100",
-      "parentLabel": "状态",
-      "code": "1",
-      "label": "启用",
+      "id": "368bf7d4-ea43-42e1-98ff-847b932655d3",
+      "parentCode": "200",
+      "parentLabel": "性别",
+      "code": "201",
+      "label": "男",
       "sort": 1,
-      "createTime": "2021-08-12 21:54:24",
-      "updateTime": "2021-08-12 21:54:24",
+      "createTime": "2021-08-11 16:30:46",
+      "updateTime": "2021-08-11 16:40:12",
       "terminal": "管理端",
-      "remarks": "用于系统状态，不要修改",
+      "remarks": null,
       "children": []
     },
+    {
+      "id": "413558d0-306c-4106-8d6f-6de32ccf45a9",
+      "parentCode": "200",
+      "parentLabel": "性别",
+      "code": "202",
+      "label": "女",
+      "sort": 2,
+      "createTime": "2021-08-11 16:30:54",
+      "updateTime": "2021-08-11 16:41:07",
+      "terminal": "管理端",
+      "remarks": null,
+      "children": []
+    }
   ],
   "total": 0
 }

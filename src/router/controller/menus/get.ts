@@ -6,12 +6,9 @@
 
 import { Success } from '../../../utils/http-exception'
 import { query } from "../../../db";
-import { isExistHasChildren } from '../convert'
 import { Context, Next } from 'koa';
-import { MenuOptions, MenuListOptions, MenuCustomOptions } from './interface'
-import { getAllMenuByRoleId } from '../roles-menus/get'
-import { getAllRoleByUserId } from '../users-roles/get'
-import _ from 'lodash'
+import { MenuOptions, MenuListOptions } from './interface'
+import { getTree } from '../../../utils/tools';
 
 // 获取指定的某个菜单
 export const doMenuGetOne = async (ctx: Context, next: Next) => {
@@ -22,20 +19,7 @@ export const doMenuGetOne = async (ctx: Context, next: Next) => {
 // 获取某类菜单
 export const doMenuGetByParentCode = async (ctx: Context, next: Next) => {
   const parentCode = ctx._params.parentCode || ''
-  let data: MenuListOptions[] = await getMenuByParentCode(parentCode)
-  if (ctx._params.userId) {
-    // 若传 userId 增加`checked` 字段，表示是否与该用户关联
-    // const userRoleList = await getAllRoleByUserId({ userId: ctx._params.userId })
-    // const roleIds = _.join(_.map(userRoleList.data, item => item.id))
-    // const roleMenuList = await getAllMenuByRoleId({ roleIds: roleIds })
-    // const roleMenuIds = _.map(roleMenuList, item => item.id)
-    // _handleRoleMenu(data, roleMenuIds)
-  } else if (ctx._params.roleId) {
-    // 若传 roleId 增加`checked` 字段，表示是否与该角色关联
-    // const roleMenuList = await getAllMenuByRoleId({ roleId: ctx._params.roleId })
-    // const roleMenuIds = _.map(roleMenuList, item => item.id)
-    // _handleRoleMenu(data, roleMenuIds)
-  }
+  let data: MenuListOptions[] = await getMenuByParentCode(parentCode, ctx._params.userId, ctx._params.roleId)
   throw new Success({ data })
 }
 
@@ -54,41 +38,51 @@ export const getMenuOne = async (id: string): Promise<MenuOptions | null> => {
 /**
  * 获取某类菜单，返回数组或[]
 */
-export const getMenuByParentCode = async (parentCode: string): Promise<MenuListOptions[]> => {
-  let data: MenuCustomOptions[] = [{ code: parentCode, children: [] }]
-  const _handleGetData = async (arr: MenuCustomOptions[]) => {
-    for (let i = 0, len = arr.length; i < len; i++) {
-      const hasChildren = <boolean>await isExistHasChildren({
-        table: 'menus',
-        where: { key: 'code', value: arr[i].code },
-        noThrow: true
-      })
-      if (hasChildren) {
-        const sql = `SELECT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.parent_code = ?`
-        const res: MenuListOptions[] = <MenuListOptions[]>await query(sql, arr[i].code)
-        arr[i].children = res
-        await _handleGetData(arr[i].children)
-      } else
-        arr[i].children = []
+export const getMenuByParentCode = async (parentCode: string, userId?: string, roleId?: string): Promise<MenuListOptions[]> => {
+  if (global._results._menus && global._results._menus.length) {
+    return <MenuListOptions[]>getTree({
+      data: global._results._menus,
+      parentCode
+    })
+  } else {
+    let data: any[] = []
+    // 是否与指定角色关联
+    let sqlRoleId = ''
+    let sqlRoleIdLeft = ''
+    if (roleId) {
+      sqlRoleId = `t3.id AS checked_role_id,`
+      sqlRoleIdLeft = `LEFT JOIN roles_menus t3 ON (t3.role_id = ? AND t3.menu_id = t1.id)`
+      data.push(roleId)
     }
-  }
-  // 递归查询
-  await _handleGetData(data)
-  // @ts-ignore
-  const targetData: MenuListOptions[] = data[0].children
-  return targetData
-}
-
-// 处理权限是否与角色/菜单关联
-function _handleRoleMenu(data: MenuListOptions[], targetData: string[]) {
-  const _handleList = (arr: MenuListOptions[]) => {
-    arr.forEach(item => {
-      if (targetData.indexOf(item.id) === -1)
-        item.checked = false
-      else item.checked = true
-      if (item.children && item.children.length)
-        _handleList(item.children)
+    // 是否与指定用户关联
+    let sqlUserId = ''
+    let sqlUserIdLeft = ''
+    if (userId) {
+      sqlUserId = 't4.id AS checked_user_id,'
+      sqlUserIdLeft = 'LEFT JOIN roles_menus t4 ON (t4.menu_id = t1.id AND t4.role_id IN (SELECT t5.role_id FROM users_roles t5 WHERE t5.user_id = ?))'
+      data.push(userId)
+    }
+    const sql = `SELECT DISTINCT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, ${sqlRoleId} ${sqlUserId} t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code ${sqlRoleIdLeft} ${sqlUserIdLeft}`
+    const res: MenuOptions[] = <MenuOptions[]>await query(sql, data)
+    // 若与指定角色关联
+    if (roleId) {
+      res.forEach(item => {
+        if (item.checked_role_id) item.checked_role_id = '1'
+        else item.checked_role_id = '0'
+      })
+    }
+    // 若与指定用户关联
+    if (userId) {
+      res.forEach(item => {
+        if (item.checked_user_id) item.checked_user_id = '1'
+        else item.checked_user_id = '0'
+      })
+    }
+    global._results._menus = [...res]
+    return <MenuListOptions[]>getTree({
+      data: global._results._menus,
+      parentCode
     })
   }
-  _handleList(data)
+
 }

@@ -55,7 +55,7 @@ export class Route {
         routePaths.push(toPath(value, config.target[symbolRoutePrefix], config.path))
       })
       // 不做校验的路由集合
-      if (config.unless) global.unlessPath.push(...routePaths)
+      if (config.unless) global._unlessPath.push(...routePaths)
 
       // 匹配路由
       controllers.forEach((_controller) => {

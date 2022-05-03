@@ -16,7 +16,10 @@ export interface RoleOptions extends BaseOptions {
 export interface RoleParamsOptions {
   pageNo: number,
   pageSize: number,
-  keyword?: string
+  keyword?: string,
+  userId?: string,
+  permissionId?: string,
+  menuId?: string
 }
 
 // 角色列表返回
