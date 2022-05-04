@@ -8,7 +8,6 @@ import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
 import {
   doUserRegisterConvert,
-  doUserLoginConvert,
   doUserUpdateBaseSelfConvert,
   doUserUpdateBaseConvert,
   doUserCheckPasswordConvert
@@ -41,7 +40,6 @@ export default class API {
     unless: true
   })
   @Required(['phone', 'password'])
-  @Convert(doUserLoginConvert)
   async doUserLogin(ctx: Context, next: Next) {
     await doUserLogin(ctx, next)
   }

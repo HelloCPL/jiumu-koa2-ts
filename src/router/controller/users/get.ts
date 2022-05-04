@@ -15,19 +15,22 @@ import { getAllMenuByUserId } from '../roles-menus/get'
 import { getAllTagByUserId } from '../users-tags/get'
 import _ from 'lodash'
 import { getSelectWhereAsKeywordData, getOrderByKeyword } from '../../../utils/handle-sql'
+import { RoleOptions } from '../roles/interface';
+import { PermissionOptions } from '../permissions/interface';
+import { TagOptions } from '../tags/interface';
 
 // 获取本用户信息
 export const doUserGetSelf = async (ctx: Context, next: Next) => {
   const userInfo = await getUserOne(ctx._user.id)
   // 获取用户拥有的所有角色列表
-  const roles = await getAllRoleByUserId({ userId: ctx._user.id, pageSize: 1000 })
+  const roles = <RoleOptions[]>await getAllRoleByUserId({ userId: ctx._user.id, all: true })
   // 获取用户拥有的所有权限列表
-  const permissions = await getAllPermissionByUserId({ userId: ctx._user.id, pageSize: 1000 })
+  const permissions = <PermissionOptions[]>await getAllPermissionByUserId({ userId: ctx._user.id, all: true })
   // 获取用户拥有的所有菜单列表
   const menus = await getAllMenuByUserId({ userId: ctx._user.id }, true)
   // 获取用户拥有的所有特殊标签
-  const tags = await getAllTagByUserId({ userId: ctx._user.id, pageSize: 1000 })
-  throw new Success({ data: { userInfo, roles: roles.data, permissions: permissions.data, menus: menus.data, tags: tags.data } })
+  const tags = <TagOptions[]>await getAllTagByUserId({ userId: ctx._user.id, all: true })
+  throw new Success({ data: { userInfo, roles: roles, permissions: permissions, menus: menus.data, tags: tags } })
 }
 
 // 获取指定用户基本信息

@@ -22,5 +22,6 @@ export interface UserRoleByRoleIdParams {
 export interface UserRoleByUserIdParams {
   userId: string,
   pageNo?: number,
-  pageSize?: number
+  pageSize?: number,
+  all?: boolean
 }

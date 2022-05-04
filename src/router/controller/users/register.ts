@@ -9,26 +9,37 @@ import { Message, Terminal } from '../../../enums'
 import { Success } from '../../../utils/http-exception'
 import { gernerateToken } from './token'
 import { TOKEN } from '../../../config'
-import { getUuId, formatDate } from '../../../utils/tools'
+import { getUuId, formatDate, getIP } from '../../../utils/tools'
 import { encrypt } from '../../../utils/crypto'
-import { query } from '../../../db/index'
-import { doLoginInfoAdd } from '../login-info/add'
+import { execTrans } from '../../../db/index'
 
 /**
  * 用户注册
 */
 export const doUserRegister = async (ctx: Context, next: Next) => {
-  const id = getUuId()
+  const userId = getUuId()
+  const userRoleId = getUuId()
+  const loginInfoId = getUuId()
   const password = encrypt(ctx._params.password)
   const currentTime = formatDate(new Date())
-  const sql = `INSERT users (id, password, phone,username, create_time, update_time, terminal) VALUES (?,?,?,?,?,?,?)`
-  const data = [id, password, ctx._params.phone, '匿名', currentTime, currentTime, Terminal[ctx._terminal]]
-  await query(sql, data)
-  // 生成双 token
-  let params = { userId: id, phone: ctx._params.phone }
-  const doubleToken = await handleDoubleToken(ctx, params)
+  const terminal = Terminal[ctx._terminal]
+  // 注册账号
+  const sql1 = `INSERT users (id, password, phone,username, create_time, update_time, terminal) VALUES (?,?,?,?,?,?,?)`
+  const data1 = [userId, password, ctx._params.phone, '匿名', currentTime, currentTime, terminal]
+  // 关联普通用户角色
+  const sql2 = `INSERT users_roles (id, role_id, user_id, create_time, terminal) VALUES (?, (SELECT t1.id FROM roles t1 WHERE t1.code = ?), ?, ?, ?)`
+  const data2 = [userRoleId, 'common', userId, currentTime, terminal]
   // 记录登录状态
-  await doLoginInfoAdd(ctx, next, id)
+  const sql3 = `INSERT login_info (id, user_id, user_agent, ip, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?)`
+  const data3 = [loginInfoId, userId, ctx.request.header['user-agent'], getIP(ctx), currentTime, terminal]
+  await execTrans([
+    { sql: sql1, data: data1 },
+    { sql: sql2, data: data2 },
+    { sql: sql3, data: data3 }
+  ])
+  // 生成双 token
+  let params = { userId: userId, phone: ctx._params.phone }
+  const doubleToken = await handleDoubleToken(ctx, params)
   throw new Success({ message: Message.register, data: doubleToken })
 }
 

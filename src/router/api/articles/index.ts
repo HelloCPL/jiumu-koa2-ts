@@ -18,7 +18,7 @@ export default class API {
   // 1 博客文章新增
   @Request({
     path: 'add',
-    methods: ['get', 'post'],
+    methods: ['get', 'post']
   })
   @Required(['title', 'content', 'contentType', 'type', 'isDraft'])
   @Convert(doArticleAddConvert)

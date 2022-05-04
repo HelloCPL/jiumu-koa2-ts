@@ -31,6 +31,8 @@ import { TerminalType } from '../enums'
 export function toPath(...arg: string[]): string {
   let getPath = (path: string) => {
     if (!path) return ''
+    let i = path.indexOf('?')
+    if (i !== -1) path = path.substring(0, i)
     if (!path.startsWith('/'))
       path = '/' + path
     if (path.endsWith('/'))

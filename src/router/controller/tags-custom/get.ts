@@ -50,6 +50,7 @@ export const doTagCustomGetList = async (ctx: Context, next: Next) => {
  * 获取指定用户的自定义标签，返回数组或[]
 */
 export const getTagCustomByIds = async (ids: string, userId: string): Promise<TagCustomOptions[]> => {
+  if (!ids) return []
   const sql: string = `SELECT t1.id, t1.label, t1.sort, t1.type, t1.create_time, t1.update_time, t1.terminal, t1.create_user, t2.username AS create_user_name FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE FIND_IN_SET(t1.id, ?) AND t1.create_user = ?`
   const data = [ids, userId]
   let res: any = await query(sql, data)

@@ -5,10 +5,10 @@
  */
 
 import { Success } from '../../../utils/http-exception'
-import { execTrans } from '../../../db'
+import { execTrans, query } from '../../../db'
 import { Context, Next } from 'koa'
 import _ from 'lodash'
-import { PermissionReturnOptions } from '../permissions/interface'
+import { PermissionReturnOptions, PermissionOptions } from '../permissions/interface'
 import { RoleReturnOptions } from '../roles/interface'
 import { RolePermissionByRoleIdParams, RolePermissionByPermissionIdParams } from './interface'
 import { UserRoleByUserIdParams } from '../users-roles/interface'
@@ -37,7 +37,7 @@ export const doRolePermissionGetAllRoleByPermissionId = async (ctx: Context, nex
 
 // 获取指定用户关联的所有权限
 export const doRolePermissiongetAllPermissionByUserId = async (ctx: Context, next: Next) => {
-  const data = await getAllPermissionByUserId({
+  const data = <PermissionReturnOptions>await getAllPermissionByUserId({
     userId: ctx._params.userId,
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
@@ -100,19 +100,26 @@ export const getAllRoleByPermissionId = async (
 /**
  * 根据 userId 获取所有关联的权限列表，返回数组或[]
  */
-export const getAllPermissionByUserId = async (options: UserRoleByUserIdParams): Promise<PermissionReturnOptions> => {
-  options.pageNo = options.pageNo || 1
-  options.pageSize = options.pageSize || 10
-  const pageNo = (options.pageNo - 1) * options.pageSize
-  const sql1 = `SELECT COUNT(t1.id) AS total FROM roles_permissions t1 WHERE t1.role_id IN (SELECT t2.role_id FROM users_roles t2 WHERE t2.user_id = ?)  GROUP BY t1.permission_id `
-  const sql2 = `SELECT t3.id, t3.code, t3.label, t3.href, t3.sort, t3.create_time, t3.update_time, t3.terminal, t3.remarks FROM roles_permissions t1 LEFT JOIN permissions t3 ON t1.permission_id = t3.id WHERE t1.role_id IN (SELECT t2.role_id FROM users_roles t2 WHERE t2.user_id = ?) GROUP BY t1.permission_id ORDER BY t3.sort, t3.update_time DESC LIMIT ?, ?`
-  const res: any = await execTrans([
-    { sql: sql1, data: [options.userId] },
-    { sql: sql2, data: [options.userId, pageNo, options.pageSize] },
-  ])
-  return {
-    total: res[0].length,
-    data: res[1],
+export const getAllPermissionByUserId = async (options: UserRoleByUserIdParams): Promise<PermissionReturnOptions | PermissionOptions[]> => {
+  if (options.all) {
+    const sql = `SELECT t3.id, t3.code, t3.label, t3.href, t3.sort, t3.create_time, t3.update_time, t3.terminal, t3.remarks FROM roles_permissions t1 LEFT JOIN permissions t3 ON t1.permission_id = t3.id WHERE t1.role_id IN (SELECT t2.role_id FROM users_roles t2 WHERE t2.user_id = ?) GROUP BY t1.permission_id ORDER BY t3.sort, t3.update_time DESC`
+    const data = [options.userId]
+    const res: PermissionOptions[] = <PermissionOptions[]>await query(sql, data)
+    return res
+  } else {
+    options.pageNo = options.pageNo || 1
+    options.pageSize = options.pageSize || 10
+    const pageNo = (options.pageNo - 1) * options.pageSize
+    const sql1 = `SELECT COUNT(t1.id) AS total FROM roles_permissions t1 WHERE t1.role_id IN (SELECT t2.role_id FROM users_roles t2 WHERE t2.user_id = ?)  GROUP BY t1.permission_id `
+    const sql2 = `SELECT t3.id, t3.code, t3.label, t3.href, t3.sort, t3.create_time, t3.update_time, t3.terminal, t3.remarks FROM roles_permissions t1 LEFT JOIN permissions t3 ON t1.permission_id = t3.id WHERE t1.role_id IN (SELECT t2.role_id FROM users_roles t2 WHERE t2.user_id = ?) GROUP BY t1.permission_id ORDER BY t3.sort, t3.update_time DESC LIMIT ?, ?`
+    const res: any = await execTrans([
+      { sql: sql1, data: [options.userId] },
+      { sql: sql2, data: [options.userId, pageNo, options.pageSize] },
+    ])
+    return {
+      total: res[0].length,
+      data: res[1],
+    }
   }
 }
 

@@ -72,7 +72,7 @@ function _handleRequiredParams(params: string[]): ValidatorOptions[] {
       let i: number = item.indexOf('&')
       let key: string
       let rules: any[] = []
-      let params = {}
+      let paramsObj = {}
       let message = ''
       if (i !== -1) {
         key = item.substring(0, i)
@@ -81,11 +81,11 @@ function _handleRequiredParams(params: string[]): ValidatorOptions[] {
           let min = Number(rule)
           rule = 'isLength'
           message = `参数长度必须大于${min}`
-          params = { min }
+          paramsObj = { min }
         }
         if (rule) {
           // @ts-ignore 
-          rules.push(rule, message || MessageParameter[rule] || Message.parameter, params)
+          rules.push(rule, message || MessageParameter[rule] || Message.parameter, paramsObj)
         }
       } else {
         key = item

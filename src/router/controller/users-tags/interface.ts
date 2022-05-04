@@ -22,5 +22,6 @@ export interface UserTagByTagCodeParams {
 export interface UserTagByUserIdParams {
   userId: string
   pageNo?: number
-  pageSize?: number
+  pageSize?: number,
+  all?: boolean
 }

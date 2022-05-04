@@ -7,7 +7,7 @@
 import { Success } from '../../../utils/http-exception'
 import { query } from '../../../db'
 import { Context, Next } from 'koa'
-import { TagOptions, TagListOptions } from './interface'
+import { TagOptions, TagListOptions, TagListReturnOptions } from './interface'
 import { getAllTagByUserId } from '../users-tags/get'
 import _ from 'lodash'
 import { getTree } from '../../../utils/tools'
@@ -20,7 +20,7 @@ export const doTagGetByCode = async (ctx: Context, next: Next) => {
 
 // 获取我的所有标签
 export const doTagGetAllSelf = async (ctx: Context, next: Next) => {
-  const data = await getAllTagByUserId({ userId: ctx._user.id })
+  const data = <TagListReturnOptions>await getAllTagByUserId({ userId: ctx._user.id })
   throw new Success(data)
 }
 

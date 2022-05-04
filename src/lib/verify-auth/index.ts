@@ -11,19 +11,18 @@ import { Context, Next } from 'koa'
 import { analysisToken } from '../../router/controller/users/token'
 import { Code, Message } from '../../enums'
 import { ExceptionHttp, ExceptionAuthFailed } from '../../utils/http-exception'
-import { getSuffix } from '../../utils/tools';
+import { getSuffix, toPath } from '../../utils/tools';
 import { query } from '../../db';
 import { decrypt } from '../../utils/crypto';
 import dayjs from 'dayjs'
 import Logger from '../logger'
-import { getAllPermissionByUserId } from '../../router/controller/roles-permissions/get';
 import { IS_VERIFY_API_PERMISSION, IS_VERIFY_STATIC_PERMISSION } from '../../config'
 
 /**
  * 拦截普通路由请求 token 权限
 */
 export const verifyRoute = async (ctx: Context, next: Next) => {
-  const url = _getFullPath(ctx.request.url)
+  const url = toPath(ctx.request.url)
   if (global._unlessPath.indexOf(url) === -1) {
     const tokenInfo = await analysisToken(ctx)
     if (tokenInfo.code === Code.success) {
@@ -40,29 +39,21 @@ export const verifyRoute = async (ctx: Context, next: Next) => {
   await next()
 }
 
-// 获取请求路径
-function _getFullPath(path: string): string {
-  let index = path.indexOf('?')
-  if (index !== -1)
-    path = path.substring(0, index)
-  return path
-}
-
 /**
  * 校验非公开api的用户请求权限
 */
 async function verifyApiByUser(ctx: Context, next: Next) {
   let flag = false
-  const res: any = await getAllPermissionByUserId({
-    userId: ctx._user.id,
-    pageNo: 1,
-    pageSize: 100000
-  })
-  if (res && Array.isArray(res.data)) {
-    const url = _getFullPath(ctx.request.url)
+  // 获取用户所有权限
+  const sql = `SELECT DISTINCT t2.href FROM roles_permissions t1 LEFT JOIN permissions t2 ON t1.permission_id = t2.id WHERE t1.role_id  IN (SELECT t3.role_id FROM users_roles t3 WHERE t3.user_id = ?)`
+  const res: any = await query(sql, ctx._user.id)
+  if (res && Array.isArray(res)) {
+    const url = toPath(ctx.request.url)
     const url2 = url.substring(url.indexOf('/', 1))
-    res.data.find((item: any) => {
-      if (item.href === url || (url2 && item.href === url2)) {
+    // @ts-ignore 
+    res.find((item: any) => {
+      let itemUrl = toPath(item.href)
+      if (itemUrl === url || (url2 && itemUrl === url2)) {
         flag = true
         return true
       }
@@ -78,10 +69,11 @@ async function verifyApiByUser(ctx: Context, next: Next) {
  * 拦截静态资源访问权限
 */
 export const verifyStatic = async (ctx: Context, next: Next) => {
+  const url: string = ctx.request.url
   if (IS_VERIFY_STATIC_PERMISSION) {
-    const url: string = ctx.request.url
+    // const url: string = ctx.request.url
     if (url.startsWith('/files/') || url.startsWith('/images/') || url.startsWith('/videos/') || url.startsWith('/editors/') || url.startsWith('/sources/')) {
-      let filePath = getSuffix(_getFullPath(url), '/')
+      let filePath = getSuffix(toPath(url), '/')
       const sql: string = `SELECT is_secret, create_user FROM files_info WHERE file_path = ?`
       const res: any = await query(sql, filePath)
       if (res.length && res[0]['is_secret'] === '1') {

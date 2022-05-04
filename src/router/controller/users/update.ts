@@ -22,7 +22,7 @@ export const doUserUpdateBaseSelf = async (ctx: Context, next: Next) => {
 }
 
 /**
- * 修改本用户基本信息
+ * 修改指定用户基本信息
 */
 export const doUserUpdateBase = async (ctx: Context, next: Next) => {
   await updateUserBaseByUserId(ctx, ctx._params.id)

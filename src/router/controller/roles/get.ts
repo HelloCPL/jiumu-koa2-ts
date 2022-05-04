@@ -26,7 +26,7 @@ export const doRoleGetAllSelf = async (ctx: Context, next: Next) => {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
   }
-  const data = await getAllRoleByUserId(params)
+  const data = <RoleReturnOptions>await getAllRoleByUserId(params)
   throw new Success(data)
 }
 

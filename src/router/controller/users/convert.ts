@@ -27,21 +27,6 @@ export const doUserRegisterConvert = async (ctx: Context, next: Next) => {
 }
 
 /**
- * 登录
- * 判断用户是否不存在
-*/
-export async function doUserLoginConvert(ctx: Context, next: Next) {
-  // 判断用户是否不存在
-  await isExist({
-    table: 'users',
-    where: [{ key: 'phone', value: ctx._params.phone }],
-    throwType: false,
-    message: Message.unexistUser
-  })
-  await next()
-}
-
-/**
  * 修改本用户/指定用户基本信息时
  * 如果传了 sex 判断是否为系统标签200范围
 */
