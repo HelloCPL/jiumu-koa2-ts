@@ -28,8 +28,8 @@ export const doCollectionAddConvert = async (ctx: Context, next: Next) => {
   // 判断收藏来源是否在系统资源来源标签500范围
   await validateRange({
     value: ctx._params.type,
-    range: '500',
-    message: 'type参数必须为系统标签500范围'
+    range: ['502', '503', '504', '505', '507'],
+    message: `type参数必须为['502','503','504','505','507']范围`
   })
   await next()
 }

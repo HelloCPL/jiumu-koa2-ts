@@ -16,7 +16,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | targetId | string | 是 | 收藏的目标id |
-| type | string | 是 | 收藏来源类型，使用系统标签资源来源标签500范围 |
+| type | string | 是 | 收藏来源类型，暂时支持['502','503','504','505','507'] |
 
 #### 返回示例
 
@@ -77,6 +77,7 @@
 |:---:|:---:|:---:|:---:|
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
+| type | string | 否 | 收藏来源类型，不传则获取所有类型，暂时支持['502','503','504','505','507'] |
 
 #### 返回字段说明
 
@@ -93,6 +94,7 @@
 | typeLabel | string | 收藏来源类型标签说明 |
 | createTime | string | 创建时间 |
 | terminal | string | 操作终端 |
+| title | string | 收藏目标标题 |
 
 #### 返回示例
 
@@ -109,7 +111,8 @@
       "type": "502",
       "typeLabel": "问答",
       "createTime": "2021-08-17 10:58:05",
-      "terminal": "管理端"
+      "terminal": "管理端",
+      "title": "测试33"
     }
   ],
   "total": 4
@@ -135,6 +138,7 @@
 | userId | string | 是 | 用户id |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
+| type | string | 否 | 收藏来源类型，不传则获取所有类型，暂时支持['502','503','504','505','507'] |
 
 #### 返回字段说明
 
@@ -151,6 +155,7 @@
 | typeLabel | string | 收藏来源类型标签说明 |
 | createTime | string | 创建时间 |
 | terminal | string | 操作终端 |
+| title | string | 收藏目标标题 |
 
 #### 返回示例
 
@@ -167,7 +172,8 @@
       "type": "502",
       "typeLabel": "问答",
       "createTime": "2021-08-17 10:58:05",
-      "terminal": "管理端"
+      "terminal": "管理端",
+      "title": "测试33"
     }
   ],
   "total": 4

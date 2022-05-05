@@ -19,6 +19,7 @@ export interface CollectionParams {
   userId: string,
   pageNo: number,
   pageSize: number,
+  type?: string
 }
 
 // 收藏列表返回
