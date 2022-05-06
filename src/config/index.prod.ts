@@ -10,7 +10,7 @@ import { ConfigOptions } from './interface'
 function createConfig(): ConfigOptions {
   let config: ConfigOptions = {
     ENV: 'prod',  // 生产环境
-    PORT: 3000, // http 服务端口
+    PORT: 7102, // http 服务端口
     HTTPS_PORT: 443, // https 服务端口
 
     DATABASE: { // mysql数据库配置
@@ -35,7 +35,7 @@ function createConfig(): ConfigOptions {
       VALID_TIME: 60 * 60 * 24, // token 有效期24小时
       REFRESH_VALID_TIME: 60 * 60 * 24 * 7, // 刷新 token 有效期7天
     },
-    BASE_URL: 'http://106.55.153.80:3000/', // 默认服务路径
+    BASE_URL: 'http://106.55.153.80/jiumu-koa2-ts-prod/', // 默认服务路径
     STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-static'), // 静态资源路径
     LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-logs'), // 日志记录路径
     CRYPTOJS_KEY: 'thisisacryptojskey63', // crypto-js 加密字符
