@@ -8,14 +8,14 @@ const env = process.argv[2]
 import { ConfigOptions } from './interface'
 
 function createConfig(): ConfigOptions {
-  if (env === 'prod') {
-    const config = require('./index.prod')
+  if (env === 'dev') {
+    const config = require('./index.dev')
     return config.default || config
   } else if (env === 'test') {
     const config = require('./index.test')
     return config.default || config
   } else {
-    const config = require('./index.dev')
+    const config = require('./index.prod')
     return config.default || config
   }
 }

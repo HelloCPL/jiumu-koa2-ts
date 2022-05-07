@@ -8,7 +8,8 @@
     "dev:nodemon": "nodemon dist/app.js dev",
     "dev": "tsc && concurrently npm:dev:*",
     "test": "tsc && node dist/app.js test",
-    "start": "tsc && node dist/app.js prod"
+    "start": "tsc && node dist/app.js prod",
+    "build": "tsc"
   },
   "author": "chen",
   "license": "ISC",
