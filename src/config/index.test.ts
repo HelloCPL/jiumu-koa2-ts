@@ -12,7 +12,7 @@ function createConfig(): ConfigOptions {
   let config: ConfigOptions = {
     ENV: 'test', // 测试环境
     PORT: 7101, // http 服务端口
-    HTTPS_PORT: 443, // https 服务端口
+    PUBLIC_PATH: '/jiumu-koa2-ts-test', // 服务器位置
     DATABASE: { // mysql数据库配置
       NAME: '', // 名称
       USER: '', // 账号
@@ -31,13 +31,13 @@ function createConfig(): ConfigOptions {
       APP_SECRET: '',
     },
     TOKEN: { // token 信息配置
-      SECRET_KEY: 'dev_jiumu', // key
+      SECRET_KEY: 'jiumu_test', // key
       VALID_TIME: 60 * 60 * 24, // token 有效期24小时
       REFRESH_VALID_TIME: 60 * 60 * 24 * 7, // 刷新 token 有效期7天
     },
-    BASE_URL: 'http://106.55.153.80/jiumu-koa2-ts-test/', // 默认服务路径
-    STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-static'), // 静态资源路径
-    LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-logs'), // 日志记录路径
+    BASE_URL: 'http://106.55.153.80/', // 默认服务路径
+    STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-test-static'), // 静态资源路径
+    LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-test-logs'), // 日志记录路径
     CRYPTOJS_KEY: 'thisisacryptojskey63', // crypto-js 加密字符
     CRYPTOJS_IV: 'thisisacryptojsiv63', // crypto-js 加密字符
     MAX_FIELDS_SIZE: 500 * 1024 * 1024, // 静态资源上传最大文件大小 默认500m

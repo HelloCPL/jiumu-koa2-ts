@@ -25,7 +25,7 @@ const CONFIG: ConfigOptions = createConfig()
 export const {
   ENV,
   PORT,
-  HTTPS_PORT,
+  PUBLIC_PATH,
   DATABASE,
   REDIS,
   WX,

@@ -10,7 +10,7 @@
 */
 
 import { Context } from 'koa'
-import { TOKEN, IS_VERIFY_TOKEN_BY_REDIS, IS_ALLOW_MULTIPLE_LOGIN } from '../../../config'
+import { TOKEN, IS_VERIFY_TOKEN_BY_REDIS, IS_ALLOW_MULTIPLE_LOGIN, PUBLIC_PATH } from '../../../config'
 import JWT from 'jsonwebtoken'
 import { Base64 } from 'js-base64'
 import BasicAuth from 'basic-auth'
@@ -111,7 +111,7 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
 // 获取保存 token 的 key 
 export function _getTokenKey(info: TokenSaveParamsOptions): string {
   if (IS_ALLOW_MULTIPLE_LOGIN)
-    return `${info.id}_${info.terminal}_${info['user-agent']}_${info.key}`
+    return `${info.id}_${PUBLIC_PATH}_${info.terminal}_${info['user-agent']}_${info.key}`
   else
-    return `${info.id}_${info.terminal}_${info.key}`
+    return `${info.id}_${PUBLIC_PATH}_${info.terminal}_${info.key}`
 }

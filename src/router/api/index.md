@@ -1,6 +1,18 @@
 
 ## ---------------- 接口请求/返回通用说明  ---------------------
 
+#### 关于请求前缀
+
+- BASE_URL + PUBLIC_PATH + path
+  - BASE_URL 基础地址
+    + 开发环境 `http://localhost:3030/`
+    + 测试环境 `http://106.55.153.80/`
+    + 生产环境 `http://106.55.153.80/`
+  - PUBLIC_PATH 服务器路径
+    + 开发环境 ``
+    + 测试环境 `/jiumu-koa2-ts-test`
+    + 生产环境 `/jiumu-koa2-ts-prod`
+
 #### 关于请求头
 
 - 非公开接口需要添加 `authorization` 请求头

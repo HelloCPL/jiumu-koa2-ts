@@ -33,7 +33,7 @@ interface ConfigTokenOptions {
 export interface ConfigOptions extends ObjectAny {
   ENV: string,
   PORT: number,
-  HTTPS_PORT: number,
+  PUBLIC_PATH: string,
   DATABASE: DatabaseOptions,
   REDIS: RedisOptions,
   WX: WXOptions,
