@@ -35,7 +35,7 @@ export function toPath(...arg: string[]): string {
     if (i !== -1) path = path.substring(0, i)
     if (!path.startsWith('/')) path = '/' + path
     if (path.endsWith('/')) path = path.substring(0, path.length - 1)
-    if (path.startsWith('http:') || path.startsWith('https:')) path = path.substring(1)
+    if (path.startsWith('/http:') || path.startsWith('/https:')) path = path.substring(1)
     return path
   }
   return arg.map((item) => getPath(item)).join('')
