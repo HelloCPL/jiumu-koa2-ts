@@ -15,7 +15,7 @@
  *   getTerminal // 获取路径 terminal
  *   getIP // 获取路径 terminal
  *   getTree // 获取树结构
-*/
+ */
 
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid'
 import _ from 'lodash'
@@ -27,67 +27,61 @@ import { TerminalType } from '../enums'
 /**
  * 返回格式后的路径
  * 如 member/list 或 member/list/ ==> /member/list
-*/
+ */
 export function toPath(...arg: string[]): string {
   let getPath = (path: string) => {
     if (!path) return ''
     let i = path.indexOf('?')
     if (i !== -1) path = path.substring(0, i)
-    if (!path.startsWith('/'))
-      path = '/' + path
-    if (path.endsWith('/'))
-      path = path.substring(0, path.length - 1)
+    if (!path.startsWith('/')) path = '/' + path
+    if (path.endsWith('/')) path = path.substring(0, path.length - 1)
+    if (path.startsWith('http:') || path.startsWith('https:')) path = path.substring(1)
     return path
   }
-  return arg.map(item => getPath(item)).join('')
+  return arg.map((item) => getPath(item)).join('')
 }
 
 /**
  * 确保返回数组集合方法
-*/
+ */
 export function sureIsArray(arr: any): any[] {
   return Array.isArray(arr) ? arr : [arr]
 }
 
 /**
  * 如果是对象或数组将 key 名称转换成 驼峰命名
-*/
+ */
 export function toCamelCase<T>(results: T): T {
   // 处理对象 key
   const _toObjectKey = (obj: ObjectAny) => {
     let newObj: ObjectAny = {}
     for (let key in obj) {
-      if (isObject(obj[key]))
-        newObj[_.camelCase(key)] = _toObjectKey(obj[key])
-      else if (_.isArray(obj[key]))
-        newObj[_.camelCase(key)] = _toArrayKey(obj[key])
-      else
-        newObj[_.camelCase(key)] = obj[key]
+      if (isObject(obj[key])) newObj[_.camelCase(key)] = _toObjectKey(obj[key])
+      else if (_.isArray(obj[key])) newObj[_.camelCase(key)] = _toArrayKey(obj[key])
+      else newObj[_.camelCase(key)] = obj[key]
     }
     return newObj
   }
   // 处理数组 key
   const _toArrayKey = (arr: ObjectAny[]) => {
     for (let i = 0, len = arr.length; i < len; i++) {
-      if (_.isArray(arr[i]))
-        arr[i] = _toArrayKey(<ObjectAny[]>arr[i])
-      else if (isObject(arr[i]))
-        arr[i] = _toObjectKey(arr[i])
+      if (_.isArray(arr[i])) arr[i] = _toArrayKey(<ObjectAny[]>arr[i])
+      else if (isObject(arr[i])) arr[i] = _toObjectKey(arr[i])
     }
     return arr
   }
   if (_.isArray(results))
-    // @ts-ignore 
+    // @ts-ignore
     return _toArrayKey(results)
   else if (isObject(results))
-    // @ts-ignore 
+    // @ts-ignore
     return _toObjectKey(results)
   return results
 }
 
 /**
  * 判断是否为对象，补充 lodash 不能识别数据库查询返回的数据是否为对象的问题
-*/
+ */
 export function isObject(obj: any): boolean {
   return _.isPlainObject(obj) || (typeof obj === 'object' && toString.call(obj) === '[object Object]')
 }
@@ -100,8 +94,7 @@ export function getSuffix(path: string, separator = '.'): string {
   if (i !== -1) {
     suffix = path.substring(i + 1)
     let i2 = suffix.lastIndexOf('?')
-    if (i2 !== -1)
-      suffix = suffix.substring(0, i2)
+    if (i2 !== -1) suffix = suffix.substring(0, i2)
   }
   return suffix
 }
@@ -109,8 +102,45 @@ export function getSuffix(path: string, separator = '.'): string {
 // 根据文件名获取资源存放位置
 export function getStaticPlace(fileName: string) {
   const suffix = getSuffix(fileName)
-  const imagesSuffix = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'tiff', 'dxf', 'cgm', 'cdr', 'eps', 'emf', 'pict', 'raw',]
-  const videoSuffix = ['wmv', 'asf', 'asx', 'rm', 'ram', 'rmvb', 'mpg', 'mpeg', 'mpe', '3gp', 'mov', 'mp4', 'm4v', 'avi', 'dat', 'mkv', 'flv', 'vob', 'qt', 'navi', 'divx']
+  const imagesSuffix = [
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'svg',
+    'bmp',
+    'tiff',
+    'dxf',
+    'cgm',
+    'cdr',
+    'eps',
+    'emf',
+    'pict',
+    'raw',
+  ]
+  const videoSuffix = [
+    'wmv',
+    'asf',
+    'asx',
+    'rm',
+    'ram',
+    'rmvb',
+    'mpg',
+    'mpeg',
+    'mpe',
+    '3gp',
+    'mov',
+    'mp4',
+    'm4v',
+    'avi',
+    'dat',
+    'mkv',
+    'flv',
+    'vob',
+    'qt',
+    'navi',
+    'divx',
+  ]
   if (imagesSuffix.indexOf(suffix) !== -1) {
     return 'images'
   } else if (videoSuffix.indexOf(suffix) !== -1) {
@@ -158,12 +188,11 @@ export const getIP = (ctx: Context) => {
   return ctx.ip || ctx.req.headers['x-forwarded-for'] || ctx.req.socket.remoteAddress
 }
 
-
 // 获取树结构
 interface TreeOption {
-  data: any[],
-  parentCode: any,
-  parentKey?: string,
+  data: any[]
+  parentCode: any
+  parentKey?: string
   key?: string
 }
 export const getTree = (option: TreeOption): any[] => {
@@ -190,7 +219,7 @@ export const getTree = (option: TreeOption): any[] => {
     }
   }
   // 获取第一级
-  originData.forEach(item => {
+  originData.forEach((item) => {
     item.children = []
     if ((!option.parentCode && !item[parentKey]) || option.parentCode === item[parentKey]) {
       trees.push(item)
@@ -198,8 +227,8 @@ export const getTree = (option: TreeOption): any[] => {
   })
   // 递归获取子级
   const findTree = (arr: any[]) => {
-    arr.forEach(list => {
-      originData.forEach(obj => {
+    arr.forEach((list) => {
+      originData.forEach((obj) => {
         if (obj[parentKey] === list[key]) {
           list.children.push(obj)
         }
