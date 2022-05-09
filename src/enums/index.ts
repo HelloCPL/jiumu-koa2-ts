@@ -122,7 +122,7 @@ export enum Terminal {
   'pc' = '管理端',
   'web' = '桌面端',
   'app' = '移动端',
-  'wechat' = '管理端',
+  'wechat' = '小程序',
 }
 
 export type TerminalType = keyof typeof Terminal
