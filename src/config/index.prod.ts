@@ -34,7 +34,7 @@ function createConfig(): ConfigOptions {
       VALID_TIME: 60 * 60 * 24, // token 有效期24小时
       REFRESH_VALID_TIME: 60 * 60 * 24 * 7, // 刷新 token 有效期7天
     },
-    BASE_URL: 'http://106.55.153.80/', // 默认服务路径
+    BASE_URL: 'https://www.jiumublog.cn/', // 默认服务路径
     STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-prod-static'), // 静态资源路径
     LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-prod-logs'), // 日志记录路径
     CRYPTOJS_KEY: 'thisisacryptojskey63', // crypto-js 加密字符
