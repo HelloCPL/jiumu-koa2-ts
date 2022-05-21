@@ -173,7 +173,7 @@ export function formatDate(date: any, format = 'YYYY-MM-DD HH:mm:ss'): string {
 
 // 获取 key
 export const getKey = (key: string): string => {
-  return `${ENV}_jiumu_koa2_ts_${key}`
+  return `jiumu_koa2_ts_${ENV}_${key}`
 }
 
 // 获取路径 terminal
