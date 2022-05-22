@@ -76,7 +76,7 @@ function _getCollectionType(type: string) {
     const ta = `tt${index + 1}`
     let key = 'title'
     if (val === '504') key = 'name'
-    typeSql += ` (SELECT ${ta}.${key} FROM ${t} ${ta} WHERE ${ta}.id = t1.target_id AND t1.type = '${val}') AS title_${t}, `
+    typeSql += ` (SELECT ${ta}.${key} FROM ${t} ${ta} WHERE ${ta}.id = t1.target_id AND t1.type = '${val}'  AND ${ta}.id) AS title_${t}, `
   })
   return {
     typeSql,
