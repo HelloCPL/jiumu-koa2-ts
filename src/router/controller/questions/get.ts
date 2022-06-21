@@ -84,9 +84,11 @@ export const getQuestionList = async (options: QuestionListParams): Promise<Ques
   // 处理排序规则语句
   let orderSql
   if (options.createUser) {
-    orderSql = `${orderParams.orderSql} t1.is_top DESC, t1.sort, like_count DESC, collection_count DESC, t1.update_time DESC`
+    // 指定用户排序
+    orderSql = `${orderParams.orderSql} t1.sort, t1.update_time DESC`
   } else {
-    orderSql = `t1.is_top DESC, like_count DESC, ${orderParams.orderSql}  collection_count DESC, t1.update_time DESC, t1.sort`
+    // 所有排序
+    orderSql = `${orderParams.orderSql} t1.is_top DESC, like_count DESC,   collection_count DESC, t1.update_time DESC`
   }
   const sql1 = `SELECT COUNT(t1.id) AS total FROM questions t1 LEFT JOIN users t4 ON t1.create_user = t4.id ${whereSQL}`
   const data1 = [...whereData]
