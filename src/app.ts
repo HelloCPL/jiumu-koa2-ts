@@ -9,13 +9,14 @@ import Koa from 'koa'
 import Http from 'http'
 import KoaCors from '@koa/cors'
 import KoaBody from 'koa-body'
-import { MAX_FIELDS_SIZE, STATIC_URL, PORT, BASE_URL } from './config'
+import { MAX_FIELDS_SIZE, STATIC_URL, PORT, BASE_URL, PUBLIC_PATH } from './config'
 import InitGlobal from './global'
 import { catchError } from './lib/catch-error'
 import { Route } from './router'
 import Static from 'koa-static'
 import { verifyStatic } from './lib/verify-auth'
 import { initCompress } from './lib/compress'
+import { toPath } from './utils/tools'
 
 const app: Koa = new Koa()
 
@@ -45,5 +46,5 @@ app.use(Static(STATIC_URL))
 initCompress(app)
 
 Http.createServer(app.callback()).listen(PORT, () => {
-  console.log(`${BASE_URL} is running...`);
+  console.log(`${toPath(BASE_URL, PUBLIC_PATH)} is running...`);
 })
