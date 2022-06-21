@@ -21,6 +21,7 @@
 | isDraft | string | 是 | 是否为草稿，1 是 0 否，默认0 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用novelClassify |
 | type | string | 否 | 小说分类，使用系统标签600范围 |
+| sort | mediumint | 否 | 自己列表排序，值越小越前，默认1 |
 | isSecret | string | 否 | 是否为私密小说，1 是 0 否，默认0 |
 | remarks | string | 否 | 备注 |
 
@@ -58,6 +59,7 @@
 | isDraft | string | 否 | 是否为草稿，1 是 0 否，默认0 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用novelClassify |
 | type | string | 否 | 小说分类，使用系统标签600范围 |
+| sort | mediumint | 否 | 自己列表排序，值越小越前，默认1 |
 | isSecret | string | 否 | 是否为私密小说，1 是 0 否，默认0 |
 | remarks | string | 否 | 备注 |
 
@@ -134,6 +136,7 @@
 | author | string | 作者名称 |
 | isSecret | string | 是否为私密小说，1 是 0 否 |
 | isDraft | string | 是否草稿，1 是 0 否 |
+| sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
 | createTime | string | 创建时间 |
@@ -180,6 +183,7 @@
     "isTop": "0",
     "isSecret": "1",
     "isDraft": "0",
+    "sort": 1,
     "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
     "createUserName": "超级管理员",
     "createTime": "2022-02-18 09:45:08",
@@ -228,11 +232,9 @@
 
 - 返回数组或[]
 - 排序规则
-   `搜索相似度(连载名称 作者全等 简介 createUserName全等搜索)降序`
-   `isTop是否置顶`
-   `点赞总数（包括所有章节的点赞总数）降序`
-   `收藏总数（包括所有章节的收藏总数）降序`
-   `updateTime更新时间降序`
+    `搜索相似度(连载名称 作者全等 简介 createUserName全等搜索)降序`
+    `sort升序`
+    `updateTime更新时间降序`
 - `classify` 字段为用户自定义标签列表数组或[]
 
 - 返回数组或[]，具体字段看上一个接口字段说明
@@ -267,6 +269,7 @@
       "isTop": "0",
       "isSecret": "1",
       "isDraft": "0",
+      "sort": 1,
       "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
       "createUserName": "超级管理员",
       "createTime": "2022-02-18 09:45:08",
@@ -315,11 +318,9 @@
 
 - 返回数组或[]
 - 排序规则
-   `搜索相似度(连载名称 作者全等 简介 createUserName全等搜索)降序`
-   `isTop是否置顶`
-   `点赞总数（包括所有章节的点赞总数）降序`
-   `收藏总数（包括所有章节的收藏总数）降序`
-   `updateTime更新时间降序`
+    `搜索相似度(连载名称 作者全等 简介 createUserName全等搜索)降序`
+    `sort升序`
+    `updateTime更新时间降序`
 - `classify` 字段为用户自定义标签列表数组或[]
 
 - 返回数组或[]，具体字段看上一个接口字段说明
@@ -354,6 +355,7 @@
       "isTop": "0",
       "isSecret": "1",
       "isDraft": "0",
+      "sort": 1,
       "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
       "createUserName": "超级管理员",
       "createTime": "2022-02-18 09:45:08",
@@ -402,11 +404,11 @@
 
 - 返回数组或[]
 - 排序规则
-   `isTop是否置顶`
-   `点赞总数（包括所有章节的点赞总数）降序`
-   `搜索相似度(连载名称 作者全等 简介 createUserName全等搜索)降序`
-   `收藏总数（包括所有章节的收藏总数）降序`
-   `updateTime更新时间降序`
+    `搜索相似度(连载名称 作者全等 简介 createUserName全等搜索)降序`
+    `isTop是否置顶`
+    `点赞总数（包括所有章节的点赞总数）降序`
+    `收藏总数（包括所有章节的收藏总数）降序`
+    `updateTime更新时间降序`
 - `classify` 字段为用户自定义标签列表数组或[]
 
 - 返回数组或[]，具体字段看上一个接口字段说明
@@ -441,6 +443,7 @@
       "isTop": "0",
       "isSecret": "1",
       "isDraft": "0",
+      "sort": 1,
       "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
       "createUserName": "超级管理员",
       "createTime": "2022-02-18 09:45:08",

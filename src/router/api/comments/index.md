@@ -8,14 +8,14 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `comment/add`
 
 #### 参数
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| targetId | string | 是 | 要评论的目标id（如果是问答targetId传answer） |
+| targetId | string | 是 | 要评论的目标id<!-- 已废除这个（如果是问答targetId传answer）--> |
 | content | string | 是 | 评论内容 |
 | type | string | 是 | 评论来源，使用系统标签500范围，如果是对评论的回复，type必须为501 |
 
@@ -39,7 +39,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `comment/delete/self`
 
 #### 参数
@@ -64,11 +64,11 @@
 #### 简要描述
 
 - `pc` 端
-- 删除指定某条评论，不管谁的评论均可删除
+- 删除指定某条评论，不管谁的评论均可删除，只有超级管理员角色可操作（且只对PC管理端生效）
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `comment/delete/byid`
 
 #### 参数
@@ -97,11 +97,11 @@
 - 注意：一级评论 `children` 字段不包含二级评论，需要根据 `commentCount` 子级评论总数另外请求获取
 - 一级评论 `replyUser` `replyUserName` 回复字段永远为 `null`，同时二级评论的 `commentCount` `children` 子级字段永远为 `0` 和 `[]`
 - 如果获取的是二级评论列表，`type` 传501，`targetId` 则为该条评论的id
-- 一二级评论作者均可置顶 
+- 一二级评论作者均可置顶
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `comment/get/list`
 
 #### 参数
@@ -117,8 +117,8 @@
 
 - 返回数组或[]
 - 排序规则
-  一级评论列表 `是否置顶、likeCount点赞总数降序、commentCount评论总数降序、createTime评论时间升序` 
-  二级评论 `是否置顶、createTime评论时间升序` 
+  一级评论列表 `是否置顶、likeCount点赞总数降序、commentCount评论总数降序、createTime评论时间升序`
+  二级评论 `是否置顶、createTime评论时间升序`
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
@@ -167,6 +167,7 @@
 }
 ```
 
+<!-- ！！ 已废除，转看question ！！
 ## ---------------- 获取我的问答列表 ---------------------
 
 #### 简要描述
@@ -174,11 +175,11 @@
 - `pc | web | app | wechat` 端
 - 获取我的问答列表
 - 如果获取的是回复列表使用上面评论接口
-- 只有超级管理员可置顶 
+- 只有超级管理员可置顶
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `comment/get/answer/list/self`
 
 #### 参数
@@ -192,7 +193,7 @@
 
 - 返回数组或[]
 - 排序规则
-  `是否置顶、likeCount点赞总数降序、commentCount评论总数降序、createTime评论时间升序` 
+  `是否置顶、likeCount点赞总数降序、commentCount评论总数降序、createTime评论时间升序`
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
@@ -239,9 +240,10 @@
   ],
   "total": 1
 }
-```
+``` -->
 
 
+<!-- ！！ 已废除，转看question ！！
 ## ---------------- 获取所有问答列表 ---------------------
 
 #### 简要描述
@@ -249,11 +251,11 @@
 - `pc | web | app | wechat` 端
 - 获取所有问答列表
 - 如果获取的是回复列表使用上面评论接口
-- 只有超级管理员可置顶 
+- 只有超级管理员可置顶
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `comment/get/answer/list`
 
 #### 参数
@@ -267,7 +269,7 @@
 
 - 返回数组或[]
 - 排序规则
-  `是否置顶、likeCount点赞总数降序、commentCount评论总数降序、createTime评论时间升序` 
+  `是否置顶、likeCount点赞总数降序、commentCount评论总数降序、createTime评论时间升序`
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
@@ -314,4 +316,4 @@
   ],
   "total": 1
 }
-```
+``` -->

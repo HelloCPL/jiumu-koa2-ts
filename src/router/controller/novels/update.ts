@@ -16,7 +16,7 @@ import { getUpdateSetData } from '../../../utils/handle-sql'
 export const doNovelUpdate = async (ctx: Context, next: Next) => {
   ctx._params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
-    valid: ['name', 'introduce', 'classify', 'type', 'author', 'is_draft', 'is_secret', 'update_time', 'remarks'],
+    valid: ['name', 'introduce', 'classify', 'type', 'author', 'is_draft', 'is_secret', 'sort', 'update_time', 'remarks'],
     data: ctx._params
   })
   const sql: string = `UPDATE novels SET ${sqlParams.sql} WHERE id = ?`

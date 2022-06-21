@@ -8,7 +8,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `question/add`
 
 #### 参数
@@ -43,7 +43,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `question/update`
 
 #### 参数
@@ -79,7 +79,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `question/update`
 
 #### 参数
@@ -108,7 +108,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `question/get/one`
 
 #### 参数
@@ -196,7 +196,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `question/get/list/self`
 
 #### 参数
@@ -213,12 +213,9 @@
 
 - 返回数组或[]
 - 排序规则
-   `搜索相似度(createUserName全等搜索 title)降序`
-   `isTop是否置顶`
-   `sort升序`
-   `likeCount点赞总数降序`
-   `collectionCount收藏总数降序`
-   `updateTime更新时间降序`
+    `搜索相似度(createUserName全等搜索 title)降序`
+    `sort升序`
+    `updateTime更新时间降序`
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
@@ -299,7 +296,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `question/get/list/byuserid`
 
 #### 参数
@@ -315,12 +312,9 @@
 
 - 返回数组或[]
 - 排序规则
-   `搜索相似度(createUserName全等搜索 title)降序`
-   `isTop是否置顶`
-   `sort升序`
-   `likeCount点赞总数降序`
-   `collectionCount收藏总数降序`
-   `updateTime更新时间降序`
+    `搜索相似度(createUserName全等搜索 title)降序`
+    `sort升序`
+    `updateTime更新时间降序`
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
@@ -401,7 +395,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `question/get/list`
 
 #### 参数
@@ -416,12 +410,11 @@
 
 - 返回数组或[]
 - 排序规则
-   `isTop是否置顶`
-   `likeCount点赞总数降序`
-   `搜索相似度(createUserName全等搜索 title)降序`
-   `collectionCount收藏总数降序`
-   `updateTime更新时间降序`
-   `sort升序`
+    `搜索相似度(createUserName全等搜索 title)降序`
+    `isTop是否置顶`
+    `likeCount点赞总数降序`
+    `collectionCount收藏总数降序`
+    `updateTime更新时间降序`
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|

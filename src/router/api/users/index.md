@@ -8,7 +8,7 @@
 
 #### 请求
 
-- `post` 
+- `post`
 - `user/register`
 
 #### 参数
@@ -50,7 +50,7 @@
 
 #### 请求
 
-- `post` 
+- `post`
 - `user/login`
 
 #### 参数
@@ -92,7 +92,7 @@
 
 #### 请求
 
-- `post get` 
+- `post get`
 - `user/update/base/self`
 
 #### 参数
@@ -127,7 +127,7 @@
 
 #### 请求
 
-- `post` 
+- `post`
 - `user/update/phone/self`
 
 #### 参数
@@ -168,7 +168,7 @@
 
 #### 请求
 
-- `post` 
+- `post`
 - `user/update/password/self`
 
 #### 参数
@@ -198,7 +198,7 @@
 
 #### 请求
 
-- `post get` 
+- `post get`
 - `user/update/base`
 
 #### 参数
@@ -230,11 +230,12 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取本用户信息，除了用户基本信息，还包含用户拥有的所有角色、权限、菜单(树结构)、特殊标签列表信息
+- 获取本用户信息，只有用户基本信息，
+- 其中用户拥有的所有角色、权限、菜单(树结构)、特殊标签列表信息等需要另外请求
 
 #### 请求
 
-- `post get` 
+- `post get`
 - `user/get/self`
 
 #### 参数
@@ -246,11 +247,19 @@
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
-| userInfo | object/null | 用户基本信息 |
-| roles | array/[] | 用户拥有的所有角色 |
-| permissions | array/[] | 用户拥有的所有权限 |
-| menus | array/[] | 用户拥有的所有菜单 |
-| tags | array/[] | 用户拥有的所有特殊标签 |
+| id | string | 用户id |
+| phone | string | 用户账号（即手机号） |
+| username | string | 用户名称 |
+| sex | string | 性别标签code |
+| sexLabel | string | 性别标签说明 |
+| birthday | string | 生日 |
+| avatar | object/null | 头像文件对象 |
+| professional | string | 职位 |
+| address | string | 地址 |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 
@@ -259,99 +268,32 @@
   "code": 200,
   "message": "操作成功",
   "data": {
-    "userInfo": {
-      "id": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
-      "phone": "15820291405",
-      "username": "陈一支",
-      "sex": "201",
-      "birthday": "2021-08-10 00:00:00",
-      "avatar": {
-        "id": "7d1b48cb-2b82-49de-953a-83b174b0f40d",
-        "filePath": "http://localhost:3030/files/6116b140-f9eb-11eb-957c-5ba7f06be854.png?vt=7woX1Z6i5ndwVhyDTSZ5HQ==&uid=bdSXpWAwve+kayTb5UHBxdbYvCniR19YvOPanH3zpv7HfE7JCa7mW1xwlvtu0RyX",
-        "fileName": "avatar.png",
-        "fileSize": 6210,
-        "suffix": "png",
-        "staticPlace": "files",
-        "createUser": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
-        "isSecret": "1",
-        "checkValidTime": 3,
-        "createTime": "2021-08-10 22:58:10",
-        "terminal": "pc",
-        "remarks": null
-      },
-      "professional": "刺客",
-      "address": "广州",
-      "createTime": "2021-08-09 15:19:54",
-      "updateTime": "2021-08-16 10:53:05",
+    "id": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
+    "phone": "15820291405",
+    "username": "陈一支",
+    "sex": "201",
+    "sexLabel": "男",
+    "birthday": "2021-08-10 00:00:00",
+    "avatar": {
+      "id": "7d1b48cb-2b82-49de-953a-83b174b0f40d",
+      "filePath": "http://localhost:3030/files/6116b140-f9eb-11eb-957c-5ba7f06be854.png?vt=7woX1Z6i5ndwVhyDTSZ5HQ==&uid=bdSXpWAwve+kayTb5UHBxdbYvCniR19YvOPanH3zpv7HfE7JCa7mW1xwlvtu0RyX",
+      "fileName": "avatar.png",
+      "fileSize": 6210,
+      "suffix": "png",
+      "staticPlace": "files",
+      "createUser": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
+      "isSecret": "1",
+      "checkValidTime": 3,
+      "createTime": "2021-08-10 22:58:10",
       "terminal": "pc",
-      "remarks": "负责改项目的设计、实现、测试、发布"
+      "remarks": null
     },
-    "roles": [
-      {
-        "id": "17e64a2d-7813-4700-be4e-dfaa454a5c47",
-        "code": "workers",
-        "label": "工作人员",
-        "sort": 2,
-        "createTime": "2021-08-12 16:05:48",
-        "updateTime": "2021-08-12 16:05:48",
-        "terminal": "管理端",
-        "remarks": null
-      }
-    ],
-    "permissions": [
-      {
-        "id": "6eb4f2e2-0ead-4717-ba3d-b2df2ffe0180",
-        "parentCode": "permission:get",
-        "code": "permission:get:bycode",
-        "label": "获取某个权限",
-        "href": "/permission/get/bycode",
-        "sort": 1,
-        "createTime": "2021-08-12 15:07:40",
-        "updateTime": "2021-08-12 15:07:40",
-        "terminal": "管理端",
-        "remarks": null
-      }
-    ],
-    "menus": [
-      {
-        "id": "d0cf5069-07cc-4d4c-8793-e8853b9a6f56",
-        "parentCode": "",
-        "code": "system",
-        "label": "系统管理",
-        "sort": 1,
-        "createTime": "2021-08-15 01:04:40",
-        "updateTime": "2021-08-15 01:04:40",
-        "terminal": "管理端",
-        "remarks": null,
-        "children": [
-          {
-            "id": "be9dc1de-2046-46c3-8d32-ffe2b3e29558",
-            "parentCode": "system",
-            "code": "system-user",
-            "label": "用户管理",
-            "sort": 1,
-            "createTime": "2021-08-15 01:05:17",
-            "updateTime": "2021-08-15 01:05:17",
-            "terminal": "管理端",
-            "remarks": null,
-            "children": []
-          }
-        ]
-      }
-    ],
-    "tags": [
-      {
-        "id": "2906d294-a11d-4f82-a601-988013e6dd01",
-        "parentCode": "8888",
-        "code": "8001",
-        "label": "大咖",
-        "sort": 1,
-        "createTime": "2021-08-13 15:51:34",
-        "updateTime": "2021-08-13 15:51:34",
-        "terminal": "管理端",
-        "remarks": null
-      },
-    ]
+    "professional": "刺客",
+    "address": "广州",
+    "createTime": "2021-08-09 15:19:54",
+    "updateTime": "2021-08-16 10:53:05",
+    "terminal": "pc",
+    "remarks": "负责改项目的设计、实现、测试、发布"
   },
   "total": 0
 }
@@ -366,7 +308,7 @@
 
 #### 请求
 
-- `post get` 
+- `post get`
 - `user/get/base`
 
 #### 参数
@@ -441,7 +383,7 @@
 
 #### 请求
 
-- `post get` 
+- `post get`
 - `user/get/list`
 
 #### 参数
@@ -524,7 +466,7 @@
 
 #### 请求
 
-- `post get` 
+- `post get`
 - `user/update/token`
 
 #### 参数
@@ -563,7 +505,7 @@
 
 #### 请求
 
-- `post get` 
+- `post get`
 - `user/exit`
 
 #### 参数

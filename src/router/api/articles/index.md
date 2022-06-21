@@ -8,7 +8,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `article/add`
 
 #### 参数
@@ -47,7 +47,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `article/update`
 
 #### 参数
@@ -87,7 +87,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `article/delete`
 
 #### 参数
@@ -116,7 +116,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `article/get/one`
 
 #### 参数
@@ -245,7 +245,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `article/get/list/self`
 
 #### 参数
@@ -263,12 +263,9 @@
 
 - 返回数组或[]
 - 排序规则
-   `搜索相似度(createUserName全等搜索 title)降序`
-   `isTop是否置顶`
-   `sort升序`
-   `likeCount点赞总数降序`
-   `collectionCount收藏总数降序`
-   `updateTime更新时间降序`
+    `搜索相似度(createUserName全等搜索 title)降序`
+    `sort升序`
+    `updateTime更新时间降序`
 - `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
 
 | 参数名 | 类型 | 说明 |
@@ -365,7 +362,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `article/get/list/byuserid`
 
 #### 参数
@@ -382,12 +379,9 @@
 
 - 返回数组或[]
 - 排序规则
-   `搜索相似度(createUserName全等搜索 title)降序`
-   `isTop是否置顶`
-   `sort升序`
-   `likeCount点赞总数降序`
-   `collectionCount收藏总数降序`
-   `updateTime更新时间降序`
+    `搜索相似度(createUserName全等搜索 title)降序`
+    `sort升序`
+    `updateTime更新时间降序`
 - `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
 
 | 参数名 | 类型 | 说明 |
@@ -484,7 +478,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `article/get/list`
 
 #### 参数
@@ -500,12 +494,11 @@
 
 - 返回数组或[]
 - 排序规则
-   `isTop是否置顶`
-   `likeCount点赞总数降序`
-   `搜索相似度(createUserName全等搜索 title)降序`
-   `collectionCount收藏总数降序`
-   `updateTime更新时间降序`
-   `sort升序`
+    `搜索相似度(createUserName全等搜索 title)降序`
+    `isTop是否置顶`
+    `likeCount点赞总数降序`
+    `collectionCount收藏总数降序`
+    `updateTime更新时间降序`
 - `coverImg` 封面图字段为文件对象或null；`attachment` 附件字段为文件列表数组或[]；`classify` 字段为用户自定义标签列表数组或[]
 
 | 参数名 | 类型 | 说明 |

@@ -8,10 +8,11 @@ import { Context, Next } from 'koa'
 import { Message } from '../../../enums'
 import { isExist } from '../convert'
 import { validateRange } from '../../../utils/validator'
-import { ExceptionParameter } from '../../../utils/http-exception'
+import { ExceptionForbidden, ExceptionParameter } from '../../../utils/http-exception'
+import { isSuper } from '../convert';
 
 /**
- * 新增时 
+ * 新增时
  * 判断评论来源是否在系统资源来源标签500范围
  * 如果 type=501 判断 targetId 是否不存在
 */
@@ -36,5 +37,16 @@ export const doCommentAddConvert = async (ctx: Context, next: Next) => {
     if (!flag1 && !flag2)
       throw new ExceptionParameter({ message: Message.unexistComment })
   }
+  await next()
+}
+
+/**
+ * 删除指定某条评论时
+ * 判断是否拥有管理员角色
+*/
+export const doCommentDeleteByIdConvert = async (ctx: Context, next: Next) => {
+  // 判断是否管理员角色
+  const flag = await isSuper(ctx._user.id)
+  if (!flag) throw new ExceptionForbidden()
   await next()
 }
