@@ -24,7 +24,7 @@ export const doTopUpdateConvert = async (ctx: Context, next: Next) => {
     },
   ])
   // 判断是否管理员角色
-  let flag = await isSuper(ctx._user.id)
+  const flag = await isSuper(ctx._user.id)
   if (!flag) throw new ExceptionForbidden()
   await next()
 }

@@ -6,7 +6,7 @@
 
 import { Context, Next } from 'koa'
 import { Prefix, Convert, Request, Required } from '../../router'
-import { doCommentAddConvert } from '../../controller/comments/convert'
+import { doCommentAddConvert, doCommentDeleteByIdConvert } from '../../controller/comments/convert'
 import { doCommentFirstAdd, doCommentSecondAdd } from '../../controller/comments/add'
 import { doCommentDeleteById } from '../../controller/comments/delete'
 import { doCommentFirstGetList, doCommentSecondGetList } from '../../controller/comments/get'
@@ -48,6 +48,7 @@ export default class API {
     terminals: ['pc']
   })
   @Required(['id'])
+  @Convert(doCommentDeleteByIdConvert)
   async doCommentDeleteById(ctx: Context, next: Next) {
     ctx._params.userId = null
     await doCommentDeleteById(ctx, next)
@@ -73,29 +74,29 @@ export default class API {
   }
 
   // 5 获取我的问答列表
-  @Request({
-    path: 'get/answer/list/self',
-    methods: ['get', 'post']
-  })
-  async doCommentGetAnswerListSelf(ctx: Context, next: Next) {
-    // 一级评论列表
-    ctx._params.targetId = 'answer'
-    ctx._params.userId = ctx._user.id
-    ctx._params.type = '502'
-    await doCommentFirstGetList(ctx, next)
-  }
+  // @Request({
+  //   path: 'get/answer/list/self',
+  //   methods: ['get', 'post']
+  // })
+  // async doCommentGetAnswerListSelf(ctx: Context, next: Next) {
+  //   // 一级评论列表
+  //   ctx._params.targetId = 'answer'
+  //   ctx._params.userId = ctx._user.id
+  //   ctx._params.type = '502'
+  //   await doCommentFirstGetList(ctx, next)
+  // }
 
   // 6 获取所有的问答列表
-  @Request({
-    path: 'get/answer/list',
-    methods: ['get', 'post']
-  })
-  async doCommentGetAnswerList(ctx: Context, next: Next) {
-    ctx._params.targetId = 'answer'
-    ctx._params.userId = null
-    ctx._params.type = '502'
-    // 一级评论列表
-    await doCommentFirstGetList(ctx, next)
-  }
+  // @Request({
+  //   path: 'get/answer/list',
+  //   methods: ['get', 'post']
+  // })
+  // async doCommentGetAnswerList(ctx: Context, next: Next) {
+  //   ctx._params.targetId = 'answer'
+  //   ctx._params.userId = null
+  //   ctx._params.type = '502'
+  //   // 一级评论列表
+  //   await doCommentFirstGetList(ctx, next)
+  // }
 
 }
