@@ -13,13 +13,16 @@
 
 #### 参数
 
+- body 传参
+
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| targetIds | string | 是 | 目标id集合，多个目标用逗号隔开且必须为同一来源类型 |
-| type | string | 是 | 笔记分类，暂时支持['502', '503', '504', '505', '507'] |
+| target | array | 是 | 目标对象集合 `[{id, type}]`，其中type暂时支持['502', '503', '504', '505', '507'] |
+<!-- | targetIds | string | 是 | 目标id集合，多个目标用逗号隔开且必须为同一来源类型 | -->
+<!-- | type | string | 是 | 笔记分类，暂时支持['502', '503', '504', '505', '507'] | -->
 | content | string | 是 | 笔记内容 |
 | title | string | 否 | 笔记内容 |
-| classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个 |
+| classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个，分类类型建议用novelClassify |
 | sort | number | 否 | 序号，从小到大，默认1 |
 | isSecret | string | 否 | 是否为私密笔记，1 是 0 否，默认0 |
 | remarks | string | 否 | 备注 |

@@ -64,6 +64,9 @@ export default class API {
   })
   @Required(['targetId&30'])
   async doNovelNoteGetList(ctx: Context, next: Next) {
+    console.log(ctx)
+    console.log(ctx.data)
+    console.log(ctx._params)
     await doNovelNoteGetList(ctx, next)
   }
 }

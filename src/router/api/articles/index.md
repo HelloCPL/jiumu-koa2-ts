@@ -256,6 +256,7 @@
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
 | type | string | 否 | 文章类型，取系统标签300范围 |
+| classify | string | 否 | 自定义文章类型，分类类型建议用articleClassify，单选 |
 | isDraft | string | 否 | 是否草稿，1 是 0 否 |
 | isSecret | string | 否 | 是否为私密文章，1 是 0 否 |
 
@@ -374,6 +375,7 @@
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
 | type | string | 否 | 文章类型，取系统标签300范围 |
+| classify | string | 否 | 自定义文章类型，分类类型建议用articleClassify，单选 |
 
 #### 返回字段说明
 

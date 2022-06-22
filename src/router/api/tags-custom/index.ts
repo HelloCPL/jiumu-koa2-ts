@@ -10,7 +10,7 @@ import { doTagCustomAddConvert, doTagCustomUpdateConvert } from '../../controlle
 import { doTagCustomAdd } from '../../controller/tags-custom/add'
 import { doTagCustomUpdate } from '../../controller/tags-custom/update'
 import { doTagCustomDelete } from '../../controller/tags-custom/delete'
-import { doTagCustomGetIdsSelf, doTagCustomGetListSelf, doTagCustomGetList } from '../../controller/tags-custom/get'
+import { getTagCustomGetIdsSelf, getTagCustomGetListType, getTagCustomGetList } from '../../controller/tags-custom/get'
 
 @Prefix('tag/custom')
 export default class API {
@@ -53,25 +53,68 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['ids'])
-  async doTagCustomGetIdsSelf(ctx: Context, next: Next) {
-    await doTagCustomGetIdsSelf(ctx, next)
+  async getTagCustomGetIdsSelf(ctx: Context, next: Next) {
+    await getTagCustomGetIdsSelf(ctx, next)
   }
 
-  // 5 获取我的自定义标签列表
+  // 5 获取我的自定义标签类型列表
+  @Request({
+    path: 'get/list/type/self',
+    methods: ['get', 'post']
+  })
+  async getTagCustomGetListTypeSelf(ctx: Context, next: Next) {
+    ctx._params.userId = ctx._user.id
+    await getTagCustomGetListType(ctx, next)
+  }
+
+  // 6 获取我的自定义标签列表
   @Request({
     path: 'get/list/self',
     methods: ['get', 'post']
   })
-  async doTagCustomGetListSelf(ctx: Context, next: Next) {
-    await doTagCustomGetListSelf(ctx, next)
+  async getTagCustomGetListSelf(ctx: Context, next: Next) {
+    ctx._params.userId = ctx._user.id
+    await getTagCustomGetList(ctx, next)
   }
 
-  // 6 获取所有自定义标签列表
+  // 7 获取指定用户自定义标签类型列表
+  @Request({
+    path: 'get/list/type/byuserid',
+    methods: ['get', 'post']
+  })
+  @Required(['userId'])
+  async getTagCustomGetListTypeByUserId(ctx: Context, next: Next) {
+    await getTagCustomGetListType(ctx, next)
+  }
+
+  // 8 获取我的自定义标签列表
+  @Request({
+    path: 'get/list/byuserid',
+    methods: ['get', 'post']
+  })
+  @Required(['userId'])
+  async getTagCustomGetListByUserId(ctx: Context, next: Next) {
+    await getTagCustomGetList(ctx, next)
+  }
+
+  // // 9 获取所有用户自定义标签类型列表
+  // @Request({
+  //   path: 'get/list/type',
+  //   methods: ['get', 'post']
+  // })
+  // async getTagCustomGetListType(ctx: Context, next: Next) {
+  //   ctx._params.userId = null
+  //   await getTagCustomGetListType(ctx, next)
+  // }
+
+  // 10 获取所有自定义标签列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post']
   })
-  async doTagCustomGetList(ctx: Context, next: Next) {
-    await doTagCustomGetList(ctx, next)
+  async getTagCustomGetList(ctx: Context, next: Next) {
+    ctx._params.userId = null
+    ctx._params.type = null
+    await getTagCustomGetList(ctx, next)
   }
 }

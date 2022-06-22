@@ -25,6 +25,7 @@ export const doQuestionGetList = async (ctx: Context, next: Next) => {
     pageSize: ctx._params.pageSize * 1 || 10,
     keyword: ctx._params.keyword,
     userId: ctx._user.id,
+    classify: ctx._params.classify,
     createUser: ctx._params.userId,
     isDraft: ctx._params.isDraft,
     isSecret: ctx._params.isSecret
@@ -78,6 +79,10 @@ export const getQuestionList = async (options: QuestionListParams): Promise<Ques
   } else {
     whereSQL = `WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
     whereData.push(options.userId)
+  }
+  if (options.classify) {
+    whereSQL += ` AND t1.classify LIKE ? `
+    whereData.push(`%${options.classify}%`)
   }
   whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql}`
   whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data]

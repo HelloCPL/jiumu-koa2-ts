@@ -28,6 +28,7 @@ export const doSourceGetList = async (ctx: Context, next: Next) => {
     userId: ctx._user.id,
     createUser: ctx._params.userId,
     type: ctx._params.type,
+    classify: ctx._params.classify,
     isSecret: ctx._params.isSecret,
   }
   const data = await getSourceList(params)
@@ -79,6 +80,10 @@ export const getSourceList = async (options: SourceListParams): Promise<SourceLi
   } else {
     whereSQL = `WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
     whereData.push(options.userId)
+  }
+  if (options.classify) {
+    whereSQL += ` AND t1.classify LIKE ? `
+    whereData.push(`%${options.classify}%`)
   }
   whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql}`
   whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data]

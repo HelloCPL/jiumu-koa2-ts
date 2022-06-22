@@ -38,6 +38,7 @@ export interface ArticleListParams {
   keyword?: string,
   createUser?: string,
   type?: string,
+  classify?: string,
   isDraft?:string,
   isSecret?:string
 }
