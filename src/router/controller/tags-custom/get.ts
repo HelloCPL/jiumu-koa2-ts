@@ -13,7 +13,7 @@ import { getSelectWhereData, getSelectWhereAsKeywordData, getOrderByKeyword } fr
 
 // 获取我的指定一个或多个自定义标签
 export const getTagCustomGetIdsSelf = async (ctx: Context, next: Next) => {
-  const data = await doTagCustomByIds(ctx._params.ids, ctx._user.id)
+  const data = await getTagCustomByIds(ctx._params.ids, ctx._user.id)
   throw new Success({ data });
 }
 

@@ -4,12 +4,19 @@
  * @update 2021-08-13 21:45:19
 */
 
+// 笔记目标类型
+export interface NovelNoteTargetOptions {
+  id: string,
+  title?: string,
+  isTarget?: boolean,
+  type: string,
+  typeLabel?: string
+}
+
 // 笔记接口类型
 export interface NovelNoteOptions extends BaseOptions {
   id: string,
-  target_ids?: any,
-  type: string,
-  type_label?: string,
+  target?: any,
   title: string,
   content: string,
   classify?: any,
@@ -20,12 +27,6 @@ export interface NovelNoteOptions extends BaseOptions {
   is_self?: string
 }
 
-// 目标获取参数接口
-export interface TargetIdsParams {
-  ids?: string,
-  type: string,
-  userId: string
-}
 
 // 获取列表参数类型接口
 export interface NovelNoteListParams {

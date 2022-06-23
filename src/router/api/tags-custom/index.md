@@ -9,7 +9,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `tag/custom/add`
 
 #### 参数
@@ -40,7 +40,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `tag/custom/update`
 
 #### 参数
@@ -72,7 +72,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `tag/custom/delete`
 
 #### 参数
@@ -101,7 +101,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `tag/custom/get/byids/self`
 
 #### 参数
@@ -157,7 +157,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `tag/custom/get/list/type/self`
 
 #### 参数
@@ -203,7 +203,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `tag/custom/get/list/self`
 
 #### 参数
@@ -263,7 +263,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `tag/custom/get/list/type/byuserid`
 
 #### 参数
@@ -308,7 +308,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `tag/custom/get/list/byuserid`
 
 #### 参数
@@ -369,7 +369,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `tag/custom/get/list/type`
 
 #### 参数
@@ -411,7 +411,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `tag/custom/get/list`
 
 #### 参数
