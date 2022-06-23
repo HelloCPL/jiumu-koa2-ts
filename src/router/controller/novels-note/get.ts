@@ -15,23 +15,23 @@ import { getSelectWhereAsKeywordData, getOrderByKeyword, getSelectWhereData } fr
 // 可做笔记资源类型 避免重复查询消耗性能，这里暂时写死
 const tList: ObjectAny = {
   '502': {
-    name: 'question',
+    table: 'questions',
     label: '问答来源'
   },
   '503': {
-    name: 'sources',
+    table: 'sources',
     label: '资源文件来源'
   },
   '504': {
-    name: 'novels',
+    table: 'novels',
     label: '连载来源'
   },
   '505': {
-    name: 'articles',
+    table: 'articles',
     label: '博客文章来源'
   },
   '507': {
-    name: 'novels_chapter',
+    table: 'novels_chapter',
     label: '连载章节'
   }
 }
