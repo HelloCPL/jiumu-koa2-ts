@@ -8,7 +8,6 @@
 export interface NovelNoteTargetOptions {
   id: string,
   title?: string,
-  isTarget?: boolean,
   type: string,
   typeLabel?: string
 }

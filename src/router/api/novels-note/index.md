@@ -17,7 +17,7 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| target | array | 是 | 目标对象集合 `[{id, type}]`，其中type暂时支持['502', '503', '504', '505', '507'] |
+| target | array | 是 | 所属目标对象集合 `[{id, type}]`，其中type暂时支持['502', '503', '504', '505', '507'] |
 | content | string | 是 | 笔记内容 |
 | title | string | 否 | 笔记内容 |
 | classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个，分类类型建议用novelClassify |
@@ -54,7 +54,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 笔记id |
-| target | array | 否 | 目标对象集合 `[{id, type}]`，其中type暂时支持['502', '503', '504', '505', '507'] |
+| target | array | 否 | 所属目标对象集合 `[{id, type}]`，其中type暂时支持['502', '503', '504', '505', '507'] |
 | content | string | 否 | 笔记内容 |
 | title | string | 否 | 笔记内容 |
 | classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个 |
@@ -129,9 +129,7 @@
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
 | id | string | 笔记id |
-| targetIds | array/[] | 所属目标集合/[] |
-| type | string | 笔记类型标签code |
-| typeLabel | string | 笔记类型标签说明 |
+| target | array/[] | 所属目标集合 `[{id, title, isTarget, type, typeLabel}]` |
 | title | string | 标题 |
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
