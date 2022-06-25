@@ -9,7 +9,8 @@ export interface NovelNoteTargetOptions {
   id: string,
   title?: string,
   type: string,
-  typeLabel?: string
+  typeLabel?: string,
+  isTarget?: string
 }
 
 // 笔记接口类型
@@ -34,7 +35,8 @@ export interface NovelNoteListParams {
   pageSize: number,
   userId: string, // 当前访问者
   keyword?: string,
-  isSecret?: string
+  isSecret?: string,
+  classify?: string
 }
 
 // 列表获取返回类型

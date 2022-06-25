@@ -51,6 +51,7 @@ export const doNovelNoteGetList = async (ctx: Context, next: Next) => {
     keyword: ctx._params.keyword,
     userId: ctx._user.id,
     isSecret: ctx._params.isSecret,
+    classify: ctx._params.classify
   }
   const data = await getNovelNoteGetList(params)
   throw new Success(data)
@@ -95,28 +96,32 @@ export const getNovelNoteGetList = async (options: NovelNoteListParams): Promise
   } else if (options.isSecret === '0') {
     whereSQL = `WHERE t1.is_secret = 0`
   } else {
-    whereSQL = `WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
+    whereSQL = `WHERE (t1.is_secret = 0 OR t1.create_user = ?)`
     whereData.push(options.userId)
   }
-  whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql} AND t1.target_ids like ?`
+  if (options.classify) {
+    whereSQL += ` AND t1.classify LIKE ? `
+    whereData.push(`%${options.classify}%`)
+  }
+  whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql} AND t1.target like ?`
   whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data, `%${options.targetId}%`]
   // 处理排序规则语句
   const orderSql = `${orderParams.orderSql} t1.sort, t1.update_time DESC`
   const sql1: string = `SELECT COUNT(t1.id) AS total FROM novels_note t1 ${whereSQL}`
   const data1 = [...whereData]
-  const sql2 = `SELECT t1.id, t1.target_ids, t1.type, t2.label AS type_label, t1.title, t1.content, t1.classify, t1.sort, t1.is_secret, t1.create_user, t3.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note t1 LEFT JOIN tags t2 ON t1.type = t2.code LEFT JOIN users t3 ON t1.create_user = t3.id ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, t1.target, ${orderParams.orderValid} t1.classify, t1.sort, t1.is_secret, t1.create_user, t3.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note t1  LEFT JOIN users t3 ON t1.create_user = t3.id ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
   const data2 = [...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 },
   ])
   const novelNoteList: NovelNoteOptions[] = res[1]
-  await _handleNoteChapter(novelNoteList, options.userId)
+  await _handleNoteChapter(novelNoteList, options.userId, options.targetId)
   return { total: res[0][0]['total'], data: novelNoteList }
 }
 
 // 处理小说数据
-async function _handleNoteChapter(datas: NovelNoteOptions | NovelNoteOptions[], userId: string) {
+async function _handleNoteChapter(datas: NovelNoteOptions | NovelNoteOptions[], userId: string, targetId?: string) {
   const _handleList = async (data: NovelNoteOptions) => {
     // 处理是否为自己发布
     if (data.create_user === userId) data.is_self = '1'
@@ -125,7 +130,7 @@ async function _handleNoteChapter(datas: NovelNoteOptions | NovelNoteOptions[], 
     if (data.classify) data.classify = await getTagCustomByIds(data.classify, data.create_user)
     else data.classify = []
     // 处理目标集合
-    data.target = await _handleGetTargetIds(data.target, userId)
+    data.target = await _handleGetTargetIds(data.target, targetId)
   }
   if (_.isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {
@@ -137,12 +142,12 @@ async function _handleNoteChapter(datas: NovelNoteOptions | NovelNoteOptions[], 
 }
 
 // 获取目标信息
-async function _handleGetTargetIds(target: string, userId: string): Promise<NovelNoteTargetOptions[]> {
+async function _handleGetTargetIds(target: string, targetId?: string): Promise<NovelNoteTargetOptions[]> {
   const arr: NovelNoteTargetOptions[] = []
   let _target: NovelNoteTargetOptions[] = []
   try {
     _target = <NovelNoteTargetOptions[]>JSON.parse(target)
-  } catch (e) {}
+  } catch (e) { }
   if (Array.isArray(_target) && _target.length) {
     for (let i = 0, len = _target.length; i < len; i++) {
       const item = _target[i]
@@ -157,11 +162,14 @@ async function _handleGetTargetIds(target: string, userId: string): Promise<Nove
         const sql = `SELECT t1.id, ${valid} FROM ${t.table} t1 WHERE t1.id = ?`
         const res: any = await query(sql, item.id)
         if (res && res.length) {
-          arr.push({
+          const obj = {
             ...item,
             title: res[0].title,
             typeLabel: t.label,
-          })
+          }
+          if (targetId)
+            obj.isTarget = targetId === item.id ? '1' : '0'
+          arr.push(obj)
         }
       }
     }
