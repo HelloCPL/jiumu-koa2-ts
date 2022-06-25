@@ -85,6 +85,7 @@ export default class API {
   })
   async doSourceGetList(ctx: Context, next: Next) {
     ctx._params.userId = null
+    ctx._params.classify = null
     ctx._params.isSecret = '0'
     await doSourceGetList(ctx, next)
   }

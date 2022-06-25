@@ -4,7 +4,7 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 新增笔记
+- 新增笔记，笔记不仅可用于连载笔记，目前支持 `'502', '503', '504', '505', '507'`
 
 #### 请求
 
@@ -13,15 +13,16 @@
 
 #### 参数
 
+- body 传参
+
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| targetIds | string | 是 | 目标id集合，多个目标用逗号隔开且必须为同一来源类型 |
-| type | string | 是 | 笔记分类，暂时支持['502', '503', '504', '505', '507'] |
+| target | array | 是 | 所属目标对象集合 `[{id, type}]`，其中type暂时支持['502', '503', '504', '505', '507'] |
 | content | string | 是 | 笔记内容 |
 | title | string | 否 | 笔记内容 |
-| classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个 |
+| classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个，若为连载/连载章节分类类型建议用novelClassify，其他看情况而定 |
 | sort | number | 否 | 序号，从小到大，默认1 |
-| isSecret | string | 否 | 是否为私密笔记，1 是 0 否，默认0 |
+| isSecret | string | 否 | 是否为私密笔记，1 是 0 否，默认1 |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例
@@ -41,7 +42,7 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 笔记修改
+- 笔记修改，其中若修改target时，target不能置空
 
 #### 请求
 
@@ -53,11 +54,10 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 笔记id |
-| targetIds | string | 否 | 目标id集合，多个目标用逗号隔开且必须为同一来源类型 |
-| type | string | 否 | 笔记分类，暂时支持['502', '503', '504', '505', '507'] |
+| target | array | 否 | 所属目标对象集合 `[{id, type}]`，其中type暂时支持['502', '503', '504', '505', '507'] |
 | content | string | 否 | 笔记内容 |
 | title | string | 否 | 笔记内容 |
-| classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个 |
+| classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个，若为连载/连载章节分类类型建议用novelClassify，其他看情况而定 |
 | sort | number | 否 | 序号，从小到大，默认1 |
 | isSecret | string | 否 | 是否为私密笔记，1 是 0 否，默认1 |
 | remarks | string | 否 | 备注 |
@@ -107,7 +107,9 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取指定的笔记，如果为私密笔记只有本人可获取，原则上笔记只有本人可获取，但考虑后面需求公开的笔记非本人也可获取，因此isSecret默认为1
+- 获取指定的笔记，如果为私密笔记只有本人可获取，原则上笔记只有本人可获取
+- 但考虑后面需求公开的笔记非本人也可获取，因此isSecret默认为1
+- 同时笔记没有点赞、收藏或评论
 
 #### 请求
 
@@ -127,9 +129,7 @@
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
 | id | string | 笔记id |
-| targetIds | array/[] | 所属目标集合/[] |
-| type | string | 笔记类型标签code |
-| typeLabel | string | 笔记类型标签说明 |
+| target | array/[] | 所属目标集合 `[{id, title, isTarget, type, typeLabel}]` |
 | title | string | 标题 |
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
@@ -150,38 +150,38 @@
   "code": 200,
   "message": "操作成功",
   "data": {
-    "id": "5469bbaf-ad90-4c7e-9a4c-67085048c0b0",
-    "targetIds": [
+    "id": "32767960-a653-47c4-839f-cc1983f6723c",
+    "target": [
       {
-        "id": "00055bfe-e51b-433a-ace3-e7c103c1c369",
-        "title": "章节2"
+        "id": "9e232a68-d0db-45bd-8ba7-e29cc1b70921",
+        "type": "504",
+        "title": "连续载体1",
+        "typeLabel": "连载来源"
       }
     ],
-    "type": "507",
-    "typeLabel": "小说章节来源",
-    "title": "标题6",
-    "content": "笔记内容6",
+    "title": "标题2",
+    "content": "这是一段笔记文本",
     "classify": [
       {
-        "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
-        "label": "前端",
+        "id": "d2ce20ca-98e5-4833-afa6-8c636d3f1973",
+        "label": "美术",
         "sort": 1,
-        "type": "classify",
-        "createTime": "2021-08-18 03:10:58",
-        "updateTime": "2021-08-18 03:10:58",
+        "type": null,
+        "createTime": "2021-08-18 03:12:22",
+        "updateTime": "2021-08-18 03:12:22",
         "terminal": "管理端",
         "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
         "createUserName": "超级管理员"
       }
     ],
-    "sort": 5,
-    "isSecret": "0",
+    "sort": 2,
+    "isSecret": "1",
     "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
     "createUserName": "超级管理员",
-    "createTime": "2022-03-20 15:55:53",
-    "updateTime": "2022-03-20 15:55:53",
+    "createTime": "2022-06-23 15:16:51",
+    "updateTime": "2022-06-23 15:16:51",
     "terminal": "管理端",
-    "remarks": "备注",
+    "remarks": null,
     "isSelf": "1"
   },
   "total": 0
@@ -194,7 +194,9 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取指定目标所有的笔记列表，如果为私密笔记只有本人可获取，原则上笔记只有本人可获取，但考虑后面需求公开的笔记非本人也可获取，因此isSecret默认为1
+- 获取指定的笔记，如果为私密笔记只有本人可获取，原则上笔记只有本人可获取
+- 但考虑后面需求公开的笔记非本人也可获取，因此isSecret默认为1
+- 同时笔记没有点赞、收藏或评论
 
 #### 请求
 
@@ -210,7 +212,7 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | isSecret | string | 否 | 是否为私密小说，1 是 0 否 |
-
+| classify | string | 否 | 自定义文章类型，单选，若为连载/连载章节分类类型建议用novelClassify，其他看情况而定 |
 #### 返回字段说明
 
 - 返回数组或[]
@@ -222,9 +224,7 @@
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
 | id | string | 笔记id |
-| targetIds | array/[] | 所属目标集合/[] |
-| type | string | 笔记类型标签code |
-| typeLabel | string | 笔记类型标签说明 |
+| target | array/[] | 所属目标集合 `[{id, title, isTarget, type, typeLabel, isTarget}]` |
 | title | string | 标题 |
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
@@ -246,38 +246,39 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "9ec77290-f936-45c7-a34b-28a8024e58f8",
-      "targetIds": [
+      "id": "5d36d9d0-7a93-43c3-947e-dfd1011b2011",
+      "target": [
         {
-          "id": "00055bfe-e51b-433a-ace3-e7c103c1c369",
-          "title": "章节2.。。"
+          "id": "9e232a68-d0db-45bd-8ba7-e29cc1b70921",
+          "type": "504",
+          "title": "连续载体1",
+          "typeLabel": "连载来源",
+          "isTarget": "1"
         }
       ],
-      "type": "507",
-      "typeLabel": "小说章节来源",
-      "title": "标题5",
-      "content": "笔记内容5",
+      "title": "标题3",
+      "content": "这是一段笔记文本",
       "classify": [
         {
-          "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
-          "label": "前端",
-          "sort": 1,
+          "id": "c7677e7a-7172-4eab-8312-556ed5fb425c",
+          "label": "mysql",
+          "sort": 2,
           "type": "classify",
-          "createTime": "2021-08-18 03:10:58",
-          "updateTime": "2021-08-18 03:10:58",
-          "terminal": "管理端",
+          "createTime": "2022-06-22 20:58:21",
+          "updateTime": "2022-06-22 20:58:21",
+          "terminal": "移动端",
           "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
           "createUserName": "超级管理员"
         }
       ],
-      "sort": 3,
+      "sort": 1,
       "isSecret": "1",
       "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
       "createUserName": "超级管理员",
-      "createTime": "2022-03-20 15:55:30",
-      "updateTime": "2022-03-20 15:55:30",
+      "createTime": "2022-06-23 15:15:06",
+      "updateTime": "2022-06-23 15:15:06",
       "terminal": "管理端",
-      "remarks": "备注",
+      "remarks": null,
       "isSelf": "1"
     }
   ],

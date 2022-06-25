@@ -30,6 +30,7 @@ export interface QuestionListParams {
   pageSize: number,
   userId: string,
   keyword?: string,
+  classify?: string,
   createUser?: string,
   isDraft?:string,
   isSecret?:string

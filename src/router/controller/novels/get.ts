@@ -27,6 +27,7 @@ export const doNovelGetList = async (ctx: Context, next: Next) => {
     userId: ctx._user.id,
     createUser: ctx._params.userId,
     type: ctx._params.type,
+    classify: ctx._params.classify,
     isDraft: ctx._params.isDraft,
     isSecret: ctx._params.isSecret,
   }
@@ -83,6 +84,10 @@ export const getNovelList = async (options: NovelListParams): Promise<NovelListR
   } else {
     whereSQL = `WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
     whereData.push(options.userId)
+  }
+  if (options.classify) {
+    whereSQL += ` AND t1.classify LIKE ? `
+    whereData.push(`%${options.classify}%`)
   }
   whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql}`
   whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data]

@@ -1,5 +1,102 @@
 
-#### 1 users 用户信息表
+#### 1 files_info 文件信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | id |
+| file_path | v255 | 是 | 文件路径，仅指文件名称  |
+| file_name | v64 | 否 | 原始文件名 |
+| file_size | int | 否 | 文件大小，单位B |
+| suffix | v64 | 否 | 文件后缀名 |
+| static_place | v64 | 否 | 文件存放位置，默认files |
+| create_user | v64 | 是 | 创建人id |
+| is_secret | v64 | 否 | 是否为私密文件，默认0 |
+| check_valid_time | mediumint | 是 | 为私密文件时链接有效时间，单位天，默认3天 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
+
+
+#### 2 likes 点赞信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 点赞id |
+| target_id | v64 | 是 | 点赞的目标id |
+| create_user | v64 | 是 | 创建人id |
+| type | v64 | 是 | 点赞来源类型，使用系统标签资源来源标签500范围 |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+
+#### 3 collections 收藏信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 收藏id |
+| target_id | v64 | 是 | 收藏的目标id |
+| create_user | v64 | 是 | 创建人id |
+| type | v64 | 是 | 收藏来源类型，使用系统标签资源来源标签500范围 |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+
+#### 4 comments_first 一级评论信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 一级评论id |
+| target_id | v64 | 是 | 评论的目标id |
+| content | text | 是 | 评论内容 |
+| create_user | v64 | 是 | 创建人id |
+| type | v64 | 是 | 评论来源类型，使用系统标签资源来源标签500范围，用于后面评论统计 |
+| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+
+#### 5 comments_second 二级评论信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 二级评论id |
+| comment_first_target_id | v64 | 是 | 一级评论的目标id，用于统计评论目标的总数 |
+| comment_first_id | v64 | 是 | 一级评论id，用于统计第一级别评论的评论总数 |
+| reply_comment_id | v64 | 是 | 回复的评论id，即回复哪条评论就是哪条的评论id |
+| reply_content | text | 是 | 回复的评论内容 |
+| create_user | v64 | 是 | 创建人id，即回复评论人 |
+| reply_user | v64 | 是 | 被回复的目标人id |
+| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+
+#### 6 login_info 登录记录信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 登录记录id |
+| user_id | v64 | 是 | 登录用户id  |
+| user_agent | v64 | 是 | 登录设备  |
+| ip | v255 | 否 | 访问IP |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+
+#### 7 users 用户信息表
 
 - 说明
 
@@ -19,73 +116,8 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 2 login_info 登录记录信息表
 
-- 说明
-
-| 字段名称 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 登录记录id |
-| user_id | v64 | 是 | 登录用户id  |
-| user_agent | v64 | 是 | 登录设备  |
-| ip | v4 | 否 | 访问IP |
-| create_time | v64 | 是 | 创建时间 |
-| terminal | v64 | 是 | 操作终端 |
-
-#### 3 files_info 文件信息表
-
-- 说明
-
-| 字段名称 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | v64 | 是 | id |
-| file_path | v64 | 是 | 文件路径，仅指文件名称  |
-| file_name | v64 | 否 | 原始文件名 |
-| file_size | int | 否 | 文件大小，单位B |
-| suffix | v64 | 否 | 文件后缀名 |
-| static_place | v64 | 否 | 文件存放位置，默认files |
-| create_user | v64 | 是 | 创建人id |
-| is_secret | v64 | 否 | 是否为私密文件，默认0 |
-| check_valid_time | mediumint | 是 | 为私密文件时链接有效时间，单位天，默认3天 |
-| create_time | v64 | 是 | 创建时间 |
-| update_time | v64 | 是 | 更新时间 |
-| terminal | v64 | 是 | 操作终端 |
-| remarks | v255 | 否 | 备注 |
-
-#### 4 tags 标签信息表
-
-- 说明
-
-| 字段名称 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 标签id |
-| parent_code | v64 | 是 | 父级code，相同标签类型同一个父级，默认 0  |
-| code | v64 | 是 | 标签code，唯一标识 |
-| label | v64 | 是 | 标签描述 |
-| sort | mediumint | 否 | 排序，越小越前 |
-| create_time | v64 | 是 | 创建时间 |
-| update_time | v64 | 是 | 更新时间 |
-| terminal | v64 | 是 | 操作终端 |
-| remarks | v255 | 否 | 备注 |
-
-#### 5 permissions 权限信息表
-
-- 说明
-
-| 字段名称 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 权限id |
-| parent_code | v64 | 是 | 父级code，相同权限类型同一个父级，默认 0  |
-| code | v64 | 是 | 权限code，唯一标识 |
-| label | v64 | 是 | 权限描述 |
-| href | v64 | 否 | 关联接口,*表示后面任意类型，默认# |
-| sort | mediumint | 否 | 排序，越小越前 |
-| create_time | v64 | 是 | 创建时间 |
-| update_time | v64 | 是 | 更新时间 |
-| terminal | v64 | 是 | 操作终端 |
-| remarks | v255 | 否 | 备注 |
-
-#### 6 roles 角色信息表
+#### 8 roles 角色信息表
 
 - 说明
 
@@ -100,43 +132,8 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 7 roles-permissions 角色-权限关联信息表
 
-- 说明
-
-| 字段名称 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 角色-权限关联id |
-| role_id | v64 | 是 | 角色id |
-| permission_id | v64 | 是 | 权限id |
-| create_time | v64 | 是 | 创建时间 |
-| terminal | v64 | 是 | 操作终端 |
-
-#### 8 users-roles 用户-角色关联信息表
-
-- 说明
-
-| 字段名称 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 角色-权限关联id |
-| user_id | v64 | 是 | 用户id |
-| role_id | v64 | 是 | 角色id |
-| create_time | v64 | 是 | 创建时间 |
-| terminal | v64 | 是 | 操作终端 |
-
-#### 9 users-tags 用户-特殊标签关联信息表
-
-- 说明
-
-| 字段名称 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 角色-特殊标签关联id |
-| user_id | v64 | 是 | 用户id |
-| tag_code | v64 | 是 | 特殊标签code |
-| create_time | v64 | 是 | 创建时间 |
-| terminal | v64 | 是 | 操作终端 |
-
-#### 10 menus 菜单信息表
+#### 9 menus 菜单信息表
 
 - 说明
 
@@ -146,81 +143,48 @@
 | parent_code | v64 | 否 | 父级code |
 | code | v64 | 是 | 菜单code，唯一索引 |
 | label | v64 | 是 | 菜单描述 |
+| sort | mediumint | 否 | 排序，越小越前 |
 | create_time | v64 | 是 | 创建时间 |
 | updatetime | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 11 roles-menus 角色-菜单关联信息表
+
+#### 10 permissions 权限信息表
 
 - 说明
 
 | 字段名称 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 角色-菜单关联id |
-| role_id | v64 | 是 | 角色id |
-| menu_id | v64 | 是 | 菜单id |
+| id | v64 | 是 | 权限id |
+| code | v64 | 是 | 权限code，唯一标识 |
+| label | v64 | 是 | 权限描述 |
+| href | v64 | 否 | 关联接口,*表示后面任意类型，默认# |
+| sort | mediumint | 否 | 排序，越小越前 |
 | create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
 
-#### 12 likes 点赞信息表
+
+#### 11 tags 标签信息表
 
 - 说明
 
 | 字段名称 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 点赞id |
-| target_id | v64 | 是 | 点赞的目标id |
-| create_user | v64 | 是 | 创建人id |
-| type | v64 | 是 | 点赞来源类型，使用系统标签资源来源标签500范围 |
+| id | v64 | 是 | 标签id |
+| parent_code | v64 | 否 | 父级code，相同标签类型同一个父级，默认 0  |
+| code | v64 | 是 | 标签code，唯一标识 |
+| label | v64 | 是 | 标签描述 |
+| sort | mediumint | 否 | 排序，越小越前 |
 | create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
 
-#### 13 collections 收藏信息表
 
-- 说明
-
-| 字段名称 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 收藏id |
-| target_id | v64 | 是 | 收藏的目标id |
-| create_user | v64 | 是 | 创建人id |
-| type | v64 | 是 | 收藏来源类型，使用系统标签资源来源标签500范围 |
-| create_time | v64 | 是 | 创建时间 |
-| terminal | v64 | 是 | 操作终端 |
-
-#### 14 comments_first 一级评论信息表
-
-- 说明
-
-| 字段名称 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 一级评论id |
-| target_id | v64 | 是 | 评论的目标id |
-| content | text | 是 | 评论内容 |
-| create_user | v64 | 是 | 创建人id |
-| type | v64 | 是 | 评论来源类型，使用系统标签资源来源标签500范围，用于后面评论统计 |
-| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
-| create_time | v64 | 是 | 创建时间 |
-| terminal | v64 | 是 | 操作终端 |
-
-#### 15 comments_second 二级评论信息表
-
-- 说明
-
-| 字段名称 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 二级评论id |
-| comment_first_target_id | v64 | 是 | 一级评论的目标id，用于统计评论目标的总数 |
-| comment_first_id | v64 | 是 | 一级评论id，用于统计第一级别评论的评论总数 |
-| reply_comment_id | v64 | 是 | 回复的评论id，即回复哪条评论就是哪条的评论id |
-| reply_content | text | 是 | 回复的评论内容 |
-| create_user | v64 | 是 | 创建人id，即回复评论人 |
-| reply_user | v64 | 是 | 被回复的目标人id |
-| create_time | v64 | 是 | 创建时间 |
-| terminal | v64 | 是 | 操作终端 |
-
-#### 16 tags_custom 用户自定义标签信息表
+#### 12 tags_custom 用户自定义标签信息表
 
 - 说明
 
@@ -234,6 +198,59 @@
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
+
+
+#### 13 users-roles 用户-角色关联信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 角色-权限关联id |
+| user_id | v64 | 是 | 用户id |
+| role_id | v64 | 是 | 角色id |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+
+#### 14 users-tags 用户-特殊标签关联信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 角色-特殊标签关联id |
+| user_id | v64 | 是 | 用户id |
+| tag_code | v64 | 是 | 特殊标签code |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+
+#### 15 roles-menus 角色-菜单关联信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 角色-菜单关联id |
+| role_id | v64 | 是 | 角色id |
+| menu_id | v64 | 是 | 菜单id |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+
+#### 16 roles-permissions 角色-权限关联信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 角色-权限关联id |
+| role_id | v64 | 是 | 角色id |
+| permission_id | v64 | 是 | 权限id |
+| create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
 
 #### 17 articles 博客文章信息表
 
@@ -259,7 +276,29 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 18 questions 问答信息表
+
+#### 18 sources 资源信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 资源id |
+| title | 255 | 是 | 标题 |
+| attachment | v255 | 是 | 资源文件id，多个逗号隔开，最多3个 |
+| type | v64 | 是 | 资源类型，取系统标签700 |
+| classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
+| is_secret | v4 | 否 | 是否为私密问答，1 是 0 否，默认0 |
+| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| sort | mediumint | 否 | 排序，越小越前 |
+| create_user | v64 | 是 | 创建用户 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
+
+
+#### 19 questions 问答信息表
 
 - 说明
 
@@ -269,32 +308,75 @@
 | title | 255 | 是 | 标题 |
 | content | text | 是 | 内容 |
 | classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
-| is_draft | v4 | 是 | 是否草稿，1 是 0 否，默认0 |
-| is_secret | v4 | 否 | 是否为私密问答，1 是 0 否，默认0 |
 | is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
 | sort | mediumint | 否 | 排序，越小越前 |
+| is_draft | v4 | 是 | 是否草稿，1 是 0 否，默认0 |
+| is_secret | v4 | 否 | 是否为私密问答，1 是 0 否，默认0 |
 | create_user | v64 | 是 | 创建用户 |
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 19 sources 资源信息表
+
+#### 20 novel 连载信息表
 
 - 说明
 
 | 字段名称 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | v64 | 是 | 资源id |
-| title | 255 | 是 | 标题 |
-| attachment | v255 | 否 | 资源文件id，多个逗号隔开，最多3个 |
+| id | v64 | 是 | 连载id |
+| name | v64 | 是 | 连载名称 |
+| introduce | v255 | 是 | 简介 |
 | classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
-| is_secret | v4 | 否 | 是否为私密问答，1 是 0 否，默认0 |
-| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
 | sort | mediumint | 否 | 排序，越小越前 |
+| type | v64 | 否 | 连载类型，取系统标签600 |
+| author | v64 | 是 | 笔名 |
+| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| is_secret | v4 | 否 | 是否为私密，1 是 0 否，默认0 |
+| is_draft | v4 | 否 | 是否为草稿，1 是 0 否，默认0 |
 | create_user | v64 | 是 | 创建用户 |
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
+
+#### 21 novel_chapter 连载章节信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 章节id |
+| novel_id | v64 | 是 | 所属连载id |
+| title | v64 | 是 | 标题 |
+| content | text | 是 | 内容 |
+| sort | mediumint | 是 | 章节序号，越小越前 |
+| is_secret | v4 | 否 | 是否为私密，1 是 0 否，默认0 |
+| is_draft | v4 | 否 | 是否为草稿，1 是 0 否，默认0 |
+| create_user | v64 | 是 | 创建用户 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
+
+
+#### 22 novel_note 笔记（不止连载）信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | 笔记id |
+| target | v64 | 是 | 目标集合，存字符串 [{"id": "xxx", "type": "xxx"}]，其中type暂时只支持 ['502','503','504','505','507'] |
+| title | v64 | 否 | 标题 |
+| content | text | 是 | 内容 |
+| classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
+| sort | mediumint | 是 | 章节序号，越小越前 |
+| is_secret | v4 | 否 | 是否为私密，1 是 0 否，默认1 |
+| create_user | v64 | 是 | 创建用户 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |

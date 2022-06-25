@@ -10,7 +10,7 @@ import { Context, Next } from 'koa'
 import { NovelChapterOptions, NovelChapterListParams, NovelChapterListReturn } from './interface'
 import _ from 'lodash'
 
-// 获取指定的某个小说
+// 获取指定的某个小说章节
 export const doNovelChapterGetOne = async (ctx: Context, next: Next) => {
   const data = await getNovelChapterGetOne(ctx._params.id, ctx._user.id)
   throw new Success({ data })
@@ -31,11 +31,13 @@ export const doNovelChapterGetList = async (ctx: Context, next: Next) => {
 }
 
 /**
- * 获取指定的某个小说，返回对象或null
+ * 获取指定的某个小说章节，返回对象或null
  */
 export const getNovelChapterGetOne = async (id: string, userId: string): Promise<NovelChapterOptions | null> => {
-  const sql: string = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t1.title, t1.content, t1.sort, t1.is_secret, t1.is_draft, t1.create_user, t3.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id AND t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?)) AND (t1.is_draft = 0 OR (t1.is_draft = 1 AND t1.create_user = ?))`
-  const data = [userId, userId, id, userId, userId]
+  // 获取条件
+  const conditional = `((t1.is_secret = 0 AND t2.is_secret = 0 AND t1.is_draft = 0 AND t2.is_draft = 0) OR t1.create_user = ?)`
+  const sql: string = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t1.title, t1.content, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, t1.create_user, t3.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id AND t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) WHERE t1.id = ? AND ${conditional}`
+  const data = [userId, userId, id, userId]
   let res: any = await query(sql, data)
   res = res[0] || null
   if (res) await _handleNovelChapter(res, userId)
@@ -48,29 +50,29 @@ export const getNovelChapterGetList = async (options: NovelChapterListParams): P
   let whereData: any[] = []
   // 处理isSecret参数
   if (options.isSecret == '1') {
-    whereSQL = `WHERE (t1.is_secret = 1 AND t1.create_user = ?)`
+    whereSQL = ` WHERE ((t1.is_secret = 1 OR t2.is_secret = 1) AND t1.create_user = ?) `
     whereData.push(options.userId)
   } else if (options.isSecret == '0') {
-    whereSQL = `WHERE t1.is_secret = 0`
+    whereSQL = ` WHERE (t1.is_secret = 0 AND t2.is_secret = 0) `
   } else {
-    whereSQL = `WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
+    whereSQL = ` WHERE ((t1.is_secret = 0 AND t2.is_secret = 0) OR t1.create_user = ?) `
     whereData.push(options.userId)
   }
   // 处理isDraft参数
   if (options.isDraft == '1') {
-    whereSQL += `AND (t1.is_draft = 1 AND t1.create_user = ?)`
+    whereSQL += ` AND (t1.is_draft = 1 AND t1.create_user = ?) `
     whereData.push(options.userId)
   } else if (options.isDraft == '0') {
-    whereSQL += `AND t1.is_draft = 0`
+    whereSQL += ` AND t1.is_draft = 0 `
   } else {
-    whereSQL += `AND (t1.is_draft = 0 OR (t1.is_draft = 1 AND t1.create_user = ?))`
+    whereSQL += ` AND (t1.is_draft = 0 OR t1.create_user = ?) `
     whereData.push(options.userId)
   }
-  whereSQL += ` AND t1.novel_id = ? AND (t2.is_secret = 0 OR (t2.is_secret = 1 AND t2.create_user = ?)) AND (t2.is_draft = 0 OR (t2.is_draft = 1 AND t2.create_user = ?)) `
-  whereData.push(options.novelId, options.userId, options.userId)
+  whereSQL += ` AND t1.novel_id = ? AND (t2.is_draft = 0 OR t2.create_user = ?) `
+  whereData.push(options.novelId, options.userId)
   const sql1 = `SELECT COUNT(t1.id) AS total FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id ${whereSQL} `
   const data1 = [...whereData]
-  const sql2 = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t1.title, t1.sort, t1.is_secret, t1.is_draft, t1.create_user, t3.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id AND t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) ${whereSQL} ORDER BY t1.sort LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t1.title, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, t1.create_user, t3.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id AND t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) ${whereSQL} ORDER BY t1.sort LIMIT ?, ?`
   const data2 = [options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
@@ -97,6 +99,11 @@ async function _handleNovelChapter(datas: NovelChapterOptions | NovelChapterOpti
     data.comment_count = data.comment_count1 + data.comment_count2
     delete data.comment_count1
     delete data.comment_count2
+    // 处理是否公开状态
+    if(data.secret1 === '0' && data.secret2 === '0') data.is_secret = '0'
+    else data.is_secret = '1'
+    delete data.secret1
+    delete data.secret2
   }
   if (_.isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {

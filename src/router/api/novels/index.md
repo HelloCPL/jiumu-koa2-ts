@@ -1,10 +1,10 @@
 
-## ---------------- 新增小说 ---------------------
+## ---------------- 新增连载 ---------------------
 
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 新增小说
+- 新增连载
 
 #### 请求
 
@@ -15,14 +15,14 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| name | string | 是 | 小说名称 |
+| name | string | 是 | 连载名称 |
 | introduce | string | 是 | 简介 |
 | author | string | 是 | 作者名称 |
 | isDraft | string | 是 | 是否为草稿，1 是 0 否，默认0 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用novelClassify |
-| type | string | 否 | 小说分类，使用系统标签600范围 |
+| type | string | 否 | 连载分类，使用系统标签600范围 |
 | sort | mediumint | 否 | 自己列表排序，值越小越前，默认1 |
-| isSecret | string | 否 | 是否为私密小说，1 是 0 否，默认0 |
+| isSecret | string | 否 | 是否为私密连载，1 是 0 否，默认0 |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例
@@ -36,12 +36,12 @@
 }
 ```
 
-## ---------------- 编辑小说 ---------------------
+## ---------------- 编辑连载 ---------------------
 
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 编辑小说，仅本人可编辑
+- 编辑连载，仅本人可编辑
 
 #### 请求
 
@@ -52,15 +52,15 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | string | 是 | 小说id |
-| name | string | 否 | 小说名称 |
+| id | string | 是 | 连载id |
+| name | string | 否 | 连载名称 |
 | introduce | string | 否 | 简介 |
 | author | string | 否 | 作者名称 |
 | isDraft | string | 否 | 是否为草稿，1 是 0 否，默认0 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用novelClassify |
-| type | string | 否 | 小说分类，使用系统标签600范围 |
+| type | string | 否 | 连载分类，使用系统标签600范围 |
 | sort | mediumint | 否 | 自己列表排序，值越小越前，默认1 |
-| isSecret | string | 否 | 是否为私密小说，1 是 0 否，默认0 |
+| isSecret | string | 否 | 是否为私密连载，1 是 0 否，默认0 |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例
@@ -74,12 +74,12 @@
 }
 ```
 
-## ---------------- 删除小说 ---------------------
+## ---------------- 删除连载 ---------------------
 
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 删除小说，仅本人且没有小说章节时可删除
+- 删除连载，仅本人且没有连载章节时可删除
 
 #### 请求
 
@@ -90,7 +90,7 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | string | 是 | 小说id |
+| id | string | 是 | 连载id |
 
 #### 返回示例
 
@@ -103,12 +103,12 @@
 }
 ```
 
-## ---------------- 获取指定的小说 ---------------------
+## ---------------- 获取指定的连载 ---------------------
 
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取指定的小说，如果为私密或草稿小说只有本人可获取
+- 获取指定的连载，如果为私密或草稿连载只有本人可获取
 
 #### 请求
 
@@ -119,7 +119,7 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | string | 是 | 小说id |
+| id | string | 是 | 连载id |
 
 #### 返回字段说明
 
@@ -127,14 +127,14 @@
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
-| id | string | 小说id |
-| name | string | 小说名称 |
+| id | string | 连载id |
+| name | string | 连载名称 |
 | introduce | string | 简介 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| type | string | 小说类型标签code |
-| typeLabel | string | 小说类型标签说明 |
+| type | string | 连载类型标签code |
+| typeLabel | string | 连载类型标签说明 |
 | author | string | 作者名称 |
-| isSecret | string | 是否为私密小说，1 是 0 否 |
+| isSecret | string | 是否为私密连载，1 是 0 否 |
 | isDraft | string | 是否草稿，1 是 0 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
@@ -145,13 +145,13 @@
 | remarks | string | 备注 |
 | isLike | string | 是否点赞，1 是 0 否 |
 | likeCount | number | 点赞总数 |
-| chapterLikeCount | number | 该小说下所有章节的点赞总数 |
+| chapterLikeCount | number | 该连载下所有章节的点赞总数 |
 | isCollection | string | 是否收藏，1 是 0 否 |
 | collectionCount | number | 收藏总数 |
-| chapterCollectionCount | number | 该小说下所有章节的收藏总数 |
-| isSelf | string | 是否本人的小说，1 是 0 否 |
+| chapterCollectionCount | number | 该连载下所有章节的收藏总数 |
+| isSelf | string | 是否本人的连载，1 是 0 否 |
 | commentCount | number | 评论总数 |
-| chapterCommentCount | number | 该小说下所有章节的评论总数 |
+| chapterCommentCount | number | 该连载下所有章节的评论总数 |
 | chapterCount | number | 章节总数 非草稿、非私密、或私密且为本人的章节 |
 
 #### 返回示例
@@ -205,12 +205,12 @@
 }
 ```
 
-## ---------------- 获取自己的小说列表 ---------------------
+## ---------------- 获取自己的连载列表 ---------------------
 
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取自己的小说列表
+- 获取自己的连载列表
 
 #### 请求
 
@@ -224,9 +224,10 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
-| type | string | 否 | 小说类型，取系统标签300范围 |
+| type | string | 否 | 连载类型，取系统标签300范围 |
+| classify | string | 否 | 自定义文章类型，分类类型建议用novelClassify，单选 |
 | isDraft | string | 否 | 是否草稿，1 是 0 否 |
-| isSecret | string | 否 | 是否为私密小说，1 是 0 否 |
+| isSecret | string | 否 | 是否为私密连载，1 是 0 否 |
 
 #### 返回字段说明
 
@@ -292,12 +293,12 @@
 }
 ```
 
-## ---------------- 获取指定用户的非草稿且公开小说列表 ---------------------
+## ---------------- 获取指定用户的非草稿且公开连载列表 ---------------------
 
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取指定用户的非草稿且公开小说列表
+- 获取指定用户的非草稿且公开连载列表
 - 只有超级管理员可置顶
 
 #### 请求
@@ -312,7 +313,8 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
-| type | string | 否 | 小说类型，取系统标签300范围 |
+| type | string | 否 | 连载类型，取系统标签300范围 |
+| classify | string | 否 | 自定义文章类型，分类类型建议用novelClassify，单选 |
 
 #### 返回字段说明
 
@@ -378,12 +380,12 @@
 }
 ```
 
-## ---------------- 获取所有用户的非草稿且公开小说列表 ---------------------
+## ---------------- 获取所有用户的非草稿且公开连载列表 ---------------------
 
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取所有用户的非草稿且公开小说列表
+- 获取所有用户的非草稿且公开连载列表
 - 只有超级管理员可置顶
 
 #### 请求
@@ -398,7 +400,7 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
-| type | string | 否 | 小说类型，取系统标签300范围 |
+| type | string | 否 | 连载类型，取系统标签300范围 |
 
 #### 返回字段说明
 

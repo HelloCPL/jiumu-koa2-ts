@@ -30,6 +30,7 @@ export interface SourceListParams {
   userId: string,
   keyword?: string,
   type?: string,
+  classify?: string,
   createUser?: string,
   isSecret?:string
 }

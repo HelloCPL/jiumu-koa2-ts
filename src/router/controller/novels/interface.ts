@@ -37,6 +37,7 @@ export interface NovelListParams {
   keyword?: string,
   createUser?: string, // 指定作者
   type?: string,
+  classify?: string,
   isDraft?: string,
   isSecret?: string
 }

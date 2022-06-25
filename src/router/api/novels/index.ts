@@ -86,6 +86,7 @@ export default class API {
   })
   async doNovelGetList(ctx: Context, next: Next) {
     ctx._params.userId = null
+    ctx._params.classify = null
     ctx._params.isDraft = '0'
     ctx._params.isSecret = '0'
     await doNovelGetList(ctx, next)

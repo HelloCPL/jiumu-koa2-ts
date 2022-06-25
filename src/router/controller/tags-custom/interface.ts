@@ -11,11 +11,17 @@ export interface TagCustomOptions extends BaseOptions {
   sort?: string,
 }
 
+// 自定义标签类型
+export interface TagCustomTypeOptions {
+  type: string,
+  total: number
+}
+
 // 用户自定义标签列表获取参数类型
 export interface TagCustomListParams {
   pageNo: number,
   pageSize: number,
-  userId?: string,
+  createUser?: string,
   type?: string,
   keyword?: string
 }
