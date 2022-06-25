@@ -8,6 +8,7 @@
 export interface CommentOptions extends BaseOptions {
   id: string,
   target_id: string,
+  target_type: string,
   content: string,
   create_user: string,
   create_user_name: string,
@@ -17,13 +18,17 @@ export interface CommentOptions extends BaseOptions {
   is_self?: string,
   reply_user?: string | null,
   reply_user_name?: string | null,
+  is_target_user?: string,
+  comment_first_id?: string,
   children?: CommentOptions[]
 }
 
 // 新增时寻找评论的id返回类型
 export interface CommentFindResult {
+  id: string,
+  comment_first_target_type: string,
   comment_first_target_id: string,
   comment_first_id: string,
-  reply_user: string,
+  reply_user?: string,
   flag: number
 }

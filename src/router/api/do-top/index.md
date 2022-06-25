@@ -8,7 +8,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `top/add`
 
 #### 参数
@@ -39,7 +39,7 @@
 
 #### 请求
 
-- `get | post` 
+- `get | post`
 - `top/delete`
 
 #### 参数
@@ -70,8 +70,8 @@
 
 #### 请求
 
-- `get | post` 
-- `top/add`
+- `get | post`
+- `top/comment/add`
 
 #### 参数
 
@@ -100,8 +100,8 @@
 
 #### 请求
 
-- `get | post` 
-- `top/add`
+- `get | post`
+- `top/comment/delete`
 
 #### 参数
 

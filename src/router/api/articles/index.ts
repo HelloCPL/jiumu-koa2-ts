@@ -87,6 +87,7 @@ export default class API {
   })
   async doArticleGetList(ctx: Context, next: Next) {
     ctx._params.userId = null
+    ctx._params.classify = null
     ctx._params.isDraft = '0'
     ctx._params.isSecret = '0'
     await doArticleGetList(ctx, next)

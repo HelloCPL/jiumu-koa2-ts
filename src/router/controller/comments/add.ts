@@ -34,22 +34,26 @@ export const doCommentSecondAdd = async (ctx: Context, next: Next) => {
 
 // 根据评论id寻找评论信息
 export async function _findCommentById(id: string): Promise<CommentFindResult | void> {
-  const sql1 = `SELECT * FROM comments_first WHERE id = ?`
+  const sql1 = `SELECT id AS comment_first_id, target_id AS comment_first_target_id, create_user AS reply_user, type AS comment_first_target_type  FROM comments_first WHERE id = ?`
   const res1: any = await query(sql1, id)
   if (res1 && res1.length)
     return {
-      comment_first_target_id: res1[0]['target_id'],
-      comment_first_id: res1[0]['id'],
-      reply_user: res1[0]['create_user'],
+      id,
+      comment_first_target_type: res1[0]['comment_first_target_type'],
+      comment_first_target_id: res1[0]['comment_first_target_id'],
+      comment_first_id: res1[0]['comment_first_id'],
+      reply_user: res1[0]['reply_user'],
       flag: 1
     }
-  const sql2 = `SELECT * FROM comments_second WHERE id = ?`
+  const sql2 = `SELECT t1.comment_first_id, t1.comment_first_target_id, t2.type AS comment_first_target_type, t1.create_user AS reply_user  FROM comments_second t1 LEFT JOIN comments_first t2 ON t1.comment_first_id = t2.id WHERE t1.id = ?`
   const res2: any = await query(sql2, id)
   if (res2 && res2.length)
     return {
+      id,
+      comment_first_target_type: res2[0]['comment_first_target_type'],
       comment_first_target_id: res2[0]['comment_first_target_id'],
       comment_first_id: res2[0]['comment_first_id'],
-      reply_user: res2[0]['create_user'],
+      reply_user: res2[0]['reply_user'],
       flag: 2
     }
   throw new ExceptionParameter({ message: Message.unexistComment })

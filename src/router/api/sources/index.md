@@ -222,6 +222,7 @@
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
 | type | string | 否 | 资源类型，取系统标签700范围 |
+| classify | string | 否 | 自定义文章类型，分类类型建议用sourceClassify，单选 |
 | isSecret | string | 否 | 是否为私密资源，1 是 0 否 |
 
 #### 返回字段说明
@@ -339,6 +340,7 @@
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
 | type | string | 否 | 资源类型，取系统标签700范围 |
+| classify | string | 否 | 自定义文章类型，分类类型建议用sourceClassify，单选 |
 
 #### 返回字段说明
 

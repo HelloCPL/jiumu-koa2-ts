@@ -10,7 +10,7 @@ import { doNovelNoteAddConvert, doNovelNoteUpdateConvert, doNovelNoteDeleteConve
 import { doNovelNoteAdd } from '../../controller/novels-note/add'
 import { doNovelNoteUpdate } from '../../controller/novels-note/update'
 import { doNovelNoteDelete } from '../../controller/novels-note/delete'
-import { doNovelNoteGetOne, doNovelNoteGetList } from '../../controller/novels-note/get'
+import { getNovelNoteGetOne, doNovelNoteGetList } from '../../controller/novels-note/get'
 
 @Prefix('novel-note')
 export default class API {
@@ -19,7 +19,7 @@ export default class API {
     path: 'add',
     methods: ['get', 'post'],
   })
-  @Required(['targetIds', 'type', 'content'])
+  @Required(['target', 'content'])
   @Convert(doNovelNoteAddConvert)
   async doNovelNoteAdd(ctx: Context, next: Next) {
     await doNovelNoteAdd(ctx, next)
@@ -53,8 +53,8 @@ export default class API {
     methods: ['get', 'post'],
   })
   @Required(['id'])
-  async doNovelNoteGetOne(ctx: Context, next: Next) {
-    await doNovelNoteGetOne(ctx, next)
+  async getNovelNoteGetOne(ctx: Context, next: Next) {
+    await getNovelNoteGetOne(ctx, next)
   }
 
   // 5 获取指定目标所有的笔记列表
@@ -64,6 +64,9 @@ export default class API {
   })
   @Required(['targetId&30'])
   async doNovelNoteGetList(ctx: Context, next: Next) {
+    console.log(ctx)
+    console.log(ctx.data)
+    console.log(ctx._params)
     await doNovelNoteGetList(ctx, next)
   }
 }

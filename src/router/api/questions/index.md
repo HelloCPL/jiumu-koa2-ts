@@ -208,6 +208,7 @@
 | keyword | string | 否 | 关键字 |
 | isDraft | string | 否 | 是否草稿，1 是 0 否 |
 | isSecret | string | 否 | 是否为私密问答，1 是 0 否 |
+| classify | string | 否 | 自定义文章类型，分类类型建议用questionClassify，单选 |
 
 #### 返回字段说明
 
@@ -307,6 +308,7 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
+| classify | string | 否 | 自定义文章类型，分类类型建议用questionClassify，单选 |
 
 #### 返回字段说明
 

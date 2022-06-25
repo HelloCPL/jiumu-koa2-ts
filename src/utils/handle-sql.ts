@@ -165,7 +165,7 @@ function _findKeys(str: string, ): KeyOptions {
     t = str.substring(0, i2)
     str = str.substring(i2 + 1)
   }
-  let dataKey = str
+  let dataKey = _.camelCase(str)
   let sqlKey = str
   let isEqual = false
   // 判断是否有分号
@@ -180,7 +180,7 @@ function _findKeys(str: string, ): KeyOptions {
     isEqual = true
   }
   return {
-    dataKey: _.camelCase(dataKey),
+    dataKey,
     sqlKey: (t ? t + '.' : '') + _.snakeCase(sqlKey),
     isEqual
   }
