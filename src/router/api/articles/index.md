@@ -524,7 +524,7 @@
 | isLike | string | 是否点赞，1 是 0 否 |
 | likeCount | number | 点赞总数 |
 | isCollection | string | 是否收藏，1 是 0 否 |
-| likeCount | number | 收藏总数 |
+| collectionCount | number | 收藏总数 |
 | isSelf | string | 是否本人的博客文章，1 是 0 否 |
 | commentCount | number | 评论总数 |
 
