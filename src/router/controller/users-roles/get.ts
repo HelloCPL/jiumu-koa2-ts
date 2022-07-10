@@ -39,7 +39,7 @@ export const doUserRoleGetAllUserByRoleId = async (ctx: Context, next: Next) => 
  */
 export const getAllRoleByUserId = async (options: UserRoleByUserIdParams): Promise<RoleReturnOptions | RoleOptions[]> => {
   if (options.all) {
-    const sql = `SELECT t2.id, t2.code, t2.label, t2.sort, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_roles t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t1.user_id = ? ORDER BY t2.sort, t2.update_time DESC`
+    const sql = `SELECT t2.id, t2.code, t2.label, t2.sort, t2.configurable, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_roles t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t1.user_id = ? ORDER BY t2.sort, t2.update_time DESC`
     const data = [options.userId]
     const res: RoleOptions[] = <RoleOptions[]>await query(sql, data)
     return res
@@ -48,7 +48,7 @@ export const getAllRoleByUserId = async (options: UserRoleByUserIdParams): Promi
     options.pageSize = options.pageSize || 10
     const pageNo = (options.pageNo - 1) * options.pageSize
     const sql1 = `SELECT COUNT(t1.id) AS total FROM users_roles t1 WHERE t1.user_id = ?`
-    const sql2 = `SELECT t2.id, t2.code, t2.label, t2.sort, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_roles t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t1.user_id = ? ORDER BY t2.sort, t2.update_time DESC LIMIT ?, ?`
+    const sql2 = `SELECT t2.id, t2.code, t2.label, t2.sort, t2.configurable, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_roles t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t1.user_id = ? ORDER BY t2.sort, t2.update_time DESC LIMIT ?, ?`
     const res: any = await execTrans([
       { sql: sql1, data: [options.userId] },
       { sql: sql2, data: [options.userId, pageNo, options.pageSize] },

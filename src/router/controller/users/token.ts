@@ -19,14 +19,13 @@ import { Message, Code } from '../../../enums'
 import { clientDel, clientSet, clientGet } from '../../../db/redis'
 import dayjs from 'dayjs'
 import { TokenOptions, TokenParamsOptions, TokenSaveParamsOptions } from './interface'
-import { getIP } from '../../../utils/tools';
 import { query } from '../../../db';
 
 /**
  * 生成 token
 */
 export const gernerateToken = async (ctx: Context, info: TokenParamsOptions): Promise<string> => {
-  let uuid = <string>ctx.request.header['user-agent'] + '&&' + getIP(ctx)
+  let uuid = <string>ctx.request.header['user-agent']
   const payload: TokenOptions = {
     id: info.id,
     phone: info.phone,
@@ -75,15 +74,14 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
       if (!tokenRedis || !tokenRedisInfo || tokenVerify.phone !== tokenRedisInfo.phone || tokenVerify.id !== tokenRedisInfo.id)
         return { message: Message.authLogin, code: Code.authLogin }
       // 校验登录设备、请求路径与终端的信息是否一致
-      let uuid = <string>ctx.request.header['user-agent'] + '&&' + getIP(ctx)
+      let uuid = <string>ctx.request.header['user-agent']
       if (ctx._terminal !== tokenVerify.terminal || uuid !== tokenVerify['user-agent'])
         return { message: Message.errorDevice, code: Code.forbidden }
       // 校验是否允许多平台登录
-      if (tokenVerify['user-agent'] !== tokenRedisInfo['user-agent'] || token !== tokenRedis) {
+      if (tokenVerify['user-agent'] !== tokenRedisInfo['user-agent']) {
         if (IS_ALLOW_MULTIPLE_LOGIN)
-          return { message: Message.errorDevice, code: Code.forbidden }
-        else
-          return { message: Message.errorLogin, code: Code.forbidden }
+					return { message: Message.errorDevice, code: Code.forbidden }
+				else return { message: Message.errorLogin, code: Code.forbidden }
       }
     } else if (!tokenVerify.id) {
       return { message: Message.forbidden, code: Code.forbidden }

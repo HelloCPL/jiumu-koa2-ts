@@ -65,7 +65,7 @@ export const getAllPermissionByRoleId = async (
   options.pageSize = options.pageSize || 10
   const pageNo = (options.pageNo - 1) * options.pageSize
   const sql1 = `SELECT COUNT(t1.id) AS total FROM roles_permissions t1 WHERE t1.role_id = ?`
-  const sql2 = `SELECT t2.id, t2.code, t2.label, t2.href, t2.sort, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM roles_permissions t1 LEFT JOIN permissions t2 ON t1.permission_id = t2.id WHERE t1.role_id = ? ORDER BY t2.sort, t2.update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t2.id, t2.code, t2.label, t2.href, t2.sort, t2.configurable, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM roles_permissions t1 LEFT JOIN permissions t2 ON t1.permission_id = t2.id WHERE t1.role_id = ? ORDER BY t2.sort, t2.update_time DESC LIMIT ?, ?`
   const res: any = await execTrans([
     { sql: sql1, data: [options.roleId] },
     { sql: sql2, data: [options.roleId, pageNo, options.pageSize] },
@@ -86,7 +86,7 @@ export const getAllRoleByPermissionId = async (
   options.pageSize = options.pageSize || 10
   const pageNo = (options.pageNo - 1) * options.pageSize
   const sql1 = `SELECT COUNT(t1.id) AS total FROM roles_permissions t1 WHERE t1.permission_id = ?`
-  const sql2 = `SELECT t2.id, t2.code, t2.label, t2.sort, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM roles_permissions t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t1.permission_id = ? ORDER BY t2.sort, t2.update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t2.id, t2.code, t2.label, t2.sort, t2.configurable, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM roles_permissions t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t1.permission_id = ? ORDER BY t2.sort, t2.update_time DESC LIMIT ?, ?`
   const res: any = await execTrans([
     { sql: sql1, data: [options.permissionId] },
     { sql: sql2, data: [options.permissionId, pageNo, options.pageSize] },
@@ -102,7 +102,7 @@ export const getAllRoleByPermissionId = async (
  */
 export const getAllPermissionByUserId = async (options: UserRoleByUserIdParams): Promise<PermissionReturnOptions | PermissionOptions[]> => {
   if (options.all) {
-    const sql = `SELECT t3.id, t3.code, t3.label, t3.href, t3.sort, t3.create_time, t3.update_time, t3.terminal, t3.remarks FROM roles_permissions t1 LEFT JOIN permissions t3 ON t1.permission_id = t3.id WHERE t1.role_id IN (SELECT t2.role_id FROM users_roles t2 WHERE t2.user_id = ?) GROUP BY t1.permission_id ORDER BY t3.sort, t3.update_time DESC`
+    const sql = `SELECT t3.id, t3.code, t3.label, t3.href, t3.sort, t3.configurable, t3.create_time, t3.update_time, t3.terminal, t3.remarks FROM roles_permissions t1 LEFT JOIN permissions t3 ON t1.permission_id = t3.id WHERE t1.role_id IN (SELECT t2.role_id FROM users_roles t2 WHERE t2.user_id = ?) GROUP BY t1.permission_id ORDER BY t3.sort, t3.update_time DESC`
     const data = [options.userId]
     const res: PermissionOptions[] = <PermissionOptions[]>await query(sql, data)
     return res
@@ -111,7 +111,7 @@ export const getAllPermissionByUserId = async (options: UserRoleByUserIdParams):
     options.pageSize = options.pageSize || 10
     const pageNo = (options.pageNo - 1) * options.pageSize
     const sql1 = `SELECT COUNT(t1.id) AS total FROM roles_permissions t1 WHERE t1.role_id IN (SELECT t2.role_id FROM users_roles t2 WHERE t2.user_id = ?)  GROUP BY t1.permission_id `
-    const sql2 = `SELECT t3.id, t3.code, t3.label, t3.href, t3.sort, t3.create_time, t3.update_time, t3.terminal, t3.remarks FROM roles_permissions t1 LEFT JOIN permissions t3 ON t1.permission_id = t3.id WHERE t1.role_id IN (SELECT t2.role_id FROM users_roles t2 WHERE t2.user_id = ?) GROUP BY t1.permission_id ORDER BY t3.sort, t3.update_time DESC LIMIT ?, ?`
+    const sql2 = `SELECT t3.id, t3.code, t3.label, t3.href, t3.sort, t3.configurable, t3.create_time, t3.update_time, t3.terminal, t3.remarks FROM roles_permissions t1 LEFT JOIN permissions t3 ON t1.permission_id = t3.id WHERE t1.role_id IN (SELECT t2.role_id FROM users_roles t2 WHERE t2.user_id = ?) GROUP BY t1.permission_id ORDER BY t3.sort, t3.update_time DESC LIMIT ?, ?`
     const res: any = await execTrans([
       { sql: sql1, data: [options.userId] },
       { sql: sql2, data: [options.userId, pageNo, options.pageSize] },

@@ -92,6 +92,7 @@
 | code | string | 特殊标签code |
 | label | string | 特殊标签描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 -1 不可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -111,6 +112,7 @@
       "code": "8001",
       "label": "大咖",
       "sort": 1,
+      "configurable": '0',
       "createTime": "2021-08-13 15:51:34",
       "updateTime": "2021-08-13 15:51:34",
       "terminal": "管理端",

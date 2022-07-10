@@ -89,6 +89,7 @@
 | label | string | 权限描述 |
 | href | string | 关联权限路径 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -107,6 +108,7 @@
       "label": "获取某类权限",
       "href": "/permission/get/byparentcode",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-08-12 15:08:06",
       "updateTime": "2021-08-12 15:08:06",
       "terminal": "管理端",
@@ -148,6 +150,7 @@
 | code | string | 角色code |
 | label | string | 角色描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -165,6 +168,7 @@
       "code": "workers",
       "label": "工作人员",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-08-12 16:05:48",
       "updateTime": "2021-08-12 16:05:48",
       "terminal": "管理端",
@@ -205,6 +209,7 @@
 | label | string | 权限描述 |
 | href | string | 关联权限路径 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -223,6 +228,7 @@
       "label": "获取某类权限",
       "href": "/permission/get/byparentcode",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-08-12 15:08:06",
       "updateTime": "2021-08-12 15:08:06",
       "terminal": "管理端",

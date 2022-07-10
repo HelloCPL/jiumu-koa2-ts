@@ -17,7 +17,7 @@
 |:---:|:---:|:---:|:---:|
 | code | string | 是 | 菜单code，不能重复 |
 | label | string | 是 | 菜单说明 |
-| parent_code | string | 否 | 父级菜单code |
+| parentCode | string | 否 | 父级菜单code |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 
@@ -51,7 +51,7 @@
 | id | string | 是 | 菜单id |
 | code | string | 否 | 菜单code，不能重复 |
 | label | string | 否 | 菜单说明 |
-| parent_code | string | 否 | 父级菜单code |
+| parentCode | string | 否 | 父级菜单code |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 
@@ -127,6 +127,7 @@
 | code | string | 菜单code |
 | label | string | 菜单描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -145,6 +146,7 @@
     "code": "system-user",
     "label": "用户管理",
     "sort": 1,
+    "configurable": "0",
     "createTime": "2021-08-15 01:05:17",
     "updateTime": "2021-08-15 01:05:17",
     "terminal": "管理端",
@@ -167,7 +169,10 @@
 - `menu/get/all/self`
 
 #### 参数
-无
+| 参数名 | 类型 | 是否必填 | 说明 |
+| pageNo | number | 否 | 页码，默认 1 |
+| pageSize | number | 否 | 每页页数，默认 10 |
+| isTree | string | 否 | 返回菜单是否为树结构，默认 0 ，注意：isTree 为 1 时分页参数无效|
 
 #### 返回字段说明
 
@@ -181,6 +186,7 @@
 | code | string | 菜单code |
 | label | string | 菜单描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -201,6 +207,7 @@
       "code": "system-tag",
       "label": "标签管理",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-08-15 01:06:15",
       "updateTime": "2021-08-15 01:06:15",
       "terminal": "管理端",
@@ -246,6 +253,7 @@
 | code | string | 菜单code |
 | label | string | 菜单描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -266,6 +274,7 @@
       "code": "system-tag",
       "label": "标签管理",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-08-15 01:06:15",
       "updateTime": "2021-08-15 01:06:15",
       "terminal": "管理端",
