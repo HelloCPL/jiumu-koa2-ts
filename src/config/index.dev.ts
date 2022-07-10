@@ -38,8 +38,8 @@ function createConfig(): ConfigOptions {
     BASE_URL: 'http://localhost:3030/', // 默认服务路径
     STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-static'), // 静态资源路径
     LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-logs'), // 日志记录路径
-    CRYPTOJS_KEY: 'thisisacryptojskey63', // crypto-js 加密字符
-    CRYPTOJS_IV: 'thisisacryptojsiv63', // crypto-js 加密字符
+    CRYPTOJS_KEY: '', // crypto-js 加密字符
+    CRYPTOJS_IV: '', // crypto-js 加密字符
     MAX_FIELDS_SIZE: 500 * 1024 * 1024, // 静态资源上传最大文件大小 默认500m
     FILE_VAILD_TIME: 3 * 24 * 60 * 60 * 1000, // 非公开静态资源链接有效期
     IS_VERIFY_TOKEN_BY_REDIS: true, // 是否使用redis在线校验token信息 为false时将不校验IS_ALLOW_MULTIPLE_LOGIN条件
@@ -56,6 +56,8 @@ function createConfig(): ConfigOptions {
     config.DATABASE = secretConfig.DATABASE
     config.REDIS = secretConfig.REDIS
     config.WX = secretConfig.WX
+    config.CRYPTOJS_KEY = secretConfig.CRYPTOJS_KEY
+    config.CRYPTOJS_IV = secretConfig.CRYPTOJS_IV
   } catch (e) { }
 
   return config

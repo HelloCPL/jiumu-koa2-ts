@@ -42,7 +42,7 @@
 #### 请求
 
 - `get | post`
-- `tag/add`
+- `tag/update`
 
 #### 参数
 
@@ -126,6 +126,7 @@
 | code | string | 标签code |
 | label | string | 标签描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 -1 不可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -143,6 +144,7 @@
     "parentLabel": "特殊标签",
     "label": "大咖",
     "sort": 1,
+    "configurable": "0",
     "createTime": "2021-08-13 15:51:34",
     "updateTime": "2021-08-13 15:51:34",
     "terminal": "管理端",
@@ -179,6 +181,7 @@
 | code | string | 标签code |
 | label | string | 标签描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 -1 不可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -198,6 +201,7 @@
       "code": "8003",
       "label": "名人",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-08-13 15:51:19",
       "updateTime": "2021-08-13 15:51:19",
       "terminal": "管理端",
@@ -240,6 +244,7 @@
 | code | string | 标签code |
 | label | string | 标签描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 -1 不可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -260,6 +265,7 @@
       "code": "201",
       "label": "男",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-08-11 16:30:46",
       "updateTime": "2021-08-11 16:40:12",
       "terminal": "管理端",
@@ -273,6 +279,7 @@
       "code": "202",
       "label": "女",
       "sort": 2,
+      "configurable": "0",
       "createTime": "2021-08-11 16:30:54",
       "updateTime": "2021-08-11 16:41:07",
       "terminal": "管理端",

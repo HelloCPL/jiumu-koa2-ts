@@ -99,7 +99,7 @@ export const getMenuList = async (params: RoleParamsOptions): Promise<RoleReturn
     data2.push(params.menuId)
   }
   data2.push(...data1, pageNo, params.pageSize)
-  const sql2 = `SELECT t1.id, t1.code, ${orderParams.orderValid} t1.sort, t1.create_time, t1.update_time, ${sqlUserId} ${sqlPermissionId} ${sqlMenuId} t1.terminal, t1.remarks FROM roles t1 ${sqlUserIdLeft} ${sqlPermissionIdLeft} ${sqlParams.sql} ${sqlMenuIdLeft} ORDER BY ${orderParams.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, t1.code, ${orderParams.orderValid} t1.sort, t1.configurable, t1.create_time, t1.update_time, ${sqlUserId} ${sqlPermissionId} ${sqlMenuId} t1.terminal, t1.remarks FROM roles t1 ${sqlUserIdLeft} ${sqlPermissionIdLeft} ${sqlParams.sql} ${sqlMenuIdLeft} ORDER BY ${orderParams.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 },
