@@ -73,7 +73,6 @@ export const getTagByParentCode = async (
 		}
 		const sql = `SELECT t1.id, t1.parent_code, t2.label as parent_label, t1.code, t1.label, t1.sort, t1.configurable, t1.create_time, t1.update_time, ${sqlStr} t1.terminal, t1.remarks  FROM tags t1 LEFT JOIN tags t2 ON t1.parent_code = t2.code ${sqlLeft}`
 		const res: TagOptions[] = <TagOptions[]>await query(sql, data)
-		console.log(111, res);
 		// 若与指定用户关联
 		if (userId) {
 			res.forEach((item) => {
