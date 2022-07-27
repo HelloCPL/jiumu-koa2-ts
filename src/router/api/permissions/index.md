@@ -77,7 +77,7 @@
 #### 请求
 
 - `get | post` 
-- `tag/delete`
+- `permission/delete`
 
 #### 参数
 

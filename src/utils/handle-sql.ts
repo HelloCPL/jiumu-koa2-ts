@@ -73,7 +73,7 @@ export const getSelectWhereAsKeywordData = (options: paramsOptions): SQLParamsOp
   let sql: string = ''
   let data: any[] = []
   const { connector = 'OR', prefix } = options
-  const keyword = options.data.keyword
+  const keyword = options.data.keyword.replace(/\s/g, '')
   // keyword为真或0或false
   const flag = keyword || keyword === 0 || keyword === false
   if (flag) {
@@ -126,7 +126,7 @@ export const getOrderByKeyword = (options: OrderParamsOptions): OrderReturnOptio
   let orderValid = ''
   let orderSql = ''
   const { prefix, suffix = ',', color = '#f56c6c' } = options
-  const keyword = options.data.keyword
+  const keyword = options.data.keyword.replace(/\s/g, '')
   const flag = keyword || keyword === 0
   options.valid.forEach((key) => {
     const { sqlKey, dataKey } = _findKeys(key)

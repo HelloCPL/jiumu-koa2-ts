@@ -90,7 +90,6 @@ export async function doPermissionUpdateConvert(ctx: Context, next: Next) {
  * 删除时 
  * 先判断权限是否不存在
  * 判断是否拥有修改权限
- * 再判断是否有子级
  * 再判断是否有 roles-permissions 角色-权限关联
 */
 export async function doPermissionDeleteConvert(ctx: Context, next: Next) {
@@ -105,18 +104,13 @@ export async function doPermissionDeleteConvert(ctx: Context, next: Next) {
 		const isS = await isSuper(ctx._user.id)
 		if (!isS) throw new ExceptionForbidden()
 	}
-	// 再判断是否有子级
-	await isExistHasChildren({
-		table: 'permissions',
-		where: { key: 'id', value: ctx._params.id },
-		throwType: true,
-		message: Message.relevantHasChildren
-	})
 	// 再判断是否有 roles-permissions 角色-权限关联
+  console.log(111);
 	await isExist({
 		table: 'roles_permissions',
 		where: [{ key: 'permission_id', value: ctx._params.id }],
 		throwType: true,
 		message: Message.relevantRolePermission
-	})
+  })
+  await next()
 }
