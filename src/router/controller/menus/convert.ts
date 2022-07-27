@@ -78,7 +78,7 @@ export async function doMenuUpdateConvert(ctx: Context, next: Next) {
 		})
 	}
 	// 若 parentCode 为真，判断 parentCode 是否不存在
-	if (ctx._params.hasOwnProperty('parentCode')) {
+	if (ctx._params.parentCode) {
 		await isExist({
 			table: 'menus',
 			where: [{ key: 'code', value: ctx._params.parentCode }],

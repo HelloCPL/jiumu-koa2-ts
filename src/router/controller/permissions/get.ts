@@ -77,7 +77,7 @@ export const getPermissionList = async (params: PermissionParmsOptions): Promise
     data2.push(params.userId)
   }
   data2.push(...data1, pageNo, params.pageSize)
-  const sql2 = `SELECT DISTINCT t1.id, t1.code, ${orderParams.orderValid} t1.href, t1.sort, t1.configurable, t1.create_time, t1.update_time, ${sqlRoleId} ${sqlUserId} t1.terminal, t1.remarks FROM permissions t1 ${sqlRoleIdLeft} ${sqlUserIdLeft} ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, t1.code, ${orderParams.orderValid} t1.href, t1.sort, t1.configurable, t1.create_time, t1.update_time, ${sqlRoleId} ${sqlUserId} t1.terminal, t1.remarks FROM permissions t1 ${sqlRoleIdLeft} ${sqlUserIdLeft} ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
   const res: any = await execTrans([{ sql: sql1, data: data1 }, { sql: sql2, data: data2 }])
   // 若与指定角色关联
   if (params.roleId) {

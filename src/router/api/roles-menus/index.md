@@ -203,7 +203,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | userId | string | 是 | 用户id |
-| isTree | string | 否 | 返回菜单是否为树结构，默认 false ，注意：isTree 为 true 时分页参数无效|
+| isTree | string | 否 | '1' 返回菜单为树结构，'0' 非树级 默认 '0' ，注意：isTree 为 '1' 时分页参数无效|
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 
