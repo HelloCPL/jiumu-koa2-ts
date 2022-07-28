@@ -53,6 +53,7 @@ export interface UserListParams {
   pageNo: number,
   pageSize: number,
   keyword?: string
+  simple?: string
 }
 
 // 获取用户列表返回类型

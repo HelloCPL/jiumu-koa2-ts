@@ -29,6 +29,7 @@ export const doUserGetList = async (ctx: Context, next: Next) => {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
     keyword: ctx._params.keyword,
+    simple: ctx._params.simple,
   }
   const data = await getUserList(params)
   throw new Success(data)
@@ -65,16 +66,24 @@ export const getUserList = async (options: UserListParams): Promise<UserListRetu
   })
   const sql1 = `SELECT COUNT(t1.id) AS total FROM users t1 ${sqlParams.sql}`
   const data1 = [...sqlParams.data]
-  const sql2: string = `SELECT t1.id, ${orderParams.orderValid} t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.update_time DESC LIMIT ?, ?`
-  const data2 = [...sqlParams.data, pageNo, options.pageSize]
+  let sql2: string
+  let data2: any[]
+  if (options.simple === '1') {
+    sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.update_time DESC LIMIT ?, ?`
+    data2 = [...sqlParams.data, pageNo, options.pageSize]
+  } else {
+    sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.update_time DESC LIMIT ?, ?`
+    data2 = [...sqlParams.data, pageNo, options.pageSize]
+  }
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 },
   ])
   const targetData: UserOptions[] = <UserOptions[]>res[1]
-  for (let i = 0, len = targetData.length; i < len; i++) {
-    targetData[i]['avatar'] = await getFileById(targetData[i]['avatar'], targetData[i]['id'])
-  }
+  if (options.simple !== '1')
+    for (let i = 0, len = targetData.length; i < len; i++) {
+      targetData[i]['avatar'] = await getFileById(targetData[i]['avatar'], targetData[i]['id'])
+    }
   return {
     total: res[0][0]['total'],
     data: targetData,
