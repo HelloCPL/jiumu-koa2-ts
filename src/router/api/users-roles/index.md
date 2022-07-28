@@ -91,6 +91,7 @@
 | code | string | 角色code |
 | label | string | 角色描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -108,6 +109,7 @@
       "code": "super",
       "label": "超级管理员",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-08-12 16:00:37",
       "updateTime": "2021-08-12 16:00:37",
       "terminal": "管理端",

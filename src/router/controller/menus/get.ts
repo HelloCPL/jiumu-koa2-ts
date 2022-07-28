@@ -28,7 +28,7 @@ export const doMenuGetByParentCode = async (ctx: Context, next: Next) => {
  * 获取指定的某个菜单，返回对象或null
 */
 export const getMenuOne = async (id: string): Promise<MenuOptions | null> => {
-  const sql: string = `SELECT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.code = ? OR t1.id = ?`
+  const sql: string = `SELECT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.configurable, t1.label, t1.sort, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.code = ? OR t1.id = ?`
   const data = [id, id]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -62,7 +62,7 @@ export const getMenuByParentCode = async (parentCode: string, userId?: string, r
       sqlUserIdLeft = 'LEFT JOIN roles_menus t4 ON (t4.menu_id = t1.id AND t4.role_id IN (SELECT t5.role_id FROM users_roles t5 WHERE t5.user_id = ?))'
       data.push(userId)
     }
-    const sql = `SELECT DISTINCT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, t1.sort, t1.create_time, t1.update_time, ${sqlRoleId} ${sqlUserId} t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code ${sqlRoleIdLeft} ${sqlUserIdLeft}`
+    const sql = `SELECT DISTINCT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, t1.sort, t1.configurable, t1.create_time, t1.update_time, t1.terminal, ${sqlRoleId} ${sqlUserId} t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code ${sqlRoleIdLeft} ${sqlUserIdLeft}`
     const res: MenuOptions[] = <MenuOptions[]>await query(sql, data)
     // 若与指定角色关联
     if (roleId) {

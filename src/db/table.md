@@ -127,6 +127,7 @@
 | code | v64 | 是 | 角色code，唯一标识 |
 | label | v64 | 是 | 权限描述 |
 | sort | mediumint | 否 | 排序，越小越前 |
+| configurable | v4 | 否 | 是否可修改 0 可修改 1 超级管理员可修改 默认 0 |
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
@@ -144,6 +145,7 @@
 | code | v64 | 是 | 菜单code，唯一索引 |
 | label | v64 | 是 | 菜单描述 |
 | sort | mediumint | 否 | 排序，越小越前 |
+| configurable | v4 | 否 | 是否可修改 0 可修改 1 超级管理员可修改 默认 0 |
 | create_time | v64 | 是 | 创建时间 |
 | updatetime | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |
@@ -161,6 +163,7 @@
 | label | v64 | 是 | 权限描述 |
 | href | v64 | 否 | 关联接口,*表示后面任意类型，默认# |
 | sort | mediumint | 否 | 排序，越小越前 |
+| configurable | v4 | 否 | 是否可修改 0 可修改 1 超级管理员可修改 默认 0 |
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
@@ -178,6 +181,7 @@
 | code | v64 | 是 | 标签code，唯一标识 |
 | label | v64 | 是 | 标签描述 |
 | sort | mediumint | 否 | 排序，越小越前 |
+| configurable | v4 | 否 | 是否可修改 0 可修改 1 超级管理员可修改 -1 不可修改 默认 0 |
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |

@@ -10,7 +10,7 @@ export interface MenuOptions extends BaseOptions {
   code: string,
   label: string,
   parent_code?: string,
-  sort?: number,
+  sort: number,
 }
 
 // 菜单数组接口类型
