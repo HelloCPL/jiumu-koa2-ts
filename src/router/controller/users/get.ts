@@ -52,6 +52,8 @@ export const getUserOne = async (id: string): Promise<UserOptions | null> => {
  * 获取用户列表基本信息，返回数组或[]
  */
 export const getUserList = async (options: UserListParams): Promise<UserListReturn> => {
+  console.log(123);
+
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理搜索关键字
   const sqlParams = getSelectWhereAsKeywordData({
