@@ -6,14 +6,14 @@
  *   getUpdateSetData // 处理 UPDATE 更新语句可更新值
  *   getSelectWhereData // 处理 SELECT 查询列表时 WHERE 条件语句有效值
  *   getSelectWhereAsKeywordData // 处理 SELECT 查询列表时 WHERE 条件为 keyword 语句有效值
-*/
+ */
 
 import _ from 'lodash'
 
 interface paramsOptions {
-  valid: string[],
-  data: ObjectAny,
-  connector?: string,
+  valid: string[]
+  data: ObjectAny
+  connector?: string
   prefix?: string
 }
 
@@ -21,7 +21,7 @@ interface paramsOptions {
  * 处理 UPDATE 更新语句可更新值
  * options.valid 有效的参数名集合 可带表名、指定数据key 如 pas t1.pas pas:password
  * options.data 传参对象
-*/
+ */
 export const getUpdateSetData = (options: paramsOptions): SQLParamsOptions => {
   let sql: string = ''
   let data: any[] = []
@@ -43,7 +43,7 @@ export const getUpdateSetData = (options: paramsOptions): SQLParamsOptions => {
  * options.data 传参对象
  * options.connector 参数间的连接符 默认 AND
  * options.prefix sql为真时添加的前缀
-*/
+ */
 export const getSelectWhereData = (options: paramsOptions): SQLParamsOptions => {
   let sql: string = ''
   let data: any[] = []
@@ -51,7 +51,9 @@ export const getSelectWhereData = (options: paramsOptions): SQLParamsOptions => 
   options.valid.forEach((key) => {
     const keys: KeyOptions = _findKeys(key)
     // 传参有参数且值为真或0或false
-    const flag = options.data.hasOwnProperty(keys.dataKey) && (options.data[keys.dataKey] || options.data[keys.dataKey] === 0 || options.data[keys.dataKey] === false)
+    const flag =
+      options.data.hasOwnProperty(keys.dataKey) &&
+      (options.data[keys.dataKey] || options.data[keys.dataKey] === 0 || options.data[keys.dataKey] === false)
     if (flag) {
       if (data.length === 0) sql += ` ${keys.sqlKey} = ? `
       else sql += ` ${connector} ${keys.sqlKey} = ? `
@@ -68,12 +70,13 @@ export const getSelectWhereData = (options: paramsOptions): SQLParamsOptions => 
  * options.data 传参对象
  * options.connector 参数间的连接符 默认 OR
  * options.prefix sql为真时添加的前缀
-*/
+ */
 export const getSelectWhereAsKeywordData = (options: paramsOptions): SQLParamsOptions => {
   let sql: string = ''
   let data: any[] = []
   const { connector = 'OR', prefix } = options
-  const keyword = options.data.keyword.replace(/\s/g, '')
+  let keyword: any = options.data.keyword
+  if (typeof keyword === 'string') keyword = keyword.replace(/\s/g, '')
   // keyword为真或0或false
   const flag = keyword || keyword === 0 || keyword === false
   if (flag) {
@@ -95,15 +98,15 @@ export const getSelectWhereAsKeywordData = (options: paramsOptions): SQLParamsOp
 }
 
 interface OrderParamsOptions {
-  valid: string[],
-  data: ObjectAny,
-  prefix?: string,
-  suffix?: string,
+  valid: string[]
+  data: ObjectAny
+  prefix?: string
+  suffix?: string
   color?: string
 }
 
 interface OrderReturnOptions {
-  orderValid: string,
+  orderValid: string
   orderSql: string
 }
 
@@ -113,7 +116,7 @@ interface OrderReturnOptions {
  *
  * @description 模糊搜索时返回搜索替换字段和排序条件
  * @update 2021-12-04 19:53:51
-*/
+ */
 /**
  * 模糊搜索时返回搜索替换字段和排序条件
  * options.valid 需要模糊查询的字段、指定字段名称 如 username t1.username t1.username:createUserName
@@ -121,12 +124,13 @@ interface OrderReturnOptions {
  * options.prefix orderSql为真时添加的前缀
  * options.suffix orderSql为真时添加的后缀 默认 ','
  * options.color keyword为真时关键字的颜色 默认 '#f56c6c'
-*/
+ */
 export const getOrderByKeyword = (options: OrderParamsOptions): OrderReturnOptions => {
   let orderValid = ''
   let orderSql = ''
   const { prefix, suffix = ',', color = '#f56c6c' } = options
-  const keyword = options.data.keyword.replace(/\s/g, '')
+  let keyword: any = options.data.keyword
+  if (typeof keyword === 'string') keyword = keyword.replace(/\s/g, '')
   const flag = keyword || keyword === 0
   options.valid.forEach((key) => {
     const { sqlKey, dataKey } = _findKeys(key)
@@ -139,25 +143,25 @@ export const getOrderByKeyword = (options: OrderParamsOptions): OrderReturnOptio
       orderValid += ` ${sqlKey} AS ${dataKey}, `
     }
   })
-  orderSql && prefix ? orderSql = ` ${prefix} ${orderSql} ` : ''
-  orderSql && suffix ? orderSql = ` ${orderSql} ${suffix} ` : ''
+  orderSql && prefix ? (orderSql = ` ${prefix} ${orderSql} `) : ''
+  orderSql && suffix ? (orderSql = ` ${orderSql} ${suffix} `) : ''
 
   return {
     orderValid,
-    orderSql
+    orderSql,
   }
 }
 
 interface KeyOptions {
-  sqlKey: string,
-  dataKey: string,
-  isEqual?: boolean, // 是否全等比较，模糊查询时可用
+  sqlKey: string
+  dataKey: string
+  isEqual?: boolean // 是否全等比较，模糊查询时可用
 }
 /**
  * 获取 SQL 语句字段名，即下划线命名
  * 和 data 参数字段名，即小驼峰命名
-*/
-function _findKeys(str: string, ): KeyOptions {
+ */
+function _findKeys(str: string): KeyOptions {
   // 判断是否有逗号
   let t = '' // 表名前缀
   let i2 = str.indexOf('.')
@@ -182,6 +186,6 @@ function _findKeys(str: string, ): KeyOptions {
   return {
     dataKey,
     sqlKey: (t ? t + '.' : '') + _.snakeCase(sqlKey),
-    isEqual
+    isEqual,
   }
 }
