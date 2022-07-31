@@ -31,15 +31,16 @@ export interface NovelOptions extends BaseOptions {
 
 // 获取列表参数类型接口
 export interface NovelListParams {
-  pageNo: number,
-  pageSize: number,
-  userId: string, // 当前访问者
-  keyword?: string,
-  createUser?: string, // 指定作者
-  type?: string,
-  classify?: string,
-  isDraft?: string,
-  isSecret?: string
+	pageNo: number
+	pageSize: number
+	userId: string // 当前访问者
+	keyword?: string
+	highlight?: string
+	createUser?: string // 指定作者
+	type?: string
+	classify?: string
+	isDraft?: string
+	isSecret?: string
 }
 
 // 小说列表获取返回类型

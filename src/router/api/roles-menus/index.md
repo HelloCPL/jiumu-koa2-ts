@@ -48,7 +48,8 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | string | 是 | 关联id |
+| id | string | 否 | 关联id |
+| roleId/menuId | string | 否 | 角色id和菜单id 与上面关联id两者传其一即可 |
 
 #### 返回示例
 
@@ -89,6 +90,7 @@
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
+| relevanceId | string | 关联id |
 | id | string | 菜单id |
 | parentCode | string | 父级菜单code |
 | parentLabel | string | 父级菜单描述 |
@@ -109,6 +111,7 @@
   "message": "操作成功",
   "data": [
     {
+      "relevanceId": "006643d6-2a69-492a-8330-b327ab789f85",
       "id": "d0cf5069-07cc-4d4c-8793-e8853b9a6f56",
       "parentCode": "",
       "parentLabel": null,
@@ -153,6 +156,7 @@
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
+| relevanceId | string | 关联id |
 | id | string | 角色id |
 | code | string | 角色code |
 | label | string | 角色描述 |
@@ -171,6 +175,7 @@
   "message": "操作成功",
   "data": [
     {
+      "relevanceId": "006643d6-2a69-492a-8330-b327ab789f85",
       "id": "d6bb3323-b581-4b46-b7e4-4da9a899ea6c",
       "code": "super",
       "label": "超级管理员",
@@ -271,6 +276,7 @@
 | menuId | string | 是 | 菜单id |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
+| simple | string | 否 | '1' 返回数据列表简洁模式 '0' 正常模式，默认简洁模式 |
 
 #### 返回字段说明
 

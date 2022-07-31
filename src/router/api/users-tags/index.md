@@ -47,7 +47,8 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | string | 是 | 用户-特殊标签关联id |
+| id | string | 否 | 用户-特殊标签关联id |
+| userId/tagCode | string | 否 | 用户id和标签code 与上面关联id两者传其一即可 |
 
 #### 返回示例
 
@@ -86,6 +87,7 @@
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
+| relevanceId | string | 关联id |
 | id | string | 特殊标签id |
 | parentCode | string | 父级特殊标签code |
 | parentLabel | string | 父级特殊标签描述 |
@@ -106,6 +108,7 @@
   "message": "操作成功",
   "data": [
     {
+      "relevanceId": "006643d6-2a69-492a-8330-b327ab789f85",
       "id": "2906d294-a11d-4f82-a601-988013e6dd01",
       "parentCode": "8888",
       "parentLabel": "特殊标签",
@@ -143,6 +146,7 @@
 | tagCode | string | 是 | 特殊标签code |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
+| simple | string | 否 | '1' 返回数据列表简洁模式 '0' 正常模式，默认简洁模式 |
 
 #### 返回字段说明
 
@@ -151,6 +155,7 @@
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
+| relevanceId | string | 关联id |
 | id | string | 用户id |
 | phone | string | 用户账号（即手机号） |
 | username | string | 用户名称 |
@@ -173,6 +178,7 @@
   "message": "操作成功",
   "data": [
     {
+      "relevanceId": "006643d6-2a69-492a-8330-b327ab789f85",
       "id": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
       "phone": "15820291405",
       "username": "陈一支",

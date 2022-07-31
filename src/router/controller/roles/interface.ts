@@ -14,12 +14,13 @@ export interface RoleOptions extends BaseOptions {
 
 // 角色参数
 export interface RoleParamsOptions {
-  pageNo: number,
-  pageSize: number,
-  keyword?: string,
-  userId?: string,
-  permissionId?: string,
-  menuId?: string
+	pageNo: number
+	pageSize: number
+	keyword?: string
+	highlight?: string
+	userId?: string
+	permissionId?: string
+	menuId?: string
 }
 
 // 角色列表返回

@@ -12,7 +12,8 @@ import { query } from "../../../db";
  * 用户-特殊标签关联删除
 */
 export const doUserTagDelete = async (ctx: Context, next: Next) => {
-  const sql: string = `DELETE FROM users_tags WHERE id = ?`
-  await query(sql, ctx._params.id)
+  const sql: string = `DELETE FROM users_tags WHERE id = ? OR (tag_code = ? AND user_id = ?)`
+	const data = [ctx._params.id, ctx._params.tagCode, ctx._params.userId]
+	await query(sql, data)
   throw new Success();
 }

@@ -230,6 +230,7 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
+| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | userId | string | 否 | 用户id，会增加`checkedUserId` 字段，表示是否与该用户关联 |
 | permissionId | string | 否 | 权限id，会增加`checkedPermissionId` 字段，表示是否与该权限关联  |
 | menuId | string | 否 | 菜单id，会增加`checkedMenuId` 字段，表示是否与该菜单关联  |

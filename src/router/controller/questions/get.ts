@@ -21,15 +21,16 @@ export const doQuestionGetOne = async (ctx: Context, next: Next) => {
 // 获取所有问答列表
 export const doQuestionGetList = async (ctx: Context, next: Next) => {
   const params: QuestionListParams = {
-    pageNo: ctx._params.pageNo * 1 || 1,
-    pageSize: ctx._params.pageSize * 1 || 10,
-    keyword: ctx._params.keyword,
-    userId: ctx._user.id,
-    classify: ctx._params.classify,
-    createUser: ctx._params.userId,
-    isDraft: ctx._params.isDraft,
-    isSecret: ctx._params.isSecret
-  }
+		pageNo: ctx._params.pageNo * 1 || 1,
+		pageSize: ctx._params.pageSize * 1 || 10,
+		keyword: ctx._params.keyword,
+		highlight: ctx._params.highlight,
+		userId: ctx._user.id,
+		classify: ctx._params.classify,
+		createUser: ctx._params.userId,
+		isDraft: ctx._params.isDraft,
+		isSecret: ctx._params.isSecret
+	}
   const data = await getQuestionList(params)
   throw new Success(data);
 }

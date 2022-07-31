@@ -19,11 +19,12 @@ export interface TagCustomTypeOptions {
 
 // 用户自定义标签列表获取参数类型
 export interface TagCustomListParams {
-  pageNo: number,
-  pageSize: number,
-  createUser?: string,
-  type?: string,
-  keyword?: string
+	pageNo: number
+	pageSize: number
+	createUser?: string
+	type?: string
+	keyword?: string
+	highlight?: string
 }
 
 // 用户自定义标签列表获取返回类型

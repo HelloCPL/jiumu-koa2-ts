@@ -19,12 +19,13 @@ export const doPermissionGetOne = async (ctx: Context, next: Next) => {
 // 获取权限列表
 export const doPermissionGetList = async (ctx: Context, next: Next) => {
   const parmas: PermissionParmsOptions = {
-    pageNo: ctx._params.pageNo * 1 || 1,
-    pageSize: ctx._params.pageSize * 1 || 10,
-    keyword: ctx._params.keyword,
-    userId: ctx._params.userId,
-    roleId: ctx._params.roleId
-  }
+		pageNo: ctx._params.pageNo * 1 || 1,
+		pageSize: ctx._params.pageSize * 1 || 10,
+		keyword: ctx._params.keyword,
+		highlight: ctx._params.highlight,
+		userId: ctx._params.userId,
+		roleId: ctx._params.roleId
+	}
   const data = await getPermissionList(parmas)
   throw new Success({ total: data.total, data: data.data })
 }

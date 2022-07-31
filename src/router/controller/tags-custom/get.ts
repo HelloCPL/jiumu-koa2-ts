@@ -30,7 +30,8 @@ export const getTagCustomGetList = async (ctx: Context, next: Next) => {
     pageSize: ctx._params.pageSize * 1 || 10,
     createUser: ctx._params.userId,
     type: ctx._params.type,
-    keyword: ctx._params.keyword
+    keyword: ctx._params.keyword,
+		highlight: ctx._params.highlight,
   }
   const data = await doTagCustomList(params)
   data.data.forEach(item => {

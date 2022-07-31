@@ -25,14 +25,15 @@ export interface SourceOptions extends BaseOptions {
 
 // 资源列表获取参数类型
 export interface SourceListParams {
-  pageNo: number,
-  pageSize: number,
-  userId: string,
-  keyword?: string,
-  type?: string,
-  classify?: string,
-  createUser?: string,
-  isSecret?:string
+	pageNo: number
+	pageSize: number
+	userId: string
+	keyword?: string
+	highlight?: string
+	type?: string
+	classify?: string
+	createUser?: string
+	isSecret?: string
 }
 
 // 资源列表获取返回类型

@@ -21,16 +21,17 @@ export const doNovelGetOne = async (ctx: Context, next: Next) => {
 // 获取小说列表
 export const doNovelGetList = async (ctx: Context, next: Next) => {
   const params: NovelListParams = {
-    pageNo: ctx._params.pageNo * 1 || 1,
-    pageSize: ctx._params.pageSize * 1 || 10,
-    keyword: ctx._params.keyword,
-    userId: ctx._user.id,
-    createUser: ctx._params.userId,
-    type: ctx._params.type,
-    classify: ctx._params.classify,
-    isDraft: ctx._params.isDraft,
-    isSecret: ctx._params.isSecret,
-  }
+		pageNo: ctx._params.pageNo * 1 || 1,
+		pageSize: ctx._params.pageSize * 1 || 10,
+		keyword: ctx._params.keyword,
+		highlight: ctx._params.highlight,
+		userId: ctx._user.id,
+		createUser: ctx._params.userId,
+		type: ctx._params.type,
+		classify: ctx._params.classify,
+		isDraft: ctx._params.isDraft,
+		isSecret: ctx._params.isSecret
+	}
   const data = await getNovelList(params)
   throw new Success(data)
 }

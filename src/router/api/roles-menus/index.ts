@@ -30,7 +30,6 @@ export default class API {
     path: 'delete',
     methods: ['get', 'post']
   })
-  @Required(['id'])
   @Convert(doRoleMenuDeleteConvert)
   async doRoleMenuDelete(ctx: Context, next: Next) {
     await doRoleMenuDelete(ctx, next)

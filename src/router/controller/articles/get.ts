@@ -22,16 +22,17 @@ export const doArticleGetOne = async (ctx: Context, next: Next) => {
 // 获取博客文章列表
 export const doArticleGetList = async (ctx: Context, next: Next) => {
   const params: ArticleListParams = {
-    pageNo: ctx._params.pageNo * 1 || 1,
-    pageSize: ctx._params.pageSize * 1 || 10,
-    keyword: ctx._params.keyword,
-    userId: ctx._user.id,
-    createUser: ctx._params.userId,
-    type: ctx._params.type,
-    classify: ctx._params.classify,
-    isDraft: ctx._params.isDraft,
-    isSecret: ctx._params.isSecret,
-  }
+		pageNo: ctx._params.pageNo * 1 || 1,
+		pageSize: ctx._params.pageSize * 1 || 10,
+		keyword: ctx._params.keyword,
+		highlight: ctx._params.highlight,
+		userId: ctx._user.id,
+		createUser: ctx._params.userId,
+		type: ctx._params.type,
+		classify: ctx._params.classify,
+		isDraft: ctx._params.isDraft,
+		isSecret: ctx._params.isSecret
+	}
   const data = await getArticleList(params)
   throw new Success(data)
 }

@@ -209,6 +209,7 @@
 |:---:|:---:|:---:|:---:|
 | targetId | number | 是 | 指定目标id |
 | keyword | string | 否 | 关键字 |
+| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | isSecret | string | 否 | 是否为私密小说，1 是 0 否 |

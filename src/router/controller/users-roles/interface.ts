@@ -16,6 +16,7 @@ export interface UserRoleByRoleIdParams {
   roleId: string,
   pageNo?: number,
   pageSize?: number
+  simple?: string
 }
 
 // 用户-角色关联获取关联用户参数接口类型

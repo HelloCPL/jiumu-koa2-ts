@@ -30,13 +30,14 @@ export interface NovelNoteOptions extends BaseOptions {
 
 // 获取列表参数类型接口
 export interface NovelNoteListParams {
-  targetId: string,
-  pageNo: number,
-  pageSize: number,
-  userId: string, // 当前访问者
-  keyword?: string,
-  isSecret?: string,
-  classify?: string
+	targetId: string
+	pageNo: number
+	pageSize: number
+	userId: string // 当前访问者
+	keyword?: string
+	highlight?: string
+	isSecret?: string
+	classify?: string
 }
 
 // 列表获取返回类型

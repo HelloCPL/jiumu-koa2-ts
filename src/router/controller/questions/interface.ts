@@ -26,14 +26,15 @@ export interface QuestionOptions extends BaseOptions {
 
 // 问答列表获取参数类型
 export interface QuestionListParams {
-  pageNo: number,
-  pageSize: number,
-  userId: string,
-  keyword?: string,
-  classify?: string,
-  createUser?: string,
-  isDraft?:string,
-  isSecret?:string
+	pageNo: number
+	pageSize: number
+	userId: string
+	keyword?: string
+	highlight?: string
+	classify?: string
+	createUser?: string
+	isDraft?: string
+	isSecret?: string
 }
 
 // 问答列表获取返回类型

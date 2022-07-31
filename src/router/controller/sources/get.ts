@@ -22,15 +22,16 @@ export const doSourceGetOne = async (ctx: Context, next: Next) => {
 // 获取问答列表
 export const doSourceGetList = async (ctx: Context, next: Next) => {
   const params: SourceListParams = {
-    pageNo: ctx._params.pageNo * 1 || 1,
-    pageSize: ctx._params.pageSize * 1 || 10,
-    keyword: ctx._params.keyword,
-    userId: ctx._user.id,
-    createUser: ctx._params.userId,
-    type: ctx._params.type,
-    classify: ctx._params.classify,
-    isSecret: ctx._params.isSecret,
-  }
+		pageNo: ctx._params.pageNo * 1 || 1,
+		pageSize: ctx._params.pageSize * 1 || 10,
+		keyword: ctx._params.keyword,
+		highlight: ctx._params.highlight,
+		userId: ctx._user.id,
+		createUser: ctx._params.userId,
+		type: ctx._params.type,
+		classify: ctx._params.classify,
+		isSecret: ctx._params.isSecret
+	}
   const data = await getSourceList(params)
   throw new Success(data)
 }

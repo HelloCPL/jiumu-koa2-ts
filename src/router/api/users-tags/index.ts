@@ -29,7 +29,6 @@ export default class API {
     path: 'delete',
     methods: ['get', 'post']
   })
-  @Required(['id'])
   @Convert(doUserTagDeleteConvert)
   async doUserTagDelete(ctx: Context, next: Next) {
     await doUserTagDelete(ctx, next)

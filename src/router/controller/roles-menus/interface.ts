@@ -20,9 +20,10 @@ export interface RoleMenuByRoleIdParams {
 
 // 角色-菜单关联获取关联角色参数接口类型
 export interface RoleMenuByMenuIdParams {
-  menuId: string
-  pageNo?: number
-  pageSize?: number
+	menuId: string
+	pageNo?: number
+	pageSize?: number
+	simple?: string
 }
 
 // 用户-菜单关联获取关联菜单参数接口类型

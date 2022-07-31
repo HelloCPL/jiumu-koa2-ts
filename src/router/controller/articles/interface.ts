@@ -32,15 +32,16 @@ export interface ArticleOptions extends BaseOptions {
 
 // 博客文章列表获取参数类型
 export interface ArticleListParams {
-  pageNo: number,
-  pageSize: number,
-  userId: string,
-  keyword?: string,
-  createUser?: string,
-  type?: string,
-  classify?: string,
-  isDraft?:string,
-  isSecret?:string
+	pageNo: number
+	pageSize: number
+	userId: string
+	keyword?: string
+	highlight?: string
+	createUser?: string
+	type?: string
+	classify?: string
+	isDraft?: string
+	isSecret?: string
 }
 
 // 博客文章列表获取返回类型
