@@ -45,14 +45,15 @@ export const getNovelNoteGetOne = async (ctx: Context, next: Next) => {
 // 获取指定目标所有的笔记列表
 export const doNovelNoteGetList = async (ctx: Context, next: Next) => {
   const params: NovelNoteListParams = {
-    targetId: ctx._params.targetId,
-    pageNo: ctx._params.pageNo * 1 || 1,
-    pageSize: ctx._params.pageSize * 1 || 10,
-    keyword: ctx._params.keyword,
-    userId: ctx._user.id,
-    isSecret: ctx._params.isSecret,
-    classify: ctx._params.classify
-  }
+		targetId: ctx._params.targetId,
+		pageNo: ctx._params.pageNo * 1 || 1,
+		pageSize: ctx._params.pageSize * 1 || 10,
+		keyword: ctx._params.keyword,
+		highlight: ctx._params.highlight,
+		userId: ctx._user.id,
+		isSecret: ctx._params.isSecret,
+		classify: ctx._params.classify
+	}
   const data = await getNovelNoteGetList(params)
   throw new Success(data)
 }

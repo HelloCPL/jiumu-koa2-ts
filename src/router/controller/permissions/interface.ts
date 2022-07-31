@@ -16,11 +16,12 @@ export interface PermissionOptions extends BaseOptions {
 
 // 权限参数类型
 export interface PermissionParmsOptions {
-  pageNo: number,
-  pageSize: number,
-  keyword?: string,
-  userId?: string,
-  roleId?: string
+	pageNo: number
+	pageSize: number
+	keyword?: string
+	highlight?: string
+	userId?: string
+	roleId?: string
 }
 
 // 权限列表返回

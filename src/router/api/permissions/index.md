@@ -229,6 +229,7 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
+| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | roleId | string | 否 | 角色id，会增加`checked` 字段，表示是否与该角色关联 |
 | userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联，但不可直接关联 |
 

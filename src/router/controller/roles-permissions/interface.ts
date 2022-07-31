@@ -20,7 +20,8 @@ export interface RolePermissionByRoleIdParams {
 
 // 角色-权限关联获取关联角色参数接口类型
 export interface RolePermissionByPermissionIdParams {
-  permissionId: string,
-  pageNo?: number,
-  pageSize?: number
+	permissionId: string
+	pageNo?: number
+	pageSize?: number
+	simple?: string
 }

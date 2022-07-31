@@ -12,7 +12,8 @@ import { query } from "../../../db";
  * 用户-角色关联删除
 */
 export const doUserRoleDelete = async (ctx: Context, next: Next) => {
-  const sql: string = `DELETE FROM users_roles WHERE id = ?`
-  await query(sql, ctx._params.id)
+  const sql: string = `DELETE FROM users_roles WHERE id = ? OR (role_id = ? AND user_id = ?)`
+	const data = [ctx._params.id, ctx._params.roleId, ctx._params.userId]
+	await query(sql, data)
   throw new Success();
 }

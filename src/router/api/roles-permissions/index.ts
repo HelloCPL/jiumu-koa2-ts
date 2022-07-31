@@ -29,7 +29,6 @@ export default class API {
     path: 'delete',
     methods: ['get', 'post']
   })
-  @Required(['id'])
   @Convert(doRolePermissionDeleteConvert)
   async doRolePermissionDelete(ctx: Context, next: Next) {
     await doRolePermissionDelete(ctx, next)

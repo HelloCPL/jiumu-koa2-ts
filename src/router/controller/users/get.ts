@@ -26,11 +26,12 @@ export const doUserGetBase = async (ctx: Context, next: Next) => {
 // 获取用户列表基本信息
 export const doUserGetList = async (ctx: Context, next: Next) => {
   let params = {
-    pageNo: ctx._params.pageNo * 1 || 1,
-    pageSize: ctx._params.pageSize * 1 || 10,
-    keyword: ctx._params.keyword,
-    simple: ctx._params.simple,
-  }
+		pageNo: ctx._params.pageNo * 1 || 1,
+		pageSize: ctx._params.pageSize * 1 || 10,
+		keyword: ctx._params.keyword,
+		highlight: ctx._params.highlight,
+		simple: ctx._params.simple
+	}
   const data = await getUserList(params)
   throw new Success(data)
 }
@@ -71,7 +72,7 @@ export const getUserList = async (options: UserListParams): Promise<UserListRetu
   let sql2: string
   let data2: any[]
   if (options.simple === '1') {
-    sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.update_time DESC LIMIT ?, ?`
+    sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.create_time, t1.update_time, t1.terminal FROM users t1 ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.update_time DESC LIMIT ?, ?`
     data2 = [...sqlParams.data, pageNo, options.pageSize]
   } else {
     sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.update_time DESC LIMIT ?, ?`

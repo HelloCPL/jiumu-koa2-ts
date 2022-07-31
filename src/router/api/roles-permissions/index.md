@@ -46,7 +46,8 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | string | 是 | 角色-权限关联id |
+| id | string | 否 | 角色-权限关联id |
+| roleId/permissionId | string | 否 | 角色id和权限id 与上面关联id两者传其一即可 |
 
 #### 返回示例
 
@@ -84,6 +85,7 @@
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
+| relevanceId | string | 关联id |
 | id | string | 权限id |
 | code | string | 权限code |
 | label | string | 权限描述 |
@@ -103,6 +105,7 @@
   "message": "操作成功",
   "data": [
     {
+      "relevanceId": "006643d6-2a69-492a-8330-b327ab789f85",
       "id": "50253b99-c288-4206-b730-350157a1b56a",
       "code": "permission:get:byparentcode",
       "label": "获取某类权限",
@@ -146,6 +149,7 @@
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
+| relevanceId | string | 关联id |
 | id | string | 角色id |
 | code | string | 角色code |
 | label | string | 角色描述 |
@@ -164,6 +168,7 @@
   "message": "操作成功",
   "data": [
     {
+      "relevanceId": "006643d6-2a69-492a-8330-b327ab789f85",
       "id": "17e64a2d-7813-4700-be4e-dfaa454a5c47",
       "code": "workers",
       "label": "工作人员",
@@ -258,6 +263,7 @@
 | permissionId | string | 是 | 权限id |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
+| simple | string | 否 | '1' 返回数据列表简洁模式 '0' 正常模式，默认简洁模式 |
 
 #### 返回字段说明
 

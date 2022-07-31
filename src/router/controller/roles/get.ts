@@ -33,13 +33,14 @@ export const doRoleGetAllSelf = async (ctx: Context, next: Next) => {
 // 获取角色列表
 export const doRoleGetList = async (ctx: Context, next: Next) => {
   const parmas: RoleParamsOptions = {
-    pageNo: ctx._params.pageNo * 1 || 1,
-    pageSize: ctx._params.pageSize * 1 || 10,
-    keyword: ctx._params.keyword,
-    userId: ctx._params.userId,
-    permissionId: ctx._params.permissionId,
-    menuId: ctx._params.menuId
-  }
+		pageNo: ctx._params.pageNo * 1 || 1,
+		pageSize: ctx._params.pageSize * 1 || 10,
+		keyword: ctx._params.keyword,
+		highlight: ctx._params.highlight,
+		userId: ctx._params.userId,
+		permissionId: ctx._params.permissionId,
+		menuId: ctx._params.menuId
+	}
   const data = await getMenuList(parmas)
   throw new Success({ total: data.total, data: data.data })
 }

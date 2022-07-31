@@ -255,6 +255,7 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
+| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | type | string | 否 | 文章类型，取系统标签300范围 |
 | classify | string | 否 | 自定义文章类型，分类类型建议用articleClassify，单选 |
 | isDraft | string | 否 | 是否草稿，1 是 0 否 |
@@ -374,6 +375,7 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
+| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | type | string | 否 | 文章类型，取系统标签300范围 |
 | classify | string | 否 | 自定义文章类型，分类类型建议用articleClassify，单选 |
 
@@ -490,6 +492,7 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
+| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | type | string | 否 | 文章类型，取系统标签300范围 |
 
 #### 返回字段说明
