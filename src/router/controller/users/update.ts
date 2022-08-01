@@ -40,7 +40,7 @@ export const doUserUpdateToken = async (ctx: Context, next: Next) => {
     const doubleToken = await handleDoubleToken(ctx, params)
     throw new Success({ data: doubleToken })
   } else
-    throw new ExceptionForbidden({ message: Message.authLogin })
+    throw new ExceptionForbidden({ message: Message.authLogin, code: Code.authLogin })
 }
 
 
