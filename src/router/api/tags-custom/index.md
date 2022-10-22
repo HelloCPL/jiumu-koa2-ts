@@ -125,6 +125,8 @@
 | sort | number | 排序，值越小越前 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
+| createUser | string | 创建用户id |
+| createUserName | string | 创建用户名称 |
 | terminal | string | 操作终端 |
 
 #### 返回示例
@@ -231,6 +233,8 @@
 | sort | number | 排序，值越小越前 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
+| createUser | string | 创建用户id |
+| createUserName | string | 创建用户名称 |
 | terminal | string | 操作终端 |
 
 #### 返回示例
@@ -338,6 +342,8 @@
 | sort | number | 排序，值越小越前 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
+| createUser | string | 创建用户id |
+| createUserName | string | 创建用户名称 |
 | terminal | string | 操作终端 |
 
 #### 返回示例
@@ -428,6 +434,9 @@
 #### 返回字段说明
 
 - 返回数组或[]
+- 排序规则
+  `搜索相似度(label)降序`
+  `sort升序、updateTime更新时间降序`
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
@@ -438,6 +447,8 @@
 | isSelf | string | 是否我的标签 1 是 0 否 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
+| createUser | string | 创建用户id |
+| createUserName | string | 创建用户名称 |
 | terminal | string | 操作终端 |
 
 #### 返回示例
