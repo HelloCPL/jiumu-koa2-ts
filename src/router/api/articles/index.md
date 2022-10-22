@@ -257,7 +257,7 @@
 | keyword | string | 否 | 关键字 |
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | type | string | 否 | 文章类型，取系统标签300范围 |
-| classify | string | 否 | 自定义文章类型，分类类型建议用articleClassify，单选 |
+| classify | string | 否 | 自定义文章类型，分类类型建议用 articleClassify 单选 |
 | isDraft | string | 否 | 是否草稿，1 是 0 否 |
 | isSecret | string | 否 | 是否为私密文章，1 是 0 否 |
 

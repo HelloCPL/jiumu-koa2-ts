@@ -36,7 +36,7 @@ const tList: ObjectAny = {
 */
 export const doTopUpdate = async (ctx: Context, next: Next) => {
   let t = tList[ctx._params.type]
-  const sql: string = `UPDATE ${t} SET is_top = ? WHERE id = ?`
+  const sql: string = `UPDATE ${t.table} SET is_top = ? WHERE id = ?`
   const data = [ctx._params.isTop, ctx._params.id]
   await query(sql, data)
   throw new Success();
