@@ -9,11 +9,11 @@
 
 import MySQL, { Pool, PoolConnection } from 'mysql2'
 import Async from 'async'
-import { DATABASE } from '../config'
-import { ExceptionHttp } from '../utils/http-exception'
+import { DATABASE } from '@/config'
+import { ExceptionHttp } from '@/utils/http-exception'
 import { SQLOptions, ErrorOptions } from './interface'
-import { Message } from '../enums'
-import Logger from '../lib/logger'
+import { Message } from '@/enums'
+import Logger from '@/lib/logger'
 
 /**
  * 创建连接池

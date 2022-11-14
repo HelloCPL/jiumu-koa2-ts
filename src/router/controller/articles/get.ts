@@ -4,7 +4,7 @@
  * @update 2021-08-07 15:15:08
  */
 
-import { Success } from '../../../utils/http-exception'
+import { Success } from '@/utils/http-exception'
 import { query, execTrans } from '../../../db'
 import { Context, Next } from 'koa'
 import { ArticleOptions, ArticleListParams, ArticleListReturn } from './interface'
