@@ -9,12 +9,12 @@
  *   validateRange // 校验参数是否在指定范围内容
  */
 
-import { Rule, LinValidator } from '../lib/lin-validator'
+import { Rule, LinValidator } from '@/lib/lin-validator'
 import _ from 'lodash'
-import { ExceptionHttp, ExceptionParameter } from '../utils/http-exception'
-import { Message } from '../enums'
-import { getTagByParentCode } from '../router/controller/tags/get'
-import { TagOptions } from '../router/controller/tags/interface'
+import { ExceptionHttp, ExceptionParameter } from './http-exception'
+import { Message } from '@/enums'
+import { getTagByParentCode } from '@/router/controller/tags/get'
+import { TagOptions } from '@/router/controller/tags/interface'
 
 type RulesOptions = any[]
 

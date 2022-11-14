@@ -2,18 +2,18 @@
  * @description 菜单获取
  * @author chen
  * @update 2021-08-07 15:15:08
-*/
+ */
 
-import { Success } from '../../../utils/http-exception'
-import { query } from "../../../db";
-import { Context, Next } from 'koa';
+import { Success } from '@/utils/http-exception'
+import { query } from '@/db'
+import { Context, Next } from 'koa'
 import { MenuOptions, MenuListOptions } from './interface'
-import { getTree } from '../../../utils/tools';
+import { getTree } from '@/utils/tools'
 
 // 获取指定的某个菜单
 export const doMenuGetOne = async (ctx: Context, next: Next) => {
   const data = await getMenuOne(ctx._params.id)
-  throw new Success({ data });
+  throw new Success({ data })
 }
 
 // 获取某类菜单
@@ -23,10 +23,9 @@ export const doMenuGetByParentCode = async (ctx: Context, next: Next) => {
   throw new Success({ data })
 }
 
-
 /**
  * 获取指定的某个菜单，返回对象或null
-*/
+ */
 export const getMenuOne = async (id: string): Promise<MenuOptions | null> => {
   const sql: string = `SELECT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.configurable, t1.label, t1.sort, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.code = ? OR t1.id = ?`
   const data = [id, id]
@@ -37,8 +36,12 @@ export const getMenuOne = async (id: string): Promise<MenuOptions | null> => {
 
 /**
  * 获取某类菜单，返回数组或[]
-*/
-export const getMenuByParentCode = async (parentCode: string, userId?: string, roleId?: string): Promise<MenuListOptions[]> => {
+ */
+export const getMenuByParentCode = async (
+  parentCode: string,
+  userId?: string,
+  roleId?: string
+): Promise<MenuListOptions[]> => {
   if (global._results._menus && global._results._menus.length) {
     return <MenuListOptions[]>getTree({
       data: global._results._menus,
@@ -59,21 +62,22 @@ export const getMenuByParentCode = async (parentCode: string, userId?: string, r
     let sqlUserIdLeft = ''
     if (userId) {
       sqlUserId = 't4.id AS checked_user_id,'
-      sqlUserIdLeft = 'LEFT JOIN roles_menus t4 ON (t4.menu_id = t1.id AND t4.role_id IN (SELECT t5.role_id FROM users_roles t5 WHERE t5.user_id = ?))'
+      sqlUserIdLeft =
+        'LEFT JOIN roles_menus t4 ON (t4.menu_id = t1.id AND t4.role_id IN (SELECT t5.role_id FROM users_roles t5 WHERE t5.user_id = ?))'
       data.push(userId)
     }
     const sql = `SELECT DISTINCT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, t1.sort, t1.configurable, t1.create_time, t1.update_time, t1.terminal, ${sqlRoleId} ${sqlUserId} t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code ${sqlRoleIdLeft} ${sqlUserIdLeft}`
     const res: MenuOptions[] = <MenuOptions[]>await query(sql, data)
     // 若与指定角色关联
     if (roleId) {
-      res.forEach(item => {
+      res.forEach((item) => {
         if (item.checked_role_id) item.checked_role_id = '1'
         else item.checked_role_id = '0'
       })
     }
     // 若与指定用户关联
     if (userId) {
-      res.forEach(item => {
+      res.forEach((item) => {
         if (item.checked_user_id) item.checked_user_id = '1'
         else item.checked_user_id = '0'
       })
@@ -84,5 +88,4 @@ export const getMenuByParentCode = async (parentCode: string, userId?: string, r
       parentCode
     })
   }
-
 }

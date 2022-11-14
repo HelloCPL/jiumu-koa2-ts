@@ -2,15 +2,19 @@
  * @description: 角色-菜单关联模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doRoleMenuAddConvert, doRoleMenuDeleteConvert } from '../../controller/roles-menus/convert'
-import { doRoleMenuAdd } from '../../controller/roles-menus/add'
-import { doRoleMenuDelete } from '../../controller/roles-menus/delete'
-import { doRoleMenugetAllMenuByRoleId, doRoleMenuGetAllRoleByMenuId, doRoleMenugetAllMenuByUserId, doRoleMenuGetAllUserByMenuId } from '../../controller/roles-menus/get'
-
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import { doRoleMenuAddConvert, doRoleMenuDeleteConvert } from '@/router/controller/roles-menus/convert'
+import { doRoleMenuAdd } from '@/router/controller/roles-menus/add'
+import { doRoleMenuDelete } from '@/router/controller/roles-menus/delete'
+import {
+  doRoleMenugetAllMenuByRoleId,
+  doRoleMenuGetAllRoleByMenuId,
+  doRoleMenugetAllMenuByUserId,
+  doRoleMenuGetAllUserByMenuId
+} from '@/router/controller/roles-menus/get'
 
 @Prefix('role-menu')
 export default class API {

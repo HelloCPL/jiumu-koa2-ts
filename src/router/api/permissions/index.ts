@@ -2,16 +2,20 @@
  * @description: 权限管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doPermissionAddConvert, doPermissionUpdateConvert, doPermissionDeleteConvert } from '../../controller/permissions/convert'
-import { doPermissionAdd } from '../../controller/permissions/add'
-import { doPermissionUpdate } from '../../controller/permissions/update'
-import { doPermissionDelete } from '../../controller/permissions/delete'
-import { doPermissionGetOne, doPermissionGetList } from '../../controller/permissions/get'
-import { doRolePermissiongetAllPermissionByUserId } from '../../controller/roles-permissions/get';
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import {
+  doPermissionAddConvert,
+  doPermissionUpdateConvert,
+  doPermissionDeleteConvert
+} from '@/router/controller/permissions/convert'
+import { doPermissionAdd } from '@/router/controller/permissions/add'
+import { doPermissionUpdate } from '@/router/controller/permissions/update'
+import { doPermissionDelete } from '@/router/controller/permissions/delete'
+import { doPermissionGetOne, doPermissionGetList } from '@/router/controller/permissions/get'
+import { doRolePermissiongetAllPermissionByUserId } from '@/router/controller/roles-permissions/get'
 
 @Prefix('permission')
 export default class API {

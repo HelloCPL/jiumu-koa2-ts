@@ -10,11 +10,11 @@
 
 import { Context, Next } from 'koa'
 import { symbolRoutePrefix, Route } from './index'
-import { ValidatorParameters, ValidatorOptions } from '../utils/validator'
+import { ValidatorParameters, ValidatorOptions } from '@/utils/validator'
 import _ from 'lodash'
-import { sureIsArray } from '../utils/tools'
+import { sureIsArray } from '@/utils/tools'
 import { RequestOptions, RouteOptions } from './interface'
-import { MessageParameter, Message } from '../enums'
+import { MessageParameter, Message } from '@/enums'
 
 /**
  * @author chen
@@ -43,7 +43,7 @@ export const Request =
     Route.__DecoratedRouters.set(
       <RouteOptions>{
         target,
-        ...options,
+        ...options
       },
       target[key as string]
     )

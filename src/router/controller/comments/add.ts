@@ -2,34 +2,52 @@
  * @description 评论新增
  * @author chen
  * @update 2021-08-07 15:15:08
-*/
+ */
 
-import { Context, Next } from "koa";
-import { ExceptionParameter, Success } from '../../../utils/http-exception'
-import { query } from "../../../db";
-import { Message, Terminal } from "../../../enums";
-import { formatDate, getUuId } from "../../../utils/tools";
+import { Context, Next } from 'koa'
+import { ExceptionParameter, Success } from '@/utils/http-exception'
+import { query } from '@/db'
+import { Message, Terminal } from '@/enums'
+import { formatDate, getUuId } from '@/utils/tools'
 import { CommentFindResult } from './interface'
 
 /**
  * 第一级别评论新增
-*/
+ */
 export const doCommentFirstAdd = async (ctx: Context, next: Next) => {
   const sql: string = `INSERT comments_first (id, target_id, content, create_user, type, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?, ?)`
-  const data = [getUuId(), ctx._params.targetId, ctx._params.content, ctx._user.id, ctx._params.type, formatDate(new Date()), Terminal[ctx._terminal]]
+  const data = [
+    getUuId(),
+    ctx._params.targetId,
+    ctx._params.content,
+    ctx._user.id,
+    ctx._params.type,
+    formatDate(new Date()),
+    Terminal[ctx._terminal]
+  ]
   await query(sql, data)
-  throw new Success();
+  throw new Success()
 }
 
 /**
  * 第二级别评论新增
-*/
+ */
 export const doCommentSecondAdd = async (ctx: Context, next: Next) => {
   const commentInfo = <CommentFindResult>await _findCommentById(ctx._params.targetId)
   const sql: string = `INSERT comments_second (id, reply_comment_id, reply_content, create_user, create_time, terminal, comment_first_target_id, comment_first_id, reply_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-  const data = [getUuId(), ctx._params.targetId, ctx._params.content, ctx._user.id, formatDate(new Date()), Terminal[ctx._terminal], commentInfo.comment_first_target_id, commentInfo.comment_first_id, commentInfo.reply_user]
+  const data = [
+    getUuId(),
+    ctx._params.targetId,
+    ctx._params.content,
+    ctx._user.id,
+    formatDate(new Date()),
+    Terminal[ctx._terminal],
+    commentInfo.comment_first_target_id,
+    commentInfo.comment_first_id,
+    commentInfo.reply_user
+  ]
   await query(sql, data)
-  throw new Success();
+  throw new Success()
 }
 
 // 根据评论id寻找评论信息

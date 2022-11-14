@@ -10,7 +10,7 @@
 import validator from 'validator'
 import { findMembers } from './find-members'
 import { get, last, set, cloneDeep } from 'lodash'
-import { ExceptionParameter } from '../../utils/http-exception'
+import { ExceptionParameter } from '@/utils/http-exception'
 
 export class LinValidator {
   constructor() {

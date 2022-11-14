@@ -2,15 +2,19 @@
  * @description: 用户自定义标签管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doTagCustomAddConvert, doTagCustomUpdateConvert } from '../../controller/tags-custom/convert'
-import { doTagCustomAdd } from '../../controller/tags-custom/add'
-import { doTagCustomUpdate } from '../../controller/tags-custom/update'
-import { doTagCustomDelete } from '../../controller/tags-custom/delete'
-import { getTagCustomGetIdsSelf, getTagCustomGetListType, getTagCustomGetList } from '../../controller/tags-custom/get'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import { doTagCustomAddConvert, doTagCustomUpdateConvert } from '@/router/controller/tags-custom/convert'
+import { doTagCustomAdd } from '@/router/controller/tags-custom/add'
+import { doTagCustomUpdate } from '@/router/controller/tags-custom/update'
+import { doTagCustomDelete } from '@/router/controller/tags-custom/delete'
+import {
+  getTagCustomGetIdsSelf,
+  getTagCustomGetListType,
+  getTagCustomGetList
+} from '@/router/controller/tags-custom/get'
 
 @Prefix('tag/custom')
 export default class API {

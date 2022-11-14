@@ -5,10 +5,10 @@
  */
 
 import { Context, Next } from 'koa'
-import { Message } from '../../../enums'
-import { validateRange } from '../../../utils/validator'
-import { query } from '../../../db'
-import { ExceptionParameter, ExceptionForbidden } from '../../../utils/http-exception'
+import { Message } from '@/enums'
+import { validateRange } from '@/utils/validator'
+import { query } from '@/db'
+import { ExceptionParameter, ExceptionForbidden } from '@/utils/http-exception'
 import { NovelNoteTargetOptions } from './interface'
 
 /**
@@ -40,7 +40,7 @@ export const doNovelNoteUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isSecret,
       range: ['1', '0'],
-      message: `isSecret参数必须为['1', '0']范围`,
+      message: `isSecret参数必须为['1', '0']范围`
     })
   }
   // 若 target 为真 判断 type 是否系统标签500范围

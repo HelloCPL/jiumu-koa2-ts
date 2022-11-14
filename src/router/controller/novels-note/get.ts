@@ -4,36 +4,36 @@
  * @update 2021-08-07 15:15:08
  */
 
-import { Success } from '../../../utils/http-exception'
-import { query, execTrans } from '../../../db'
+import { Success } from '@/utils/http-exception'
+import { query, execTrans } from '@/db'
 import { Context, Next } from 'koa'
 import { NovelNoteOptions, NovelNoteListParams, NovelNoteListReturn, NovelNoteTargetOptions } from './interface'
 import _ from 'lodash'
 import { getTagCustomByIds } from '../tags-custom/get'
-import { getSelectWhereAsKeywordData, getOrderByKeyword, getSelectWhereData } from '../../../utils/handle-sql'
+import { getSelectWhereAsKeywordData, getOrderByKeyword, getSelectWhereData } from '@/utils/handle-sql'
 
 // 可做笔记资源类型 避免重复查询消耗性能，这里暂时写死
 const tList: ObjectAny = {
   '502': {
     table: 'questions',
-    label: '问答来源',
+    label: '问答来源'
   },
   '503': {
     table: 'sources',
-    label: '资源文件来源',
+    label: '资源文件来源'
   },
   '504': {
     table: 'novels',
-    label: '连载来源',
+    label: '连载来源'
   },
   '505': {
     table: 'articles',
-    label: '博客文章来源',
+    label: '博客文章来源'
   },
   '507': {
     table: 'novels_chapter',
-    label: '连载章节',
-  },
+    label: '连载章节'
+  }
 }
 
 // 获取指定的某个笔记
@@ -45,15 +45,15 @@ export const getNovelNoteGetOne = async (ctx: Context, next: Next) => {
 // 获取指定目标所有的笔记列表
 export const doNovelNoteGetList = async (ctx: Context, next: Next) => {
   const params: NovelNoteListParams = {
-		targetId: ctx._params.targetId,
-		pageNo: ctx._params.pageNo * 1 || 1,
-		pageSize: ctx._params.pageSize * 1 || 10,
-		keyword: ctx._params.keyword,
-		highlight: ctx._params.highlight,
-		userId: ctx._user.id,
-		isSecret: ctx._params.isSecret,
-		classify: ctx._params.classify
-	}
+    targetId: ctx._params.targetId,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    keyword: ctx._params.keyword,
+    highlight: ctx._params.highlight,
+    userId: ctx._user.id,
+    isSecret: ctx._params.isSecret,
+    classify: ctx._params.classify
+  }
   const data = await getNovelNoteGetList(params)
   throw new Success(data)
 }
@@ -76,18 +76,18 @@ export const getNovelNoteGetList = async (options: NovelNoteListParams): Promise
   const sqlParamsKeyword = getSelectWhereAsKeywordData({
     valid: ['t1.title', 't1.content'],
     data: options,
-    prefix: 'AND',
+    prefix: 'AND'
   })
   // 处理搜索排序
   const orderParams = getOrderByKeyword({
     valid: ['t1.title', 't1.content'],
-    data: options,
+    data: options
   })
   // 处理普通where参数
   const sqlParams = getSelectWhereData({
     valid: ['t1.is_secret'],
     data: options,
-    prefix: 'AND',
+    prefix: 'AND'
   })
   let whereSQL = ''
   let whereData: any[] = []
@@ -114,7 +114,7 @@ export const getNovelNoteGetList = async (options: NovelNoteListParams): Promise
   const data2 = [...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
-    { sql: sql2, data: data2 },
+    { sql: sql2, data: data2 }
   ])
   const novelNoteList: NovelNoteOptions[] = res[1]
   await _handleNoteChapter(novelNoteList, options.userId, options.targetId)
@@ -148,7 +148,7 @@ async function _handleGetTargetIds(target: string, targetId?: string): Promise<N
   let _target: NovelNoteTargetOptions[] = []
   try {
     _target = <NovelNoteTargetOptions[]>JSON.parse(target)
-  } catch (e) { }
+  } catch (e) {}
   if (Array.isArray(_target) && _target.length) {
     for (let i = 0, len = _target.length; i < len; i++) {
       const item = _target[i]
@@ -166,10 +166,9 @@ async function _handleGetTargetIds(target: string, targetId?: string): Promise<N
           const obj = {
             ...item,
             title: res[0].title,
-            typeLabel: t.label,
+            typeLabel: t.label
           }
-          if (targetId)
-            obj.isTarget = targetId === item.id ? '1' : '0'
+          if (targetId) obj.isTarget = targetId === item.id ? '1' : '0'
           arr.push(obj)
         }
       }

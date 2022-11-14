@@ -4,8 +4,8 @@
  * @update 2021-08-07 15:15:08
  */
 
-import { Success } from '../../../utils/http-exception'
-import { query, execTrans } from '../../../db'
+import { Success } from '@/utils/http-exception'
+import { query, execTrans } from '@/db'
 import { Context, Next } from 'koa'
 import { NovelChapterOptions, NovelChapterListParams, NovelChapterListReturn } from './interface'
 import _ from 'lodash'
@@ -24,7 +24,7 @@ export const doNovelChapterGetList = async (ctx: Context, next: Next) => {
     novelId: ctx._params.novelId,
     userId: ctx._user.id,
     isDraft: ctx._params.isDraft,
-    isSecret: ctx._params.isSecret,
+    isSecret: ctx._params.isSecret
   }
   const data = await getNovelChapterGetList(params)
   throw new Success(data)
@@ -76,7 +76,7 @@ export const getNovelChapterGetList = async (options: NovelChapterListParams): P
   const data2 = [options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
-    { sql: sql2, data: data2 },
+    { sql: sql2, data: data2 }
   ])
   const novelChapterList: NovelChapterOptions[] = res[1]
   await _handleNovelChapter(novelChapterList, options.userId)
@@ -100,7 +100,7 @@ async function _handleNovelChapter(datas: NovelChapterOptions | NovelChapterOpti
     delete data.comment_count1
     delete data.comment_count2
     // 处理是否公开状态
-    if(data.secret1 === '0' && data.secret2 === '0') data.is_secret = '0'
+    if (data.secret1 === '0' && data.secret2 === '0') data.is_secret = '0'
     else data.is_secret = '1'
     delete data.secret1
     delete data.secret2

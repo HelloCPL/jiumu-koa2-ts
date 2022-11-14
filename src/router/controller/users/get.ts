@@ -4,12 +4,12 @@
  * @update 2021-08-16 14:44:43
  */
 
-import { Success } from '../../../utils/http-exception'
-import { query, execTrans } from '../../../db'
+import { Success } from '@/utils/http-exception'
+import { query, execTrans } from '@/db'
 import { Context, Next } from 'koa'
 import { UserOptions, UserListParams, UserListReturn } from './interface'
 import { getFileById } from '../files-info/get'
-import { getSelectWhereAsKeywordData, getOrderByKeyword } from '../../../utils/handle-sql'
+import { getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
 
 // 获取本用户信息
 export const doUserGetSelf = async (ctx: Context, next: Next) => {
@@ -26,12 +26,12 @@ export const doUserGetBase = async (ctx: Context, next: Next) => {
 // 获取用户列表基本信息
 export const doUserGetList = async (ctx: Context, next: Next) => {
   let params = {
-		pageNo: ctx._params.pageNo * 1 || 1,
-		pageSize: ctx._params.pageSize * 1 || 10,
-		keyword: ctx._params.keyword,
-		highlight: ctx._params.highlight,
-		simple: ctx._params.simple
-	}
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    keyword: ctx._params.keyword,
+    highlight: ctx._params.highlight,
+    simple: ctx._params.simple
+  }
   const data = await getUserList(params)
   throw new Success(data)
 }
@@ -53,19 +53,19 @@ export const getUserOne = async (id: string): Promise<UserOptions | null> => {
  * 获取用户列表基本信息，返回数组或[]
  */
 export const getUserList = async (options: UserListParams): Promise<UserListReturn> => {
-  console.log(123);
+  console.log(123)
 
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理搜索关键字
   const sqlParams = getSelectWhereAsKeywordData({
     valid: ['t1.(phone)', 't1.username'],
     data: options,
-    prefix: 'WHERE',
+    prefix: 'WHERE'
   })
   // 处理搜索排序
   const orderParams = getOrderByKeyword({
     valid: ['t1.(phone)', 't1.username'],
-    data: options,
+    data: options
   })
   const sql1 = `SELECT COUNT(t1.id) AS total FROM users t1 ${sqlParams.sql}`
   const data1 = [...sqlParams.data]
@@ -80,7 +80,7 @@ export const getUserList = async (options: UserListParams): Promise<UserListRetu
   }
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
-    { sql: sql2, data: data2 },
+    { sql: sql2, data: data2 }
   ])
   const targetData: UserOptions[] = <UserOptions[]>res[1]
   if (options.simple !== '1')
@@ -89,6 +89,6 @@ export const getUserList = async (options: UserListParams): Promise<UserListRetu
     }
   return {
     total: res[0][0]['total'],
-    data: targetData,
+    data: targetData
   }
 }

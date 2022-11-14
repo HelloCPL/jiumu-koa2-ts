@@ -5,11 +5,11 @@
  */
 
 import { Context, Next } from 'koa'
-import { Message } from '../../../enums'
+import { Message } from '@/enums'
 import { isExist } from '../convert'
-import { validateRange } from '../../../utils/validator'
-import { query } from '../../../db'
-import { ExceptionParameter, ExceptionForbidden } from '../../../utils/http-exception'
+import { validateRange } from '@/utils/validator'
+import { query } from '@/db'
+import { ExceptionParameter, ExceptionForbidden } from '@/utils/http-exception'
 
 /**
  * 新增时
@@ -22,10 +22,10 @@ export const doNovelChapterAddConvert = async (ctx: Context, next: Next) => {
     table: 'novels',
     where: [
       { key: 'id', value: ctx._params.novelId },
-      { key: 'create_user', value: ctx._user.id },
+      { key: 'create_user', value: ctx._user.id }
     ],
     throwType: false,
-    message: Message.unexistNovel,
+    message: Message.unexistNovel
   })
   const sql: string = `SELECT id FROM novels_chapter WHERE novel_id = ? AND sort = ?`
   const data = [ctx._params.novelId, ctx._params.sort]
@@ -56,8 +56,7 @@ export const doNovelChapterUpdateConvert = async (ctx: Context, next: Next) => {
     const sql1: string = `SELECT id FROM novels_chapter WHERE novel_id = ? AND id != ? AND sort = ? AND create_user = ?`
     const data1 = [res[0].novel_id, ctx._params.id, ctx._params.sort, ctx._user.id]
     const res1: any = await query(sql1, data1)
-    if (res1 && res1.length)
-      throw new ExceptionParameter({ message: Message.existNovelChapterSort })
+    if (res1 && res1.length) throw new ExceptionParameter({ message: Message.existNovelChapterSort })
   }
   // 若传 isDraft 判断 isDraft 是否['1', '0'] 范围
   if (ctx._params.hasOwnProperty('isDraft')) {
@@ -82,15 +81,13 @@ export const doNovelChapterUpdateConvert = async (ctx: Context, next: Next) => {
  * 删除时
  * 判断章节是否不存在
  * 是否为自己发布的章节
-*/
+ */
 export const doNovelChapterDeleteConvert = async (ctx: Context, next: Next) => {
   // 判断章节是否不存在
   const sql = `SELECT id, create_user FROM novels_chapter WHERE id = ?`
   const res: any = await query(sql, ctx._params.id)
-  if (!(res && res.length))
-    throw new ExceptionParameter({ message: Message.unexistNovelChapter })
+  if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistNovelChapter })
   // 是否为自己发布的章节
-  if (res[0]['create_user'] !== ctx._user.id)
-    throw new ExceptionForbidden({ message: Message.forbidden })
+  if (res[0]['create_user'] !== ctx._user.id) throw new ExceptionForbidden({ message: Message.forbidden })
   await next()
 }

@@ -2,17 +2,17 @@
  * @description: 用户退出
  * @author chen
  * @update 2021-08-16 17:41:36
-*/
+ */
 
-import { Context, Next } from "koa";
-import { Success } from '../../../utils/http-exception'
+import { Context, Next } from 'koa'
+import { Success } from '@/utils/http-exception'
 import { _getTokenKey } from './token'
-import { clientDel } from '../../../db/redis'
-import { Message } from "../../../enums";
+import { clientDel } from '@/db/redis'
+import { Message } from '@/enums'
 
 /**
  * 修改本用户基本信息
-*/
+ */
 export const doUserExit = async (ctx: Context, next: Next) => {
   const tokenKey = _getTokenKey({
     id: ctx._user.id,
@@ -28,5 +28,5 @@ export const doUserExit = async (ctx: Context, next: Next) => {
   })
   await clientDel(tokenKey)
   await clientDel(tokenRefreshKey)
-  throw new Success({ message: Message.exit });
+  throw new Success({ message: Message.exit })
 }

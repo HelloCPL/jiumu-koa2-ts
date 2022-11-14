@@ -20,9 +20,9 @@
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid'
 import _ from 'lodash'
 import dayjs from 'dayjs'
-import { ENV } from '../config'
+import { ENV } from '@/config'
 import { Context } from 'koa'
-import { TerminalType } from '../enums'
+import { TerminalType } from '@/enums'
 
 /**
  * 返回格式后的路径
@@ -87,7 +87,7 @@ export function isObject(obj: any): boolean {
 }
 
 // 获取文件后缀
-export function getSuffix(path: string, separator = '.'): string {
+export function getSuffix(path: string | undefined | null, separator = '.'): string {
   if (!path) return ''
   let suffix = ''
   let i = path.lastIndexOf(separator)
@@ -116,7 +116,7 @@ export function getStaticPlace(fileName: string) {
     'eps',
     'emf',
     'pict',
-    'raw',
+    'raw'
   ]
   const videoSuffix = [
     'wmv',
@@ -139,7 +139,7 @@ export function getStaticPlace(fileName: string) {
     'vob',
     'qt',
     'navi',
-    'divx',
+    'divx'
   ]
   if (imagesSuffix.indexOf(suffix) !== -1) {
     return 'images'

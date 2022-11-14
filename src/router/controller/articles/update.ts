@@ -2,22 +2,35 @@
  * @description 博客文章修改
  * @author chen
  * @update 2021-08-07 15:15:08
-*/
+ */
 
-import { Context, Next } from "koa";
-import { Success } from '../../../utils/http-exception'
-import { execTrans } from "../../../db";
-import { formatDate } from "../../../utils/tools";
-import { getUpdateSetData } from '../../../utils/handle-sql'
-import { SQLOptions } from "../../../db/interface";
+import { Context, Next } from 'koa'
+import { Success } from '@/utils/http-exception'
+import { execTrans } from '@/db'
+import { formatDate } from '@/utils/tools'
+import { getUpdateSetData } from '@/utils/handle-sql'
+import { SQLOptions } from '@/db/interface'
 
 /**
  * 博客文章修改
-*/
+ */
 export const doArticleUpdate = async (ctx: Context, next: Next) => {
   ctx._params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
-    valid: ['title', 'content', 'content_type', 'type', 'is_draft', 'cover_img', 'attachment', 'classify', 'is_secret', 'sort', 'update_time', 'remarks'],
+    valid: [
+      'title',
+      'content',
+      'content_type',
+      'type',
+      'is_draft',
+      'cover_img',
+      'attachment',
+      'classify',
+      'is_secret',
+      'sort',
+      'update_time',
+      'remarks'
+    ],
     data: ctx._params
   })
   const sql: string = `UPDATE articles SET ${sqlParams.sql} WHERE id = ?`
@@ -30,5 +43,5 @@ export const doArticleUpdate = async (ctx: Context, next: Next) => {
     sqlList.push({ sql: sql1, data: data1, noThrow: true })
   }
   await execTrans(sqlList)
-  throw new Success();
+  throw new Success()
 }

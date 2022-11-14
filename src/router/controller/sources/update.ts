@@ -2,18 +2,18 @@
  * @description 资源修改
  * @author chen
  * @update 2021-08-07 15:15:08
-*/
+ */
 
-import { Context, Next } from "koa";
-import { Success } from '../../../utils/http-exception'
-import { execTrans } from "../../../db";
-import { formatDate } from "../../../utils/tools";
-import { getUpdateSetData } from '../../../utils/handle-sql'
-import { SQLOptions } from "../../../db/interface";
+import { Context, Next } from 'koa'
+import { Success } from '@/utils/http-exception'
+import { execTrans } from '@/db'
+import { formatDate } from '@/utils/tools'
+import { getUpdateSetData } from '@/utils/handle-sql'
+import { SQLOptions } from '@/db/interface'
 
 /**
  * 资源修改
-*/
+ */
 export const doSourceUpdate = async (ctx: Context, next: Next) => {
   ctx._params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
@@ -33,5 +33,5 @@ export const doSourceUpdate = async (ctx: Context, next: Next) => {
     })
   }
   await execTrans(sqlList)
-  throw new Success();
+  throw new Success()
 }

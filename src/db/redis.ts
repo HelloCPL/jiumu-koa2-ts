@@ -9,10 +9,10 @@
  */
 
 import Redis, { RedisClient } from 'redis'
-import { IS_VERIFY_TOKEN_BY_REDIS, REDIS } from '../config'
+import { IS_VERIFY_TOKEN_BY_REDIS, REDIS } from '@/config'
 import _ from 'lodash'
-import { getKey } from '../utils/tools'
-import Logger from '../lib/logger'
+import { getKey } from '@/utils/tools'
+import Logger from '@/lib/logger'
 import { RedisOptions } from './interface'
 
 function createRedis() {
@@ -28,7 +28,7 @@ function createRedis() {
       // Logger.error('redis 发生错误', err, 'redis 发生错误')
       Logger.error({
         message: 'redis 发生错误',
-        error: err,
+        error: err
       })
     })
   }
@@ -43,7 +43,7 @@ function createRedis() {
           if (err) {
             Logger.error({
               message: 'redis 发生错误',
-              error: err,
+              error: err
             })
             reject(err)
           } else resolve(null)
@@ -62,7 +62,7 @@ function createRedis() {
           if (err) {
             Logger.error({
               message: 'redis 发生错误',
-              error: err,
+              error: err
             })
             reject(err)
           } else resolve(_handleGetItem(value))
@@ -82,7 +82,7 @@ function createRedis() {
             if (err) {
               Logger.error({
                 message: 'redis 发生错误',
-                error: err,
+                error: err
               })
               reject(err)
             } else resolve(null)
@@ -97,7 +97,7 @@ function createRedis() {
   return {
     clientSet,
     clientGet,
-    clientDel,
+    clientDel
   }
 }
 

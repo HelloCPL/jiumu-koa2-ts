@@ -2,8 +2,7 @@
  * @author chen
  * @description dev 开发环境配置
  * @update 2022-04-30 18:05:17
-*/
-
+ */
 
 import path from 'path'
 import { ConfigOptions } from './interface'
@@ -13,7 +12,8 @@ function createConfig(): ConfigOptions {
     ENV: 'dev', // 开发环境
     PORT: 3030, // http 服务端口
     PUBLIC_PATH: '', // 服务器位置
-    DATABASE: { // mysql数据库配置
+    DATABASE: {
+      // mysql数据库配置
       NAME: '', // 名称
       USER: '', // 账号
       PASSWORD: '.', // 密码
@@ -21,19 +21,22 @@ function createConfig(): ConfigOptions {
       PORT: 3306, // 端口
       CONNECTION_LIMIT: 500 // 最大连接数
     },
-    REDIS: { // redis服务配置
+    REDIS: {
+      // redis服务配置
       HOST: '', // 主机
       PORT: 6379, // 端口
       PASSWORD: '' // 密码
     },
-    WX: { // 微信小程序信息配置
+    WX: {
+      // 微信小程序信息配置
       APP_ID: '',
-      APP_SECRET: '',
+      APP_SECRET: ''
     },
-    TOKEN: { // token 信息配置
+    TOKEN: {
+      // token 信息配置
       SECRET_KEY: 'dev_jiumu', // key
       VALID_TIME: 60 * 60 * 24 * 7, // token 有效期24小时
-      REFRESH_VALID_TIME: 60 * 60 * 24 * 7, // 刷新 token 有效期7天
+      REFRESH_VALID_TIME: 60 * 60 * 24 * 7 // 刷新 token 有效期7天
     },
     BASE_URL: 'http://localhost:3030/', // 默认服务路径
     STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-static'), // 静态资源路径
@@ -58,7 +61,7 @@ function createConfig(): ConfigOptions {
     config.WX = secretConfig.WX
     config.CRYPTOJS_KEY = secretConfig.CRYPTOJS_KEY
     config.CRYPTOJS_IV = secretConfig.CRYPTOJS_IV
-  } catch (e) { }
+  } catch (e) {}
 
   return config
 }

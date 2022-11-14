@@ -2,22 +2,26 @@
  * @author chen
  * @description 笔记模块
  * @update 2022-03-20 15:20:36
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doNovelNoteAddConvert, doNovelNoteUpdateConvert, doNovelNoteDeleteConvert } from '../../controller/novels-note/convert'
-import { doNovelNoteAdd } from '../../controller/novels-note/add'
-import { doNovelNoteUpdate } from '../../controller/novels-note/update'
-import { doNovelNoteDelete } from '../../controller/novels-note/delete'
-import { getNovelNoteGetOne, doNovelNoteGetList } from '../../controller/novels-note/get'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import {
+  doNovelNoteAddConvert,
+  doNovelNoteUpdateConvert,
+  doNovelNoteDeleteConvert
+} from '@/router/controller/novels-note/convert'
+import { doNovelNoteAdd } from '@/router/controller/novels-note/add'
+import { doNovelNoteUpdate } from '@/router/controller/novels-note/update'
+import { doNovelNoteDelete } from '@/router/controller/novels-note/delete'
+import { getNovelNoteGetOne, doNovelNoteGetList } from '@/router/controller/novels-note/get'
 
 @Prefix('novel-note')
 export default class API {
   // 1 笔记新增
   @Request({
     path: 'add',
-    methods: ['get', 'post'],
+    methods: ['get', 'post']
   })
   @Required(['target', 'content'])
   @Convert(doNovelNoteAddConvert)
@@ -28,7 +32,7 @@ export default class API {
   // 2 笔记修改
   @Request({
     path: 'update',
-    methods: ['get', 'post'],
+    methods: ['get', 'post']
   })
   @Required(['id'])
   @Convert(doNovelNoteUpdateConvert)
@@ -39,7 +43,7 @@ export default class API {
   // 3 笔记删除
   @Request({
     path: 'delete',
-    methods: ['get', 'post'],
+    methods: ['get', 'post']
   })
   @Required(['id'])
   @Convert(doNovelNoteDeleteConvert)
@@ -50,7 +54,7 @@ export default class API {
   // 4 获取指定的某个笔记
   @Request({
     path: 'get/one',
-    methods: ['get', 'post'],
+    methods: ['get', 'post']
   })
   @Required(['id'])
   async getNovelNoteGetOne(ctx: Context, next: Next) {
@@ -60,7 +64,7 @@ export default class API {
   // 5 获取指定目标所有的笔记列表
   @Request({
     path: 'get/list',
-    methods: ['get', 'post'],
+    methods: ['get', 'post']
   })
   @Required(['targetId&30'])
   async doNovelNoteGetList(ctx: Context, next: Next) {

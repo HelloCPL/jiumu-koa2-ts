@@ -2,14 +2,14 @@
  * @description: 评论管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doCommentAddConvert, doCommentDeleteByIdConvert } from '../../controller/comments/convert'
-import { doCommentFirstAdd, doCommentSecondAdd } from '../../controller/comments/add'
-import { doCommentDeleteById } from '../../controller/comments/delete'
-import { doCommentFirstGetList, doCommentSecondGetList } from '../../controller/comments/get'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import { doCommentAddConvert, doCommentDeleteByIdConvert } from '@/router/controller/comments/convert'
+import { doCommentFirstAdd, doCommentSecondAdd } from '@/router/controller/comments/add'
+import { doCommentDeleteById } from '@/router/controller/comments/delete'
+import { doCommentFirstGetList, doCommentSecondGetList } from '@/router/controller/comments/get'
 
 @Prefix('comment')
 export default class API {
@@ -61,8 +61,7 @@ export default class API {
   })
   @Required(['targetId', 'type'])
   async doCommentGetList(ctx: Context, next: Next) {
-    if (ctx._params.targetId === 'answer')
-      ctx._params.targetId = null
+    if (ctx._params.targetId === 'answer') ctx._params.targetId = null
     ctx._params.userId = null
     if (ctx._params.type == '501') {
       // 二级评论列表
@@ -98,5 +97,4 @@ export default class API {
   //   // 一级评论列表
   //   await doCommentFirstGetList(ctx, next)
   // }
-
 }

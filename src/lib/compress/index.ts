@@ -19,12 +19,12 @@ export const initCompress = (app: Koa) => {
       },
       threshold: 2048, // 超过 2KB 压缩
       gzip: {
-        flush: require('zlib').constants.Z_SYNC_FLUSH, // zlib是node的压缩模块
+        flush: require('zlib').constants.Z_SYNC_FLUSH // zlib是node的压缩模块
       },
       deflate: {
-        flush: require('zlib').constants.Z_SYNC_FLUSH,
+        flush: require('zlib').constants.Z_SYNC_FLUSH
       },
-      br: false,
+      br: false
     })
   )
 }

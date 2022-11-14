@@ -6,9 +6,9 @@
 
 import Koa from 'koa'
 import compose from 'koa-compose'
-import { DataOptions } from '../lib/mount-parameter/interface'
-import { TokenOptions } from '../router/controller/users/interface'
-import { TerminalType } from '../enums'
+import { DataOptions } from '@/lib/mount-parameter/interface'
+import { TokenOptions } from '@/router/controller/users/interface'
+import { TerminalType } from '@/enums'
 
 declare module 'koa' {
   interface Context {
@@ -16,5 +16,7 @@ declare module 'koa' {
     _params: ObjectAny, // 自动根据请求方式获取的访问参数
     _terminal: TerminalType, // 访问终端
     _user: TokenOptions, // 根据token解析的用户信息
+    _requestCount: number // 记录第几次请求
+    _requestStart: any // 请求开始时间
   }
 }

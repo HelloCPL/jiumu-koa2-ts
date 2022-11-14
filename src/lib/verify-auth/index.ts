@@ -8,15 +8,15 @@
  */
 
 import { Context, Next } from 'koa'
-import { analysisToken } from '../../router/controller/users/token'
-import { Code, Message } from '../../enums'
-import { ExceptionHttp, ExceptionAuthFailed } from '../../utils/http-exception'
-import { getSuffix, toPath } from '../../utils/tools'
-import { query } from '../../db'
-import { decrypt } from '../../utils/crypto'
+import { analysisToken } from '@/router/controller/users/token'
+import { Code, Message } from '@/enums'
+import { ExceptionHttp, ExceptionAuthFailed } from '@/utils/http-exception'
+import { getSuffix, toPath } from '@/utils/tools'
+import { query } from '@/db'
+import { decrypt } from '@/utils/crypto'
 import dayjs from 'dayjs'
 import Logger from '../logger'
-import { IS_VERIFY_API_PERMISSION, IS_VERIFY_STATIC_PERMISSION } from '../../config'
+import { IS_VERIFY_API_PERMISSION, IS_VERIFY_STATIC_PERMISSION } from '@/config'
 
 /**
  * 拦截普通路由请求 token 权限

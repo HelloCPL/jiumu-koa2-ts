@@ -2,14 +2,14 @@
  * @author chen
  * @description 判断路径是否存在，不存在则创建
  * @update 2022-01-09 14:59:31
-*/
+ */
 
-import fs, { Stats } from "fs";
+import fs, { Stats } from 'fs'
 import path from 'path'
 
 // 读取路径信息
 function getStat(dir: string) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     fs.stat(dir, (err: any, stats: Stats) => {
       if (err) resolve(false)
       else resolve(stats)
@@ -19,7 +19,7 @@ function getStat(dir: string) {
 
 // 创建路径
 function mkdir(dir: string) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     fs.mkdir(dir, (err: any) => {
       if (err) resolve(false)
       else resolve(true)
