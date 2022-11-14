@@ -18,7 +18,7 @@ import { ExceptionParameter, ExceptionForbidden } from '@/utils/http-exception'
  */
 export const doQuestionUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断问答是否不存在
-  const sql = `SELECT id, create_user FROM questions WHERE id = ?`
+  const sql = 'SELECT id, create_user FROM questions WHERE id = ?'
   const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistQuestion })
   // 是否为自己发布的问答
@@ -28,7 +28,7 @@ export const doQuestionUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isDraft,
       range: ['1', '0'],
-      message: `isDraft参数必须为['1', '0']范围`
+      message: 'isDraft参数必须为[\'1\', \'0\']范围'
     })
   }
   // 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
@@ -36,7 +36,7 @@ export const doQuestionUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isSecret,
       range: ['1', '0'],
-      message: `isSecret参数必须为['1', '0']范围`
+      message: 'isSecret参数必须为[\'1\', \'0\']范围'
     })
   }
   await next()
@@ -48,7 +48,7 @@ export const doQuestionUpdateConvert = async (ctx: Context, next: Next) => {
  */
 export const doQuestionDeleteConvert = async (ctx: Context, next: Next) => {
   // 判断问答是否不存在
-  const sql = `SELECT id, create_user FROM questions WHERE id = ?`
+  const sql = 'SELECT id, create_user FROM questions WHERE id = ?'
   const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistQuestion })
   // 是否为自己发布的问答

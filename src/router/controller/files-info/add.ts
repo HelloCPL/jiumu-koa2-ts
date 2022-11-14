@@ -6,7 +6,7 @@
 
 import fs, { ReadStream, WriteStream } from 'fs'
 import path from 'path'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
 import { validateRange } from '@/utils/validator'
 import { getFileRandomName, getSuffix, getUuId, formatDate, getStaticPlace } from '@/utils/tools'
@@ -22,12 +22,12 @@ import { STATIC_URL } from '@/config'
 /**
  * 文件上传 可上传一个或多个文件 返回数组格式
  */
-export const doFileAdd = async (ctx: Context, next: Next) => {
+export const doFileAdd = async (ctx: Context) => {
   const files: any = ctx.request.files
   const file: File = files.file
-  let fileList: FileInfoOptions[] = []
+  const fileList: FileInfoOptions[] = []
   if (_.isArray(file)) {
-    for (let val of file) {
+    for (const val of file) {
       const fileInfo = await _writeFile(ctx, val)
       if (fileInfo) fileList.push(fileInfo)
     }
@@ -56,7 +56,8 @@ async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | n
   const id = getUuId()
   // @ts-ignore
   const filePath = getFileRandomName(file.name)
-  const sql = `INSERT files_info (id, file_path, file_name, file_size, suffix,static_place, create_user, is_secret, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  const sql =
+    'INSERT files_info (id, file_path, file_name, file_size, suffix,static_place, create_user, is_secret, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
   // @ts-ignore
   const data = [
     id,

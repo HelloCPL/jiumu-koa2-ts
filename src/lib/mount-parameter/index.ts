@@ -51,7 +51,7 @@ export const getParams = (ctx: Context): ObjectAny => {
 function handleXSS(obj: any) {
   // 如果是对象
   if (_.isPlainObject(obj)) {
-    for (let key in <ObjectAny>obj) {
+    for (const key in <ObjectAny>obj) {
       if (_.isString(obj[key])) {
         obj[key] = xss.process(obj[key])
       } else if (_.isPlainObject(obj[key]) || _.isArray(obj[key])) {

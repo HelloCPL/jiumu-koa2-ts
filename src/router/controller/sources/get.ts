@@ -6,7 +6,7 @@
 
 import { Success } from '@/utils/http-exception'
 import { query, execTrans } from '@/db'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { SourceOptions, SourceListParams, SourceListReturn } from './interface'
 import { getFileByIds } from '../files-info/get'
 import { getTagCustomByIds } from '../tags-custom/get'
@@ -14,13 +14,13 @@ import { getSelectWhereAsKeywordData, getSelectWhereData, getOrderByKeyword } fr
 import _ from 'lodash'
 
 // 获取指定的某个资源
-export const doSourceGetOne = async (ctx: Context, next: Next) => {
+export const doSourceGetOne = async (ctx: Context) => {
   const data = await getSourceOne(ctx._params.id, ctx._user.id)
   throw new Success({ data })
 }
 
 // 获取问答列表
-export const doSourceGetList = async (ctx: Context, next: Next) => {
+export const doSourceGetList = async (ctx: Context) => {
   const params: SourceListParams = {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
@@ -40,7 +40,8 @@ export const doSourceGetList = async (ctx: Context, next: Next) => {
  * 获取指定的某个资源，返回对象或null
  */
 export const getSourceOne = async (id: string, userId: string): Promise<SourceOptions | null> => {
-  const sql: string = `SELECT t1.id, t1.title, t1.attachment, t1.type, t9.label as type_label, t1.classify, t1.is_secret, t1.is_top, t1.sort, t1.create_user, t2.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t3.id AS is_like, (SELECT COUNT(t4.id) FROM likes t4 WHERE t4.target_id = t1.id AND t1.id) AS like_count, t5.id AS is_collection, (SELECT COUNT(t6.id) FROM collections t6 WHERE t6.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t7.id) FROM comments_first t7 WHERE t7.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t8.id) FROM comments_second t8 WHERE t8.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM sources t1 LEFT JOIN users t2 ON t1.create_user = t2.id LEFT JOIN likes t3 ON (t1.id = t3.target_id AND t3.create_user = ?) LEFT JOIN collections t5 ON (t1.id = t5.target_id AND t5.create_user = ?) LEFT JOIN tags t9 ON t1.type = t9.code  WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
+  const sql: string =
+    'SELECT t1.id, t1.title, t1.attachment, t1.type, t9.label as type_label, t1.classify, t1.is_secret, t1.is_top, t1.sort, t1.create_user, t2.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t3.id AS is_like, (SELECT COUNT(t4.id) FROM likes t4 WHERE t4.target_id = t1.id AND t1.id) AS like_count, t5.id AS is_collection, (SELECT COUNT(t6.id) FROM collections t6 WHERE t6.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t7.id) FROM comments_first t7 WHERE t7.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t8.id) FROM comments_second t8 WHERE t8.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM sources t1 LEFT JOIN users t2 ON t1.create_user = t2.id LEFT JOIN likes t3 ON (t1.id = t3.target_id AND t3.create_user = ?) LEFT JOIN collections t5 ON (t1.id = t5.target_id AND t5.create_user = ?) LEFT JOIN tags t9 ON t1.type = t9.code  WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))'
   const data = [userId, userId, id, userId]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -74,16 +75,16 @@ export const getSourceList = async (options: SourceListParams): Promise<SourceLi
   let whereSQL = ''
   let whereData: any[] = []
   if (options.isSecret == '1') {
-    whereSQL = `WHERE (t1.is_secret = 1 AND t1.create_user = ?)`
+    whereSQL = 'WHERE (t1.is_secret = 1 AND t1.create_user = ?)'
     whereData.push(options.userId)
   } else if (options.isSecret == '0') {
-    whereSQL = `WHERE t1.is_secret = 0`
+    whereSQL = 'WHERE t1.is_secret = 0'
   } else {
-    whereSQL = `WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
+    whereSQL = 'WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))'
     whereData.push(options.userId)
   }
   if (options.classify) {
-    whereSQL += ` AND t1.classify LIKE ? `
+    whereSQL += ' AND t1.classify LIKE ? '
     whereData.push(`%${options.classify}%`)
   }
   whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql}`

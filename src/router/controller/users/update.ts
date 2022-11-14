@@ -4,7 +4,7 @@
  * @update 2021-08-07 15:15:08
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Success, ExceptionForbidden } from '@/utils/http-exception'
 import { query } from '@/db'
 import { formatDate } from '@/utils/tools'
@@ -16,7 +16,7 @@ import { handleDoubleToken } from './register'
 /**
  * 修改本用户基本信息
  */
-export const doUserUpdateBaseSelf = async (ctx: Context, next: Next) => {
+export const doUserUpdateBaseSelf = async (ctx: Context) => {
   await updateUserBaseByUserId(ctx, ctx._user.id)
   throw new Success()
 }
@@ -24,7 +24,7 @@ export const doUserUpdateBaseSelf = async (ctx: Context, next: Next) => {
 /**
  * 修改指定用户基本信息
  */
-export const doUserUpdateBase = async (ctx: Context, next: Next) => {
+export const doUserUpdateBase = async (ctx: Context) => {
   await updateUserBaseByUserId(ctx, ctx._params.id)
   throw new Success()
 }
@@ -32,11 +32,11 @@ export const doUserUpdateBase = async (ctx: Context, next: Next) => {
 /**
  * 更新token
  */
-export const doUserUpdateToken = async (ctx: Context, next: Next) => {
+export const doUserUpdateToken = async (ctx: Context) => {
   const tokenRefresh = await analysisToken(ctx, 'token_refresh')
   if (tokenRefresh.code === Code.success) {
     // 生成双 token
-    let params = { userId: tokenRefresh.data.id, phone: tokenRefresh.data.phone }
+    const params = { userId: tokenRefresh.data.id, phone: tokenRefresh.data.phone }
     const doubleToken = await handleDoubleToken(ctx, params)
     throw new Success({ data: doubleToken })
   } else throw new ExceptionForbidden({ message: Message.authLogin, code: Code.authLogin })

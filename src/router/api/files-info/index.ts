@@ -7,7 +7,7 @@
 import { Context, Next } from 'koa'
 import { Prefix, Request, Required, Convert } from '@/router/router'
 import { doFileAdd } from '@/router/controller/files-info/add'
-import { doFileGetOne, doFileGetListByUserId, doFileGetListSelf } from '@/router/controller/files-info/get'
+import { doFileGetOne  } from '@/router/controller/files-info/get'
 import { doFileDelete } from '@/router/controller/files-info/delete'
 import { doFileDeleteConvert, doFileGetOneConvert } from '@/router/controller/files-info/convert'
 

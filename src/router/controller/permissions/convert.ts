@@ -6,7 +6,7 @@
 
 import { Context, Next } from 'koa'
 import { Message } from '@/enums'
-import { isExist, isExistHasChildren, isSuper } from '../convert'
+import { isExist, isSuper } from '../convert'
 import { ExceptionForbidden, ExceptionParameter } from '@/utils/http-exception'
 import { query } from '@/db'
 
@@ -51,7 +51,7 @@ export async function doPermissionUpdateConvert(ctx: Context, next: Next) {
   if (ctx._params.hasOwnProperty('code') && !ctx._params.code)
     throw new ExceptionParameter({ message: 'code参数值必须为真' })
   // 判断权限是否不存在
-  const sql = `SELECT code, configurable FROM permissions WHERE id = ?`
+  const sql = 'SELECT code, configurable FROM permissions WHERE id = ?'
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistPermission })
   res = res[0]
@@ -92,7 +92,7 @@ export async function doPermissionUpdateConvert(ctx: Context, next: Next) {
  */
 export async function doPermissionDeleteConvert(ctx: Context, next: Next) {
   // 先判断权限是否不存在
-  const sql = `SELECT code, configurable FROM permissions WHERE id = ?`
+  const sql = 'SELECT code, configurable FROM permissions WHERE id = ?'
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistPermission })
   res = res[0]

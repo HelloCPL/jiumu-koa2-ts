@@ -6,12 +6,12 @@
 
 import { Success } from '@/utils/http-exception'
 import { execTrans } from '@/db'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { CollectionOptions, CollectionParams, CollectionReturn } from './interface'
 import { validateRange } from '@/utils/validator'
 
 // 根据 userId 获取收藏列表
-export const doCollectionGetListSelf = async (ctx: Context, next: Next) => {
+export const doCollectionGetListSelf = async (ctx: Context) => {
   const params = {
     userId: ctx._user.id,
     pageNo: ctx._params.pageNo * 1 || 1,
@@ -23,7 +23,7 @@ export const doCollectionGetListSelf = async (ctx: Context, next: Next) => {
 }
 
 // 根据 userId 获取收藏列表
-export const doCollectionGetList = async (ctx: Context, next: Next) => {
+export const doCollectionGetList = async (ctx: Context) => {
   const params = {
     userId: ctx._params.userId,
     pageNo: ctx._params.pageNo * 1 || 1,
@@ -56,7 +56,7 @@ export const getCollectionList = async (params: CollectionParams): Promise<Colle
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 }
   ])
-  let collectionData = <CollectionOptions[]>res[1]
+  const collectionData = <CollectionOptions[]>res[1]
   _handleCollectionData(collectionData)
   return {
     total: res[0][0]['total'],
@@ -74,8 +74,8 @@ function _getCollectionType(type: string) {
     '505': 'articles',
     '507': 'novels_chapter'
   }
-  let typeSql = ``
-  let typeWhere = `AND FIND_IN_SET(t1.type, '${type}')`
+  let typeSql = ''
+  const typeWhere = `AND FIND_IN_SET(t1.type, '${type}')`
   types.forEach((val, index) => {
     const t = typesTable[val]
     const ta = `tt${index + 1}`
@@ -92,21 +92,21 @@ function _getCollectionType(type: string) {
 function _handleCollectionData(data: CollectionOptions[]): CollectionOptions[] {
   data.forEach((item) => {
     switch (item.type) {
-      case '502':
-        item.title = item.title_questions
-        break
-      case '503':
-        item.title = item.title_sources
-        break
-      case '504':
-        item.title = item.title_novels
-        break
-      case '505':
-        item.title = item.title_articles
-        break
-      case '507':
-        item.title = item.title_novels_chapter
-        break
+    case '502':
+      item.title = item.title_questions
+      break
+    case '503':
+      item.title = item.title_sources
+      break
+    case '504':
+      item.title = item.title_novels
+      break
+    case '505':
+      item.title = item.title_articles
+      break
+    case '507':
+      item.title = item.title_novels_chapter
+      break
     }
     delete item.title_questions
     delete item.title_sources

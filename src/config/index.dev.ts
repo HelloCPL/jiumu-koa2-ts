@@ -8,7 +8,7 @@ import path from 'path'
 import { ConfigOptions } from './interface'
 
 function createConfig(): ConfigOptions {
-  let config: ConfigOptions = {
+  const config: ConfigOptions = {
     ENV: 'dev', // 开发环境
     PORT: 3030, // http 服务端口
     PUBLIC_PATH: '', // 服务器位置

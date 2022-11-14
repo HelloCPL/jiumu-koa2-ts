@@ -25,7 +25,7 @@ import { query } from '@/db'
  * 生成 token
  */
 export const gernerateToken = async (ctx: Context, info: TokenParamsOptions): Promise<string> => {
-  let uuid = <string>ctx.request.header['user-agent']
+  const uuid = <string>ctx.request.header['user-agent']
   const payload: TokenOptions = {
     id: info.id,
     phone: info.phone,
@@ -67,8 +67,8 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
         'user-agent': tokenVerify['user-agent'],
         key
       })
-      let tokenRedis: any = await clientGet(tokenKey)
-      let tokenRedisInfo: TokenOptions = <TokenOptions>JWT.decode(tokenRedis)
+      const tokenRedis: any = await clientGet(tokenKey)
+      const tokenRedisInfo: TokenOptions = <TokenOptions>JWT.decode(tokenRedis)
       // 校验用户信息是否一致
       if (
         !tokenRedis ||
@@ -78,7 +78,7 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
       )
         return { message: Message.authLogin, code: Code.authLogin }
       // 校验登录设备、请求路径与终端的信息是否一致
-      let uuid = <string>ctx.request.header['user-agent']
+      const uuid = <string>ctx.request.header['user-agent']
       if (ctx._terminal !== tokenVerify.terminal || uuid !== tokenVerify['user-agent'])
         return { message: Message.errorDevice, code: Code.forbidden }
       // 校验是否允许多平台登录
@@ -90,7 +90,7 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
       return { message: Message.forbidden, code: Code.forbidden }
     } else {
       // mysql校验token用户是否合法
-      const sql = `SELECT id FROM users where id = ?`
+      const sql = 'SELECT id FROM users where id = ?'
       const res: any = await query(sql, tokenVerify.id)
       if (!res.length) {
         return { message: Message.authLogin, code: Code.authLogin }

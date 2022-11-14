@@ -6,7 +6,7 @@
 
 import { Success } from '@/utils/http-exception'
 import { query, execTrans } from '@/db'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { NovelNoteOptions, NovelNoteListParams, NovelNoteListReturn, NovelNoteTargetOptions } from './interface'
 import _ from 'lodash'
 import { getTagCustomByIds } from '../tags-custom/get'
@@ -37,13 +37,13 @@ const tList: ObjectAny = {
 }
 
 // 获取指定的某个笔记
-export const getNovelNoteGetOne = async (ctx: Context, next: Next) => {
+export const getNovelNoteGetOne = async (ctx: Context) => {
   const data = await doNovelNoteGetOne(ctx._params.id, ctx._user.id)
   throw new Success({ data })
 }
 
 // 获取指定目标所有的笔记列表
-export const doNovelNoteGetList = async (ctx: Context, next: Next) => {
+export const doNovelNoteGetList = async (ctx: Context) => {
   const params: NovelNoteListParams = {
     targetId: ctx._params.targetId,
     pageNo: ctx._params.pageNo * 1 || 1,
@@ -62,7 +62,8 @@ export const doNovelNoteGetList = async (ctx: Context, next: Next) => {
  * 获取指定的某个笔记，返回对象或null
  */
 export const doNovelNoteGetOne = async (id: string, userId: string): Promise<NovelNoteOptions | null> => {
-  const sql: string = `SELECT t1.id, t1.target, t1.title, t1.content, t1.classify, t1.sort, t1.is_secret, t1.create_user, t3.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note t1 LEFT JOIN users t3 ON t1.create_user = t3.id  WHERE t1.id = ? AND (t1.is_secret = 0 OR t1.create_user = ?)`
+  const sql: string =
+    'SELECT t1.id, t1.target, t1.title, t1.content, t1.classify, t1.sort, t1.is_secret, t1.create_user, t3.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note t1 LEFT JOIN users t3 ON t1.create_user = t3.id  WHERE t1.id = ? AND (t1.is_secret = 0 OR t1.create_user = ?)'
   const data = [id, userId]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -92,16 +93,16 @@ export const getNovelNoteGetList = async (options: NovelNoteListParams): Promise
   let whereSQL = ''
   let whereData: any[] = []
   if (options.isSecret === '1') {
-    whereSQL = `WHERE (t1.is_secret = 1 AND t1.create_user = ?)`
+    whereSQL = 'WHERE (t1.is_secret = 1 AND t1.create_user = ?)'
     whereData.push(options.userId)
   } else if (options.isSecret === '0') {
-    whereSQL = `WHERE t1.is_secret = 0`
+    whereSQL = 'WHERE t1.is_secret = 0'
   } else {
-    whereSQL = `WHERE (t1.is_secret = 0 OR t1.create_user = ?)`
+    whereSQL = 'WHERE (t1.is_secret = 0 OR t1.create_user = ?)'
     whereData.push(options.userId)
   }
   if (options.classify) {
-    whereSQL += ` AND t1.classify LIKE ? `
+    whereSQL += ' AND t1.classify LIKE ? '
     whereData.push(`%${options.classify}%`)
   }
   whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql} AND t1.target like ?`

@@ -4,7 +4,7 @@
  * @update 2021-08-10 12:52:14
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { query, execTrans } from '@/db'
 import { BASE_URL, PUBLIC_PATH, FILE_VAILD_TIME } from '@/config'
 import dayjs from 'dayjs'
@@ -16,7 +16,7 @@ import { toPath } from '@/utils/tools'
 /**
  * 获取一个指定文件 返回对象或null
  */
-export const doFileGetOne = async (ctx: Context, next: Next) => {
+export const doFileGetOne = async (ctx: Context) => {
   const fileInfo = await getFileById(ctx._params.id, ctx._user.id)
   throw new Success({ data: fileInfo })
 }
@@ -24,7 +24,7 @@ export const doFileGetOne = async (ctx: Context, next: Next) => {
 /**
  * 获取指定用户的所有文件列表 返回数组或[]
  */
-export const doFileGetListByUserId = async (ctx: Context, next: Next) => {
+export const doFileGetListByUserId = async (ctx: Context) => {
   const params = {
     userId: ctx._params.userId,
     pageNo: ctx._params.pageNo * 1 || 1,
@@ -38,7 +38,7 @@ export const doFileGetListByUserId = async (ctx: Context, next: Next) => {
 /**
  * 获取指定用户的所有文件列表 返回数组或[]
  */
-export const doFileGetListSelf = async (ctx: Context, next: Next) => {
+export const doFileGetListSelf = async (ctx: Context) => {
   const params = {
     userId: ctx._user.id,
     pageNo: ctx._params.pageNo * 1 || 1,
@@ -54,7 +54,8 @@ export const doFileGetListSelf = async (ctx: Context, next: Next) => {
  */
 export const getFileById = async (fileId: string, userId?: string): Promise<FileInfoOptions | null> => {
   if (!fileId) return null
-  const sql = `SELECT t1.id, t1.file_path, t1.file_name, t1.file_size, t1.suffix, t1.static_place, t1.create_user, t2.username as create_user_name, t1.is_secret, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM files_info t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
+  const sql =
+    'SELECT t1.id, t1.file_path, t1.file_name, t1.file_size, t1.suffix, t1.static_place, t1.create_user, t2.username as create_user_name, t1.is_secret, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM files_info t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))'
   const data = [fileId, userId]
   const res: any = await query(sql, data)
   if (res && res.length) return _handleFile(<FileInfoOptions>res[0])
@@ -67,13 +68,14 @@ export const getFileById = async (fileId: string, userId?: string): Promise<File
  */
 export const getFileByIds = async (fileIds: string, userId?: string): Promise<FileInfoOptions[]> => {
   if (!fileIds) return []
-  const sql = `SELECT t1.id, t1.file_path, t1.file_name, t1.file_size, t1.suffix, t1.static_place, t1.create_user, t2.username as create_user_name, t1.is_secret, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM files_info t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE FIND_IN_SET(t1.id, ?) AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
+  const sql =
+    'SELECT t1.id, t1.file_path, t1.file_name, t1.file_size, t1.suffix, t1.static_place, t1.create_user, t2.username as create_user_name, t1.is_secret, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM files_info t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE FIND_IN_SET(t1.id, ?) AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))'
   const data = [fileIds, userId]
   const res: any = await query(sql, data)
-  let fileList: FileInfoOptions[] = []
+  const fileList: FileInfoOptions[] = []
   if (res && res.length) {
     res.forEach((file: FileInfoOptions) => {
-      let fileInfo = _handleFile(file)
+      const fileInfo = _handleFile(file)
       if (fileInfo) fileList.push(fileInfo)
     })
   }
@@ -101,9 +103,9 @@ function _handleFile(file: FileInfoOptions): FileInfoOptions {
 // 根据用户获取文件列表
 async function _handleFileList(options: FileListParamsOptions): Promise<FileListReturnOptions> {
   const pageNo = (options.pageNo - 1) * options.pageSize
-  let sqlParam: SQLParamsOptions = { sql: '', data: [] }
+  const sqlParam: SQLParamsOptions = { sql: '', data: [] }
   if (options.suffix) {
-    sqlParam.sql = ` AND FIND_IN_SET(t1.suffix, ?) `
+    sqlParam.sql = ' AND FIND_IN_SET(t1.suffix, ?) '
     sqlParam.data.push(options.suffix)
   }
   const sql1 = `SELECT COUNT(t1.id) AS total FROM files_info t1 WHERE t1.create_user = ? ${sqlParam.sql}`
@@ -114,10 +116,10 @@ async function _handleFileList(options: FileListParamsOptions): Promise<FileList
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 }
   ])
-  let fileList: FileInfoOptions[] = []
+  const fileList: FileInfoOptions[] = []
   if (res[1] && res[1].length) {
     res[1].forEach((file: FileInfoOptions) => {
-      let fileInfo = _handleFile(file)
+      const fileInfo = _handleFile(file)
       if (fileInfo) fileList.push(fileInfo)
     })
   }

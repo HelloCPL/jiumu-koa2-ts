@@ -91,10 +91,10 @@ export function execTrans(sqlList: SQLOptions[]) {
  * 处理多条 SQL 语句查询
  */
 function _handleExceTransSQLParams(reject: any, connection: PoolConnection, sqlList: SQLOptions[]) {
-  let queryArr: any[] = []
+  const queryArr: any[] = []
   sqlList.forEach((item) => {
     // Logger.query(item.sql, item.data)
-    let temp = function (cb: Function) {
+    const temp = function (cb: Function) {
       connection.query(item.sql, item.data, (err: any, results: any) => {
         if (err)
           _handleExceTransRollback(reject, connection, {

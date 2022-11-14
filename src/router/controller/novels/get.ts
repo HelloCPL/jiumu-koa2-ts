@@ -6,20 +6,20 @@
 
 import { Success } from '@/utils/http-exception'
 import { query, execTrans } from '@/db'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { NovelOptions, NovelListParams, NovelListReturn } from './interface'
 import { getTagCustomByIds } from '../tags-custom/get'
 import { getOrderByKeyword, getSelectWhereAsKeywordData, getSelectWhereData } from '@/utils/handle-sql'
 import _ from 'lodash'
 
 // 获取指定的某个小说
-export const doNovelGetOne = async (ctx: Context, next: Next) => {
+export const doNovelGetOne = async (ctx: Context) => {
   const data = await getNovelOne(ctx._params.id, ctx._user.id)
   throw new Success({ data })
 }
 
 // 获取小说列表
-export const doNovelGetList = async (ctx: Context, next: Next) => {
+export const doNovelGetList = async (ctx: Context) => {
   const params: NovelListParams = {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
@@ -82,16 +82,16 @@ export const getNovelList = async (options: NovelListParams): Promise<NovelListR
   let whereSQL = ''
   let whereData: any[] = []
   if (options.isSecret == '1') {
-    whereSQL = `WHERE (t1.is_secret = 1 AND t1.create_user = ?)`
+    whereSQL = 'WHERE (t1.is_secret = 1 AND t1.create_user = ?)'
     whereData.push(options.userId)
   } else if (options.isSecret == '0') {
-    whereSQL = `WHERE t1.is_secret = 0`
+    whereSQL = 'WHERE t1.is_secret = 0'
   } else {
-    whereSQL = `WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
+    whereSQL = 'WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))'
     whereData.push(options.userId)
   }
   if (options.classify) {
-    whereSQL += ` AND t1.classify LIKE ? `
+    whereSQL += ' AND t1.classify LIKE ? '
     whereData.push(`%${options.classify}%`)
   }
   whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql}`

@@ -44,7 +44,7 @@ export const doArticleAddConvert = async (ctx: Context, next: Next) => {
  */
 export const doArticleUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断博客文章是否不存在
-  const sql = `SELECT id, create_user FROM articles WHERE id = ?`
+  const sql = 'SELECT id, create_user FROM articles WHERE id = ?'
   const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistArticle })
   // 是否为自己发布的博客文章
@@ -70,7 +70,7 @@ export const doArticleUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isDraft,
       range: ['1', '0'],
-      message: `isDraft参数必须为['1', '0']范围`
+      message: 'isDraft参数必须为[\'1\', \'0\']范围'
     })
   }
   // 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
@@ -78,7 +78,7 @@ export const doArticleUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isSecret,
       range: ['1', '0'],
-      message: `isSecret参数必须为['1', '0']范围`
+      message: 'isSecret参数必须为[\'1\', \'0\']范围'
     })
   }
   await next()
@@ -90,7 +90,7 @@ export const doArticleUpdateConvert = async (ctx: Context, next: Next) => {
  */
 export const doArticleDeleteConvert = async (ctx: Context, next: Next) => {
   // 判断博客文章是否不存在
-  const sql = `SELECT id, create_user FROM articles WHERE id = ?`
+  const sql = 'SELECT id, create_user FROM articles WHERE id = ?'
   const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistArticle })
   // 是否为自己发布的博客文章

@@ -30,7 +30,7 @@ export const doNovelNoteAddConvert = async (ctx: Context, next: Next) => {
  */
 export const doNovelNoteUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断笔记是否不存在
-  const sql = `SELECT id, create_user FROM novels_note WHERE id = ?`
+  const sql = 'SELECT id, create_user FROM novels_note WHERE id = ?'
   const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistNovelNote })
   // 是否为自己发布的笔记
@@ -40,7 +40,7 @@ export const doNovelNoteUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isSecret,
       range: ['1', '0'],
-      message: `isSecret参数必须为['1', '0']范围`
+      message: 'isSecret参数必须为[\'1\', \'0\']范围'
     })
   }
   // 若 target 为真 判断 type 是否系统标签500范围
@@ -58,7 +58,7 @@ export const doNovelNoteUpdateConvert = async (ctx: Context, next: Next) => {
  */
 export const doNovelNoteDeleteConvert = async (ctx: Context, next: Next) => {
   // 判断笔记是否不存在
-  const sql = `SELECT id, create_user FROM novels_note WHERE id = ?`
+  const sql = 'SELECT id, create_user FROM novels_note WHERE id = ?'
   const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistNovelNote })
   // 是否为自己发布的笔记
@@ -83,8 +83,8 @@ function _judgeTarget(target: NovelNoteTargetOptions[]) {
     }
   } else flag = 2
   if (flag === 1) {
-    throw new ExceptionParameter({ message: `target里的type参数必须为['502', '503', '504', '505', '507']范围` })
+    throw new ExceptionParameter({ message: 'target里的type参数必须为[\'502\', \'503\', \'504\', \'505\', \'507\']范围' })
   } else if (flag === 2) {
-    throw new ExceptionParameter({ message: `target的id参数必传` })
+    throw new ExceptionParameter({ message: 'target的id参数必传' })
   }
 }

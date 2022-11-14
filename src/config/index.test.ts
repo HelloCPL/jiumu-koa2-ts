@@ -8,7 +8,7 @@ import path from 'path'
 import { ConfigOptions } from './interface'
 
 function createConfig(): ConfigOptions {
-  let config: ConfigOptions = {
+  const config: ConfigOptions = {
     ENV: 'test', // 测试环境
     PORT: 7101, // http 服务端口
     PUBLIC_PATH: '/jiumu-koa2-ts-test', // 服务器位置

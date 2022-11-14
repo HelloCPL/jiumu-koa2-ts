@@ -7,7 +7,7 @@
 import { Context, Next } from 'koa'
 import { query } from '@/db'
 import { Message } from '@/enums'
-import { ExceptionParameter, Success } from '@/utils/http-exception'
+import { Success } from '@/utils/http-exception'
 import { isExist } from '../convert'
 
 /**
@@ -50,7 +50,7 @@ export async function doUserRoleDeleteConvert(ctx: Context, next: Next) {
 
 // 判断关联是否存在
 async function _isExist(ctx: Context): Promise<boolean> {
-  const sql = `SELECT t1.id FROM users_roles t1 WHERE t1.id = ? OR (t1.role_id = ? AND t1.user_id = ?)`
+  const sql = 'SELECT t1.id FROM users_roles t1 WHERE t1.id = ? OR (t1.role_id = ? AND t1.user_id = ?)'
   const data = [ctx._params.id, ctx._params.roleId, ctx._params.userId]
   const res: any = await query(sql, data)
   return res && res.length

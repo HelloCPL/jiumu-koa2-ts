@@ -53,7 +53,7 @@ export async function doTagUpdateConvert(ctx: Context, next: Next) {
   if (ctx._params.hasOwnProperty('code') && !ctx._params.code)
     throw new ExceptionParameter({ message: 'code参数值必须为真' })
   // 判断标签是否不存在
-  const sql = `SELECT code, configurable FROM tags WHERE id = ?`
+  const sql = 'SELECT code, configurable FROM tags WHERE id = ?'
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistTag })
   res = res[0]
@@ -96,7 +96,7 @@ export async function doTagUpdateConvert(ctx: Context, next: Next) {
  */
 export async function doTagDeleteConvert(ctx: Context, next: Next) {
   // 先判断标签是否不存在
-  const sql = `SELECT code, configurable FROM tags WHERE id = ?`
+  const sql = 'SELECT code, configurable FROM tags WHERE id = ?'
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistTag })
   res = res[0]

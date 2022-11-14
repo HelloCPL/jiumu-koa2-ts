@@ -4,7 +4,7 @@
  * @update 2021-08-07 15:15:08
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
 import { query } from '@/db'
 import { formatDate } from '@/utils/tools'
@@ -13,7 +13,7 @@ import { getUpdateSetData } from '@/utils/handle-sql'
 /**
  * 标签修改
  */
-export const doTagUpdate = async (ctx: Context, next: Next) => {
+export const doTagUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
     valid: ['code', 'parent_code', 'label', 'sort', 'update_time', 'remarks'],

@@ -31,7 +31,7 @@ export const doSourceAddConvert = async (ctx: Context, next: Next) => {
  */
 export const doSourceUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断资源是否不存在
-  const sql = `SELECT id, create_user, type FROM sources WHERE id = ?`
+  const sql = 'SELECT id, create_user, type FROM sources WHERE id = ?'
   const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistSource })
   ctx._params._type = ctx._params.type || res[0]['type']
@@ -42,7 +42,7 @@ export const doSourceUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isSecret,
       range: ['1', '0'],
-      message: `isSecret参数必须为['1', '0']范围`
+      message: 'isSecret参数必须为[\'1\', \'0\']范围'
     })
   }
   // 若传 type 判断type是否系统标签700范围
@@ -62,7 +62,7 @@ export const doSourceUpdateConvert = async (ctx: Context, next: Next) => {
  */
 export const doSourceDeleteConvert = async (ctx: Context, next: Next) => {
   // 判断资源是否不存在
-  const sql = `SELECT id, create_user FROM sources WHERE id = ?`
+  const sql = 'SELECT id, create_user FROM sources WHERE id = ?'
   const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistSource })
   // 是否为自己发布的资源

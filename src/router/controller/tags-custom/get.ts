@@ -6,26 +6,25 @@
 
 import { Success } from '@/utils/http-exception'
 import { query, execTrans } from '@/db'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { TagCustomOptions, TagCustomListParams, TagCustomListReturn, TagCustomTypeOptions } from './interface'
-import _ from 'lodash'
 import { getSelectWhereData, getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
 
 // 获取我的指定一个或多个自定义标签
-export const getTagCustomGetIdsSelf = async (ctx: Context, next: Next) => {
+export const getTagCustomGetIdsSelf = async (ctx: Context) => {
   const data = await getTagCustomByIds(ctx._params.ids, ctx._user.id)
   throw new Success({ data })
 }
 
 // 获取自定义标签类型列表
-export const getTagCustomGetListType = async (ctx: Context, next: Next) => {
+export const getTagCustomGetListType = async (ctx: Context) => {
   const data = await doTagCustomListType(ctx._params.userId)
   throw new Success({ data })
 }
 
 // 获取自定义标签列表
-export const getTagCustomGetList = async (ctx: Context, next: Next) => {
-  let params: TagCustomListParams = {
+export const getTagCustomGetList = async (ctx: Context) => {
+  const params: TagCustomListParams = {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
     createUser: ctx._params.userId,
@@ -46,9 +45,10 @@ export const getTagCustomGetList = async (ctx: Context, next: Next) => {
  */
 export const getTagCustomByIds = async (ids: string, userId: string): Promise<TagCustomOptions[]> => {
   if (!ids) return []
-  const sql: string = `SELECT t1.id, t1.label, t1.sort, t1.type, t1.create_time, t1.update_time, t1.terminal, t1.create_user, t2.username AS create_user_name FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE FIND_IN_SET(t1.id, ?) AND t1.create_user = ?`
+  const sql: string =
+    'SELECT t1.id, t1.label, t1.sort, t1.type, t1.create_time, t1.update_time, t1.terminal, t1.create_user, t2.username AS create_user_name FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE FIND_IN_SET(t1.id, ?) AND t1.create_user = ?'
   const data = [ids, userId]
-  let res: any = await query(sql, data)
+  const res: any = await query(sql, data)
   return res
 }
 
@@ -57,7 +57,7 @@ export const doTagCustomListType = async (userId?: string): Promise<TagCustomTyp
   let whereSQL = ''
   const data = []
   if (userId) {
-    whereSQL = ` WHERE create_user = ? `
+    whereSQL = ' WHERE create_user = ? '
     data.push(userId)
   }
   const sql: string = `SELECT type, COUNT(id) AS total FROM tags_custom ${whereSQL}  GROUP BY type`

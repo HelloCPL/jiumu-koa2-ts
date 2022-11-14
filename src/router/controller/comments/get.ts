@@ -6,12 +6,12 @@
 
 import { Success } from '@/utils/http-exception'
 import { execTrans, query } from '@/db'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { CommentOptions } from './interface'
 import { getSelectWhereData } from '@/utils/handle-sql'
 
 // 获取一级评论列表
-export const doCommentFirstGetList = async (ctx: Context, next: Next) => {
+export const doCommentFirstGetList = async (ctx: Context) => {
   const sqlParams = getSelectWhereData({
     valid: ['t1.create_user:userId'],
     data: ctx._params,
@@ -34,13 +34,14 @@ export const doCommentFirstGetList = async (ctx: Context, next: Next) => {
 }
 
 // 获取二级评论列表
-export const doCommentSecondGetList = async (ctx: Context, next: Next) => {
+export const doCommentSecondGetList = async (ctx: Context) => {
   let pageNo = ctx._params.pageNo * 1 || 1
   const pageSize = ctx._params.pageSize * 1 || 10
   pageNo = (pageNo - 1) * pageSize
-  const sql1 = `SELECT COUNT(id) AS total FROM comments_second WHERE comment_first_id = ?`
+  const sql1 = 'SELECT COUNT(id) AS total FROM comments_second WHERE comment_first_id = ?'
   const data1 = [ctx._params.targetId]
-  const sql2 = `SELECT t1.id, t1.comment_first_id, t1.comment_first_target_id AS target_id, t6.type AS target_type, t1.reply_content AS content, t1.create_user, t2.username AS create_user_name, t1.is_top, t1.create_time, t1.terminal, t1.reply_user, t3.username AS reply_user_name, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id  AND t1.id) AS like_count FROM comments_second t1 LEFT JOIN users t2 ON t1.create_user = t2.id LEFT JOIN users t3 ON t1.reply_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN comments_first t6 ON t1.comment_first_id = t6.id WHERE t1.comment_first_id = ? ORDER BY t1.is_top DESC, t1.create_time LIMIT ?, ?`
+  const sql2 =
+    'SELECT t1.id, t1.comment_first_id, t1.comment_first_target_id AS target_id, t6.type AS target_type, t1.reply_content AS content, t1.create_user, t2.username AS create_user_name, t1.is_top, t1.create_time, t1.terminal, t1.reply_user, t3.username AS reply_user_name, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id  AND t1.id) AS like_count FROM comments_second t1 LEFT JOIN users t2 ON t1.create_user = t2.id LEFT JOIN users t3 ON t1.reply_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN comments_first t6 ON t1.comment_first_id = t6.id WHERE t1.comment_first_id = ? ORDER BY t1.is_top DESC, t1.create_time LIMIT ?, ?'
   const data2 = [ctx._user.id, ...data1, pageNo, pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
@@ -104,7 +105,7 @@ const tList: ObjectAny = {
 
 // 获取评论目标的用户
 async function _getTargetCreateUser(targetId: string, type: string, userId: string): Promise<string> {
-  let t = tList[type]
+  const t = tList[type]
   if (!t) return '0'
   const sql = `SELECT create_user FROM ${t.table} WHERE id = ?`
   const res: any = await query(sql, targetId)

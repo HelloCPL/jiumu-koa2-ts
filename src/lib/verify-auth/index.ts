@@ -45,14 +45,14 @@ export const verifyRoute = async (ctx: Context, next: Next) => {
 async function verifyApiByUser(ctx: Context, next: Next) {
   let flag = false
   // 获取用户所有权限
-  const sql = `SELECT DISTINCT t2.href FROM roles_permissions t1 LEFT JOIN permissions t2 ON t1.permission_id = t2.id WHERE t1.role_id  IN (SELECT t3.role_id FROM users_roles t3 WHERE t3.user_id = ?)`
+  const sql = 'SELECT DISTINCT t2.href FROM roles_permissions t1 LEFT JOIN permissions t2 ON t1.permission_id = t2.id WHERE t1.role_id  IN (SELECT t3.role_id FROM users_roles t3 WHERE t3.user_id = ?)'
   const res: any = await query(sql, ctx._user.id)
   if (res && Array.isArray(res)) {
     const url = toPath(ctx.request.url)
     const url2 = url.substring(url.indexOf('/', 1))
     // @ts-ignore
     res.find((item: any) => {
-      let itemUrl = toPath(item.href)
+      const itemUrl = toPath(item.href)
       if (itemUrl === url || (url2 && itemUrl === url2)) {
         flag = true
         return true
@@ -77,8 +77,8 @@ export const verifyStatic = async (ctx: Context, next: Next) => {
       url.startsWith('/editors/') ||
       url.startsWith('/sources/')
     ) {
-      let filePath = getSuffix(toPath(url), '/')
-      const sql: string = `SELECT is_secret, create_user FROM files_info WHERE file_path = ?`
+      const filePath = getSuffix(toPath(url), '/')
+      const sql: string = 'SELECT is_secret, create_user FROM files_info WHERE file_path = ?'
       const res: any = await query(sql, filePath)
       if (res.length && res[0]['is_secret'] === '1') {
         const vt = _getQueryParams(url, 'vt=')
@@ -103,14 +103,14 @@ export const verifyStatic = async (ctx: Context, next: Next) => {
 
 // 获取指定参数并解密
 function _getQueryParams(url: string, key: string): string {
-  let i = url.lastIndexOf('?')
+  const i = url.lastIndexOf('?')
   if (i === -1) return ''
   const queryPath = url.substring(i + 1)
   const queryParams: string[] = queryPath.split('&')
   let params = ''
   // @ts-ignore
   queryParams.find((value) => {
-    let keyIndex = value.indexOf(key)
+    const keyIndex = value.indexOf(key)
     if (keyIndex !== -1) {
       params = decrypt(value.substring(keyIndex + key.length))
       return true

@@ -6,7 +6,7 @@
 
 import { Success } from '@/utils/http-exception'
 import { query, execTrans } from '@/db'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { ArticleOptions, ArticleListParams, ArticleListReturn } from './interface'
 import { getFileById, getFileByIds } from '../files-info/get'
 import { getTagCustomByIds } from '../tags-custom/get'
@@ -14,13 +14,13 @@ import { getSelectWhereAsKeywordData, getSelectWhereData, getOrderByKeyword } fr
 import _ from 'lodash'
 
 // 获取指定的某个博客文章
-export const doArticleGetOne = async (ctx: Context, next: Next) => {
+export const doArticleGetOne = async (ctx: Context) => {
   const data = await getArticleOne(ctx._params.id, ctx._user.id)
   throw new Success({ data })
 }
 
 // 获取博客文章列表
-export const doArticleGetList = async (ctx: Context, next: Next) => {
+export const doArticleGetList = async (ctx: Context) => {
   const params: ArticleListParams = {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
@@ -41,7 +41,8 @@ export const doArticleGetList = async (ctx: Context, next: Next) => {
  * 获取指定的某个博客文章，返回对象或null
  */
 export const getArticleOne = async (id: string, userId: string): Promise<ArticleOptions | null> => {
-  const sql: string = `SELECT t1.id, t1.title, t1.content, t1.content_type, t2.label AS content_type_label, t1.cover_img, t1.attachment, t1.type, t3.label AS type_label, t1.classify, t1.is_draft, t1.is_secret, t1.is_top, t1.sort, t1.create_user, t4.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t5.id AS is_like, (SELECT COUNT(t6.id) FROM likes t6 WHERE t6.target_id = t1.id) AS like_count, t7.id AS is_collection, (SELECT COUNT(t8.id) FROM collections t8 WHERE t8.target_id = t1.id) AS collection_count, (SELECT COUNT(t9.id) FROM comments_first t9 WHERE t9.target_id = t1.id) AS comment_count1, (SELECT COUNT(t10.id) FROM comments_second t10 WHERE t10.comment_first_target_id = t1.id) AS comment_count2 FROM articles t1 LEFT JOIN tags t2 ON t1.content_type = t2.code LEFT JOIN tags t3 ON t1.type = t3.code LEFT JOIN users t4 ON t1.create_user = t4.id LEFT JOIN likes t5 ON (t1.id = t5.target_id AND t5.create_user = ?) LEFT JOIN collections t7 ON (t1.id = t7.target_id AND t7.create_user = ?)  WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?)) AND (t1.is_draft = 0 OR (t1.is_draft = 1 AND t1.create_user = ?))`
+  const sql: string =
+    'SELECT t1.id, t1.title, t1.content, t1.content_type, t2.label AS content_type_label, t1.cover_img, t1.attachment, t1.type, t3.label AS type_label, t1.classify, t1.is_draft, t1.is_secret, t1.is_top, t1.sort, t1.create_user, t4.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t5.id AS is_like, (SELECT COUNT(t6.id) FROM likes t6 WHERE t6.target_id = t1.id) AS like_count, t7.id AS is_collection, (SELECT COUNT(t8.id) FROM collections t8 WHERE t8.target_id = t1.id) AS collection_count, (SELECT COUNT(t9.id) FROM comments_first t9 WHERE t9.target_id = t1.id) AS comment_count1, (SELECT COUNT(t10.id) FROM comments_second t10 WHERE t10.comment_first_target_id = t1.id) AS comment_count2 FROM articles t1 LEFT JOIN tags t2 ON t1.content_type = t2.code LEFT JOIN tags t3 ON t1.type = t3.code LEFT JOIN users t4 ON t1.create_user = t4.id LEFT JOIN likes t5 ON (t1.id = t5.target_id AND t5.create_user = ?) LEFT JOIN collections t7 ON (t1.id = t7.target_id AND t7.create_user = ?)  WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?)) AND (t1.is_draft = 0 OR (t1.is_draft = 1 AND t1.create_user = ?))'
   const data = [userId, userId, id, userId, userId]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -75,16 +76,16 @@ export const getArticleList = async (options: ArticleListParams): Promise<Articl
   let whereSQL = ''
   let whereData: any[] = []
   if (options.isSecret == '1') {
-    whereSQL = `WHERE (t1.is_secret = 1 AND t1.create_user = ?)`
+    whereSQL = 'WHERE (t1.is_secret = 1 AND t1.create_user = ?)'
     whereData.push(options.userId)
   } else if (options.isSecret == '0') {
-    whereSQL = `WHERE t1.is_secret = 0`
+    whereSQL = 'WHERE t1.is_secret = 0'
   } else {
-    whereSQL = `WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
+    whereSQL = 'WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))'
     whereData.push(options.userId)
   }
   if (options.classify) {
-    whereSQL += ` AND t1.classify LIKE ? `
+    whereSQL += ' AND t1.classify LIKE ? '
     whereData.push(`%${options.classify}%`)
   }
   whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql}`

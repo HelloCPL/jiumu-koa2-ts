@@ -33,9 +33,9 @@ interface ExistOptions extends ExistBaseOptions {
 export const isExist = async (options: ExistOptions) => {
   options.connector = options.connector || 'AND'
   let whereSql: string = ''
-  let whereData: any[] = []
+  const whereData: any[] = []
   options.where.forEach((item) => {
-    let connector = item.connector || '='
+    const connector = item.connector || '='
     if (whereData.length) whereSql += ` ${options.connector} ${item.key} ${connector} ? `
     else whereSql += ` ${item.key} ${connector} ? `
     whereData.push(item.value)
@@ -91,7 +91,7 @@ export const isExistHasChildren = async (options: ExistChildrenOptions) => {
  */
 export const isSuper = async (userId: string): Promise<boolean> => {
   let flag = false
-  const sql = `SELECT t1.id FROM users_roles t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t1.user_id  = ? AND t2.code = ?`
+  const sql = 'SELECT t1.id FROM users_roles t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t1.user_id  = ? AND t2.code = ?'
   const data = [userId, 'super']
   const res: any = await query(sql, data)
   if (res && res.length) {

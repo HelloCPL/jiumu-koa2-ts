@@ -16,7 +16,7 @@ import { Message } from '@/enums'
  */
 export const doFileGetOneConvert = async (ctx: Context, next: Next) => {
   // 判断是否包含非本人上传的文件
-  const sql = `SELECT id, is_secret, create_user FROM files_info WHERE id =  ?`
+  const sql = 'SELECT id, is_secret, create_user FROM files_info WHERE id =  ?'
   const res: any = await query(sql, ctx._params.id)
   // 判断文件是否不存在
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.notFound })
@@ -32,7 +32,7 @@ export const doFileGetOneConvert = async (ctx: Context, next: Next) => {
  */
 export const doFileDeleteConvert = async (ctx: Context, next: Next) => {
   // 判断是否包含非本人上传的文件
-  const sql = `SELECT id  FROM files_info t WHERE FIND_IN_SET(id, ?) and t.create_user != ?`
+  const sql = 'SELECT id  FROM files_info t WHERE FIND_IN_SET(id, ?) and t.create_user != ?'
   const data = [ctx._params.ids, ctx._user.id]
   const res: any = await query(sql, data)
   if (res && res.length) {
