@@ -5,12 +5,13 @@
 */
 
 import { Context } from 'koa'
+import { CodeValue } from '../../enums'
 
 // 日志参数接口
 export interface ParamsOptions extends ObjectAny {
   message?: string,
   data?: any,
-  code?: number,
+  code?: CodeValue,
   error?: any,
 }
 

@@ -9,16 +9,16 @@
  *   ExceptionForbidden // 权限不足异常
  *   ExceptionAuthFailed // 授权失败异常
  *   Success // 特殊异常 成功类异常用于返回数据
-*/
+ */
 
 import { toCamelCase } from '../utils/tools'
-import { Message, Code } from '../enums'
+import { Message, Code, CodeValue } from '../enums'
 
 // 异常类接口类型
 export interface ExceptionOptions {
-  message?: string,
-  data?: any,
-  code?: number,
+  message?: string
+  data?: any
+  code?: CodeValue
   total?: number
 }
 
@@ -26,7 +26,7 @@ export interface ExceptionOptions {
 export class ExceptionHttp extends Error {
   message: string
   data: any
-  code: number
+  code: CodeValue
   total: number
   constructor(config: ExceptionOptions = {}) {
     super()
@@ -43,8 +43,7 @@ export class ExceptionHttp extends Error {
 
   // 处理返回数据格式
   protected formatData(data: any) {
-    if (data || data === 0 || data === false)
-      return data
+    if (data || data === 0 || data === false) return data
     return null
   }
 }

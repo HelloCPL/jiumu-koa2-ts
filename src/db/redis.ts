@@ -6,7 +6,7 @@
  *   clientSet // 保存 redis 值
  *   clientGet // 获取 redis 值
  *   clientDel // 删除 redis 值
-*/
+ */
 
 import Redis, { RedisClient } from 'redis'
 import { IS_VERIFY_TOKEN_BY_REDIS, REDIS } from '../config'
@@ -21,14 +21,14 @@ function createRedis() {
     redisClient = Redis.createClient(REDIS.PORT, REDIS.HOST)
     // 登录
     redisClient.auth(REDIS.PASSWORD, () => {
-      console.log('redis 登录成功');
+      console.log('redis 登录成功')
     })
     // 监听 redis 错误事件
-    redisClient.on('error', err => {
+    redisClient.on('error', (err) => {
       // Logger.error('redis 发生错误', err, 'redis 发生错误')
       Logger.error({
         message: 'redis 发生错误',
-        error: err
+        error: err,
       })
     })
   }
@@ -43,11 +43,10 @@ function createRedis() {
           if (err) {
             Logger.error({
               message: 'redis 发生错误',
-              error: err
+              error: err,
             })
             reject(err)
-          }
-          else resolve(null)
+          } else resolve(null)
         })
       })
     }
@@ -63,11 +62,10 @@ function createRedis() {
           if (err) {
             Logger.error({
               message: 'redis 发生错误',
-              error: err
+              error: err,
             })
             reject(err)
-          }
-          else resolve(_handleGetItem(value))
+          } else resolve(_handleGetItem(value))
         })
       })
     }
@@ -84,11 +82,10 @@ function createRedis() {
             if (err) {
               Logger.error({
                 message: 'redis 发生错误',
-                error: err
+                error: err,
               })
               reject(err)
-            }
-            else resolve(null)
+            } else resolve(null)
           })
         } catch (e) {
           reject(e)
@@ -100,7 +97,7 @@ function createRedis() {
   return {
     clientSet,
     clientGet,
-    clientDel
+    clientDel,
   }
 }
 
@@ -129,8 +126,4 @@ function _handleGetItem(value: any): any {
   return value
 }
 
-export const {
-  clientSet,
-  clientGet,
-  clientDel
-} = createRedis()
+export const { clientSet, clientGet, clientDel } = createRedis()

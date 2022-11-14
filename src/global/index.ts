@@ -2,7 +2,7 @@
  * @description: 设置全局变量或方法
  * @author chen
  * @update 2021-08-06 10:56:54
-*/
+ */
 
 class InitGlobal {
   constructor() {}

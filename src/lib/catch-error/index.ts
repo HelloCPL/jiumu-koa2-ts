@@ -7,8 +7,8 @@
  */
 
 import { Context, Next } from 'koa'
-import { ExceptionHttp } from '../../utils/http-exception'
-import { Code } from '../../enums'
+import { ExceptionHttp, ExceptionOptions } from '../../utils/http-exception'
+import { Code, Message } from '../../enums'
 import Logger from '../logger'
 
 /**
@@ -22,19 +22,19 @@ export async function catchError(ctx: Context, next: Next) {
     _saveLogger(error, isExceptionHttp)
     ctx.status = Code.success
     if (isExceptionHttp) {
-      let data = {
+      const data: ExceptionOptions = {
         code: error.code,
         message: error.message,
         data: error.data,
-        total: error.total
+        total: error.total,
       }
       ctx.body = data
     } else {
-      let data = {
+      const data: ExceptionOptions = {
         code: Code.error,
-        message: Code.error,
+        message: Message.error,
         data: error,
-        total: 0
+        total: 0,
       }
       ctx.body = data
     }
@@ -47,13 +47,13 @@ function _saveLogger(error: any, isExceptionHttp: boolean) {
     Logger.response({
       code: error.code,
       message: error.message,
-      data: error.data
+      data: error.data,
     })
   } else {
     Logger.error({
       code: Code.error,
       message: '未知错误',
-      error: error
+      error: error,
     })
   }
 }
