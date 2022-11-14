@@ -5,12 +5,12 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '../../../db'
+import { query, execTrans } from '@/db'
 import { Context, Next } from 'koa'
 import { ArticleOptions, ArticleListParams, ArticleListReturn } from './interface'
 import { getFileById, getFileByIds } from '../files-info/get'
 import { getTagCustomByIds } from '../tags-custom/get'
-import { getSelectWhereAsKeywordData, getSelectWhereData, getOrderByKeyword } from '../../../utils/handle-sql'
+import { getSelectWhereAsKeywordData, getSelectWhereData, getOrderByKeyword } from '@/utils/handle-sql'
 import _ from 'lodash'
 
 // 获取指定的某个博客文章
@@ -22,17 +22,17 @@ export const doArticleGetOne = async (ctx: Context, next: Next) => {
 // 获取博客文章列表
 export const doArticleGetList = async (ctx: Context, next: Next) => {
   const params: ArticleListParams = {
-		pageNo: ctx._params.pageNo * 1 || 1,
-		pageSize: ctx._params.pageSize * 1 || 10,
-		keyword: ctx._params.keyword,
-		highlight: ctx._params.highlight,
-		userId: ctx._user.id,
-		createUser: ctx._params.userId,
-		type: ctx._params.type,
-		classify: ctx._params.classify,
-		isDraft: ctx._params.isDraft,
-		isSecret: ctx._params.isSecret
-	}
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    keyword: ctx._params.keyword,
+    highlight: ctx._params.highlight,
+    userId: ctx._user.id,
+    createUser: ctx._params.userId,
+    type: ctx._params.type,
+    classify: ctx._params.classify,
+    isDraft: ctx._params.isDraft,
+    isSecret: ctx._params.isSecret
+  }
   const data = await getArticleList(params)
   throw new Success(data)
 }
@@ -58,18 +58,18 @@ export const getArticleList = async (options: ArticleListParams): Promise<Articl
   const sqlParamsKeyword = getSelectWhereAsKeywordData({
     valid: ['t4.(username)', 't1.title'],
     data: options,
-    prefix: 'AND',
+    prefix: 'AND'
   })
   // 处理搜索排序
   const orderParams = getOrderByKeyword({
     valid: ['t4.(username):createUserName', 't1.title'],
-    data: options,
+    data: options
   })
   // 处理普通where参数
   const sqlParams = getSelectWhereData({
     valid: ['t1.create_user', 't1.type', 't1.is_draft'],
     data: options,
-    prefix: 'AND',
+    prefix: 'AND'
   })
   // 处理查询语句
   let whereSQL = ''
@@ -83,7 +83,7 @@ export const getArticleList = async (options: ArticleListParams): Promise<Articl
     whereSQL = `WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
     whereData.push(options.userId)
   }
-  if(options.classify) {
+  if (options.classify) {
     whereSQL += ` AND t1.classify LIKE ? `
     whereData.push(`%${options.classify}%`)
   }
@@ -104,7 +104,7 @@ export const getArticleList = async (options: ArticleListParams): Promise<Articl
   const data2 = [options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
-    { sql: sql2, data: data2 },
+    { sql: sql2, data: data2 }
   ])
   const articleList: ArticleOptions[] = res[1]
   await _handleArticle(articleList, options.userId)

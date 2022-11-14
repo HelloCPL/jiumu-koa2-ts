@@ -2,14 +2,18 @@
  * @description: 用户-特殊标签关联模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doUserTagAddConvert, doUserTagDeleteConvert, doUserTagGetAllUserByTagCodeConvert } from '../../controller/users-tags/convert'
-import { doUserTagAdd } from '../../controller/users-tags/add'
-import { doUserTagDelete } from '../../controller/users-tags/delete'
-import { doUserTagGetAllTagByUserId, doUserTagGetAllUserByTagCode } from '../../controller/users-tags/get'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import {
+  doUserTagAddConvert,
+  doUserTagDeleteConvert,
+  doUserTagGetAllUserByTagCodeConvert
+} from '@/router/controller/users-tags/convert'
+import { doUserTagAdd } from '@/router/controller/users-tags/add'
+import { doUserTagDelete } from '@/router/controller/users-tags/delete'
+import { doUserTagGetAllTagByUserId, doUserTagGetAllUserByTagCode } from '@/router/controller/users-tags/get'
 
 @Prefix('user-tag')
 export default class API {

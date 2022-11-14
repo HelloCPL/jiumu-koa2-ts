@@ -2,19 +2,19 @@
  * @description 用户登录方法
  * @author chen
  * @update 2021-08-07 15:15:08
-*/
+ */
 
-import { Context, Next } from "koa";
-import { Success, ExceptionParameter } from '../../../utils/http-exception'
-import { decrypt } from '../../../utils/crypto'
-import { query } from "../../../db";
-import { Message, Terminal } from "../../../enums";
+import { Context, Next } from 'koa'
+import { Success, ExceptionParameter } from '@/utils/http-exception'
+import { decrypt } from '@/utils/crypto'
+import { query } from '@/db'
+import { Message, Terminal } from '@/enums'
 import { handleDoubleToken } from './register'
-import { getUuId, getIP, formatDate } from "../../../utils/tools";
+import { getUuId, getIP, formatDate } from '@/utils/tools'
 
 /**
  * 用户登录
-*/
+ */
 export const doUserLogin = async (ctx: Context, next: Next) => {
   const password: string = ctx._params.password
   const phone: string = ctx._params.phone
@@ -29,7 +29,14 @@ export const doUserLogin = async (ctx: Context, next: Next) => {
       const doubleToken = await handleDoubleToken(ctx, params)
       // 记录登录状态
       const sql3 = `INSERT login_info (id, user_id, user_agent, ip, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?)`
-      const data3 = [getUuId(), res[0]['id'], ctx.request.header['user-agent'], getIP(ctx), formatDate(new Date()), Terminal[ctx._terminal]]
+      const data3 = [
+        getUuId(),
+        res[0]['id'],
+        ctx.request.header['user-agent'],
+        getIP(ctx),
+        formatDate(new Date()),
+        Terminal[ctx._terminal]
+      ]
       await query(sql3, data3)
       throw new Success({ message: Message.login, data: doubleToken })
     } else throw new ExceptionParameter({ message: Message.errorPassword })

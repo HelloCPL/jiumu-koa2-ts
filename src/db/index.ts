@@ -24,7 +24,7 @@ const pool: Pool = MySQL.createPool({
   password: DATABASE.PASSWORD,
   database: DATABASE.NAME,
   port: DATABASE.PORT,
-  connectionLimit: DATABASE.CONNECTION_LIMIT,
+  connectionLimit: DATABASE.CONNECTION_LIMIT
 })
 
 /**
@@ -68,13 +68,13 @@ export function execTrans(sqlList: SQLOptions[]) {
           if (err)
             return _handleExceTransRollback(reject, connection, {
               message: Message.dbExecTrancStart,
-              err,
+              err
             })
           connection.commit((err) => {
             if (err)
               return _handleExceTransRollback(reject, connection, {
                 message: Message.dbExecTrancPerform,
-                err,
+                err
               })
             connection.release()
             // 记录日志
@@ -100,7 +100,7 @@ function _handleExceTransSQLParams(reject: any, connection: PoolConnection, sqlL
           _handleExceTransRollback(reject, connection, {
             err,
             sql: item.sql,
-            data: item.data,
+            data: item.data
           })
         else {
           // 新增或更新或删除数据失败抛出错误
@@ -114,7 +114,7 @@ function _handleExceTransSQLParams(reject: any, connection: PoolConnection, sqlL
               message: Message.errorDoing,
               sql: item.sql,
               data: item.data,
-              err,
+              err
             })
           else cb(null, results)
         }
@@ -132,13 +132,13 @@ function _throwError(reject: any, errorMessage: ErrorOptions) {
     message: errorMessage.message || Message.dbSQL,
     sql: errorMessage.sql,
     data: errorMessage.data,
-    error: errorMessage.err,
+    error: errorMessage.err
   })
   reject(
     new ExceptionHttp({
       message: errorMessage.message || Message.dbSQL,
       code: errorMessage.code,
-      data: errorMessage.err,
+      data: errorMessage.err
     })
   )
 }
@@ -151,14 +151,14 @@ function _handleExceTransRollback(reject: any, connection: PoolConnection, error
       message: errorMessage.message || Message.dbSQL,
       sql: errorMessage.sql,
       data: errorMessage.data,
-      error: errorMessage.err,
+      error: errorMessage.err
     })
     connection.release()
     reject(
       new ExceptionHttp({
         message: errorMessage.message || Message.dbSQL,
         code: errorMessage.code,
-        data: errorMessage.err,
+        data: errorMessage.err
       })
     )
   })

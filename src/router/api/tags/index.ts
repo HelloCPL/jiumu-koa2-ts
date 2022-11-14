@@ -2,15 +2,15 @@
  * @description: 标签管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doTagAddConvert, doTagUpdateConvert, doTagDeleteConvert } from '../../controller/tags/convert'
-import { doTagAdd } from '../../controller/tags/add'
-import { doTagUpdate } from '../../controller/tags/update'
-import { doTagDelete } from '../../controller/tags/delete'
-import { doTagGetByCode, doTagGetAllSelf, doTagGetByParentCode } from '../../controller/tags/get'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import { doTagAddConvert, doTagUpdateConvert, doTagDeleteConvert } from '@/router/controller/tags/convert'
+import { doTagAdd } from '@/router/controller/tags/add'
+import { doTagUpdate } from '@/router/controller/tags/update'
+import { doTagDelete } from '@/router/controller/tags/delete'
+import { doTagGetByCode, doTagGetAllSelf, doTagGetByParentCode } from '@/router/controller/tags/get'
 
 @Prefix('tag')
 export default class API {

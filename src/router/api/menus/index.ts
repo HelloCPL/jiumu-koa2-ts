@@ -2,16 +2,16 @@
  * @description: 菜单管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doMenuAddConvert, doMenuUpdateConvert, doMenuDeleteConvert } from '../../controller/menus/convert'
-import { doMenuAdd } from '../../controller/menus/add'
-import { doMenuUpdate } from '../../controller/menus/update'
-import { doMenuDelete } from '../../controller/menus/delete'
-import { doMenuGetOne, doMenuGetByParentCode } from '../../controller/menus/get'
-import { doRoleMenugetAllMenuByUserId } from '../../controller/roles-menus/get';
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import { doMenuAddConvert, doMenuUpdateConvert, doMenuDeleteConvert } from '@/router/controller/menus/convert'
+import { doMenuAdd } from '@/router/controller/menus/add'
+import { doMenuUpdate } from '@/router/controller/menus/update'
+import { doMenuDelete } from '@/router/controller/menus/delete'
+import { doMenuGetOne, doMenuGetByParentCode } from '@/router/controller/menus/get'
+import { doRoleMenugetAllMenuByUserId } from '@/router/controller/roles-menus/get'
 
 @Prefix('menu')
 export default class API {
@@ -36,7 +36,7 @@ export default class API {
   async doMenuUpdate(ctx: Context, next: Next) {
     await doMenuUpdate(ctx, next)
   }
-  
+
   // 3 菜单删除
   @Request({
     path: 'delete',

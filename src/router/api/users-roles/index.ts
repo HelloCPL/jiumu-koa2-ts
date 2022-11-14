@@ -2,14 +2,14 @@
  * @description: 用户-角色关联模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doUserRoleAddConvert, doUserRoleDeleteConvert } from '../../controller/users-roles/convert'
-import { doUserRoleAdd } from '../../controller/users-roles/add'
-import { doUserRoleDelete } from '../../controller/users-roles/delete'
-import { doUserRoleGetAllRoleByUserId, doUserRoleGetAllUserByRoleId } from '../../controller/users-roles/get'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import { doUserRoleAddConvert, doUserRoleDeleteConvert } from '@/router/controller/users-roles/convert'
+import { doUserRoleAdd } from '@/router/controller/users-roles/add'
+import { doUserRoleDelete } from '@/router/controller/users-roles/delete'
+import { doUserRoleGetAllRoleByUserId, doUserRoleGetAllUserByRoleId } from '@/router/controller/users-roles/get'
 
 @Prefix('user-role')
 export default class API {

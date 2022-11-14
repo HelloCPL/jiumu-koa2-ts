@@ -2,14 +2,14 @@
  * @description: 收藏管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doCollectionAddConvert, doCollectionDeleteConvert } from '../../controller/collections/convert'
-import { doCollectionAdd } from '../../controller/collections/add'
-import { doCollectionDelete } from '../../controller/collections/delete'
-import { doCollectionGetListSelf, doCollectionGetList } from '../../controller/collections/get'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import { doCollectionAddConvert, doCollectionDeleteConvert } from '@/router/controller/collections/convert'
+import { doCollectionAdd } from '@/router/controller/collections/add'
+import { doCollectionDelete } from '@/router/controller/collections/delete'
+import { doCollectionGetListSelf, doCollectionGetList } from '@/router/controller/collections/get'
 
 @Prefix('collection')
 export default class API {
@@ -54,9 +54,3 @@ export default class API {
     await doCollectionGetList(ctx, next)
   }
 }
-
-
-
-
-
-

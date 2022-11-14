@@ -54,7 +54,7 @@ const myxss = new FilterXSS({
       'usemap',
       'tabindex',
       'accept',
-      'draggable',
+      'draggable'
     ]
     let flag =
       attribute.indexOf('name') !== -1 ||
@@ -85,7 +85,7 @@ const myxss = new FilterXSS({
           name === 'noreset' ||
           name === 'target'))
     if (flag) return name + '="' + escapeAttrValue(value) + '"'
-  },
+  }
 })
 
 export default myxss

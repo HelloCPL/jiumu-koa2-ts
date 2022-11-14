@@ -2,14 +2,14 @@
  * @description: 点赞管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doLikeAddConvert, doLikeDeleteConvert } from '../../controller/likes/convert'
-import { doLikeAdd } from '../../controller/likes/add'
-import { doLikeDelete } from '../../controller/likes/delete'
-import { doLikeGetListSelf, doLikeGetList } from '../../controller/likes/get'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import { doLikeAddConvert, doLikeDeleteConvert } from '@/router/controller/likes/convert'
+import { doLikeAdd } from '@/router/controller/likes/add'
+import { doLikeDelete } from '@/router/controller/likes/delete'
+import { doLikeGetListSelf, doLikeGetList } from '@/router/controller/likes/get'
 
 @Prefix('like')
 export default class API {
@@ -53,6 +53,4 @@ export default class API {
   async doLikeGetList(ctx: Context, next: Next) {
     await doLikeGetList(ctx, next)
   }
-
 }
-

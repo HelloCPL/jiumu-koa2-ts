@@ -2,7 +2,7 @@
  * @author chen
  * @description 配置文件
  * @update 2022-04-30 18:54:40
-*/
+ */
 
 const env = process.argv[2]
 import { ConfigOptions } from './interface'

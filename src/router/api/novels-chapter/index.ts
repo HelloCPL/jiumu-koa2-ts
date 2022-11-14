@@ -2,15 +2,19 @@
  * @author chen
  * @description 小说章节模块
  * @update 2021-10-28 10:46:36
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doNovelChapterAddConvert, doNovelChapterUpdateConvert, doNovelChapterDeleteConvert } from '../../controller/novels-chapter/convert'
-import { doNovelChapterAdd } from '../../controller/novels-chapter/add'
-import { doNovelChapterUpdate } from '../../controller/novels-chapter/update'
-import { doNovelChapterDelete } from '../../controller/novels-chapter/delete'
-import { doNovelChapterGetOne, doNovelChapterGetList } from '../../controller/novels-chapter/get'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import {
+  doNovelChapterAddConvert,
+  doNovelChapterUpdateConvert,
+  doNovelChapterDeleteConvert
+} from '@/router/controller/novels-chapter/convert'
+import { doNovelChapterAdd } from '@/router/controller/novels-chapter/add'
+import { doNovelChapterUpdate } from '@/router/controller/novels-chapter/update'
+import { doNovelChapterDelete } from '@/router/controller/novels-chapter/delete'
+import { doNovelChapterGetOne, doNovelChapterGetList } from '@/router/controller/novels-chapter/get'
 
 @Prefix('novel-chapter')
 export default class API {
@@ -66,6 +70,4 @@ export default class API {
   async doNovelChapterGetList(ctx: Context, next: Next) {
     await doNovelChapterGetList(ctx, next)
   }
-
 }
-

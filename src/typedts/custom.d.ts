@@ -29,7 +29,6 @@ declare namespace NodeJS {
     _unlessPath: string[]
     _requestCount: number
     _requestStart: any
-    _requestEnd: any
     _results: ObjectAny
   }
 }

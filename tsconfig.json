@@ -7,7 +7,6 @@
     "moduleResolution": "Node",
     // "noImplicitAny": true, // 在表达式和声明上有隐含的 any类型时报错
     "outDir": "./dist",
-    // "rootDir": "./src",
     "sourceMap": true, // 生成相应的 .map文件。
     "strict": true, // 严格模式
     "experimentalDecorators": true,

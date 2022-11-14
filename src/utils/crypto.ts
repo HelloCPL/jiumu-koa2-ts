@@ -8,7 +8,7 @@
  */
 
 import CryptoJS from 'crypto-js'
-import { CRYPTOJS_KEY, CRYPTOJS_IV } from '../config'
+import { CRYPTOJS_KEY, CRYPTOJS_IV } from '@/config'
 
 /**
  * crypto-js 加密方法
@@ -25,7 +25,7 @@ export function encrypt(str: string, keyStr?: string, ivStr?: string): string {
     return CryptoJS.AES.encrypt(srcs, key, {
       iv,
       mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.ZeroPadding,
+      padding: CryptoJS.pad.ZeroPadding
     }).toString()
   } catch (e) {
     return ''
@@ -45,7 +45,7 @@ export function decrypt(str: string, keyStr?: string, ivStr?: string): string {
     let descyptStr = CryptoJS.AES.decrypt(str, key, {
       iv,
       mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.ZeroPadding,
+      padding: CryptoJS.pad.ZeroPadding
     }).toString(CryptoJS.enc.Utf8)
     return formatStr(descyptStr)
   } catch (e) {

@@ -156,7 +156,7 @@ export const getOrderByKeyword = (options: OrderParamsOptions): OrderReturnOptio
 
   return {
     orderValid,
-    orderSql,
+    orderSql
   }
 }
 
@@ -194,6 +194,6 @@ function _findKeys(str: string): KeyOptions {
   return {
     dataKey,
     sqlKey: (t ? t + '.' : '') + _.snakeCase(sqlKey),
-    isEqual,
+    isEqual
   }
 }

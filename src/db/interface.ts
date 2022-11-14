@@ -4,8 +4,8 @@
  * @update 2021-08-09 21:47:29
  */
 
-import { CodeValue } from '../enums'
-import { ExceptionOptions } from '../utils/http-exception'
+import { CodeValue } from '@/enums'
+import { ExceptionOptions } from '@/utils/http-exception'
 
 export interface ErrorOptions extends ExceptionOptions {
   err?: any

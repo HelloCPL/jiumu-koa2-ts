@@ -2,22 +2,22 @@
  * @description: 用户模块相关路由
  * @author chen
  * @update 2021-01-27 11:10:43
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
+import { Prefix, Convert, Request, Required } from '@/router/router'
 import {
   doUserRegisterConvert,
   doUserUpdateBaseSelfConvert,
   doUserUpdateBaseConvert,
   doUserCheckPasswordConvert
-} from '../../controller/users/convert'
-import { doUserRegister } from '../../controller/users/register'
-import { doUserLogin } from '../../controller/users/login'
-import { doUserUpdateBaseSelf, doUserUpdateBase, doUserUpdateToken } from '../../controller/users/update'
-import { doUserUpdatePhoneSelf, doUserUpdatePasswordSelf } from '../../controller/users/update-secret'
-import { doUserGetSelf, doUserGetBase, doUserGetList } from '../../controller/users/get'
-import { doUserExit } from '../../controller/users/exit'
+} from '@/router/controller/users/convert'
+import { doUserRegister } from '@/router/controller/users/register'
+import { doUserLogin } from '@/router/controller/users/login'
+import { doUserUpdateBaseSelf, doUserUpdateBase, doUserUpdateToken } from '@/router/controller/users/update'
+import { doUserUpdatePhoneSelf, doUserUpdatePasswordSelf } from '@/router/controller/users/update-secret'
+import { doUserGetSelf, doUserGetBase, doUserGetList } from '@/router/controller/users/get'
+import { doUserExit } from '@/router/controller/users/exit'
 
 @Prefix('user')
 export default class API {
@@ -129,7 +129,7 @@ export default class API {
   // 11 退出登录
   @Request({
     path: 'exit',
-    methods: ['post', 'get'],
+    methods: ['post', 'get']
   })
   async doUserExit(ctx: Context, next: Next) {
     await doUserExit(ctx, next)

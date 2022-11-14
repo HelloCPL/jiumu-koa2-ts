@@ -2,20 +2,20 @@
  * @description 用户注册方法
  * @author chen
  * @update 2021-08-07 15:15:08
-*/
+ */
 
-import { Context, Next } from "koa";
-import { Message, Terminal } from '../../../enums'
-import { Success } from '../../../utils/http-exception'
+import { Context, Next } from 'koa'
+import { Message, Terminal } from '@/enums'
+import { Success } from '@/utils/http-exception'
 import { gernerateToken } from './token'
-import { TOKEN } from '../../../config'
-import { getUuId, formatDate, getIP } from '../../../utils/tools'
-import { encrypt } from '../../../utils/crypto'
-import { execTrans } from '../../../db/index'
+import { TOKEN } from '@/config'
+import { getUuId, formatDate, getIP } from '@/utils/tools'
+import { encrypt } from '@/utils/crypto'
+import { execTrans } from '@/db/index'
 
 /**
  * 用户注册
-*/
+ */
 export const doUserRegister = async (ctx: Context, next: Next) => {
   const userId = getUuId()
   const userRoleId = getUuId()
@@ -44,12 +44,12 @@ export const doUserRegister = async (ctx: Context, next: Next) => {
 }
 
 interface DoubleTokenParams {
-  userId: string,
+  userId: string
   phone: string
 }
 
 export interface DoubleTokenReturn {
-  token: string,
+  token: string
   tokenRefresh: string
 }
 

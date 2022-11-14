@@ -4,13 +4,13 @@
  * @update 2021-08-07 15:15:08
  */
 
-import { Success } from '../../../utils/http-exception'
-import { query, execTrans } from '../../../db'
+import { Success } from '@/utils/http-exception'
+import { query, execTrans } from '@/db'
 import { Context, Next } from 'koa'
 import { SourceOptions, SourceListParams, SourceListReturn } from './interface'
 import { getFileByIds } from '../files-info/get'
 import { getTagCustomByIds } from '../tags-custom/get'
-import { getSelectWhereAsKeywordData, getSelectWhereData, getOrderByKeyword } from '../../../utils/handle-sql'
+import { getSelectWhereAsKeywordData, getSelectWhereData, getOrderByKeyword } from '@/utils/handle-sql'
 import _ from 'lodash'
 
 // 获取指定的某个资源
@@ -22,16 +22,16 @@ export const doSourceGetOne = async (ctx: Context, next: Next) => {
 // 获取问答列表
 export const doSourceGetList = async (ctx: Context, next: Next) => {
   const params: SourceListParams = {
-		pageNo: ctx._params.pageNo * 1 || 1,
-		pageSize: ctx._params.pageSize * 1 || 10,
-		keyword: ctx._params.keyword,
-		highlight: ctx._params.highlight,
-		userId: ctx._user.id,
-		createUser: ctx._params.userId,
-		type: ctx._params.type,
-		classify: ctx._params.classify,
-		isSecret: ctx._params.isSecret
-	}
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    keyword: ctx._params.keyword,
+    highlight: ctx._params.highlight,
+    userId: ctx._user.id,
+    createUser: ctx._params.userId,
+    type: ctx._params.type,
+    classify: ctx._params.classify,
+    isSecret: ctx._params.isSecret
+  }
   const data = await getSourceList(params)
   throw new Success(data)
 }
@@ -57,18 +57,18 @@ export const getSourceList = async (options: SourceListParams): Promise<SourceLi
   const sqlParamsKeyword = getSelectWhereAsKeywordData({
     valid: ['t4.(username)', 't1.title'],
     data: options,
-    prefix: 'AND',
+    prefix: 'AND'
   })
   // 处理搜索排序
   const orderParams = getOrderByKeyword({
     valid: ['t4.(username):createUserName', 't1.title'],
-    data: options,
+    data: options
   })
   // 处理普通where参数
   const sqlParams = getSelectWhereData({
     valid: ['t1.create_user', 't1.type'],
     data: options,
-    prefix: 'AND',
+    prefix: 'AND'
   })
   // 处理查询语句
   let whereSQL = ''
@@ -103,7 +103,7 @@ export const getSourceList = async (options: SourceListParams): Promise<SourceLi
   const data2 = [options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
-    { sql: sql2, data: data2 },
+    { sql: sql2, data: data2 }
   ])
   const sourceList: SourceOptions[] = res[1]
   await _handleSource(sourceList, options.userId)

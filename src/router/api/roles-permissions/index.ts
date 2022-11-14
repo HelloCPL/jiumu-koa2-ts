@@ -2,14 +2,22 @@
  * @description: 角色-权限关联模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doRolePermissionAddConvert, doRolePermissionDeleteConvert } from '../../controller/roles-permissions/convert'
-import { doRolePermissionAdd } from '../../controller/roles-permissions/add'
-import { doRolePermissionDelete } from '../../controller/roles-permissions/delete'
-import { doRolePermissiongetAllPermissionByRoleId, doRolePermissionGetAllRoleByPermissionId, doRolePermissiongetAllPermissionByUserId, doRolePermissionGetAllUserByPermissionId } from '../../controller/roles-permissions/get'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import {
+  doRolePermissionAddConvert,
+  doRolePermissionDeleteConvert
+} from '@/router/controller/roles-permissions/convert'
+import { doRolePermissionAdd } from '@/router/controller/roles-permissions/add'
+import { doRolePermissionDelete } from '@/router/controller/roles-permissions/delete'
+import {
+  doRolePermissiongetAllPermissionByRoleId,
+  doRolePermissionGetAllRoleByPermissionId,
+  doRolePermissiongetAllPermissionByUserId,
+  doRolePermissionGetAllUserByPermissionId
+} from '@/router/controller/roles-permissions/get'
 
 @Prefix('role-permission')
 export default class API {

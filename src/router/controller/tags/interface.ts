@@ -6,12 +6,12 @@
 
 // 标签对象接口类型
 export interface TagOptions extends BaseOptions {
-	id: string
-	parent_code?: string
-	code: string
-	label: string
-	sort?: string
-	configurable?: string
+  id: string
+  parent_code?: string
+  code: string
+  label: string
+  sort?: string
+  configurable?: string
 }
 
 // 标签数组接口类型

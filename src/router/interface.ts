@@ -4,7 +4,7 @@
  * @update 2021-08-06 16:14:35
  */
 
-import { TerminalType, MethodsType } from '../enums'
+import { TerminalType, MethodsType } from '@/enums'
 
 // 路由接口
 export interface RouteOptions {

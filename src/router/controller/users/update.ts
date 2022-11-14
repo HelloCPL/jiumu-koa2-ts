@@ -2,36 +2,36 @@
  * @description 用户修改基本信息
  * @author chen
  * @update 2021-08-07 15:15:08
-*/
+ */
 
-import { Context, Next } from "koa";
-import { Success, ExceptionForbidden } from '../../../utils/http-exception'
-import { query } from "../../../db";
-import { formatDate } from "../../../utils/tools";
-import { getUpdateSetData } from '../../../utils/handle-sql'
+import { Context, Next } from 'koa'
+import { Success, ExceptionForbidden } from '@/utils/http-exception'
+import { query } from '@/db'
+import { formatDate } from '@/utils/tools'
+import { getUpdateSetData } from '@/utils/handle-sql'
 import { analysisToken } from './token'
-import { Code, Message } from "../../../enums";
+import { Code, Message } from '@/enums'
 import { handleDoubleToken } from './register'
 
 /**
  * 修改本用户基本信息
-*/
+ */
 export const doUserUpdateBaseSelf = async (ctx: Context, next: Next) => {
   await updateUserBaseByUserId(ctx, ctx._user.id)
-  throw new Success();
+  throw new Success()
 }
 
 /**
  * 修改指定用户基本信息
-*/
+ */
 export const doUserUpdateBase = async (ctx: Context, next: Next) => {
   await updateUserBaseByUserId(ctx, ctx._params.id)
-  throw new Success();
+  throw new Success()
 }
 
 /**
  * 更新token
-*/
+ */
 export const doUserUpdateToken = async (ctx: Context, next: Next) => {
   const tokenRefresh = await analysisToken(ctx, 'token_refresh')
   if (tokenRefresh.code === Code.success) {
@@ -39,10 +39,8 @@ export const doUserUpdateToken = async (ctx: Context, next: Next) => {
     let params = { userId: tokenRefresh.data.id, phone: tokenRefresh.data.phone }
     const doubleToken = await handleDoubleToken(ctx, params)
     throw new Success({ data: doubleToken })
-  } else
-    throw new ExceptionForbidden({ message: Message.authLogin, code: Code.authLogin })
+  } else throw new ExceptionForbidden({ message: Message.authLogin, code: Code.authLogin })
 }
-
 
 // 根据 userId 修改指定用户基本信息
 export const updateUserBaseByUserId = async (ctx: Context, userId: string): Promise<void> => {

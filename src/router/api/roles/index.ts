@@ -2,22 +2,22 @@
  * @description: 角色管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doRoleAddConvert, doRoleUpdateConvert, doRoleDeleteConvert } from '../../controller/roles/convert'
-import { doRoleAdd } from '../../controller/roles/add'
-import { doRoleUpdate } from '../../controller/roles/update'
-import { doRoleDelete } from '../../controller/roles/delete'
-import { doRoleGetOne, doRoleGetAllSelf, doRoleGetList } from '../../controller/roles/get'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import { doRoleAddConvert, doRoleUpdateConvert, doRoleDeleteConvert } from '@/router/controller/roles/convert'
+import { doRoleAdd } from '@/router/controller/roles/add'
+import { doRoleUpdate } from '@/router/controller/roles/update'
+import { doRoleDelete } from '@/router/controller/roles/delete'
+import { doRoleGetOne, doRoleGetAllSelf, doRoleGetList } from '@/router/controller/roles/get'
 
 @Prefix('role')
 export default class API {
   // 1 角色新增
   @Request({
     path: 'add',
-    methods: ['get', 'post'],
+    methods: ['get', 'post']
   })
   @Required(['code', 'label'])
   @Convert(doRoleAddConvert)
