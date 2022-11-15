@@ -60,7 +60,7 @@ function formatStr(str: string): string {
   let targetStr = ''
   for (let i = 0, len = strArr.length; i < len; i++) {
     const item = strArr[i].trim()
-    if (item && item != '\x00' && item != '\x02') {
+    if (item && item !== '\x00' && item !== '\x02') {
       targetStr += item
     }
   }

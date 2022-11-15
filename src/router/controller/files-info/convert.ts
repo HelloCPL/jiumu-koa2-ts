@@ -21,7 +21,7 @@ export const doFileGetOneConvert = async (ctx: Context, next: Next) => {
   // 判断文件是否不存在
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.notFound })
   // 如果为私密文件，判断是否为本人上传
-  if (res[0]['is_secret'] == '1' && res[0]['create_user'] !== ctx._user.id)
+  if (res[0]['is_secret'] === '1' && res[0]['create_user'] !== ctx._user.id)
     throw new ExceptionParameter({ message: Message.lockedAuth })
   await next()
 }

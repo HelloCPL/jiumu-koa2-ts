@@ -21,7 +21,7 @@ export default class API {
   @Required(['targetId', 'content', 'type'])
   @Convert(doCommentAddConvert)
   async doCommentAdd(ctx: Context) {
-    if (ctx._params.type == '501') {
+    if (ctx._params.type === '501') {
       // 新增第二级别评论
       await doCommentSecondAdd(ctx)
     } else {
@@ -63,7 +63,7 @@ export default class API {
   async doCommentGetList(ctx: Context) {
     if (ctx._params.targetId === 'answer') ctx._params.targetId = null
     ctx._params.userId = null
-    if (ctx._params.type == '501') {
+    if (ctx._params.type === '501') {
       // 二级评论列表
       await doCommentSecondGetList(ctx)
     } else {

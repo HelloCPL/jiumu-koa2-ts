@@ -50,6 +50,7 @@ module.exports = {
     'comma-dangle': ['warn', 'never'],
     'semi': ['warn', 'never'],
     'max-len': ['off', 120],
-    'indent': ['warn', 2]
+    'indent': ['warn', 2],
+    'eqeqeq': ['warn', 'always']
   }
 }

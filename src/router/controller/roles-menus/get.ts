@@ -49,7 +49,7 @@ export const doRoleMenugetAllMenuByUserId = async (ctx: Context) => {
       pageNo: ctx._params.pageNo * 1 || 1,
       pageSize: ctx._params.pageSize * 1 || 10
     },
-    ctx._params.isTree == '1'
+    ctx._params.isTree === '1'
   )
   throw new Success(data)
 }

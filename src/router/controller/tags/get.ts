@@ -27,7 +27,7 @@ export const doTagGetAllSelf = async (ctx: Context) => {
 export const doTagGetByParentCode = async (ctx: Context) => {
   const parentCode = ctx._params.parentCode || ''
   let userId = ''
-  if (parentCode == '8888' && ctx._params.userId) userId = ctx._params.userId
+  if (parentCode === '8888' && ctx._params.userId) userId = ctx._params.userId
   const data = await getTagByParentCode(parentCode, userId)
   throw new Success({ data })
 }

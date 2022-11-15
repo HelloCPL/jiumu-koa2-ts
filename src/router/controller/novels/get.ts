@@ -81,10 +81,10 @@ export const getNovelList = async (options: NovelListParams): Promise<NovelListR
   })
   let whereSQL = ''
   let whereData: any[] = []
-  if (options.isSecret == '1') {
+  if (options.isSecret === '1') {
     whereSQL = 'WHERE (t1.is_secret = 1 AND t1.create_user = ?)'
     whereData.push(options.userId)
-  } else if (options.isSecret == '0') {
+  } else if (options.isSecret === '0') {
     whereSQL = 'WHERE t1.is_secret = 0'
   } else {
     whereSQL = 'WHERE (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))'

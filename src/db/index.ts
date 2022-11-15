@@ -39,7 +39,7 @@ export function query(sql: string, data?: any, noThrow?: boolean) {
       const sqlStr = sql.toUpperCase()
       if (
         (sqlStr.startsWith('INSERT') || sqlStr.startsWith('UPDATE') || sqlStr.startsWith('DELETE')) &&
-        results.affectedRows == 0 &&
+        results.affectedRows === 0 &&
         !noThrow
       )
         return _throwError(reject, { message: Message.errorDoing, sql, data, err })
@@ -107,7 +107,7 @@ function _handleExceTransSQLParams(reject: any, connection: PoolConnection, sqlL
           const sqlStr = item.sql.toUpperCase()
           if (
             (sqlStr.startsWith('INSERT') || sqlStr.startsWith('UPDATE') || sqlStr.startsWith('DELETE')) &&
-            results.affectedRows == 0 &&
+            results.affectedRows === 0 &&
             !item.noThrow
           )
             _handleExceTransRollback(reject, connection, {

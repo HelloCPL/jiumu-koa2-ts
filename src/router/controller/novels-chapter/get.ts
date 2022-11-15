@@ -50,20 +50,20 @@ export const getNovelChapterGetList = async (options: NovelChapterListParams): P
   let whereSQL = ''
   const whereData: any[] = []
   // 处理isSecret参数
-  if (options.isSecret == '1') {
+  if (options.isSecret === '1') {
     whereSQL = ' WHERE ((t1.is_secret = 1 OR t2.is_secret = 1) AND t1.create_user = ?) '
     whereData.push(options.userId)
-  } else if (options.isSecret == '0') {
+  } else if (options.isSecret === '0') {
     whereSQL = ' WHERE (t1.is_secret = 0 AND t2.is_secret = 0) '
   } else {
     whereSQL = ' WHERE ((t1.is_secret = 0 AND t2.is_secret = 0) OR t1.create_user = ?) '
     whereData.push(options.userId)
   }
   // 处理isDraft参数
-  if (options.isDraft == '1') {
+  if (options.isDraft === '1') {
     whereSQL += ' AND (t1.is_draft = 1 AND t1.create_user = ?) '
     whereData.push(options.userId)
-  } else if (options.isDraft == '0') {
+  } else if (options.isDraft === '0') {
     whereSQL += ' AND t1.is_draft = 0 '
   } else {
     whereSQL += ' AND (t1.is_draft = 0 OR t1.create_user = ?) '

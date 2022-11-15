@@ -107,7 +107,7 @@ export const validateRange = async (data: RangeOptions | RangeOptions[], noThrow
               return true
             }
           } else {
-            if (info.value == val) {
+            if (info.value === val) {
               flag = true
               return true
             }
