@@ -12,7 +12,7 @@ import { query } from '@/db'
  * 章节删除
  */
 export const doNovelChapterDelete = async (ctx: Context) => {
-  // const sql: string = `DELETE FROM novels WHERE id = ?`
-  // await query(sql, ctx._params.id)
+  const sql: string = 'DELETE FROM novels_chapter WHERE id = ?'
+  await query(sql, ctx._params.id)
   throw new Success()
 }
