@@ -4,7 +4,7 @@
  * @update 2021-08-11 14:12:49
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
 import {
   doUserTagAddConvert,
@@ -24,8 +24,8 @@ export default class API {
   })
   @Required(['tagCode', 'userId'])
   @Convert(doUserTagAddConvert)
-  async doUserTagAdd(ctx: Context, next: Next) {
-    await doUserTagAdd(ctx, next)
+  async doUserTagAdd(ctx: Context) {
+    await doUserTagAdd(ctx)
   }
 
   // 2 删除用户-特殊标签关联
@@ -34,8 +34,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Convert(doUserTagDeleteConvert)
-  async doUserTagDelete(ctx: Context, next: Next) {
-    await doUserTagDelete(ctx, next)
+  async doUserTagDelete(ctx: Context) {
+    await doUserTagDelete(ctx)
   }
 
   // 3 获取指定用户关联的所有特殊标签
@@ -44,8 +44,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['userId'])
-  async doUserTagGetAllTagByUserId(ctx: Context, next: Next) {
-    await doUserTagGetAllTagByUserId(ctx, next)
+  async doUserTagGetAllTagByUserId(ctx: Context) {
+    await doUserTagGetAllTagByUserId(ctx)
   }
 
   // 4 获取指定特殊标签关联的所有用户
@@ -55,7 +55,7 @@ export default class API {
   })
   @Required(['tagCode'])
   @Convert(doUserTagGetAllUserByTagCodeConvert)
-  async doUserTagGetAllUserByTagCode(ctx: Context, next: Next) {
-    await doUserTagGetAllUserByTagCode(ctx, next)
+  async doUserTagGetAllUserByTagCode(ctx: Context) {
+    await doUserTagGetAllUserByTagCode(ctx)
   }
 }

@@ -4,7 +4,7 @@
  * @update 2021-08-11 14:12:49
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Request, Required } from '@/router/router'
 import { doLoginInfoGetList } from '@/router/controller/login-info/get'
 
@@ -16,7 +16,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['userId'])
-  async doLoginInfoGetList(ctx: Context, next: Next) {
-    await doLoginInfoGetList(ctx, next)
+  async doLoginInfoGetList(ctx: Context) {
+    await doLoginInfoGetList(ctx)
   }
 }

@@ -4,7 +4,7 @@
  * @update 2021-08-11 14:12:49
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
 import { doCollectionAddConvert, doCollectionDeleteConvert } from '@/router/controller/collections/convert'
 import { doCollectionAdd } from '@/router/controller/collections/add'
@@ -20,8 +20,8 @@ export default class API {
   })
   @Required(['targetId', 'type'])
   @Convert(doCollectionAddConvert)
-  async doCollectionAdd(ctx: Context, next: Next) {
-    await doCollectionAdd(ctx, next)
+  async doCollectionAdd(ctx: Context) {
+    await doCollectionAdd(ctx)
   }
 
   // 2 删除收藏
@@ -31,8 +31,8 @@ export default class API {
   })
   @Required(['targetId'])
   @Convert(doCollectionDeleteConvert)
-  async doCollectionDelete(ctx: Context, next: Next) {
-    await doCollectionDelete(ctx, next)
+  async doCollectionDelete(ctx: Context) {
+    await doCollectionDelete(ctx)
   }
 
   // 3 获取本用户的收藏列表
@@ -40,8 +40,8 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
-  async doCollectionGetListSelf(ctx: Context, next: Next) {
-    await doCollectionGetListSelf(ctx, next)
+  async doCollectionGetListSelf(ctx: Context) {
+    await doCollectionGetListSelf(ctx)
   }
 
   // 4 根据 userId 获取收藏列表
@@ -50,7 +50,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['userId'])
-  async doCollectionGetList(ctx: Context, next: Next) {
-    await doCollectionGetList(ctx, next)
+  async doCollectionGetList(ctx: Context) {
+    await doCollectionGetList(ctx)
   }
 }
