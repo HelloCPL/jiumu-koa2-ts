@@ -87,7 +87,7 @@ export const getFileByIds = async (fileIds: string, userId?: string): Promise<Fi
  * 如果私密文件判断是否有权限
  * 否则正常返回
  */
-function _handleFile(file: FileInfoOptions): FileInfoOptions {
+export function _handleFile(file: FileInfoOptions): FileInfoOptions {
   file.file_path = toPath(BASE_URL, PUBLIC_PATH, file.static_place, file.file_path)
   if (file.is_secret === '1') {
     let queryParams = '?'

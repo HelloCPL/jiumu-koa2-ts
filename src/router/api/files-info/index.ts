@@ -6,7 +6,7 @@
 
 import { Context } from 'koa'
 import { Prefix, Request, Required, Convert } from '@/router/router'
-import { doFileAdd } from '@/router/controller/files-info/add'
+import { doFileAdd, doFileAddChunk } from '@/router/controller/files-info/add'
 import { doFileGetOne } from '@/router/controller/files-info/get'
 import { doFileDelete } from '@/router/controller/files-info/delete'
 import { doFileDeleteConvert, doFileGetOneConvert } from '@/router/controller/files-info/convert'
@@ -62,4 +62,14 @@ export default class API {
   // async doFileGetListSelf(ctx: Context) {
   //   await doFileGetListSelf(ctx)
   // }
+
+  // 6. 大文件上传切片
+  @Request({
+    path: 'add/big',
+    methods: ['post']
+  })
+  @Required(['fileHash', 'chunkHash'])
+  async doFileAddChunk(ctx: Context) {
+    await doFileAddChunk(ctx)
+  }
 }

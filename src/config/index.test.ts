@@ -40,6 +40,7 @@ function createConfig(): ConfigOptions {
     },
     BASE_URL: 'https://www.jiumublog.cn/', // 默认服务路径
     STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-test-static'), // 静态资源路径
+    STATIC_DIRS: ['files', 'images', 'videos', 'editors', 'sources', 'file_temp', 'files_big'], // 静态资源目录
     LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-test-logs'), // 日志记录路径
     CRYPTOJS_KEY: '', // crypto-js 加密字符
     CRYPTOJS_IV: '', // crypto-js 加密字符

@@ -40,6 +40,7 @@ export interface ConfigOptions extends ObjectAny {
   TOKEN: ConfigTokenOptions
   BASE_URL: string
   STATIC_URL: string
+  STATIC_DIRS: string[]
   LOGS_URL: string
   CRYPTOJS_KEY: string
   CRYPTOJS_IV: string

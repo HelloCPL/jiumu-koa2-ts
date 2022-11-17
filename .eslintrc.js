@@ -49,7 +49,7 @@ module.exports = {
     'quotes': ['warn', 'single'],
     'comma-dangle': ['warn', 'never'],
     'semi': ['warn', 'never'],
-    'max-len': ['off', 120],
+    'max-len': ['off', 110],
     'indent': ['warn', 2],
     'eqeqeq': ['warn', 'always']
   }

@@ -18,7 +18,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | isSecret | string | 否 | 是否私有文件 默认 0 ，`query` 传参 |
-| staticPlace | string | 否 | 文件存放位置 可选 `files images videos editors` 默认 `files` ，`query` 传参 |
+| staticPlace | string | 否 | 文件存放位置 可选 `files images videos editors sources` 默认 `files` ，`query` 传参 |
 | remarks | string | 否 | 备注说明 `query` 传参 |
 
 #### 返回字段说明

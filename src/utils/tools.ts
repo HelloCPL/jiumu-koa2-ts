@@ -100,7 +100,7 @@ export function getSuffix(path: string | undefined | null, separator = '.'): str
 }
 
 // 根据文件名获取资源存放位置
-export function getStaticPlace(fileName: string) {
+export function getStaticPlace(fileName: string): string {
   const suffix = getSuffix(fileName)
   const imagesSuffix = [
     'jpg',
