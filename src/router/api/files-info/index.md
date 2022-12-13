@@ -115,6 +115,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 图片id |
+| showUserInfo | string | 否 | 是否增加创建者头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -129,6 +130,7 @@
 | suffix | string | 文件后缀 |
 | staticPlace | string | 文件存放位置 |
 | createUser | string | 创建者 |
+| createUserName | string | 创建者名字 |
 | isSecret | string | 是否私密文件，1 是 0 否 |
 | checkValidTime | string | 如果为私密链接查看有效期，单位天 |
 | createTime | string | 创建时间 |
@@ -150,6 +152,7 @@
     "suffix": "png",
     "staticPlace": "files",
     "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+    "createUserName": "超级管理员",
     "isSecret": "0",
     "checkValidTime": 3,
     "createTime": "2021-08-11 15:34:13",

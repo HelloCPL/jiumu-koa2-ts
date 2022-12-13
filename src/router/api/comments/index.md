@@ -108,10 +108,11 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| targetId | string | 是 | 评论id |
+| targetId | string | 是 | 资源id/评论id |
 | type | string | 是 | 评论来源，使用系统标签500范围，如果获取二级评论 type 必须为501 |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
+| showUserInfo | string | 否 | 是否增加评论者或回复者姓名与头像 '1' 是 其他否 默认 '1' |
 
 #### 返回字段说明
 
@@ -125,10 +126,12 @@
 | id | string | 评论id |
 | targetId | string | 评论目标id（1 2级评论均指向顶级评论的目标） |
 | targetType | string | 评论目标类型（1 2级评论均指向顶级评论的目标类型） |
+| targetTypeLabel | string | 评论目标类型描述 |
 | commentFirstId | string | 评论的一级评论id（只有二级评论有这个字段） |
 | content | string | 内容 |
 | createUser | string | 评论者id |
 | createUserName | string | 评论者姓名 |
+| createUserAvatar | object/null | 评论者头像 |
 | createTime | string | 创建时间 |
 | terminal | string | 操作终端 |
 | isTop | string | 是否置顶，1 是 0 否 |
@@ -137,6 +140,7 @@
 | commentCount | number | 收藏总数 |
 | replyUser | string | 回复的人id |
 | replyUserName | string | 回复的人姓名 |
+| createUserAvatar | object/null | 回复者头像 |
 | isSelf | string | 是否本人的评论，1 是 0 否 |
 | isTargetUser | string | 是否为评论目标的作者，1 是 0 否 |
 | flag | number | 评论级别 1 一级评论 2 二级评论|
@@ -156,6 +160,21 @@
       "content": "这是评论2",
       "createUser": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
       "createUserName": "陈一支",
+      "createUserAvatar": {
+        "id": "628aa32f-f270-43e8-921b-15fc9736f486",
+        "filePath": "http://localhost:3030/images/e30b56b0-7aaf-11ed-bce7-1fcf06575d20.jpg",
+        "fileName": "R-C (2).jpg",
+        "fileSize": 20764,
+        "suffix": "jpg",
+        "staticPlace": "images",
+        "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+        "createUserName": "管理员",
+        "isSecret": "0",
+        "createTime": "2022-12-13 14:32:16",
+        "updateTime": "2022-12-13 14:32:16",
+        "terminal": "移动端",
+        "remarks": null
+      },
       "createTime": "2021-08-17 15:51:52",
       "terminal": "管理端",
       "isTop": "0",
@@ -163,7 +182,6 @@
       "likeCount": 1,
       "commentCount": 2,
       "replyUser": null,
-      "replyUserName": null,
       "isSelf": "1",
       "isTargetUser": "1",
       "children": []

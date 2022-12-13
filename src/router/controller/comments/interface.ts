@@ -11,13 +11,15 @@ export interface CommentOptions extends BaseOptions {
   target_type: string
   content: string
   create_user: string
-  create_user_name: string
+  create_user_name?: string
+  create_user_avatar?: any
   is_like?: string
   like_count?: number
   comment_count?: number
   is_self?: string
   reply_user?: string | null
   reply_user_name?: string | null
+  reply_user_avatar?: any
   is_target_user?: string
   comment_first_id?: string
   children?: CommentOptions[]
@@ -31,4 +33,11 @@ export interface CommentFindResult {
   comment_first_id: string
   reply_user?: string
   flag: number
+}
+
+export interface CommentListParams {
+  userId: string
+  flag: 1 | 2
+  type?: string
+  showUserInfo?: any
 }

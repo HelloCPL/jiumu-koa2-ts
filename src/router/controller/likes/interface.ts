@@ -11,6 +11,7 @@ export interface LikeOptions extends BaseOptions {
   create_user: string
   type: string
   create_user_name?: string
+  create_user_avatar?: any
   type_label?: string
 }
 
@@ -19,6 +20,7 @@ export interface LikeParams {
   userId: string
   pageNo: number
   pageSize: number
+  showUserInfo?: any
 }
 
 // 点赞列表返回

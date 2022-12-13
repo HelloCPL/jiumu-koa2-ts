@@ -61,8 +61,6 @@ export default class API {
   })
   @Required(['targetId', 'type'])
   async doCommentGetList(ctx: Context) {
-    if (ctx._params.targetId === 'answer') ctx._params.targetId = null
-    ctx._params.userId = null
     if (ctx._params.type === '501') {
       // 二级评论列表
       await doCommentSecondGetList(ctx)
@@ -71,30 +69,4 @@ export default class API {
       await doCommentFirstGetList(ctx)
     }
   }
-
-  // 5 获取我的问答列表
-  // @Request({
-  //   path: 'get/answer/list/self',
-  //   methods: ['get', 'post']
-  // })
-  // async doCommentGetAnswerListSelf(ctx: Context) {
-  //   // 一级评论列表
-  //   ctx._params.targetId = 'answer'
-  //   ctx._params.userId = ctx._user.id
-  //   ctx._params.type = '502'
-  // await doCommentFirstGetList(ctx)
-  // }
-
-  // 6 获取所有的问答列表
-  // @Request({
-  //   path: 'get/answer/list',
-  //   methods: ['get', 'post']
-  // })
-  // async doCommentGetAnswerList(ctx: Context) {
-  //   ctx._params.targetId = 'answer'
-  //   ctx._params.userId = null
-  //   ctx._params.type = '502'
-  //   // 一级评论列表
-  // await doCommentFirstGetList(ctx)
-  // }
 }
