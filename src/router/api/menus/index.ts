@@ -2,16 +2,16 @@
  * @description: 菜单管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
-import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doMenuAddConvert, doMenuUpdateConvert, doMenuDeleteConvert } from '../../controller/menus/convert'
-import { doMenuAdd } from '../../controller/menus/add'
-import { doMenuUpdate } from '../../controller/menus/update'
-import { doMenuDelete } from '../../controller/menus/delete'
-import { doMenuGetOne, doMenuGetByParentCode } from '../../controller/menus/get'
-import { doRoleMenugetAllMenuByUserId } from '../../controller/roles-menus/get';
+import { Context } from 'koa'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import { doMenuAddConvert, doMenuUpdateConvert, doMenuDeleteConvert } from '@/router/controller/menus/convert'
+import { doMenuAdd } from '@/router/controller/menus/add'
+import { doMenuUpdate } from '@/router/controller/menus/update'
+import { doMenuDelete } from '@/router/controller/menus/delete'
+import { doMenuGetOne, doMenuGetByParentCode } from '@/router/controller/menus/get'
+import { doRoleMenugetAllMenuByUserId } from '@/router/controller/roles-menus/get'
 
 @Prefix('menu')
 export default class API {
@@ -22,8 +22,8 @@ export default class API {
   })
   @Required(['code', 'label'])
   @Convert(doMenuAddConvert)
-  async doMenuAdd(ctx: Context, next: Next) {
-    await doMenuAdd(ctx, next)
+  async doMenuAdd(ctx: Context) {
+    await doMenuAdd(ctx)
   }
 
   // 2 菜单修改
@@ -33,10 +33,10 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doMenuUpdateConvert)
-  async doMenuUpdate(ctx: Context, next: Next) {
-    await doMenuUpdate(ctx, next)
+  async doMenuUpdate(ctx: Context) {
+    await doMenuUpdate(ctx)
   }
-  
+
   // 3 菜单删除
   @Request({
     path: 'delete',
@@ -44,8 +44,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doMenuDeleteConvert)
-  async doMenuDelete(ctx: Context, next: Next) {
-    await doMenuDelete(ctx, next)
+  async doMenuDelete(ctx: Context) {
+    await doMenuDelete(ctx)
   }
 
   // 4 获取指定的某个菜单
@@ -54,8 +54,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  async doMenuGetOne(ctx: Context, next: Next) {
-    await doMenuGetOne(ctx, next)
+  async doMenuGetOne(ctx: Context) {
+    await doMenuGetOne(ctx)
   }
 
   // 5 获取我的所有菜单
@@ -63,9 +63,9 @@ export default class API {
     path: 'get/all/self',
     methods: ['get', 'post']
   })
-  async doMenuGetAllSelf(ctx: Context, next: Next) {
+  async doMenuGetAllSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
-    await doRoleMenugetAllMenuByUserId(ctx, next)
+    await doRoleMenugetAllMenuByUserId(ctx)
   }
 
   // 6 获取某类菜单
@@ -73,7 +73,7 @@ export default class API {
     path: 'get/byparentcode',
     methods: ['get', 'post']
   })
-  async doMenuGetByParentCode(ctx: Context, next: Next) {
-    await doMenuGetByParentCode(ctx, next)
+  async doMenuGetByParentCode(ctx: Context) {
+    await doMenuGetByParentCode(ctx)
   }
 }

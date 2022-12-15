@@ -123,6 +123,7 @@
 | code | string | 角色code |
 | label | string | 角色描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -139,6 +140,7 @@
     "code": "super",
     "label": "超级管理员",
     "sort": 1,
+    "configurable": "0",
     "createTime": "2021-08-12 16:00:37",
     "updateTime": "2021-08-12 16:00:37",
     "terminal": "管理端",
@@ -177,6 +179,7 @@
 | code | string | 角色code |
 | label | string | 角色描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -194,6 +197,7 @@
       "code": "testers",
       "label": "测试人员",
       "sort": 2,
+      "configurable": "0",
       "createTime": "2021-08-12 16:05:23",
       "updateTime": "2021-08-12 16:12:22",
       "terminal": "管理端",
@@ -226,6 +230,7 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
+| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | userId | string | 否 | 用户id，会增加`checkedUserId` 字段，表示是否与该用户关联 |
 | permissionId | string | 否 | 权限id，会增加`checkedPermissionId` 字段，表示是否与该权限关联  |
 | menuId | string | 否 | 菜单id，会增加`checkedMenuId` 字段，表示是否与该菜单关联  |
@@ -243,6 +248,7 @@
 | code | string | 角色code |
 | label | string | 角色描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -260,6 +266,7 @@
       "code": "testers",
       "label": "测试人员",
       "sort": 2,
+      "configurable": "0",
       "createTime": "2021-08-12 16:05:23",
       "updateTime": "2021-08-12 16:12:22",
       "terminal": "管理端",

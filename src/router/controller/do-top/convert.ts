@@ -5,9 +5,9 @@
  */
 
 import { Context, Next } from 'koa'
-import { validateRange } from '../../../utils/validator'
-import { ExceptionForbidden } from '../../../utils/http-exception'
-import { isSuper } from '../convert';
+import { validateRange } from '@/utils/validator'
+import { ExceptionForbidden } from '@/utils/http-exception'
+import { isSuper } from '../convert'
 
 /**
  * 置顶操作时
@@ -20,8 +20,8 @@ export const doTopUpdateConvert = async (ctx: Context, next: Next) => {
     {
       value: ctx._params.type,
       range: ['502', '503', '504', '505'],
-      message: 'type参数必须为系统标签500范围',
-    },
+      message: 'type参数必须为系统标签500范围'
+    }
   ])
   // 判断是否管理员角色
   const flag = await isSuper(ctx._user.id)

@@ -7,11 +7,11 @@
  *   Code // 返回数据状态码
  *   ParamsMessage // 必传参数不满足条件时提示文本
  *   Terminal // 终端类型
-*/
+ */
 
 /**
  * 返回数据信息提示
-*/
+ */
 export enum Message {
   success = '操作成功',
   error = '服务器发生错误',
@@ -77,18 +77,19 @@ export enum Message {
   existNovelChapterSort = '章节序号已存在，请使用其他序号',
   unexistNovelNote = '笔记不存在',
 
-
   relevantHasChildren = '有子级关联，请解除子级关联后再操作',
   relevantNoParent = '父级未关联，请关联父级后再操作',
   relevantRolePermission = '角色-权限有关联，请解除关联后再操作',
   relevantUserRole = '用户-角色有关联，请解除关联后再操作',
   relevantUserTag = '用户-标签有关联，请解除关联后再操作',
-  relevantRoleMenu = '角色-菜单有关联，请解除关联后再操作',
+  relevantRoleMenu = '角色-菜单有关联，请解除关联后再操作'
 }
+
+export type MessageType = keyof typeof Message
 
 /**
  * 返回数据状态码
-*/
+ */
 export enum Code {
   success = 200,
   error = 500,
@@ -98,13 +99,16 @@ export enum Code {
   authFailed = 401, // 授权失败
   authLogin = 205, // 重新登录
   authRefresh = 206, // token 失效需重新刷新
-  locked = 423, // 静态资源被锁定，用于不返回日志信息
+  locked = 423 // 静态资源被锁定，用于不返回日志信息
 }
+
+export type CodeValue = 200 | 500 | 400 | 404 | 403 | 401 | 205 | 206 | 423
+export type CodeType = keyof typeof Code
 
 /**
  * 必传参数不满足条件时提示文本
  * 这里只列举常用的校验格式提示，更多请参考 validator 校验插件官网
-*/
+ */
 export enum MessageParameter {
   isLength = '参数必传',
   isBoolean = '参数必须为boolean类型',
@@ -114,15 +118,17 @@ export enum MessageParameter {
   isBase64 = '参数必须为base64格式',
   isDataURI = '参数必须为DataURI格式', // 即图片经baseXX编码后的字符串
   isURL = '参数必须为URL格式',
-  isJWT = '参数必须为JWT token格式',
+  isJWT = '参数必须为JWT token格式'
 }
+
+export type MessageParameterType = keyof typeof MessageParameter
 
 // 终端类型枚举
 export enum Terminal {
   'pc' = '管理端',
   'web' = '桌面端',
   'app' = '移动端',
-  'wechat' = '小程序',
+  'wechat' = '小程序'
 }
 
 export type TerminalType = keyof typeof Terminal
@@ -132,7 +138,7 @@ export enum Methods {
   'get' = 'get',
   'post' = 'post',
   'put' = 'put',
-  'delete' = 'delete',
+  'delete' = 'delete'
 }
 
 export type MethodsType = keyof typeof Methods

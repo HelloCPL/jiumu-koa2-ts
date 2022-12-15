@@ -77,7 +77,7 @@
 #### 请求
 
 - `get | post` 
-- `tag/delete`
+- `permission/delete`
 
 #### 参数
 
@@ -123,7 +123,9 @@
 | id | string | 权限id |
 | code | string | 权限code |
 | label | string | 权限描述 |
+| href | string | 关联路径 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -141,6 +143,7 @@
     "label": "权限修改",
     "href": "/permission/update",
     "sort": 1,
+    "configurable": "0",
     "createTime": "2021-08-12 14:56:32",
     "updateTime": "2021-08-12 14:56:32",
     "terminal": "管理端",
@@ -175,6 +178,7 @@
 | code | string | 权限code |
 | label | string | 权限描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -193,6 +197,7 @@
       "label": "测试",
       "href": "#",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-12-04 00:34:51",
       "updateTime": "2021-12-04 00:36:00",
       "terminal": "管理端",
@@ -225,6 +230,7 @@
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
+| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | roleId | string | 否 | 角色id，会增加`checked` 字段，表示是否与该角色关联 |
 | userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联，但不可直接关联 |
 
@@ -232,8 +238,9 @@
 
 - 返回数组或[]
 - 排序规则
-  `搜索相似度(label)降序`
-  `sort升序、updateTime更新时间降序`
+  `sort升序`
+  `搜索相似度(label、code)降序`
+  `updateTime更新时间降序`
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
@@ -241,6 +248,7 @@
 | code | string | 权限code |
 | label | string | 权限描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -259,6 +267,7 @@
       "label": "测试",
       "href": "#",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-12-04 00:34:51",
       "updateTime": "2021-12-04 00:36:00",
       "terminal": "管理端",

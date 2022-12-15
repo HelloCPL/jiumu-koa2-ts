@@ -9,7 +9,10 @@
     "dev": "tsc && concurrently npm:dev:*",
     "test": "tsc && node dist/app.js test",
     "start": "tsc && node dist/app.js prod",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint src --ext .ts --ignore-path .eslintignore --fix",
+    "lint-staged": "lint-staged",
+    "prepare": "husky install"
   },
   "author": "chen",
   "license": "ISC",
@@ -20,6 +23,7 @@
     "concurrently": "^6.2.0",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.10.6",
+    "eslint": "^8.27.0",
     "glob": "^7.1.7",
     "js-base64": "^3.6.1",
     "jsonwebtoken": "^8.5.1",
@@ -31,8 +35,10 @@
     "koa-static": "^5.0.0",
     "lodash": "^4.17.21",
     "log4js": "^6.3.0",
+    "module-alias": "^2.2.2",
     "mysql2": "^2.3.0",
     "nodemon": "^2.0.12",
+    "prettier": "^2.7.1",
     "redis": "^3.1.2",
     "typescript": "^4.3.5",
     "uuid": "^8.3.2",
@@ -40,10 +46,13 @@
     "xss": "^1.0.10"
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
     "@types/async": "^3.2.7",
     "@types/basic-auth": "^1.1.3",
     "@types/concurrently": "^6.2.1",
     "@types/crypto-js": "^4.0.2",
+    "@types/eslint": "^8.4.10",
     "@types/glob": "^7.1.4",
     "@types/jsonwebtoken": "^8.5.4",
     "@types/koa": "^2.13.4",
@@ -53,10 +62,28 @@
     "@types/koa-router": "^7.4.4",
     "@types/koa-static": "^4.0.2",
     "@types/lodash": "^4.14.172",
+    "@types/module-alias": "^2.0.1",
     "@types/node": "^14.14.21",
     "@types/nodemon": "^1.19.1",
+    "@types/prettier": "^2.7.1",
     "@types/redis": "^2.8.31",
     "@types/uuid": "^8.3.1",
-    "@types/validator": "^13.6.3"
+    "@types/validator": "^13.6.3",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.42.1",
+    "eslint-plugin-jsonc": "^2.5.0",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.8"
+  },
+  "_moduleAliases": {
+    "@": "dist"
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }

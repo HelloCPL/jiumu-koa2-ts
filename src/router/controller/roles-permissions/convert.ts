@@ -2,18 +2,20 @@
  * @description: 角色-权限关联模块中间件
  * @author chen
  * @update 2021-08-12 14:20:21
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Message } from '../../../enums'
+import { query } from '@/db'
+import { Message } from '@/enums'
+import { Success } from '@/utils/http-exception'
 import { isExist } from '../convert'
 
 /**
- * 新增时 
+ * 新增时
  * 先判断角色是否不存在
  * 再判断权限是否不存在
  * 最后判断角色-权限关联是否已存在
-*/
+ */
 export const doRolePermissionAddConvert = async (ctx: Context, next: Next) => {
   // 先判断角色是否不存在
   await isExist({
@@ -30,29 +32,27 @@ export const doRolePermissionAddConvert = async (ctx: Context, next: Next) => {
     message: Message.unexistPermission
   })
   // 最后判断角色-权限关联是否已存在
-  await isExist({
-    table: 'roles_permissions',
-    where: [
-      { key: 'role_id', value: ctx._params.roleId },
-      { key: 'permission_id', value: ctx._params.permissionId },
-    ],
-    throwType: true,
-    message: Message.existRolePermission
-  })
+  const flag = await _isExist(ctx)
+  if (flag) throw new Success()
   await next()
 }
 
 /**
- * 删除时 
+ * 删除时
  * 判断角色-权限关联是否不存在
-*/
+ */
 export async function doRolePermissionDeleteConvert(ctx: Context, next: Next) {
   // 判断角色-权限关联是否不存在
-  await isExist({
-    table: 'roles_permissions',
-    where: [{ key: 'id', value: ctx._params.id }],
-    throwType: false,
-    message: Message.unexistRolePermission
-  })
+  const flag = await _isExist(ctx)
+  if (!flag) throw new Success()
   await next()
+}
+
+// 判断关联是否存在
+async function _isExist(ctx: Context): Promise<boolean> {
+  const sql =
+    'SELECT t1.id FROM roles_permissions t1 WHERE t1.id = ? OR (t1.role_id = ? AND t1.permission_id = ?)'
+  const data = [ctx._params.id, ctx._params.roleId, ctx._params.permissionId]
+  const res: any = await query(sql, data)
+  return res && res.length
 }

@@ -2,7 +2,7 @@
 
 ## 项目运行
 
-`npm i`
+`npm i` （运行完后会自动执行 npm run prepare）
 
 `npm run dev` 可根据需要运行不同环境 `dev test start`
 

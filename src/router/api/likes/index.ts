@@ -2,14 +2,14 @@
  * @description: 点赞管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
-import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doLikeAddConvert, doLikeDeleteConvert } from '../../controller/likes/convert'
-import { doLikeAdd } from '../../controller/likes/add'
-import { doLikeDelete } from '../../controller/likes/delete'
-import { doLikeGetListSelf, doLikeGetList } from '../../controller/likes/get'
+import { Context } from 'koa'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import { doLikeAddConvert, doLikeDeleteConvert } from '@/router/controller/likes/convert'
+import { doLikeAdd } from '@/router/controller/likes/add'
+import { doLikeDelete } from '@/router/controller/likes/delete'
+import { doLikeGetListSelf, doLikeGetList } from '@/router/controller/likes/get'
 
 @Prefix('like')
 export default class API {
@@ -20,8 +20,8 @@ export default class API {
   })
   @Required(['targetId', 'type'])
   @Convert(doLikeAddConvert)
-  async doLieAdd(ctx: Context, next: Next) {
-    await doLikeAdd(ctx, next)
+  async doLieAdd(ctx: Context) {
+    await doLikeAdd(ctx)
   }
 
   // 2 删除点赞
@@ -31,8 +31,8 @@ export default class API {
   })
   @Required(['targetId'])
   @Convert(doLikeDeleteConvert)
-  async doLikeDelete(ctx: Context, next: Next) {
-    await doLikeDelete(ctx, next)
+  async doLikeDelete(ctx: Context) {
+    await doLikeDelete(ctx)
   }
 
   // 3 获取本用户的点赞列表
@@ -40,8 +40,8 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
-  async doLikeGetListSelf(ctx: Context, next: Next) {
-    await doLikeGetListSelf(ctx, next)
+  async doLikeGetListSelf(ctx: Context) {
+    await doLikeGetListSelf(ctx)
   }
 
   // 4 根据 userId 获取点赞列表
@@ -50,9 +50,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['userId'])
-  async doLikeGetList(ctx: Context, next: Next) {
-    await doLikeGetList(ctx, next)
+  async doLikeGetList(ctx: Context) {
+    await doLikeGetList(ctx)
   }
-
 }
-

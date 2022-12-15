@@ -2,15 +2,15 @@
  * @description: 日志记录中间件
  * @author chen
  * @update 2021-08-11 10:18:40
-*/
+ */
 
 import log4js from 'log4js'
 import logConfig from './config'
 import _ from 'lodash'
 import { Context } from 'koa'
-import { IS_PRINT_LOG } from '../../config'
+import { IS_PRINT_LOG } from '@/config'
 import { ParamsOptions, QueryParamsOptions, LoggerOptions } from './interface'
-import { getIP } from '../../utils/tools'
+import { getIP } from '@/utils/tools'
 
 // 加载配置文件
 log4js.configure(logConfig)
@@ -22,52 +22,54 @@ const formatLogger: LoggerOptions = {
   // 普通请求日志
   request(ctx: Context, options?: ParamsOptions) {
     let logText: string = ''
-    logText += `\n\n---------- 接口请求开始 ${global._requestCount} ----------`
-    logText += `\n\n[请求日志信息]`
-    logText += `\n  [requestStartTime]: ${global._requestStart},`
+    logText += `\n\n---------- 接口请求开始 ${ctx._requestCount} ----------`
+    logText += '\n\n[请求日志信息]'
+    logText += `\n  [requestStartTime]: ${ctx._requestStart},`
     logText += `\n  [requestOriginalUrl]: ${ctx.originalUrl},`
     logText += `\n  [requestIP]: ${getIP(ctx)},`
-    if (ctx._user)
-      logText += `\n  [requestUser]: ${_getDataToString(ctx._user)},`
+    if (ctx._user) logText += `\n  [requestUser]: ${_getDataToString(ctx._user)},`
     logText += `\n  [requestAPI]: ${ctx.url},`
     logText += `\n  [requestMethod]: ${ctx.method},`
     logText += `\n  [requestParameters]: ${_getDataToString(ctx._data)}`
     logText = _handleParamsOptions(logText, options)
-    if (IS_PRINT_LOG) console.log(logText);
+    if (IS_PRINT_LOG) console.log(logText)
     infoLogger.info(logText)
   },
 
   // 响应日志
-  response(options: ParamsOptions) {
-    global._requestEnd = process.hrtime.bigint()
-    let costTime = global._requestEnd - global._requestStart
+  response(options: ParamsOptions, ctx?: Context) {
+    const requestCount = ctx ? ctx._requestCount : global._requestCount
+    const requestStart = ctx ? ctx._requestStart : global._requestStart
+    const requestEnd = process.hrtime.bigint()
+    const costTime = requestEnd - requestStart
     let logText = ''
-    logText += `\n\n[响应日志信息]`
-    logText += `\n  [responseEndTime]: ${global._requestEnd}`
+    logText += '\n\n[响应日志信息]'
+    logText += `\n  [responseEndTime]: ${requestEnd}`
     logText += `\n  [totalTime]: ${Number(costTime) / 1e6}毫秒`
     logText = _handleParamsOptions(logText, options)
-    logText += `\n\n---------- 接口响应结束 ${global._requestCount} ----------`
-    if (IS_PRINT_LOG) console.log(logText);
+    logText += `\n\n---------- 接口响应结束 ${requestCount} ----------`
+    if (IS_PRINT_LOG) console.log(logText)
     infoLogger.info(logText)
   },
 
   // 数据库查询日志
   query(options: QueryParamsOptions) {
     let logText = ''
-    logText += `\n\n[数据库查询日志信息]`
+    logText += '\n\n[数据库查询日志信息]'
     logText = _handleParamsOptions(logText, options)
-    if (IS_PRINT_LOG) console.log(logText);
+    if (IS_PRINT_LOG) console.log(logText)
     infoLogger.info(logText)
   },
 
   // 错误日志
-  error(options: ParamsOptions) {
+  error(options: ParamsOptions, ctx?: Context) {
+    const requestCount = ctx ? ctx._requestCount : global._requestCount
     let logText = ''
-    logText += `\n\n!!!!!!!!!! 错误日志信息开始 ${global._requestCount} !!!!!!!!!!`
+    logText += `\n\n!!!!!!!!!! 错误日志信息开始 ${requestCount} !!!!!!!!!!`
     logText = _handleParamsOptions(logText, options)
-    logText += `\n!!!!!!!!!! 错误日志信息结束 ${global._requestCount} !!!!!!!!!!`
-    console.log(options.error);
-    console.log(logText);
+    logText += `\n!!!!!!!!!! 错误日志信息结束 ${requestCount} !!!!!!!!!!`
+    console.log(options.error)
+    console.log(logText)
     infoLogger.info(logText)
   }
 }
@@ -76,16 +78,11 @@ export default formatLogger
 
 // 处理自定义日志信息数据
 function _handleParamsOptions(logText: string, options?: ParamsOptions | QueryParamsOptions): string {
-  if (options && options.code)
-    logText += `\n  [code]: ${options.code}`
-  if (options && options.message)
-    logText += `\n  [message]: ${options.message}`
-  if (options && options.sql)
-    logText += `\n  [sql]: ${_getDataToString(options.sql)}`
-  if (options && options.data)
-    logText += `\n  [data]: ${_getDataToString(options.data)}`
-  if (options && options.error)
-    logText += `\n  [error]: ${_getDataToString(options.error)}`
+  if (options && options.code) logText += `\n  [code]: ${options.code}`
+  if (options && options.message) logText += `\n  [message]: ${options.message}`
+  if (options && options.sql) logText += `\n  [sql]: ${_getDataToString(options.sql)}`
+  if (options && options.data) logText += `\n  [data]: ${_getDataToString(options.data)}`
+  if (options && options.error) logText += `\n  [error]: ${_getDataToString(options.error)}`
   return logText
 }
 
@@ -98,13 +95,3 @@ function _getDataToString(data: any) {
     return data
   }
 }
-
-
-
-
-
-
-
-
-
-

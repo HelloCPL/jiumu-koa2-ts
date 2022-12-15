@@ -48,7 +48,8 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| id | string | 是 | 关联id |
+| id | string | 否 | 关联id |
+| roleId/menuId | string | 否 | 角色id和菜单id 与上面关联id两者传其一即可 |
 
 #### 返回示例
 
@@ -89,12 +90,14 @@
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
+| relevanceId | string | 关联id |
 | id | string | 菜单id |
 | parentCode | string | 父级菜单code |
 | parentLabel | string | 父级菜单描述 |
 | code | string | 菜单code |
 | label | string | 菜单描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -108,12 +111,14 @@
   "message": "操作成功",
   "data": [
     {
+      "relevanceId": "006643d6-2a69-492a-8330-b327ab789f85",
       "id": "d0cf5069-07cc-4d4c-8793-e8853b9a6f56",
       "parentCode": "",
       "parentLabel": null,
       "code": "system",
       "label": "系统管理",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-08-15 01:04:40",
       "updateTime": "2021-08-15 01:04:40",
       "terminal": "管理端",
@@ -151,10 +156,12 @@
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
+| relevanceId | string | 关联id |
 | id | string | 角色id |
 | code | string | 角色code |
 | label | string | 角色描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -168,10 +175,12 @@
   "message": "操作成功",
   "data": [
     {
+      "relevanceId": "006643d6-2a69-492a-8330-b327ab789f85",
       "id": "d6bb3323-b581-4b46-b7e4-4da9a899ea6c",
       "code": "super",
       "label": "超级管理员",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-08-12 16:00:37",
       "updateTime": "2021-08-12 16:00:37",
       "terminal": "管理端",
@@ -199,7 +208,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | userId | string | 是 | 用户id |
-| isTree | string | 否 | 返回菜单是否为树结构，默认 false ，注意：isTree 为 true 时分页参数无效|
+| isTree | string | 否 | '1' 返回菜单为树结构，'0' 非树级 默认 '0' ，注意：isTree 为 '1' 时分页参数无效|
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 
@@ -216,6 +225,7 @@
 | code | string | 菜单code |
 | label | string | 菜单描述 |
 | sort | number | 排序，值越小越前 |
+| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -236,6 +246,7 @@
       "code": "system-user",
       "label": "用户管理",
       "sort": 1,
+      "configurable": "0",
       "createTime": "2021-08-15 01:05:17",
       "updateTime": "2021-08-15 01:05:17",
       "terminal": "管理端",
@@ -265,6 +276,7 @@
 | menuId | string | 是 | 菜单id |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
+| simple | string | 否 | '1' 返回数据列表简洁模式 '0' 正常模式，默认简洁模式 |
 
 #### 返回字段说明
 

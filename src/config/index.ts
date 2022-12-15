@@ -2,7 +2,7 @@
  * @author chen
  * @description 配置文件
  * @update 2022-04-30 18:54:40
-*/
+ */
 
 const env = process.argv[2]
 import { ConfigOptions } from './interface'
@@ -32,6 +32,7 @@ export const {
   TOKEN,
   BASE_URL,
   STATIC_URL,
+  STATIC_DIRS,
   LOGS_URL,
   CRYPTOJS_KEY,
   CRYPTOJS_IV,

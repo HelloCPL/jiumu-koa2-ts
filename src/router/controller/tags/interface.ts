@@ -11,6 +11,7 @@ export interface TagOptions extends BaseOptions {
   code: string
   label: string
   sort?: string
+  configurable?: string
 }
 
 // 标签数组接口类型

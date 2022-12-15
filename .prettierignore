@@ -1,0 +1,12 @@
+node_modules
+dist
+src/test
+
+*.md
+*.d.ts
+*.d.js
+
+package-lock.json
+.eslintrc.js
+.prettierrc.js
+commitlint.config.js

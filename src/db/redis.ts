@@ -6,13 +6,13 @@
  *   clientSet // 保存 redis 值
  *   clientGet // 获取 redis 值
  *   clientDel // 删除 redis 值
-*/
+ */
 
 import Redis, { RedisClient } from 'redis'
-import { IS_VERIFY_TOKEN_BY_REDIS, REDIS } from '../config'
+import { IS_VERIFY_TOKEN_BY_REDIS, REDIS } from '@/config'
 import _ from 'lodash'
-import { getKey } from '../utils/tools'
-import Logger from '../lib/logger'
+import { getKey } from '@/utils/tools'
+import Logger from '@/lib/logger'
 import { RedisOptions } from './interface'
 
 function createRedis() {
@@ -21,10 +21,10 @@ function createRedis() {
     redisClient = Redis.createClient(REDIS.PORT, REDIS.HOST)
     // 登录
     redisClient.auth(REDIS.PASSWORD, () => {
-      console.log('redis 登录成功');
+      console.log('redis 登录成功')
     })
     // 监听 redis 错误事件
-    redisClient.on('error', err => {
+    redisClient.on('error', (err) => {
       // Logger.error('redis 发生错误', err, 'redis 发生错误')
       Logger.error({
         message: 'redis 发生错误',
@@ -46,8 +46,7 @@ function createRedis() {
               error: err
             })
             reject(err)
-          }
-          else resolve(null)
+          } else resolve(null)
         })
       })
     }
@@ -66,8 +65,7 @@ function createRedis() {
               error: err
             })
             reject(err)
-          }
-          else resolve(_handleGetItem(value))
+          } else resolve(_handleGetItem(value))
         })
       })
     }
@@ -87,8 +85,7 @@ function createRedis() {
                 error: err
               })
               reject(err)
-            }
-            else resolve(null)
+            } else resolve(null)
           })
         } catch (e) {
           reject(e)
@@ -108,8 +105,8 @@ function _handleSetItem(key: string, value: any): RedisOptions {
   if (_.isObject(value)) value = JSON.stringify(value)
   if (_.isNumber(value)) value = `__number__${value.toString()}`
   if (_.isBoolean(value)) value = `__boolean__${value.toString()}`
-  if (_.isUndefined(value)) value = `__undefined__`
-  if (_.isNull(value)) value = `__null__`
+  if (_.isUndefined(value)) value = '__undefined__'
+  if (_.isNull(value)) value = '__null__'
   value = value || ''
   return { key, value }
 }
@@ -129,8 +126,4 @@ function _handleGetItem(value: any): any {
   return value
 }
 
-export const {
-  clientSet,
-  clientGet,
-  clientDel
-} = createRedis()
+export const { clientSet, clientGet, clientDel } = createRedis()

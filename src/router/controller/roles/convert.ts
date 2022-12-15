@@ -2,16 +2,18 @@
  * @description: 角色模块中间件
  * @author chen
  * @update 2021-08-12 14:20:21
-*/
+ */
 
 import { Context, Next } from 'koa'
-import { Message } from '../../../enums'
-import { isExist } from '../convert'
+import { query } from '@/db'
+import { Message } from '@/enums'
+import { ExceptionForbidden, ExceptionParameter } from '@/utils/http-exception'
+import { isExist, isSuper } from '../convert'
 
 /**
- * 新增时 
+ * 新增时
  * 判断角色是否已存在
-*/
+ */
 export const doRoleAddConvert = async (ctx: Context, next: Next) => {
   // 判断角色是否已存在
   await isExist({
@@ -24,18 +26,22 @@ export const doRoleAddConvert = async (ctx: Context, next: Next) => {
 }
 
 /**
- * 修改时 
+ * 修改时
  * 判断角色是否不存在
+ * 判断是否拥有修改权限
  * 若修改 code 再判断 code 除自身外是否存在
-*/
+ */
 export async function doRoleUpdateConvert(ctx: Context, next: Next) {
   // 判断角色是否不存在
-  await isExist({
-    table: 'roles',
-    where: [{ key: 'id', value: ctx._params.id }],
-    throwType: false,
-    message: Message.unexistRole
-  })
+  const sql = 'SELECT code, configurable FROM roles WHERE id = ?'
+  let res: any = await query(sql, ctx._params.id)
+  if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistRole })
+  res = res[0]
+  // 判断是否拥有修改权限
+  if (res.configurable === '1') {
+    const isS = await isSuper(ctx._user.id)
+    if (!isS) throw new ExceptionForbidden()
+  }
   // 若修改 code 再判断 code 除自身外是否存在
   if (ctx._params.hasOwnProperty('code')) {
     await isExist({
@@ -52,20 +58,24 @@ export async function doRoleUpdateConvert(ctx: Context, next: Next) {
 }
 
 /**
- * 删除时 
+ * 删除时
  * 判断角色是否不存在
+ * 判断是否拥有修改权限
  * 再判断是否有 roles-permissions 角色-权限关联
  * 再判断是否有 users-roles 用户-角色关联
  * 再判断是否有 roles-menus 角色-菜单关联
-*/
+ */
 export async function doRoleDeleteConvert(ctx: Context, next: Next) {
   // 判断角色是否不存在
-  await isExist({
-    table: 'roles',
-    where: [{ key: 'id', value: ctx._params.id }],
-    throwType: false,
-    message: Message.unexistRole
-  })
+  const sql = 'SELECT code, configurable FROM roles WHERE id = ?'
+  let res: any = await query(sql, ctx._params.id)
+  if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistRole })
+  res = res[0]
+  // 判断是否拥有修改权限
+  if (res.configurable === '1') {
+    const isS = await isSuper(ctx._user.id)
+    if (!isS) throw new ExceptionForbidden()
+  }
   // 再判断是否有 roles-permissions 角色-权限关联
   await isExist({
     table: 'roles_permissions',

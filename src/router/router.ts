@@ -6,18 +6,15 @@
  *   Request // 路由请求
  *   Required // 校验必传参数
  *   Convert // 添加自定义中间件方法
-*/
-
+ */
 
 import { Context, Next } from 'koa'
-import { symbolRoutePrefix, Route } from './index';
-import { ValidatorParameters, ValidatorOptions } from '../utils/validator'
+import { symbolRoutePrefix, Route } from './index'
+import { ValidatorParameters, ValidatorOptions } from '@/utils/validator'
 import _ from 'lodash'
-// import Logger from '../../utils/logger'
-import { sureIsArray } from '../utils/tools'
-// import { _getUserId } from '../utils/users'
+import { sureIsArray } from '@/utils/tools'
 import { RequestOptions, RouteOptions } from './interface'
-import { MessageParameter, Message } from '../enums'
+import { MessageParameter, Message } from '@/enums'
 
 /**
  * @author chen
@@ -25,10 +22,12 @@ import { MessageParameter, Message } from '../enums'
  * 如 @Prefix('user')
  * @description 用于追加路由前缀 类装饰器
  * @update 2021-01-22 16:25:57
-*/
-export const Prefix = (prefix: string): ClassDecorator => (target: any) => {
-  target.prototype[symbolRoutePrefix] = prefix
-}
+ */
+export const Prefix =
+  (prefix: string): ClassDecorator =>
+  (target: Function) => {
+    target.prototype[symbolRoutePrefix] = prefix
+  }
 
 /**
  * @author chen
@@ -36,16 +35,21 @@ export const Prefix = (prefix: string): ClassDecorator => (target: any) => {
  * 如 @Request({path: 'login', methods: ['post', 'get']})
  * @description 路由请求 方法装饰器
  * @update 2021-01-22 16:25:57
-*/
-export const Request = (options: RequestOptions): MethodDecorator => (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-  if (!(_.isArray(options.terminals) && options.terminals.length))
-    options.terminals = ['pc', 'app', 'web', 'wechat']
-  Route.__DecoratedRouters.set(<RouteOptions>{
-    target,
-    ...options
-  }, target[key])
-  return descriptor
-}
+ */
+export const Request =
+  (options: RequestOptions): MethodDecorator =>
+  (target: ObjectAny, key: string | symbol, descriptor: PropertyDescriptor) => {
+    if (!(_.isArray(options.terminals) && options.terminals.length))
+      options.terminals = ['pc', 'app', 'web', 'wechat']
+    Route.__DecoratedRouters.set(
+      <RouteOptions>{
+        target,
+        ...options
+      },
+      target[key as string]
+    )
+    return descriptor
+  }
 
 /**
  * @author chen
@@ -53,23 +57,25 @@ export const Request = (options: RequestOptions): MethodDecorator => (target: an
  * 如 @Required(['id', 'age&isInt', 'type&isBoolean', 'name&isString', 'title&12'])
  * @description 校验必传参数 方法装饰器
  * @update 2021-01-22 16:25:57
-*/
-export const Required = (params: string[]): MethodDecorator => (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-  target[key] = sureIsArray(target[key])
-  target[key].splice(0, 0, middleware)
-  return descriptor
-  async function middleware(ctx: Context, next: Next) {
-    const newParams: ValidatorOptions[] = _handleRequiredParams(params)
-    await new ValidatorParameters(newParams).validate(ctx)
-    await next()
+ */
+export const Required =
+  (params: string[]): MethodDecorator =>
+  (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
+    target[key] = sureIsArray(target[key])
+    target[key].splice(0, 0, middleware)
+    return descriptor
+    async function middleware(ctx: Context, next: Next) {
+      const newParams: ValidatorOptions[] = _handleRequiredParams(params)
+      await new ValidatorParameters(newParams).validate(ctx)
+      await next()
+    }
   }
-}
 // 校验必传参数
 function _handleRequiredParams(params: string[]): ValidatorOptions[] {
-  let data: ValidatorOptions[] = []
-  params.forEach(item => {
+  const data: ValidatorOptions[] = []
+  params.forEach((item) => {
     if (item) {
-      let i: number = item.indexOf('&')
+      const i: number = item.indexOf('&')
       let key: string
       let rules: any[] = []
       let paramsObj = {}
@@ -78,13 +84,13 @@ function _handleRequiredParams(params: string[]): ValidatorOptions[] {
         key = item.substring(0, i)
         let rule: string = item.substring(i + 1)
         if (Number(rule)) {
-          let min = Number(rule)
+          const min = Number(rule)
           rule = 'isLength'
           message = `参数长度必须大于${min}`
           paramsObj = { min }
         }
         if (rule) {
-          // @ts-ignore 
+          // @ts-ignore
           rules.push(rule, message || MessageParameter[rule] || Message.parameter, paramsObj)
         }
       } else {
@@ -103,9 +109,11 @@ function _handleRequiredParams(params: string[]): ValidatorOptions[] {
  * @description 添加自定义中间件方法 方法装饰器
  * 如 @convert(async function(ctx, next){await next()})
  * @update 2021-01-23 15:09:34
-*/
-export const Convert = (middleware: Function): MethodDecorator => (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-  target[key] = sureIsArray(target[key])
-  target[key].splice(target[key].length - 1, 0, middleware)
-  return descriptor
-}
+ */
+export const Convert =
+  (middleware: Function): MethodDecorator =>
+  (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
+    target[key] = sureIsArray(target[key])
+    target[key].splice(target[key].length - 1, 0, middleware)
+    return descriptor
+  }

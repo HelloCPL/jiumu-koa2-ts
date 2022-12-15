@@ -2,16 +2,20 @@
  * @description: 权限管理模块
  * @author chen
  * @update 2021-08-11 14:12:49
-*/
+ */
 
-import { Context, Next } from 'koa'
-import { Prefix, Convert, Request, Required } from '../../router'
-import { doPermissionAddConvert, doPermissionUpdateConvert, doPermissionDeleteConvert } from '../../controller/permissions/convert'
-import { doPermissionAdd } from '../../controller/permissions/add'
-import { doPermissionUpdate } from '../../controller/permissions/update'
-import { doPermissionDelete } from '../../controller/permissions/delete'
-import { doPermissionGetOne, doPermissionGetList } from '../../controller/permissions/get'
-import { doRolePermissiongetAllPermissionByUserId } from '../../controller/roles-permissions/get';
+import { Context } from 'koa'
+import { Prefix, Convert, Request, Required } from '@/router/router'
+import {
+  doPermissionAddConvert,
+  doPermissionUpdateConvert,
+  doPermissionDeleteConvert
+} from '@/router/controller/permissions/convert'
+import { doPermissionAdd } from '@/router/controller/permissions/add'
+import { doPermissionUpdate } from '@/router/controller/permissions/update'
+import { doPermissionDelete } from '@/router/controller/permissions/delete'
+import { doPermissionGetOne, doPermissionGetList } from '@/router/controller/permissions/get'
+import { doRolePermissiongetAllPermissionByUserId } from '@/router/controller/roles-permissions/get'
 
 @Prefix('permission')
 export default class API {
@@ -22,8 +26,8 @@ export default class API {
   })
   @Required(['code', 'label'])
   @Convert(doPermissionAddConvert)
-  async doPermissionAdd(ctx: Context, next: Next) {
-    await doPermissionAdd(ctx, next)
+  async doPermissionAdd(ctx: Context) {
+    await doPermissionAdd(ctx)
   }
 
   // 2 权限修改
@@ -33,8 +37,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doPermissionUpdateConvert)
-  async doPermissionUpdate(ctx: Context, next: Next) {
-    await doPermissionUpdate(ctx, next)
+  async doPermissionUpdate(ctx: Context) {
+    await doPermissionUpdate(ctx)
   }
 
   // 3 权限删除
@@ -44,8 +48,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doPermissionDeleteConvert)
-  async doPermissionDelete(ctx: Context, next: Next) {
-    await doPermissionDelete(ctx, next)
+  async doPermissionDelete(ctx: Context) {
+    await doPermissionDelete(ctx)
   }
 
   // 4 获取指定的某个权限
@@ -54,8 +58,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  async doPermissionGetOne(ctx: Context, next: Next) {
-    await doPermissionGetOne(ctx, next)
+  async doPermissionGetOne(ctx: Context) {
+    await doPermissionGetOne(ctx)
   }
 
   // 5 获取我的所有权限列表
@@ -63,9 +67,9 @@ export default class API {
     path: 'get/all/self',
     methods: ['get', 'post']
   })
-  async doPermissionGetAllSelf(ctx: Context, next: Next) {
+  async doPermissionGetAllSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
-    await doRolePermissiongetAllPermissionByUserId(ctx, next)
+    await doRolePermissiongetAllPermissionByUserId(ctx)
   }
 
   // 6 获取权限列表
@@ -73,7 +77,7 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
-  async doPermissionGetList(ctx: Context, next: Next) {
-    await doPermissionGetList(ctx, next)
+  async doPermissionGetList(ctx: Context) {
+    await doPermissionGetList(ctx)
   }
 }

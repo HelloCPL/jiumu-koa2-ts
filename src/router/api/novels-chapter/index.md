@@ -117,6 +117,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 连载章节id |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -127,6 +128,7 @@
 | id | string | 连载章节id |
 | novelId | string | 连载id |
 | novelName | string | 连载名称 |
+| novelAuthor | string | 连载作者名称 |
 | title | string | 标题 |
 | content | string | 内容 |
 | sort | string | 章节排序 |
@@ -134,6 +136,7 @@
 | isDraft | string | 是否草稿，1 是 0 否 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -152,26 +155,41 @@
     "code": 200,
     "message": "操作成功",
     "data": {
-        "id": "6eef5149-5753-4003-9ed0-8502a96a0e7a",
-        "novelId": "9e232a68-d0db-45bd-8ba7-e29cc1b70921",
-        "novelName": "连续载体1",
-        "title": "章节7",
-        "content": "内容123123",
-        "sort": 7,
-        "isSecret": "0",
-        "isDraft": "1",
+      "id": "6eef5149-5753-4003-9ed0-8502a96a0e7a",
+      "novelId": "9e232a68-d0db-45bd-8ba7-e29cc1b70921",
+      "novelName": "连续载体1",
+      "title": "章节7",
+      "content": "内容123123",
+      "sort": 7,
+      "isSecret": "0",
+      "isDraft": "1",
+      "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+      "createUserName": "超级管理员",
+      "createUserAvatar": {
+        "id": "628aa32f-f270-43e8-921b-15fc9736f486",
+        "filePath": "http://localhost:3030/images/e30b56b0-7aaf-11ed-bce7-1fcf06575d20.jpg",
+        "fileName": "R-C (2).jpg",
+        "fileSize": 20764,
+        "suffix": "jpg",
+        "staticPlace": "images",
         "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-        "createUserName": "超级管理员",
-        "createTime": "2022-02-18 16:45:29",
-        "updateTime": "2022-03-18 14:57:34",
-        "terminal": "管理端",
-        "remarks": "备注",
-        "isLike": "1",
-        "likeCount": 1,
-        "isCollection": "1",
-        "collectionCount": 1,
-        "isSelf": "1",
-        "commentCount": 2
+        "createUserName": "管理员",
+        "isSecret": "0",
+        "createTime": "2022-12-13 14:32:16",
+        "updateTime": "2022-12-13 14:32:16",
+        "terminal": "移动端",
+        "remarks": null
+      },
+      "createTime": "2022-02-18 16:45:29",
+      "updateTime": "2022-03-18 14:57:34",
+      "terminal": "管理端",
+      "remarks": "备注",
+      "isLike": "1",
+      "likeCount": 1,
+      "isCollection": "1",
+      "collectionCount": 1,
+      "isSelf": "1",
+      "commentCount": 2
     },
     "total": 0
 }
@@ -200,6 +218,7 @@ shai
 | pageSize | number | 否 | 每页页数，默认 10 |
 | isDraft | string | 否 | 是否草稿，1 是 0 否 |
 | isSecret | string | 否 | 是否为私密连载，1 是 0 否 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -212,12 +231,14 @@ shai
 | id | string | 连载章节id |
 | novelId | string | 连载id |
 | novelName | string | 连载名称 |
+| novelAuthor | string | 连载作者名称 |
 | title | string | 标题 |
 | sort | string | 章节排序 |
 | isSecret | string | 是否为私密，1 是 0 否 |
 | isDraft | string | 是否草稿，1 是 0 否 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |

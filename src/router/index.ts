@@ -8,10 +8,10 @@ import Koa from 'koa'
 import Router from 'koa-router'
 import path from 'path'
 import glob from 'glob'
-import { sureIsArray, toPath } from '../utils/tools'
+import { sureIsArray, toPath } from '@/utils/tools'
 import { RouteOptions } from './interface'
-import { mountParameter } from '../lib/mount-parameter'
-import { verifyRoute } from '../lib/verify-auth'
+import { mountParameter } from '@/lib/mount-parameter'
+import { verifyRoute } from '@/lib/verify-auth'
 
 const router = new Router()
 
@@ -39,13 +39,13 @@ export class Route {
     glob.sync(path.join(__dirname, './api/**/*.js')).forEach((item) => {
       require(item)
     })
-    for (let [config, controller] of Route.__DecoratedRouters) {
+    for (const [config, controller] of Route.__DecoratedRouters) {
       // 处理路由中间件方法
-      let controllers: Function[] = sureIsArray(controller)
+      const controllers: Function[] = sureIsArray(controller)
       // 自定义路由中间件 自己调整中间件顺序
       const middleares: Function[] = [
         mountParameter, // 挂载参数处理
-        verifyRoute, // 权限校验
+        verifyRoute // 权限校验
       ]
       controllers.unshift(...middleares)
 
