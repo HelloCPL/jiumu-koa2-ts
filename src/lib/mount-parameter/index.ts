@@ -5,9 +5,9 @@
  */
 
 import { Context, Next } from 'koa'
-import { LinValidator } from '../lin-validator'
-import { DataOptions } from './interface'
-import { getTerminal } from '@/utils/tools'
+// import { LinValidator } from '../lin-validator'
+// import { DataOptions } from './interface'
+// import { getTerminal } from '@/utils/tools'
 import xss from '@/utils/xss'
 import _ from 'lodash'
 

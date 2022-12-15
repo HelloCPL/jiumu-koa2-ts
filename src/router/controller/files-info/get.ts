@@ -5,12 +5,12 @@
  */
 
 import { Context } from 'koa'
-import { query, execTrans } from '@/db'
+import { query } from '@/db'
 import { BASE_URL, PUBLIC_PATH, FILE_VAILD_TIME } from '@/config'
 import dayjs from 'dayjs'
 import { encrypt } from '@/utils/crypto'
 import { Success } from '@/utils/http-exception'
-import { FileInfoOptions, FileListParamsOptions, FileListReturnOptions } from './interface'
+import { FileInfoOptions } from './interface'
 import { toPath } from '@/utils/tools'
 
 /**
