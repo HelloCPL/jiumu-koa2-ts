@@ -102,7 +102,6 @@ export async function doPermissionDeleteConvert(ctx: Context, next: Next) {
     if (!isS) throw new ExceptionForbidden()
   }
   // 再判断是否有 roles-permissions 角色-权限关联
-  console.log(111)
   await isExist({
     table: 'roles_permissions',
     where: [{ key: 'permission_id', value: ctx._params.id }],

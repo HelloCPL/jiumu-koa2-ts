@@ -16,6 +16,7 @@ export interface QuestionOptions extends BaseOptions {
   sort?: number
   create_user: string
   create_user_name?: string
+  create_user_avatar?: any
   is_self?: string
   is_like?: string
   like_count?: number
@@ -35,10 +36,17 @@ export interface QuestionListParams {
   createUser?: string
   isDraft?: string
   isSecret?: string
+  showUserInfo?: any
 }
 
 // 问答列表获取返回类型
 export interface QuestionListReturn {
   total: number
   data: QuestionOptions[]
+}
+
+export interface QuestionOneParams {
+  id: string
+  userId: string
+  showUserInfo?: any
 }

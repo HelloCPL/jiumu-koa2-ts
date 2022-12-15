@@ -49,7 +49,8 @@ export const doRoleGetList = async (ctx: Context) => {
  * 获取指定的某个角色，返回对象或null
  */
 export const getMenuOne = async (id: string): Promise<RoleOptions | null> => {
-  const sql: string = 'SELECT * FROM roles WHERE code = ? OR id = ?'
+  const sql: string =
+    'SELECT t1.id, t1.code, t1.label, t1.sort, t1.configurable, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM roles t1 WHERE t1.code = ? OR t1.id = ?'
   const data = [id, id]
   let res: any = await query(sql, data)
   res = res[0] || null

@@ -37,10 +37,23 @@ export interface NovelNoteListParams {
   highlight?: string
   isSecret?: string
   classify?: string
+  showUserInfo?: any
 }
 
 // 列表获取返回类型
 export interface NovelNoteListReturn {
   total: number
   data: NovelNoteOptions[]
+}
+
+export interface NovelNoteOneParams {
+  id: string
+  userId: string
+  showUserInfo?: any
+}
+
+export interface NoteChapterParams {
+  userId: string
+  targetId?: string
+  showUserInfo?: any
 }

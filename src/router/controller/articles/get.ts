@@ -131,7 +131,11 @@ async function _handleArticle(datas: ArticleOptions | ArticleOptions[], userId: 
     // 处理附件
     if (data.attachment) data.attachment = await getFileByIds(data.attachment, data.create_user)
     // 处理自定义标签
-    if (data.classify) data.classify = await getTagCustomByIds(data.classify, data.create_user)
+    if (data.classify)
+      data.classify = await getTagCustomByIds({
+        ids: data.classify,
+        userId: data.create_user
+      })
     else data.classify = []
     // 处理是否为自己发布
     if (data.create_user === userId) data.is_self = '1'

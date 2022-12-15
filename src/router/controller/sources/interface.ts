@@ -15,6 +15,7 @@ export interface SourceOptions extends BaseOptions {
   sort?: number
   create_user: string
   create_user_name?: string
+  create_user_avatar?: any
   is_self?: string
   is_like?: string
   like_count?: number
@@ -34,10 +35,17 @@ export interface SourceListParams {
   classify?: string
   createUser?: string
   isSecret?: string
+  showUserInfo?: any
 }
 
 // 资源列表获取返回类型
 export interface SourceListReturn {
   total: number
   data: SourceOptions[]
+}
+
+export interface SourceOneParams {
+  id: string
+  userId: string
+  showUserInfo?: any
 }

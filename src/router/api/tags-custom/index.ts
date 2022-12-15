@@ -91,7 +91,7 @@ export default class API {
     await getTagCustomGetListType(ctx)
   }
 
-  // 8 获取我的自定义标签列表
+  // 8 获取指定用户自定义标签列表
   @Request({
     path: 'get/list/byuserid',
     methods: ['get', 'post']

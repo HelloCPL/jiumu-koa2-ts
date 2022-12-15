@@ -126,7 +126,6 @@ async function _handleCollectionData(
     delete item.title_novels_chapter
     if (showUserInfo === '1' && item.create_user_avatar) {
       item.create_user_avatar = await getFileById(item.create_user_avatar, item.create_user)
-      console.log(1111, i)
     }
   }
   return data

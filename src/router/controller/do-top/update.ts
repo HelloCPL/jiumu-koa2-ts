@@ -14,20 +14,20 @@ import { Message } from '@/enums'
 // 可置顶资源类型
 const tList: ObjectAny = {
   '502': {
-    table: 'questions',
-    label: '问答来源'
+    table: 'questions'
+    // label: '问答来源'
   },
   '503': {
-    table: 'sources',
-    label: '资源文件来源'
+    table: 'sources'
+    // label: '资源文件来源'
   },
   '504': {
-    table: 'novels',
-    label: '连载来源'
+    table: 'novels'
+    // label: '连载来源'
   },
   '505': {
-    table: 'articles',
-    label: '博客文章来源'
+    table: 'articles'
+    // label: '博客文章来源'
   }
 }
 

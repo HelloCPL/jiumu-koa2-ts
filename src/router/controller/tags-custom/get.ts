@@ -7,12 +7,25 @@
 import { Success } from '@/utils/http-exception'
 import { query, execTrans } from '@/db'
 import { Context } from 'koa'
-import { TagCustomOptions, TagCustomListParams, TagCustomListReturn, TagCustomTypeOptions } from './interface'
+import {
+  TagCustomOptions,
+  TagCustomListParams,
+  TagCustomListReturn,
+  TagCustomTypeOptions,
+  TagCustomSelfParams,
+  TagCustomHandleParams
+} from './interface'
 import { getSelectWhereData, getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
+import { getFileById } from '../files-info/get'
+import _ from 'lodash'
 
 // 获取我的指定一个或多个自定义标签
 export const getTagCustomGetIdsSelf = async (ctx: Context) => {
-  const data = await getTagCustomByIds(ctx._params.ids, ctx._user.id)
+  const data = await getTagCustomByIds({
+    ids: ctx._params.ids,
+    userId: ctx._user.id,
+    showUserInfo: ctx._params.showUserInfo || '1'
+  })
   throw new Success({ data })
 }
 
@@ -28,27 +41,34 @@ export const getTagCustomGetList = async (ctx: Context) => {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
     createUser: ctx._params.userId,
+    userId: ctx._user.id,
     type: ctx._params.type,
     keyword: ctx._params.keyword,
-    highlight: ctx._params.highlight
+    highlight: ctx._params.highlight,
+    showUserInfo: ctx._params.showUserInfo || '0'
   }
   const data = await doTagCustomList(params)
-  data.data.forEach((item) => {
-    item.isSelf = item.create_user === ctx._user.id ? '1' : '0'
-    delete item.create_user
-  })
+  // data.data.forEach((item) => {
+  //   item.isSelf = item.create_user === ctx._user.id ? '1' : '0'
+  //   delete item.create_user
+  // })
   throw new Success(data)
 }
 
 /**
  * 获取指定用户的自定义标签，返回数组或[]
  */
-export const getTagCustomByIds = async (ids: string, userId: string): Promise<TagCustomOptions[]> => {
-  if (!ids) return []
-  const sql: string =
-    'SELECT t1.id, t1.label, t1.sort, t1.type, t1.create_time, t1.update_time, t1.terminal, t1.create_user, t2.username AS create_user_name FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE FIND_IN_SET(t1.id, ?) AND t1.create_user = ?'
-  const data = [ids, userId]
-  const res: any = await query(sql, data)
+export const getTagCustomByIds = async (params: TagCustomSelfParams): Promise<TagCustomOptions[]> => {
+  if (!params.ids) return []
+  // 处理创建者信息字段
+  const userInfoField =
+    params.showUserInfo === '1' ? ' t2.username AS create_user_name, t2.avatar AS create_user_avatar, ' : ''
+  const sql: string = `SELECT t1.id, t1.label, t1.sort, t1.type, t1.create_time, t1.update_time, t1.terminal, ${userInfoField} t1.create_user FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE FIND_IN_SET(t1.id, ?) AND t1.create_user = ?`
+  const data = [params.ids, params.userId]
+  const res = <TagCustomOptions[]>await query(sql, data)
+  await _handleTagCustom(res, {
+    showUserInfo: params.showUserInfo
+  })
   return res
 }
 
@@ -86,17 +106,45 @@ export const doTagCustomList = async (options: TagCustomListParams): Promise<Tag
     valid: ['t1.label'],
     data: options
   })
-  const extraValid = options.createUser ? '' : 't1.create_user,'
+  // 处理创建者信息字段
+  const userInfoField =
+    options.showUserInfo === '1' ? ' t2.username AS create_user_name, t2.avatar AS create_user_avatar, ' : ''
   const sql1 = `SELECT COUNT(t1.id) AS total FROM tags_custom t1 ${sqlParams.sql} ${sqlParamsKeyword.sql}`
   const data1 = [...sqlParams.data, ...sqlParamsKeyword.data]
-  const sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.sort, t1.type, ${extraValid} t1.create_time, t1.update_time, t1.terminal, t1.create_user, t2.username AS create_user_name FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id ${sqlParams.sql} ${sqlParamsKeyword.sql} ORDER BY ${orderParams.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.sort, t1.type, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id ${sqlParams.sql} ${sqlParamsKeyword.sql} ORDER BY ${orderParams.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
   const data2 = [...data1, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 }
   ])
+  await _handleTagCustom(<TagCustomOptions[]>res[1], {
+    showUserInfo: options.showUserInfo,
+    userId: options.userId
+  })
   return {
     total: res[0][0]['total'],
     data: res[1]
+  }
+}
+
+// 处理资源数据
+async function _handleTagCustom(datas: TagCustomOptions[], params: TagCustomHandleParams) {
+  const _handleList = async (data: TagCustomOptions) => {
+    // 处理是否为自己发布
+    if (params.userId) {
+      if (data.create_user === params.userId) data.is_self = '1'
+      else data.is_self = '0'
+    }
+    // 处理创建者头像
+    if (params.showUserInfo === '1' && data.create_user_avatar) {
+      data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
+    }
+  }
+  if (_.isArray(datas)) {
+    for (let i = 0, len = datas.length; i < len; i++) {
+      await _handleList(datas[i])
+    }
+  } else {
+    await _handleList(datas)
   }
 }
