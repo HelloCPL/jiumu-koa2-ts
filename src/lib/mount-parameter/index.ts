@@ -5,9 +5,9 @@
  */
 
 import { Context, Next } from 'koa'
-// import { LinValidator } from '../lin-validator'
-// import { DataOptions } from './interface'
-// import { getTerminal } from '@/utils/tools'
+import { LinValidator } from '../lin-validator'
+import { DataOptions } from './interface'
+import { getTerminal } from '@/utils/tools'
 import xss from '@/utils/xss'
 import _ from 'lodash'
 
@@ -23,7 +23,12 @@ export const mountParameter = async (ctx: Context, next: Next) => {
   global._requestCount++
   ctx._requestCount = global._requestCount
   global._results = {}
+
+  // 处理参数
+  const v: any = await new LinValidator().validate(ctx)
+  ctx._data = <DataOptions>v.data
   ctx._params = getParams(ctx)
+  ctx._terminal = getTerminal(ctx)
 
   await next()
 }
