@@ -90,7 +90,7 @@
 | targetId | string | 点赞目标id |
 | createUser | string | 点赞者id |
 | createUserName | string | 点赞者名字 |
-| createUserAvatar | string | 点赞者头像 |
+| createUserAvatar | object/null | 创建者头像 |
 | type | string | 点赞来源类型标签code |
 | typeLabel | string | 点赞来源类型标签说明 |
 | createTime | string | 创建时间 |
@@ -152,6 +152,7 @@
 | userId | string | 是 | 用户id |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 
 #### 返回字段说明
@@ -165,6 +166,7 @@
 | targetId | string | 点赞目标id |
 | createUser | string | 点赞者id |
 | createUserName | string | 点赞者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | type | string | 点赞来源类型标签code |
 | typeLabel | string | 点赞来源类型标签说明 |
 | createTime | string | 创建时间 |
