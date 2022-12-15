@@ -4,7 +4,7 @@
  * @update 2021-08-11 14:12:49
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
 import { doCommentAddConvert, doCommentDeleteByIdConvert } from '@/router/controller/comments/convert'
 import { doCommentFirstAdd, doCommentSecondAdd } from '@/router/controller/comments/add'
@@ -20,13 +20,13 @@ export default class API {
   })
   @Required(['targetId', 'content', 'type'])
   @Convert(doCommentAddConvert)
-  async doCommentAdd(ctx: Context, next: Next) {
-    if (ctx._params.type == '501') {
+  async doCommentAdd(ctx: Context) {
+    if (ctx._params.type === '501') {
       // 新增第二级别评论
-      await doCommentSecondAdd(ctx, next)
+      await doCommentSecondAdd(ctx)
     } else {
       // 新增第一级别评论
-      await doCommentFirstAdd(ctx, next)
+      await doCommentFirstAdd(ctx)
     }
   }
 
@@ -36,9 +36,9 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  async doCommentDeleteSelf(ctx: Context, next: Next) {
+  async doCommentDeleteSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
-    await doCommentDeleteById(ctx, next)
+    await doCommentDeleteById(ctx)
   }
 
   // 3 删除指定某条评论，不管谁的评论均可删除
@@ -49,9 +49,9 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doCommentDeleteByIdConvert)
-  async doCommentDeleteById(ctx: Context, next: Next) {
+  async doCommentDeleteById(ctx: Context) {
     ctx._params.userId = null
-    await doCommentDeleteById(ctx, next)
+    await doCommentDeleteById(ctx)
   }
 
   // 4 获取评论列表
@@ -60,41 +60,13 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['targetId', 'type'])
-  async doCommentGetList(ctx: Context, next: Next) {
-    if (ctx._params.targetId === 'answer') ctx._params.targetId = null
-    ctx._params.userId = null
-    if (ctx._params.type == '501') {
+  async doCommentGetList(ctx: Context) {
+    if (ctx._params.type === '501') {
       // 二级评论列表
-      await doCommentSecondGetList(ctx, next)
+      await doCommentSecondGetList(ctx)
     } else {
       // 一级评论列表
-      await doCommentFirstGetList(ctx, next)
+      await doCommentFirstGetList(ctx)
     }
   }
-
-  // 5 获取我的问答列表
-  // @Request({
-  //   path: 'get/answer/list/self',
-  //   methods: ['get', 'post']
-  // })
-  // async doCommentGetAnswerListSelf(ctx: Context, next: Next) {
-  //   // 一级评论列表
-  //   ctx._params.targetId = 'answer'
-  //   ctx._params.userId = ctx._user.id
-  //   ctx._params.type = '502'
-  //   await doCommentFirstGetList(ctx, next)
-  // }
-
-  // 6 获取所有的问答列表
-  // @Request({
-  //   path: 'get/answer/list',
-  //   methods: ['get', 'post']
-  // })
-  // async doCommentGetAnswerList(ctx: Context, next: Next) {
-  //   ctx._params.targetId = 'answer'
-  //   ctx._params.userId = null
-  //   ctx._params.type = '502'
-  //   // 一级评论列表
-  //   await doCommentFirstGetList(ctx, next)
-  // }
 }

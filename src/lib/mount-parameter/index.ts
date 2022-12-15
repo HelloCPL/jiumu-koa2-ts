@@ -17,18 +17,13 @@ import _ from 'lodash'
  */
 export const mountParameter = async (ctx: Context, next: Next) => {
   // 记录日志
-  const cost = BigInt(2 * 1e6)
-  global._requestStart = process.hrtime.bigint() -  cost
+  const cost = BigInt(2 * 1e6) // 中间消费时间
+  global._requestStart = process.hrtime.bigint() - cost
   ctx._requestStart = global._requestStart
   global._requestCount++
   ctx._requestCount = global._requestCount
   global._results = {}
-  
-  // 处理参数
-  const v: any = await new LinValidator().validate(ctx)
-  ctx._data = <DataOptions>v.data
   ctx._params = getParams(ctx)
-  ctx._terminal = getTerminal(ctx)
 
   await next()
 }
@@ -51,7 +46,7 @@ export const getParams = (ctx: Context): ObjectAny => {
 function handleXSS(obj: any) {
   // 如果是对象
   if (_.isPlainObject(obj)) {
-    for (let key in <ObjectAny>obj) {
+    for (const key in <ObjectAny>obj) {
       if (_.isString(obj[key])) {
         obj[key] = xss.process(obj[key])
       } else if (_.isPlainObject(obj[key]) || _.isArray(obj[key])) {

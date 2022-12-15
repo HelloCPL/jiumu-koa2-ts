@@ -4,7 +4,7 @@
  * @update 2021-10-28 10:46:36
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
 import {
   doNovelChapterAddConvert,
@@ -25,8 +25,8 @@ export default class API {
   })
   @Required(['novelId', 'title', 'content', 'sort', 'isDraft'])
   @Convert(doNovelChapterAddConvert)
-  async doNovelChapterAdd(ctx: Context, next: Next) {
-    await doNovelChapterAdd(ctx, next)
+  async doNovelChapterAdd(ctx: Context) {
+    await doNovelChapterAdd(ctx)
   }
 
   // 2. 章节修改
@@ -36,8 +36,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doNovelChapterUpdateConvert)
-  async doNovelChapterUpdate(ctx: Context, next: Next) {
-    await doNovelChapterUpdate(ctx, next)
+  async doNovelChapterUpdate(ctx: Context) {
+    await doNovelChapterUpdate(ctx)
   }
 
   // 3. 章节删除
@@ -47,8 +47,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doNovelChapterDeleteConvert)
-  async doNovelChapterDelete(ctx: Context, next: Next) {
-    await doNovelChapterDelete(ctx, next)
+  async doNovelChapterDelete(ctx: Context) {
+    await doNovelChapterDelete(ctx)
   }
 
   // 4. 获取指定的小说章节
@@ -57,8 +57,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  async doNovelChapterGetOne(ctx: Context, next: Next) {
-    await doNovelChapterGetOne(ctx, next)
+  async doNovelChapterGetOne(ctx: Context) {
+    await doNovelChapterGetOne(ctx)
   }
 
   // 5. 获取指定小说所有的章节列表
@@ -67,7 +67,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['novelId'])
-  async doNovelChapterGetList(ctx: Context, next: Next) {
-    await doNovelChapterGetList(ctx, next)
+  async doNovelChapterGetList(ctx: Context) {
+    await doNovelChapterGetList(ctx)
   }
 }

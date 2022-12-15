@@ -32,6 +32,7 @@ export const {
   TOKEN,
   BASE_URL,
   STATIC_URL,
+  STATIC_DIRS,
   LOGS_URL,
   CRYPTOJS_KEY,
   CRYPTOJS_IV,

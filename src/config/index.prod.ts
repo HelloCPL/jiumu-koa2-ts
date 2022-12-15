@@ -8,7 +8,7 @@ import path from 'path'
 import { ConfigOptions } from './interface'
 
 function createConfig(): ConfigOptions {
-  let config: ConfigOptions = {
+  const config: ConfigOptions = {
     ENV: 'prod', // 生产环境
     PORT: 7102, // http 服务端口
     PUBLIC_PATH: '/jiumu-koa2-ts-prod', // 服务器位置
@@ -40,6 +40,7 @@ function createConfig(): ConfigOptions {
     },
     BASE_URL: 'https://www.jiumublog.cn/', // 默认服务路径
     STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-prod-static'), // 静态资源路径
+    STATIC_DIRS: ['files', 'images', 'videos', 'editors', 'sources', 'file_temp', 'files_big'], // 静态资源目录
     LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-prod-logs'), // 日志记录路径
     CRYPTOJS_KEY: '', // crypto-js 加密字符
     CRYPTOJS_IV: '', // crypto-js 加密字符

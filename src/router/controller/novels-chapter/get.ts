@@ -6,25 +6,36 @@
 
 import { Success } from '@/utils/http-exception'
 import { query, execTrans } from '@/db'
-import { Context, Next } from 'koa'
-import { NovelChapterOptions, NovelChapterListParams, NovelChapterListReturn } from './interface'
+import { Context } from 'koa'
+import {
+  NovelChapterOptions,
+  NovelChapterListParams,
+  NovelChapterListReturn,
+  NovelChapterOneParams
+} from './interface'
 import _ from 'lodash'
+import { getFileById } from '../files-info/get'
 
 // 获取指定的某个小说章节
-export const doNovelChapterGetOne = async (ctx: Context, next: Next) => {
-  const data = await getNovelChapterGetOne(ctx._params.id, ctx._user.id)
+export const doNovelChapterGetOne = async (ctx: Context) => {
+  const data = await getNovelChapterGetOne({
+    id: ctx._params.id,
+    userId: ctx._user.id,
+    showUserInfo: ctx._params.showUserInfo || '0'
+  })
   throw new Success({ data })
 }
 
 // 获取指定小说所有的章节列表
-export const doNovelChapterGetList = async (ctx: Context, next: Next) => {
+export const doNovelChapterGetList = async (ctx: Context) => {
   const params: NovelChapterListParams = {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
     novelId: ctx._params.novelId,
     userId: ctx._user.id,
     isDraft: ctx._params.isDraft,
-    isSecret: ctx._params.isSecret
+    isSecret: ctx._params.isSecret,
+    showUserInfo: ctx._params.showUserInfo || '0'
   }
   const data = await getNovelChapterGetList(params)
   throw new Success(data)
@@ -33,58 +44,74 @@ export const doNovelChapterGetList = async (ctx: Context, next: Next) => {
 /**
  * 获取指定的某个小说章节，返回对象或null
  */
-export const getNovelChapterGetOne = async (id: string, userId: string): Promise<NovelChapterOptions | null> => {
+export const getNovelChapterGetOne = async (
+  params: NovelChapterOneParams
+): Promise<NovelChapterOptions | null> => {
   // 获取条件
-  const conditional = `((t1.is_secret = 0 AND t2.is_secret = 0 AND t1.is_draft = 0 AND t2.is_draft = 0) OR t1.create_user = ?)`
-  const sql: string = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t1.title, t1.content, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, t1.create_user, t3.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id AND t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) WHERE t1.id = ? AND ${conditional}`
-  const data = [userId, userId, id, userId]
+  const conditional =
+    '((t1.is_secret = 0 AND t2.is_secret = 0 AND t1.is_draft = 0 AND t2.is_draft = 0) OR t1.create_user = ?)'
+  // 处理创建者信息字段
+  const userInfoField =
+    params.showUserInfo === '1' ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, ' : ''
+  const sql: string = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t2.author AS novel_author, t1.title, t1.content, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id AND t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) WHERE t1.id = ? AND ${conditional}`
+  const data = [params.userId, params.userId, params.id, params.userId]
   let res: any = await query(sql, data)
   res = res[0] || null
-  if (res) await _handleNovelChapter(res, userId)
+  if (res) await _handleNovelChapter(res, params.userId, params.showUserInfo)
   return res
 }
 
-export const getNovelChapterGetList = async (options: NovelChapterListParams): Promise<NovelChapterListReturn> => {
+export const getNovelChapterGetList = async (
+  options: NovelChapterListParams
+): Promise<NovelChapterListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   let whereSQL = ''
-  let whereData: any[] = []
+  const whereData: any[] = []
   // 处理isSecret参数
-  if (options.isSecret == '1') {
-    whereSQL = ` WHERE ((t1.is_secret = 1 OR t2.is_secret = 1) AND t1.create_user = ?) `
+  if (options.isSecret === '1') {
+    whereSQL = ' WHERE ((t1.is_secret = 1 OR t2.is_secret = 1) AND t1.create_user = ?) '
     whereData.push(options.userId)
-  } else if (options.isSecret == '0') {
-    whereSQL = ` WHERE (t1.is_secret = 0 AND t2.is_secret = 0) `
+  } else if (options.isSecret === '0') {
+    whereSQL = ' WHERE (t1.is_secret = 0 AND t2.is_secret = 0) '
   } else {
-    whereSQL = ` WHERE ((t1.is_secret = 0 AND t2.is_secret = 0) OR t1.create_user = ?) `
+    whereSQL = ' WHERE ((t1.is_secret = 0 AND t2.is_secret = 0) OR t1.create_user = ?) '
     whereData.push(options.userId)
   }
   // 处理isDraft参数
-  if (options.isDraft == '1') {
-    whereSQL += ` AND (t1.is_draft = 1 AND t1.create_user = ?) `
+  if (options.isDraft === '1') {
+    whereSQL += ' AND (t1.is_draft = 1 AND t1.create_user = ?) '
     whereData.push(options.userId)
-  } else if (options.isDraft == '0') {
-    whereSQL += ` AND t1.is_draft = 0 `
+  } else if (options.isDraft === '0') {
+    whereSQL += ' AND t1.is_draft = 0 '
   } else {
-    whereSQL += ` AND (t1.is_draft = 0 OR t1.create_user = ?) `
+    whereSQL += ' AND (t1.is_draft = 0 OR t1.create_user = ?) '
     whereData.push(options.userId)
   }
-  whereSQL += ` AND t1.novel_id = ? AND (t2.is_draft = 0 OR t2.create_user = ?) `
+  whereSQL += ' AND t1.novel_id = ? AND (t2.is_draft = 0 OR t2.create_user = ?) '
   whereData.push(options.novelId, options.userId)
+  // 处理创建者信息字段
+  const userInfoField =
+    options.showUserInfo === '1' ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, ' : ''
+
   const sql1 = `SELECT COUNT(t1.id) AS total FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id ${whereSQL} `
   const data1 = [...whereData]
-  const sql2 = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t1.title, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, t1.create_user, t3.username AS create_user_name, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id AND t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) ${whereSQL} ORDER BY t1.sort LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t2.author AS novel_author, t1.title, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id AND t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) ${whereSQL} ORDER BY t1.sort LIMIT ?, ?`
   const data2 = [options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 }
   ])
   const novelChapterList: NovelChapterOptions[] = res[1]
-  await _handleNovelChapter(novelChapterList, options.userId)
+  await _handleNovelChapter(novelChapterList, options.userId, options.showUserInfo)
   return { total: res[0][0]['total'], data: novelChapterList }
 }
 
 // 处理小说数据
-async function _handleNovelChapter(datas: NovelChapterOptions | NovelChapterOptions[], userId: string) {
+async function _handleNovelChapter(
+  datas: NovelChapterOptions | NovelChapterOptions[],
+  userId: string,
+  showUserInfo?: any
+) {
   const _handleList = async (data: NovelChapterOptions) => {
     // 处理是否为自己发布
     if (data.create_user === userId) data.is_self = '1'
@@ -104,6 +131,10 @@ async function _handleNovelChapter(datas: NovelChapterOptions | NovelChapterOpti
     else data.is_secret = '1'
     delete data.secret1
     delete data.secret2
+    // 处理创建者头像
+    if (showUserInfo === '1' && data.create_user_avatar) {
+      data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
+    }
   }
   if (_.isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {

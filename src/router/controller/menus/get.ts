@@ -6,20 +6,24 @@
 
 import { Success } from '@/utils/http-exception'
 import { query } from '@/db'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { MenuOptions, MenuListOptions } from './interface'
 import { getTree } from '@/utils/tools'
 
 // 获取指定的某个菜单
-export const doMenuGetOne = async (ctx: Context, next: Next) => {
+export const doMenuGetOne = async (ctx: Context) => {
   const data = await getMenuOne(ctx._params.id)
   throw new Success({ data })
 }
 
 // 获取某类菜单
-export const doMenuGetByParentCode = async (ctx: Context, next: Next) => {
+export const doMenuGetByParentCode = async (ctx: Context) => {
   const parentCode = ctx._params.parentCode || ''
-  let data: MenuListOptions[] = await getMenuByParentCode(parentCode, ctx._params.userId, ctx._params.roleId)
+  const data: MenuListOptions[] = await getMenuByParentCode(
+    parentCode,
+    ctx._params.userId,
+    ctx._params.roleId
+  )
   throw new Success({ data })
 }
 
@@ -27,7 +31,8 @@ export const doMenuGetByParentCode = async (ctx: Context, next: Next) => {
  * 获取指定的某个菜单，返回对象或null
  */
 export const getMenuOne = async (id: string): Promise<MenuOptions | null> => {
-  const sql: string = `SELECT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.configurable, t1.label, t1.sort, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.code = ? OR t1.id = ?`
+  const sql: string =
+    'SELECT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.configurable, t1.label, t1.sort, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.code = ? OR t1.id = ?'
   const data = [id, id]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -48,13 +53,13 @@ export const getMenuByParentCode = async (
       parentCode
     })
   } else {
-    let data: any[] = []
+    const data: any[] = []
     // 是否与指定角色关联
     let sqlRoleId = ''
     let sqlRoleIdLeft = ''
     if (roleId) {
-      sqlRoleId = `t3.id AS checked_role_id,`
-      sqlRoleIdLeft = `LEFT JOIN roles_menus t3 ON (t3.role_id = ? AND t3.menu_id = t1.id)`
+      sqlRoleId = 't3.id AS checked_role_id,'
+      sqlRoleIdLeft = 'LEFT JOIN roles_menus t3 ON (t3.role_id = ? AND t3.menu_id = t1.id)'
       data.push(roleId)
     }
     // 是否与指定用户关联

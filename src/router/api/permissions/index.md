@@ -123,6 +123,7 @@
 | id | string | 权限id |
 | code | string | 权限code |
 | label | string | 权限描述 |
+| href | string | 关联路径 |
 | sort | number | 排序，值越小越前 |
 | configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
 | createTime | string | 创建时间 |

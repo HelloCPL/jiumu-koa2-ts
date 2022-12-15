@@ -11,6 +11,7 @@ export interface CollectionOptions extends BaseOptions {
   create_user: string
   type: string
   create_user_name?: string
+  create_user_avatar?: any
   type_label?: string
 }
 
@@ -20,6 +21,7 @@ export interface CollectionParams {
   pageNo: number
   pageSize: number
   type?: string
+  showUserInfo?: any
 }
 
 // 收藏列表返回

@@ -4,7 +4,7 @@
  * @update 2021-08-07 15:15:08
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
 import { execTrans } from '@/db'
 import { Terminal } from '@/enums'
@@ -15,7 +15,7 @@ import { SQLOptions } from '@/db/interface'
 /**
  * 博客文章新增
  */
-export const doArticleAdd = async (ctx: Context, next: Next) => {
+export const doArticleAdd = async (ctx: Context) => {
   const paramsData = await validateRange(
     [
       { value: ctx._params.isDraft, range: ['1', '0'], default: '0' },
@@ -26,7 +26,8 @@ export const doArticleAdd = async (ctx: Context, next: Next) => {
   const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
   const params = ctx._params
-  const sql: string = `INSERT articles (id, title, content, content_type, cover_img, attachment, type, classify, is_draft, is_secret, sort, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  const sql: string =
+    'INSERT articles (id, title, content, content_type, cover_img, attachment, type, classify, is_draft, is_secret, sort, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
   const data = [
     getUuId(),
     params.title,
@@ -46,8 +47,9 @@ export const doArticleAdd = async (ctx: Context, next: Next) => {
     params.remarks
   ]
   // 保持图片和文章公开性质一致
-  let sqlList: SQLOptions[] = [{ sql, data }]
-  const sql1: string = `UPDATE files_info SET is_secret = ?, update_time = ? WHERE create_user = ? AND FIND_IN_SET(id, ?)`
+  const sqlList: SQLOptions[] = [{ sql, data }]
+  const sql1: string =
+    'UPDATE files_info SET is_secret = ?, update_time = ? WHERE create_user = ? AND FIND_IN_SET(id, ?)'
   if (params.coverImg) {
     sqlList.push({
       sql: sql1,

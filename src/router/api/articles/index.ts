@@ -4,7 +4,7 @@
  * @update 2021-08-11 14:12:49
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
 import {
   doArticleAddConvert,
@@ -25,8 +25,8 @@ export default class API {
   })
   @Required(['title', 'content', 'contentType', 'type', 'isDraft'])
   @Convert(doArticleAddConvert)
-  async doArticleAdd(ctx: Context, next: Next) {
-    await doArticleAdd(ctx, next)
+  async doArticleAdd(ctx: Context) {
+    await doArticleAdd(ctx)
   }
 
   // 2 博客文章修改
@@ -36,8 +36,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doArticleUpdateConvert)
-  async doArticleUpdate(ctx: Context, next: Next) {
-    await doArticleUpdate(ctx, next)
+  async doArticleUpdate(ctx: Context) {
+    await doArticleUpdate(ctx)
   }
 
   // 3 博客文章删除
@@ -47,8 +47,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doArticleDeleteConvert)
-  async doArticleDelete(ctx: Context, next: Next) {
-    await doArticleDelete(ctx, next)
+  async doArticleDelete(ctx: Context) {
+    await doArticleDelete(ctx)
   }
 
   // 4 获取指定的博客文章
@@ -57,8 +57,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  async doArticleGetOne(ctx: Context, next: Next) {
-    await doArticleGetOne(ctx, next)
+  async doArticleGetOne(ctx: Context) {
+    await doArticleGetOne(ctx)
   }
 
   // 5 获取自己的博客文章列表
@@ -66,9 +66,9 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
-  async doArticleGetListSelf(ctx: Context, next: Next) {
+  async doArticleGetListSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
-    await doArticleGetList(ctx, next)
+    await doArticleGetList(ctx)
   }
 
   // 6 获取指定用户非草稿且公开的博客文章列表
@@ -77,10 +77,10 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['userId'])
-  async doArticleGetListByUserId(ctx: Context, next: Next) {
+  async doArticleGetListByUserId(ctx: Context) {
     ctx._params.isDraft = '0'
     ctx._params.isSecret = '0'
-    await doArticleGetList(ctx, next)
+    await doArticleGetList(ctx)
   }
 
   // 7 获取所有非草稿且公开的博客文章列表
@@ -88,11 +88,11 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
-  async doArticleGetList(ctx: Context, next: Next) {
+  async doArticleGetList(ctx: Context) {
     ctx._params.userId = null
     ctx._params.classify = null
     ctx._params.isDraft = '0'
     ctx._params.isSecret = '0'
-    await doArticleGetList(ctx, next)
+    await doArticleGetList(ctx)
   }
 }

@@ -12,7 +12,8 @@ import { Terminal } from '@/enums'
 // 新增登录记录信息
 export const doLoginInfoAdd = async (ctx: Context, next: Next, userId: string) => {
   const terminal = getTerminal(ctx)
-  const sql: string = `INSERT login_info (id, user_id, user_agent, ip, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?)`
+  const sql: string =
+    'INSERT login_info (id, user_id, user_agent, ip, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?)'
   const data = [
     getUuId(),
     userId,

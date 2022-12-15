@@ -109,6 +109,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | ids | string | 是 | 我的自定义标签 id 集合，多个用逗号隔开 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '1' |
 
 #### 返回字段说明
 
@@ -127,6 +128,7 @@
 | updateTime | string | 更新时间 |
 | createUser | string | 创建用户id |
 | createUserName | string | 创建用户名称 |
+| createUserAvatar | object/null | 创建者头像 |
 | terminal | string | 操作终端 |
 
 #### 返回示例
@@ -137,13 +139,29 @@
   "message": "操作成功",
   "data": [
     {
-      "id": "c3221e5e-bb1a-4220-b178-26d37fa1ade0",
-      "label": "java",
-      "type": "classify",
+      "id": "493f5144-45fb-477a-9b48-1f6a92f057e4",
+      "label": "js",
       "sort": 1,
-      "createTime": "2021-08-18 03:12:05",
-      "updateTime": "2021-08-18 03:12:05",
-      "terminal": "管理端"
+      "type": "myclassify",
+      "createTime": "2021-08-18 03:11:26",
+      "updateTime": "2021-08-18 03:11:26",
+      "terminal": "管理端",
+      "createUserName": "陈一支",
+      "createUserAvatar": {
+        "id": "628aa32f-f270-43e8-921b-15fc9736f486",
+        "filePath": "http://localhost:3030/images/e30b56b0-7aaf-11ed-bce7-1fcf06575d20.jpg",
+        "fileName": "R-C (2).jpg",
+        "fileSize": 20764,
+        "suffix": "jpg",
+        "staticPlace": "images",
+        "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+        "isSecret": "0",
+        "createTime": "2022-12-13 14:32:16",
+        "updateTime": "2022-12-13 14:32:16",
+        "terminal": "移动端",
+        "remarks": null
+      },
+      "createUser": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f"
     }
   ],
   "total": 0
@@ -217,6 +235,7 @@
 | keyword | string | 否 | 关键字 |
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | type | string | 否 | 自定义类型，若传只会获取对应 `type` 类型的自定义标签列表 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -235,6 +254,7 @@
 | updateTime | string | 更新时间 |
 | createUser | string | 创建用户id |
 | createUserName | string | 创建用户名称 |
+| createUserAvatar | object/null | 创建者头像 |
 | terminal | string | 操作终端 |
 
 #### 返回示例
@@ -326,6 +346,7 @@
 | keyword | string | 否 | 关键字 |
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | type | string | 否 | 自定义类型，若传只会获取对应 `type` 类型的自定义标签列表 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -344,6 +365,7 @@
 | updateTime | string | 更新时间 |
 | createUser | string | 创建用户id |
 | createUserName | string | 创建用户名称 |
+| createUserAvatar | object/null | 创建者头像 |
 | terminal | string | 操作终端 |
 
 #### 返回示例
@@ -409,6 +431,7 @@
 }
 ``` -->
 
+<!-- 考虑到保密性，已废除
 ## ---------------- 获取所有自定义标签列表 ---------------------
 
 #### 简要描述
@@ -430,6 +453,7 @@
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -449,6 +473,7 @@
 | updateTime | string | 更新时间 |
 | createUser | string | 创建用户id |
 | createUserName | string | 创建用户名称 |
+| createUserAvatar | object/null | 创建者头像 |
 | terminal | string | 操作终端 |
 
 #### 返回示例
@@ -471,4 +496,4 @@
   ],
   "total": 7
 }
-```
+``` -->

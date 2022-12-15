@@ -4,9 +4,13 @@
  * @update 2021-08-11 14:12:49
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
-import { doSourceAddConvert, doSourceUpdateConvert, doSourceDeleteConvert } from '@/router/controller/sources/convert'
+import {
+  doSourceAddConvert,
+  doSourceUpdateConvert,
+  doSourceDeleteConvert
+} from '@/router/controller/sources/convert'
 import { doSourceAdd } from '@/router/controller/sources/add'
 import { doSourceUpdate } from '@/router/controller/sources/update'
 import { doSourceDelete } from '@/router/controller/sources/delete'
@@ -21,8 +25,8 @@ export default class API {
   })
   @Required(['title', 'attachment', 'type'])
   @Convert(doSourceAddConvert)
-  async doSourceAdd(ctx: Context, next: Next) {
-    await doSourceAdd(ctx, next)
+  async doSourceAdd(ctx: Context) {
+    await doSourceAdd(ctx)
   }
 
   // 2 资源修改
@@ -32,8 +36,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doSourceUpdateConvert)
-  async doSourceUpdate(ctx: Context, next: Next) {
-    await doSourceUpdate(ctx, next)
+  async doSourceUpdate(ctx: Context) {
+    await doSourceUpdate(ctx)
   }
 
   // 3 资源删除
@@ -43,8 +47,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doSourceDeleteConvert)
-  async doSourceDelete(ctx: Context, next: Next) {
-    await doSourceDelete(ctx, next)
+  async doSourceDelete(ctx: Context) {
+    await doSourceDelete(ctx)
   }
 
   // 4 获取指定的资源
@@ -53,8 +57,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  async doSourceGetOne(ctx: Context, next: Next) {
-    await doSourceGetOne(ctx, next)
+  async doSourceGetOne(ctx: Context) {
+    await doSourceGetOne(ctx)
   }
 
   // 5 获取自己的资源列表
@@ -62,9 +66,9 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
-  async doSourceGetListSelf(ctx: Context, next: Next) {
+  async doSourceGetListSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
-    await doSourceGetList(ctx, next)
+    await doSourceGetList(ctx)
   }
 
   // 6 获取指定用户公开的资源列表
@@ -73,9 +77,9 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['userId'])
-  async doSourceGetListByUserId(ctx: Context, next: Next) {
+  async doSourceGetListByUserId(ctx: Context) {
     ctx._params.isSecret = '0'
-    await doSourceGetList(ctx, next)
+    await doSourceGetList(ctx)
   }
 
   // 7 获取所有公开的问答列表
@@ -83,10 +87,10 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
-  async doSourceGetList(ctx: Context, next: Next) {
+  async doSourceGetList(ctx: Context) {
     ctx._params.userId = null
     ctx._params.classify = null
     ctx._params.isSecret = '0'
-    await doSourceGetList(ctx, next)
+    await doSourceGetList(ctx)
   }
 }

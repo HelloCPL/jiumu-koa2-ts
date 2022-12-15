@@ -116,6 +116,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 问答id |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '1' |
 
 #### 返回字段说明
 
@@ -133,6 +134,7 @@
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -171,6 +173,21 @@
     "sort": 1,
     "createUser": "2adfe358-ff18-4bee-a4f1-4c00f5c65a8f",
     "createUserName": "陈一支",
+    "createUserAvatar": {
+      "id": "628aa32f-f270-43e8-921b-15fc9736f486",
+      "filePath": "http://localhost:3030/images/e30b56b0-7aaf-11ed-bce7-1fcf06575d20.jpg",
+      "fileName": "R-C (2).jpg",
+      "fileSize": 20764,
+      "suffix": "jpg",
+      "staticPlace": "images",
+      "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+      "createUserName": "管理员",
+      "isSecret": "0",
+      "createTime": "2022-12-13 14:32:16",
+      "updateTime": "2022-12-13 14:32:16",
+      "terminal": "移动端",
+      "remarks": null
+    },
     "createTime": "2021-08-20 10:11:18",
     "updateTime": "2021-08-20 10:11:18",
     "terminal": "管理端",
@@ -210,6 +227,7 @@
 | isDraft | string | 否 | 是否草稿，1 是 0 否 |
 | isSecret | string | 否 | 是否为私密问答，1 是 0 否 |
 | classify | string | 否 | 自定义文章类型，分类类型建议用questionClassify，单选 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -231,6 +249,7 @@
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -311,6 +330,7 @@
 | keyword | string | 否 | 关键字 |
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | classify | string | 否 | 自定义文章类型，分类类型建议用questionClassify，单选 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -332,6 +352,7 @@
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -410,6 +431,7 @@
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -433,6 +455,7 @@
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |

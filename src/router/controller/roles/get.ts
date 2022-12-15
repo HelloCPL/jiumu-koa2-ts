@@ -6,20 +6,20 @@
 
 import { Success } from '@/utils/http-exception'
 import { query, execTrans } from '@/db'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
 import { RoleOptions, RoleParamsOptions, RoleReturnOptions } from './interface'
 import { getAllRoleByUserId } from '../users-roles/get'
 import { UserRoleByUserIdParams } from '../users-roles/interface'
 
 // 获取指定的某个角色
-export const doRoleGetOne = async (ctx: Context, next: Next) => {
+export const doRoleGetOne = async (ctx: Context) => {
   const data = await getMenuOne(ctx._params.id)
   throw new Success({ data })
 }
 
 // 我的角色列表
-export const doRoleGetAllSelf = async (ctx: Context, next: Next) => {
+export const doRoleGetAllSelf = async (ctx: Context) => {
   // const data = await getMenuOne(ctx._params.id)
   const params: UserRoleByUserIdParams = {
     userId: ctx._user.id,
@@ -31,7 +31,7 @@ export const doRoleGetAllSelf = async (ctx: Context, next: Next) => {
 }
 
 // 获取角色列表
-export const doRoleGetList = async (ctx: Context, next: Next) => {
+export const doRoleGetList = async (ctx: Context) => {
   const parmas: RoleParamsOptions = {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
@@ -49,7 +49,8 @@ export const doRoleGetList = async (ctx: Context, next: Next) => {
  * 获取指定的某个角色，返回对象或null
  */
 export const getMenuOne = async (id: string): Promise<RoleOptions | null> => {
-  const sql: string = `SELECT * FROM roles WHERE code = ? OR id = ?`
+  const sql: string =
+    'SELECT t1.id, t1.code, t1.label, t1.sort, t1.configurable, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM roles t1 WHERE t1.code = ? OR t1.id = ?'
   const data = [id, id]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -74,7 +75,7 @@ export const getMenuList = async (params: RoleParamsOptions): Promise<RoleReturn
   })
   const sql1 = `SELECT COUNT(t1.id) AS total FROM roles t1 ${sqlParams.sql}`
   const data1 = [...sqlParams.data]
-  let data2 = []
+  const data2 = []
   // 是否与指定用户关联
   let sqlUserId = ''
   let sqlUserIdLeft = ''

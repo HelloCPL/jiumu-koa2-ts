@@ -105,8 +105,8 @@ function _handleSetItem(key: string, value: any): RedisOptions {
   if (_.isObject(value)) value = JSON.stringify(value)
   if (_.isNumber(value)) value = `__number__${value.toString()}`
   if (_.isBoolean(value)) value = `__boolean__${value.toString()}`
-  if (_.isUndefined(value)) value = `__undefined__`
-  if (_.isNull(value)) value = `__null__`
+  if (_.isUndefined(value)) value = '__undefined__'
+  if (_.isNull(value)) value = '__null__'
   value = value || ''
   return { key, value }
 }

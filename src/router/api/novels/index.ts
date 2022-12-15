@@ -4,9 +4,13 @@
  * @update 2021-08-11 14:12:49
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
-import { doNovelAddConvert, doNovelUpdateConvert, doNovelDeleteConvert } from '@/router/controller/novels/convert'
+import {
+  doNovelAddConvert,
+  doNovelUpdateConvert,
+  doNovelDeleteConvert
+} from '@/router/controller/novels/convert'
 import { doNovelAdd } from '@/router/controller/novels/add'
 import { doNovelUpdate } from '@/router/controller/novels/update'
 import { doNovelDelete } from '@/router/controller/novels/delete'
@@ -21,8 +25,8 @@ export default class API {
   })
   @Required(['name', 'introduce', 'author', 'isDraft'])
   @Convert(doNovelAddConvert)
-  async doNovelAdd(ctx: Context, next: Next) {
-    await doNovelAdd(ctx, next)
+  async doNovelAdd(ctx: Context) {
+    await doNovelAdd(ctx)
   }
 
   // 2 小说编辑
@@ -32,8 +36,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doNovelUpdateConvert)
-  async doNovelUpdate(ctx: Context, next: Next) {
-    await doNovelUpdate(ctx, next)
+  async doNovelUpdate(ctx: Context) {
+    await doNovelUpdate(ctx)
   }
 
   // 3 小说删除
@@ -43,8 +47,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doNovelDeleteConvert)
-  async doNovelDelete(ctx: Context, next: Next) {
-    await doNovelDelete(ctx, next)
+  async doNovelDelete(ctx: Context) {
+    await doNovelDelete(ctx)
   }
 
   // 4 获取指定的小说
@@ -53,8 +57,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  async doNovelGetOne(ctx: Context, next: Next) {
-    await doNovelGetOne(ctx, next)
+  async doNovelGetOne(ctx: Context) {
+    await doNovelGetOne(ctx)
   }
 
   // 5 获取自己的小说列表
@@ -62,9 +66,9 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
-  async doNovelGetListSelf(ctx: Context, next: Next) {
+  async doNovelGetListSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
-    await doNovelGetList(ctx, next)
+    await doNovelGetList(ctx)
   }
 
   // 6 获取指定用户所有非草稿且公开的小说列表
@@ -73,10 +77,10 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['userId'])
-  async doNovelGetListByUserId(ctx: Context, next: Next) {
+  async doNovelGetListByUserId(ctx: Context) {
     ctx._params.isDraft = '0'
     ctx._params.isSecret = '0'
-    await doNovelGetList(ctx, next)
+    await doNovelGetList(ctx)
   }
 
   // 7 获取所有的非草稿且公开小说列表
@@ -84,11 +88,11 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
-  async doNovelGetList(ctx: Context, next: Next) {
+  async doNovelGetList(ctx: Context) {
     ctx._params.userId = null
     ctx._params.classify = null
     ctx._params.isDraft = '0'
     ctx._params.isSecret = '0'
-    await doNovelGetList(ctx, next)
+    await doNovelGetList(ctx)
   }
 }

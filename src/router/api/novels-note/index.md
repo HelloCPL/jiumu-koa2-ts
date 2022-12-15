@@ -121,6 +121,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 笔记id |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '1' |
 
 #### 返回字段说明
 
@@ -129,7 +130,7 @@
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
 | id | string | 笔记id |
-| target | array/[] | 所属目标集合 `[{id, title, isTarget, type, typeLabel}]` |
+| target | array/[] | 所属目标集合 `[{id, title, type, typeLabel}]` |
 | title | string | 标题 |
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
@@ -137,6 +138,7 @@
 | isSecret | string | 是否为私密笔记，1 是 0 否 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -178,6 +180,21 @@
     "isSecret": "1",
     "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
     "createUserName": "超级管理员",
+    "createUserAvatar": {
+      "id": "628aa32f-f270-43e8-921b-15fc9736f486",
+      "filePath": "http://localhost:3030/images/e30b56b0-7aaf-11ed-bce7-1fcf06575d20.jpg",
+      "fileName": "R-C (2).jpg",
+      "fileSize": 20764,
+      "suffix": "jpg",
+      "staticPlace": "images",
+      "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+      "createUserName": "管理员",
+      "isSecret": "0",
+      "createTime": "2022-12-13 14:32:16",
+      "updateTime": "2022-12-13 14:32:16",
+      "terminal": "移动端",
+      "remarks": null
+    },
     "createTime": "2022-06-23 15:16:51",
     "updateTime": "2022-06-23 15:16:51",
     "terminal": "管理端",
@@ -214,6 +231,8 @@
 | pageSize | number | 否 | 每页页数，默认 10 |
 | isSecret | string | 否 | 是否为私密小说，1 是 0 否 |
 | classify | string | 否 | 自定义文章类型，单选，若为连载/连载章节分类类型建议用novelClassify，其他看情况而定 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
+
 #### 返回字段说明
 
 - 返回数组或[]
@@ -225,7 +244,7 @@
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
 | id | string | 笔记id |
-| target | array/[] | 所属目标集合 `[{id, title, isTarget, type, typeLabel, isTarget}]` |
+| target | array/[] | 所属目标集合 `[{id, title, type, typeLabel, isTarget(是否为当前指定目标 '1' 是 '0' 否) }]` |
 | title | string | 标题 |
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |

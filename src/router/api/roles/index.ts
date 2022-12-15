@@ -4,7 +4,7 @@
  * @update 2021-08-11 14:12:49
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
 import { doRoleAddConvert, doRoleUpdateConvert, doRoleDeleteConvert } from '@/router/controller/roles/convert'
 import { doRoleAdd } from '@/router/controller/roles/add'
@@ -21,8 +21,8 @@ export default class API {
   })
   @Required(['code', 'label'])
   @Convert(doRoleAddConvert)
-  async doRoleAdd(ctx: Context, next: Next) {
-    await doRoleAdd(ctx, next)
+  async doRoleAdd(ctx: Context) {
+    await doRoleAdd(ctx)
   }
 
   // 2 角色修改
@@ -32,8 +32,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doRoleUpdateConvert)
-  async doRoleUpdate(ctx: Context, next: Next) {
-    await doRoleUpdate(ctx, next)
+  async doRoleUpdate(ctx: Context) {
+    await doRoleUpdate(ctx)
   }
 
   // 3 角色删除
@@ -43,8 +43,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doRoleDeleteConvert)
-  async doRoleDelete(ctx: Context, next: Next) {
-    await doRoleDelete(ctx, next)
+  async doRoleDelete(ctx: Context) {
+    await doRoleDelete(ctx)
   }
 
   // 4 获取指定的某个角色
@@ -53,8 +53,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  async doRoleGetOne(ctx: Context, next: Next) {
-    await doRoleGetOne(ctx, next)
+  async doRoleGetOne(ctx: Context) {
+    await doRoleGetOne(ctx)
   }
 
   // 5 我的角色列表
@@ -62,8 +62,8 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
-  async doRoleGetAllSelf(ctx: Context, next: Next) {
-    await doRoleGetAllSelf(ctx, next)
+  async doRoleGetAllSelf(ctx: Context) {
+    await doRoleGetAllSelf(ctx)
   }
 
   // 6 获取所有角色
@@ -71,7 +71,7 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
-  async doRoleGetList(ctx: Context, next: Next) {
-    await doRoleGetList(ctx, next)
+  async doRoleGetList(ctx: Context) {
+    await doRoleGetList(ctx)
   }
 }

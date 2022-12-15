@@ -51,7 +51,7 @@ export async function doMenuUpdateConvert(ctx: Context, next: Next) {
   if (ctx._params.hasOwnProperty('code') && !ctx._params.code)
     throw new ExceptionParameter({ message: 'code参数值必须为真' })
   // 判断菜单是否不存在
-  const sql = `SELECT code, configurable FROM menus WHERE id = ?`
+  const sql = 'SELECT code, configurable FROM menus WHERE id = ?'
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistMenus })
   res = res[0]
@@ -93,7 +93,7 @@ export async function doMenuUpdateConvert(ctx: Context, next: Next) {
  */
 export async function doMenuDeleteConvert(ctx: Context, next: Next) {
   // 先判断菜单是否不存在
-  const sql = `SELECT code, configurable FROM menus WHERE id = ?`
+  const sql = 'SELECT code, configurable FROM menus WHERE id = ?'
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistMenus })
   res = res[0]

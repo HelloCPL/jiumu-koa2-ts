@@ -29,9 +29,9 @@ import { TerminalType } from '@/enums'
  * 如 member/list 或 member/list/ ==> /member/list
  */
 export function toPath(...arg: string[]): string {
-  let getPath = (path: string) => {
+  const getPath = (path: string) => {
     if (!path) return ''
-    let i = path.indexOf('?')
+    const i = path.indexOf('?')
     if (i !== -1) path = path.substring(0, i)
     if (!path.startsWith('/')) path = '/' + path
     if (path.endsWith('/')) path = path.substring(0, path.length - 1)
@@ -54,8 +54,8 @@ export function sureIsArray(arr: any): any[] {
 export function toCamelCase<T>(results: T): T {
   // 处理对象 key
   const _toObjectKey = (obj: ObjectAny) => {
-    let newObj: ObjectAny = {}
-    for (let key in obj) {
+    const newObj: ObjectAny = {}
+    for (const key in obj) {
       if (isObject(obj[key])) newObj[_.camelCase(key)] = _toObjectKey(obj[key])
       else if (_.isArray(obj[key])) newObj[_.camelCase(key)] = _toArrayKey(obj[key])
       else newObj[_.camelCase(key)] = obj[key]
@@ -90,17 +90,17 @@ export function isObject(obj: any): boolean {
 export function getSuffix(path: string | undefined | null, separator = '.'): string {
   if (!path) return ''
   let suffix = ''
-  let i = path.lastIndexOf(separator)
+  const i = path.lastIndexOf(separator)
   if (i !== -1) {
     suffix = path.substring(i + 1)
-    let i2 = suffix.lastIndexOf('?')
+    const i2 = suffix.lastIndexOf('?')
     if (i2 !== -1) suffix = suffix.substring(0, i2)
   }
   return suffix
 }
 
 // 根据文件名获取资源存放位置
-export function getStaticPlace(fileName: string) {
+export function getStaticPlace(fileName: string): string {
   const suffix = getSuffix(fileName)
   const imagesSuffix = [
     'jpg',
@@ -198,9 +198,9 @@ interface TreeOption {
 export const getTree = (option: TreeOption): any[] => {
   const parentKey = option.parentKey || 'parent_code'
   const key = option.key || 'code'
-  let trees: any[] = []
+  const trees: any[] = []
   // 去重
-  let originData = _.uniqBy(option.data, 'id')
+  const originData = _.uniqBy(option.data, 'id')
   // 排序
   if (originData.length) {
     if (originData[0].update_time) {

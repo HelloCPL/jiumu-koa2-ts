@@ -117,6 +117,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 资源id |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '1' |
 
 #### 返回字段说明
 
@@ -135,6 +136,7 @@
 | typeLabel | string | 资源类型标签说明 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -187,6 +189,21 @@
     "sort": 1,
     "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
     "createUserName": "超级管理员",
+    "createUserAvatar": {
+      "id": "628aa32f-f270-43e8-921b-15fc9736f486",
+      "filePath": "http://localhost:3030/images/e30b56b0-7aaf-11ed-bce7-1fcf06575d20.jpg",
+      "fileName": "R-C (2).jpg",
+      "fileSize": 20764,
+      "suffix": "jpg",
+      "staticPlace": "images",
+      "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+      "createUserName": "管理员",
+      "isSecret": "0",
+      "createTime": "2022-12-13 14:32:16",
+      "updateTime": "2022-12-13 14:32:16",
+      "terminal": "移动端",
+      "remarks": null
+    },
     "createTime": "2021-08-20 11:56:31",
     "updateTime": "2021-08-20 14:56:59",
     "terminal": "管理端",
@@ -225,6 +242,7 @@
 | type | string | 否 | 资源类型，取系统标签700范围 |
 | classify | string | 否 | 自定义文章类型，分类类型建议用sourceClassify，单选 |
 | isSecret | string | 否 | 是否为私密资源，1 是 0 否 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -247,6 +265,7 @@
 | typeLabel | string | 资源类型标签说明 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -343,6 +362,7 @@
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | type | string | 否 | 资源类型，取系统标签700范围 |
 | classify | string | 否 | 自定义文章类型，分类类型建议用sourceClassify，单选 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -365,6 +385,7 @@
 | typeLabel | string | 资源类型标签说明 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
@@ -459,6 +480,7 @@
 | keyword | string | 否 | 关键字 |
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | type | string | 否 | 资源类型，取系统标签700范围 |
+| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
 
@@ -483,6 +505,7 @@
 | typeLabel | string | 资源类型标签说明 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |

@@ -4,7 +4,7 @@
  * @update 2021-08-11 14:12:49
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
 import { doTagAddConvert, doTagUpdateConvert, doTagDeleteConvert } from '@/router/controller/tags/convert'
 import { doTagAdd } from '@/router/controller/tags/add'
@@ -21,8 +21,8 @@ export default class API {
   })
   @Required(['code', 'label'])
   @Convert(doTagAddConvert)
-  async doTagAdd(ctx: Context, next: Next) {
-    await doTagAdd(ctx, next)
+  async doTagAdd(ctx: Context) {
+    await doTagAdd(ctx)
   }
 
   // 2 标签修改
@@ -32,8 +32,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doTagUpdateConvert)
-  async doTagUpdate(ctx: Context, next: Next) {
-    await doTagUpdate(ctx, next)
+  async doTagUpdate(ctx: Context) {
+    await doTagUpdate(ctx)
   }
 
   // 3 标签删除
@@ -43,8 +43,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doTagDeleteConvert)
-  async doTagDelete(ctx: Context, next: Next) {
-    await doTagDelete(ctx, next)
+  async doTagDelete(ctx: Context) {
+    await doTagDelete(ctx)
   }
 
   // 4 获取指定的某个标签
@@ -53,8 +53,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['code'])
-  async doTagGetByCode(ctx: Context, next: Next) {
-    await doTagGetByCode(ctx, next)
+  async doTagGetByCode(ctx: Context) {
+    await doTagGetByCode(ctx)
   }
 
   // 5 获取我的所有标签
@@ -62,8 +62,8 @@ export default class API {
     path: 'get/all/self',
     methods: ['get', 'post']
   })
-  async doTagGetAllSelf(ctx: Context, next: Next) {
-    await doTagGetAllSelf(ctx, next)
+  async doTagGetAllSelf(ctx: Context) {
+    await doTagGetAllSelf(ctx)
   }
 
   // 6 获取某类标签
@@ -71,7 +71,7 @@ export default class API {
     path: 'get/byparentcode',
     methods: ['get', 'post']
   })
-  async doTagGetByParentCode(ctx: Context, next: Next) {
-    await doTagGetByParentCode(ctx, next)
+  async doTagGetByParentCode(ctx: Context) {
+    await doTagGetByParentCode(ctx)
   }
 }

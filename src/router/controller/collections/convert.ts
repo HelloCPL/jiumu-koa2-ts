@@ -29,7 +29,7 @@ export const doCollectionAddConvert = async (ctx: Context, next: Next) => {
   await validateRange({
     value: ctx._params.type,
     range: ['502', '503', '504', '505', '507'],
-    message: `type参数必须为['502','503','504','505','507']范围`
+    message: "type参数必须为['502','503','504','505','507']范围"
   })
   await next()
 }

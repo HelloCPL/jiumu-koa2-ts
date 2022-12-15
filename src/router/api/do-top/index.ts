@@ -4,7 +4,7 @@
  * @update 2021-12-05 14:53:56
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
 import { doTopUpdateConvert } from '@/router/controller/do-top/convert'
 import { doTopUpdate, doTopUpdateComment } from '@/router/controller/do-top/update'
@@ -18,9 +18,9 @@ export default class API {
   })
   @Required(['id', 'type'])
   @Convert(doTopUpdateConvert)
-  async doTopUpdate(ctx: Context, next: Next) {
+  async doTopUpdate(ctx: Context) {
     ctx._params.isTop = '1'
-    await doTopUpdate(ctx, next)
+    await doTopUpdate(ctx)
   }
 
   // 2 问答、资源文件、小说、博客文章取消置顶操作
@@ -30,9 +30,9 @@ export default class API {
   })
   @Required(['id', 'type'])
   @Convert(doTopUpdateConvert)
-  async doTopUpdate2(ctx: Context, next: Next) {
+  async doTopUpdate2(ctx: Context) {
     ctx._params.isTop = '0'
-    await doTopUpdate(ctx, next)
+    await doTopUpdate(ctx)
   }
 
   // 3 评论置顶操作
@@ -41,9 +41,9 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  async doTopUpdateComment(ctx: Context, next: Next) {
+  async doTopUpdateComment(ctx: Context) {
     ctx._params.isTop = '1'
-    await doTopUpdateComment(ctx, next)
+    await doTopUpdateComment(ctx)
   }
 
   // 4 评论取消置顶操作
@@ -52,8 +52,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  async doTopUpdateComment2(ctx: Context, next: Next) {
+  async doTopUpdateComment2(ctx: Context) {
     ctx._params.isTop = '0'
-    await doTopUpdateComment(ctx, next)
+    await doTopUpdateComment(ctx)
   }
 }

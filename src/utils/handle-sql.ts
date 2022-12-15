@@ -24,7 +24,7 @@ interface paramsOptions {
  */
 export const getUpdateSetData = (options: paramsOptions): SQLParamsOptions => {
   let sql: string = ''
-  let data: any[] = []
+  const data: any[] = []
   options.valid.forEach((key) => {
     const keys: KeyOptions = _findKeys(key)
     if (options.data.hasOwnProperty(keys.dataKey)) {
@@ -46,7 +46,7 @@ export const getUpdateSetData = (options: paramsOptions): SQLParamsOptions => {
  */
 export const getSelectWhereData = (options: paramsOptions): SQLParamsOptions => {
   let sql: string = ''
-  let data: any[] = []
+  const data: any[] = []
   const { connector = 'AND', prefix } = options
   options.valid.forEach((key) => {
     const keys: KeyOptions = _findKeys(key)
@@ -73,7 +73,7 @@ export const getSelectWhereData = (options: paramsOptions): SQLParamsOptions => 
  */
 export const getSelectWhereAsKeywordData = (options: paramsOptions): SQLParamsOptions => {
   let sql: string = ''
-  let data: any[] = []
+  const data: any[] = []
   const { connector = 'OR', prefix } = options
   let keyword: any = options.data.keyword
   if (typeof keyword === 'string') keyword = keyword.replace(/\s/g, '')
@@ -172,7 +172,7 @@ interface KeyOptions {
 function _findKeys(str: string): KeyOptions {
   // 判断是否有逗号
   let t = '' // 表名前缀
-  let i2 = str.indexOf('.')
+  const i2 = str.indexOf('.')
   if (i2 !== -1) {
     t = str.substring(0, i2)
     str = str.substring(i2 + 1)
@@ -181,7 +181,7 @@ function _findKeys(str: string): KeyOptions {
   let sqlKey = str
   let isEqual = false
   // 判断是否有分号
-  let i1 = str.indexOf(':')
+  const i1 = str.indexOf(':')
   if (i1 !== -1) {
     dataKey = sqlKey.substring(i1 + 1)
     sqlKey = sqlKey.substring(0, i1)

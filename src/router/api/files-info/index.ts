@@ -4,10 +4,10 @@
  * @update 2021-01-27 11:10:43
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Request, Required, Convert } from '@/router/router'
-import { doFileAdd } from '@/router/controller/files-info/add'
-import { doFileGetOne, doFileGetListByUserId, doFileGetListSelf } from '@/router/controller/files-info/get'
+import { doFileAdd, doFileAddChunk } from '@/router/controller/files-info/add'
+import { doFileGetOne } from '@/router/controller/files-info/get'
 import { doFileDelete } from '@/router/controller/files-info/delete'
 import { doFileDeleteConvert, doFileGetOneConvert } from '@/router/controller/files-info/convert'
 
@@ -18,8 +18,8 @@ export default class API {
     path: 'add',
     methods: ['post']
   })
-  async doFileAdd(ctx: Context, next: Next) {
-    await doFileAdd(ctx, next)
+  async doFileAdd(ctx: Context) {
+    await doFileAdd(ctx)
   }
 
   // 2 文件删除 传 ids 可删除多个 用逗号隔开
@@ -29,8 +29,8 @@ export default class API {
   })
   @Required(['ids'])
   @Convert(doFileDeleteConvert)
-  async doFileDelete(ctx: Context, next: Next) {
-    await doFileDelete(ctx, next)
+  async doFileDelete(ctx: Context) {
+    await doFileDelete(ctx)
   }
 
   // 3 获取一个指定文件 返回对象或null
@@ -40,8 +40,8 @@ export default class API {
   })
   @Required(['id'])
   @Convert(doFileGetOneConvert)
-  async doFileGetOne(ctx: Context, next: Next) {
-    await doFileGetOne(ctx, next)
+  async doFileGetOne(ctx: Context) {
+    await doFileGetOne(ctx)
   }
 
   // 4 获取指定用户的所有文件/图片列表 返回数组或[]
@@ -50,8 +50,8 @@ export default class API {
   //   methods: ['post', 'get'],
   // })
   // @Required(['userId'])
-  // async doFileGetListByUserId(ctx: Context, next: Next) {
-  //   await doFileGetListByUserId(ctx, next)
+  // async doFileGetListByUserId(ctx: Context) {
+  //   await doFileGetListByUserId(ctx)
   // }
 
   // 5 获取本用户的所有文件/图片列表 返回数组或[]
@@ -59,7 +59,17 @@ export default class API {
   //   path: 'get/list/self',
   //   methods: ['post', 'get'],
   // })
-  // async doFileGetListSelf(ctx: Context, next: Next) {
-  //   await doFileGetListSelf(ctx, next)
+  // async doFileGetListSelf(ctx: Context) {
+  //   await doFileGetListSelf(ctx)
   // }
+
+  // 6. 大文件上传切片
+  @Request({
+    path: 'add/big',
+    methods: ['post']
+  })
+  @Required(['fileHash', 'chunkHash'])
+  async doFileAddChunk(ctx: Context) {
+    await doFileAddChunk(ctx)
+  }
 }

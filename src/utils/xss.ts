@@ -56,11 +56,15 @@ const myxss = new FilterXSS({
       'accept',
       'draggable'
     ]
-    let flag =
+    const flag =
       attribute.indexOf('name') !== -1 ||
       name.substr(0, 5) === 'data-' ||
       (tag === 'img' &&
-        (name === 'src' || name === 'filter' || name === 'alpha' || name === 'opacity' || name === 'rules')) ||
+        (name === 'src' ||
+          name === 'filter' ||
+          name === 'alpha' ||
+          name === 'opacity' ||
+          name === 'rules')) ||
       ((tag === 'frame' || tag === 'frameset') &&
         (name === 'frameborder' ||
           name === 'framespacing' ||

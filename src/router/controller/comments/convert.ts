@@ -23,7 +23,7 @@ export const doCommentAddConvert = async (ctx: Context, next: Next) => {
     range: '500',
     message: 'type参数必须为系统标签500范围'
   })
-  if (ctx._params.type == '501') {
+  if (ctx._params.type === '501') {
     const flag1 = await isExist({
       table: 'comments_first',
       where: [{ key: 'id', value: ctx._params.targetId }],

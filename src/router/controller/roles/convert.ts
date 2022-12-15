@@ -33,7 +33,7 @@ export const doRoleAddConvert = async (ctx: Context, next: Next) => {
  */
 export async function doRoleUpdateConvert(ctx: Context, next: Next) {
   // 判断角色是否不存在
-  const sql = `SELECT code, configurable FROM roles WHERE id = ?`
+  const sql = 'SELECT code, configurable FROM roles WHERE id = ?'
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistRole })
   res = res[0]
@@ -67,7 +67,7 @@ export async function doRoleUpdateConvert(ctx: Context, next: Next) {
  */
 export async function doRoleDeleteConvert(ctx: Context, next: Next) {
   // 判断角色是否不存在
-  const sql = `SELECT code, configurable FROM roles WHERE id = ?`
+  const sql = 'SELECT code, configurable FROM roles WHERE id = ?'
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistRole })
   res = res[0]

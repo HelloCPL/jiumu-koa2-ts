@@ -39,7 +39,8 @@ export const Prefix =
 export const Request =
   (options: RequestOptions): MethodDecorator =>
   (target: ObjectAny, key: string | symbol, descriptor: PropertyDescriptor) => {
-    if (!(_.isArray(options.terminals) && options.terminals.length)) options.terminals = ['pc', 'app', 'web', 'wechat']
+    if (!(_.isArray(options.terminals) && options.terminals.length))
+      options.terminals = ['pc', 'app', 'web', 'wechat']
     Route.__DecoratedRouters.set(
       <RouteOptions>{
         target,
@@ -83,7 +84,7 @@ function _handleRequiredParams(params: string[]): ValidatorOptions[] {
         key = item.substring(0, i)
         let rule: string = item.substring(i + 1)
         if (Number(rule)) {
-          let min = Number(rule)
+          const min = Number(rule)
           rule = 'isLength'
           message = `参数长度必须大于${min}`
           paramsObj = { min }

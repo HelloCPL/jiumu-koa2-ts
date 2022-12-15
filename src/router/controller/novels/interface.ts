@@ -17,6 +17,7 @@ export interface NovelOptions extends BaseOptions {
   is_draft: string
   create_user: string
   create_user_name?: string
+  create_user_avatar?: any
   is_self?: string
   is_like?: string
   like_count?: number
@@ -41,10 +42,17 @@ export interface NovelListParams {
   classify?: string
   isDraft?: string
   isSecret?: string
+  showUserInfo?: any
 }
 
 // 小说列表获取返回类型
 export interface NovelListReturn {
   total: number
   data: NovelOptions[]
+}
+
+export interface NovelOneParams {
+  id: string
+  userId: string
+  showUserInfo?: any
 }

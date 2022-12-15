@@ -30,7 +30,7 @@ class ValidatorParam extends LinValidator {
 
   protected setRule(rule: ValidatorOptions) {
     if (!_.isArray(rule.rules) || rule.rules.length === 0) throw new ExceptionHttp({ message: Message.rules })
-    let ruleList = []
+    const ruleList = []
     if (_.isArray(rule.rules[0])) {
       rule.rules.forEach((item: any) => {
         ruleList.push(new Rule(item[0], item[1], item[2]))
@@ -73,7 +73,7 @@ export class ValidatorParameters extends ValidatorParam {
     super()
     if (_.isArray(rules)) {
       for (let i = 0, len = rules.length; i < len; i++) {
-        let rule = rules[i]
+        const rule = rules[i]
         this.setRule(rule)
       }
     } else {
@@ -107,7 +107,7 @@ export const validateRange = async (data: RangeOptions | RangeOptions[], noThrow
               return true
             }
           } else {
-            if (info.value == val) {
+            if (info.value === val) {
               flag = true
               return true
             }
@@ -126,7 +126,7 @@ export const validateRange = async (data: RangeOptions | RangeOptions[], noThrow
     else throw new ExceptionParameter({ message: info.message || Message.parameter })
   }
   if (_.isArray(data)) {
-    let targetData: any[] = []
+    const targetData: any[] = []
     for (let i = 0, len = data.length; i < len; i++) {
       const value = await _handleValid(data[i])
       targetData.push(value)
@@ -139,7 +139,7 @@ export const validateRange = async (data: RangeOptions | RangeOptions[], noThrow
 
 // 获取标签指定 code 一维数据列表
 function _getTagsCode(data: TagOptions[]): string[] {
-  let codes: string[] = []
+  const codes: string[] = []
   const _handleGetCode = (arr: TagOptions[]) => {
     arr.forEach((item) => {
       codes.push(item.code)

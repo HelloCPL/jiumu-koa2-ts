@@ -6,18 +6,18 @@
 
 import { Success } from '@/utils/http-exception'
 import { query, execTrans } from '@/db'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
 import { PermissionOptions, PermissionParmsOptions, PermissionReturnOptions } from './interface'
 
 // 获取指定的某个权限
-export const doPermissionGetOne = async (ctx: Context, next: Next) => {
+export const doPermissionGetOne = async (ctx: Context) => {
   const data = await getPermissionOne(ctx._params.id)
   throw new Success({ data })
 }
 
 // 获取权限列表
-export const doPermissionGetList = async (ctx: Context, next: Next) => {
+export const doPermissionGetList = async (ctx: Context) => {
   const parmas: PermissionParmsOptions = {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
@@ -34,7 +34,8 @@ export const doPermissionGetList = async (ctx: Context, next: Next) => {
  * 获取指定的某个权限，返回对象或null
  */
 export const getPermissionOne = async (id: string): Promise<PermissionOptions | null> => {
-  const sql: string = `SELECT * FROM permissions WHERE code = ? OR id = ?`
+  const sql: string =
+    'SELECT t1.id, t1.code, t1.label, t1.href, t1.sort, t1.configurable, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM permissions t1 WHERE t1.code = ? OR t1.id = ?'
   const data = [id, id]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -59,7 +60,7 @@ export const getPermissionList = async (params: PermissionParmsOptions): Promise
   })
   const sql1 = `SELECT COUNT(t1.id) AS total FROM permissions t1 ${sqlParams.sql}`
   const data1 = [...sqlParams.data]
-  let data2 = []
+  const data2 = []
   // 是否与指定角色关联
   let sqlRoleId = ''
   let sqlRoleIdLeft = ''

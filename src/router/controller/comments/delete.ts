@@ -4,7 +4,7 @@
  * @update 2021-08-07 15:15:08
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { ExceptionForbidden, Success } from '@/utils/http-exception'
 import { query } from '@/db'
 import { Message } from '@/enums'
@@ -14,7 +14,7 @@ import { CommentFindResult } from './interface'
 /**
  * 删除指定某条评论
  */
-export const doCommentDeleteById = async (ctx: Context, next: Next) => {
+export const doCommentDeleteById = async (ctx: Context) => {
   const commentInfo = <CommentFindResult>await _findCommentById(ctx._params.id)
   let sql = ''
   let data: any = []

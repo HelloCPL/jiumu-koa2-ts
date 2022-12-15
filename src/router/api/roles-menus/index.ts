@@ -4,7 +4,7 @@
  * @update 2021-08-11 14:12:49
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
 import { doRoleMenuAddConvert, doRoleMenuDeleteConvert } from '@/router/controller/roles-menus/convert'
 import { doRoleMenuAdd } from '@/router/controller/roles-menus/add'
@@ -25,8 +25,8 @@ export default class API {
   })
   @Required(['roleId', 'menuId'])
   @Convert(doRoleMenuAddConvert)
-  async doRoleMenuAdd(ctx: Context, next: Next) {
-    await doRoleMenuAdd(ctx, next)
+  async doRoleMenuAdd(ctx: Context) {
+    await doRoleMenuAdd(ctx)
   }
 
   // 2 删除角色-菜单关联
@@ -35,8 +35,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Convert(doRoleMenuDeleteConvert)
-  async doRoleMenuDelete(ctx: Context, next: Next) {
-    await doRoleMenuDelete(ctx, next)
+  async doRoleMenuDelete(ctx: Context) {
+    await doRoleMenuDelete(ctx)
   }
 
   // 3 获取指定角色关联的所有菜单
@@ -45,8 +45,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['roleId'])
-  async doRoleMenugetAllMenuByRoleId(ctx: Context, next: Next) {
-    await doRoleMenugetAllMenuByRoleId(ctx, next)
+  async doRoleMenugetAllMenuByRoleId(ctx: Context) {
+    await doRoleMenugetAllMenuByRoleId(ctx)
   }
 
   // 4 获取指定菜单关联的所有角色
@@ -55,8 +55,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['menuId'])
-  async doRoleMenuGetAllRoleByMenuId(ctx: Context, next: Next) {
-    await doRoleMenuGetAllRoleByMenuId(ctx, next)
+  async doRoleMenuGetAllRoleByMenuId(ctx: Context) {
+    await doRoleMenuGetAllRoleByMenuId(ctx)
   }
 
   // 5 获取指定用户关联的所有菜单
@@ -65,8 +65,8 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['userId'])
-  async doRoleMenugetAllMenuByUserId(ctx: Context, next: Next) {
-    await doRoleMenugetAllMenuByUserId(ctx, next)
+  async doRoleMenugetAllMenuByUserId(ctx: Context) {
+    await doRoleMenugetAllMenuByUserId(ctx)
   }
 
   // 6 获取指定菜单关联的所有用户
@@ -75,7 +75,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['menuId'])
-  async doRoleMenuGetAllUserByMenuId(ctx: Context, next: Next) {
-    await doRoleMenuGetAllUserByMenuId(ctx, next)
+  async doRoleMenuGetAllUserByMenuId(ctx: Context) {
+    await doRoleMenuGetAllUserByMenuId(ctx)
   }
 }

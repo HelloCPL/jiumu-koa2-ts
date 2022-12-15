@@ -6,26 +6,26 @@
 
 import { Success } from '@/utils/http-exception'
 import { query, execTrans } from '@/db'
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { UserOptions, UserListParams, UserListReturn } from './interface'
 import { getFileById } from '../files-info/get'
 import { getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
 
 // 获取本用户信息
-export const doUserGetSelf = async (ctx: Context, next: Next) => {
+export const doUserGetSelf = async (ctx: Context) => {
   const data = await getUserOne(ctx._user.id)
   throw new Success({ data })
 }
 
 // 获取指定用户基本信息
-export const doUserGetBase = async (ctx: Context, next: Next) => {
+export const doUserGetBase = async (ctx: Context) => {
   const data = await getUserOne(ctx._params.id)
   throw new Success({ data })
 }
 
 // 获取用户列表基本信息
-export const doUserGetList = async (ctx: Context, next: Next) => {
-  let params = {
+export const doUserGetList = async (ctx: Context) => {
+  const params = {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
     keyword: ctx._params.keyword,
@@ -40,10 +40,11 @@ export const doUserGetList = async (ctx: Context, next: Next) => {
  * 获取指定的某个用户，返回对象或null
  */
 export const getUserOne = async (id: string): Promise<UserOptions | null> => {
-  const sql: string = `SELECT t1.id, t1.phone, t1.username, t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code WHERE t1.id = ?`
+  const sql: string =
+    'SELECT t1.id, t1.phone, t1.username, t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code WHERE t1.id = ?'
   const res: any = await query(sql, id)
   if (res && res.length) {
-    let userInfo: UserOptions = <UserOptions>res[0]
+    const userInfo: UserOptions = <UserOptions>res[0]
     userInfo.avatar = await getFileById(userInfo.avatar, userInfo.id)
     return userInfo
   } else return null
@@ -53,8 +54,6 @@ export const getUserOne = async (id: string): Promise<UserOptions | null> => {
  * 获取用户列表基本信息，返回数组或[]
  */
 export const getUserList = async (options: UserListParams): Promise<UserListReturn> => {
-  console.log(123)
-
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理搜索关键字
   const sqlParams = getSelectWhereAsKeywordData({

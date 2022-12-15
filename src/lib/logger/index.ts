@@ -23,7 +23,7 @@ const formatLogger: LoggerOptions = {
   request(ctx: Context, options?: ParamsOptions) {
     let logText: string = ''
     logText += `\n\n---------- 接口请求开始 ${ctx._requestCount} ----------`
-    logText += `\n\n[请求日志信息]`
+    logText += '\n\n[请求日志信息]'
     logText += `\n  [requestStartTime]: ${ctx._requestStart},`
     logText += `\n  [requestOriginalUrl]: ${ctx.originalUrl},`
     logText += `\n  [requestIP]: ${getIP(ctx)},`
@@ -41,9 +41,9 @@ const formatLogger: LoggerOptions = {
     const requestCount = ctx ? ctx._requestCount : global._requestCount
     const requestStart = ctx ? ctx._requestStart : global._requestStart
     const requestEnd = process.hrtime.bigint()
-    let costTime = requestEnd - requestStart
+    const costTime = requestEnd - requestStart
     let logText = ''
-    logText += `\n\n[响应日志信息]`
+    logText += '\n\n[响应日志信息]'
     logText += `\n  [responseEndTime]: ${requestEnd}`
     logText += `\n  [totalTime]: ${Number(costTime) / 1e6}毫秒`
     logText = _handleParamsOptions(logText, options)
@@ -55,7 +55,7 @@ const formatLogger: LoggerOptions = {
   // 数据库查询日志
   query(options: QueryParamsOptions) {
     let logText = ''
-    logText += `\n\n[数据库查询日志信息]`
+    logText += '\n\n[数据库查询日志信息]'
     logText = _handleParamsOptions(logText, options)
     if (IS_PRINT_LOG) console.log(logText)
     infoLogger.info(logText)

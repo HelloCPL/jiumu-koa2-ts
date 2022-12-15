@@ -27,7 +27,7 @@ export const doNovelChapterAddConvert = async (ctx: Context, next: Next) => {
     throwType: false,
     message: Message.unexistNovel
   })
-  const sql: string = `SELECT id FROM novels_chapter WHERE novel_id = ? AND sort = ?`
+  const sql: string = 'SELECT id FROM novels_chapter WHERE novel_id = ? AND sort = ?'
   const data = [ctx._params.novelId, ctx._params.sort]
   const res: any = await query(sql, data)
   if (res && res.length) {
@@ -45,7 +45,7 @@ export const doNovelChapterAddConvert = async (ctx: Context, next: Next) => {
  */
 export const doNovelChapterUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断章节是否不存在，且是否为自己的章节
-  const sql: string = `SELECT id, novel_id FROM novels_chapter WHERE id = ? AND create_user = ?`
+  const sql: string = 'SELECT id, novel_id FROM novels_chapter WHERE id = ? AND create_user = ?'
   const data = [ctx._params.id, ctx._user.id]
   const res: any = await query(sql, data)
   if (!(res && res.length)) {
@@ -53,7 +53,8 @@ export const doNovelChapterUpdateConvert = async (ctx: Context, next: Next) => {
   }
   // 若传 sort 判断 sort 是否除自己外已存在
   if (ctx._params.hasOwnProperty('sort')) {
-    const sql1: string = `SELECT id FROM novels_chapter WHERE novel_id = ? AND id != ? AND sort = ? AND create_user = ?`
+    const sql1: string =
+      'SELECT id FROM novels_chapter WHERE novel_id = ? AND id != ? AND sort = ? AND create_user = ?'
     const data1 = [res[0].novel_id, ctx._params.id, ctx._params.sort, ctx._user.id]
     const res1: any = await query(sql1, data1)
     if (res1 && res1.length) throw new ExceptionParameter({ message: Message.existNovelChapterSort })
@@ -63,7 +64,7 @@ export const doNovelChapterUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isDraft,
       range: ['1', '0'],
-      message: `isDraft参数必须为['1', '0']范围`
+      message: "isDraft参数必须为['1', '0']范围"
     })
   }
   // 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
@@ -71,7 +72,7 @@ export const doNovelChapterUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isSecret,
       range: ['1', '0'],
-      message: `isSecret参数必须为['1', '0']范围`
+      message: "isSecret参数必须为['1', '0']范围"
     })
   }
   await next()
@@ -84,7 +85,7 @@ export const doNovelChapterUpdateConvert = async (ctx: Context, next: Next) => {
  */
 export const doNovelChapterDeleteConvert = async (ctx: Context, next: Next) => {
   // 判断章节是否不存在
-  const sql = `SELECT id, create_user FROM novels_chapter WHERE id = ?`
+  const sql = 'SELECT id, create_user FROM novels_chapter WHERE id = ?'
   const res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistNovelChapter })
   // 是否为自己发布的章节

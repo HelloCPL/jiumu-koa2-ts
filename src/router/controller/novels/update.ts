@@ -4,7 +4,7 @@
  * @update 2021-08-07 15:15:08
  */
 
-import { Context, Next } from 'koa'
+import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
 import { query } from '@/db'
 import { formatDate } from '@/utils/tools'
@@ -13,7 +13,7 @@ import { getUpdateSetData } from '@/utils/handle-sql'
 /**
  * 小说修改
  */
-export const doNovelUpdate = async (ctx: Context, next: Next) => {
+export const doNovelUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
   const sqlParams = getUpdateSetData({
     valid: [
