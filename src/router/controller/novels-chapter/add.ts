@@ -25,8 +25,9 @@ export const doNovelChapterAdd = async (ctx: Context) => {
   const sql: string =
     'INSERT novels_chapter (id, novel_id, title, content, sort, is_secret, is_draft, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
   const currentTime = formatDate(new Date())
+  const id = getUuId()
   const data = [
-    getUuId(),
+    id,
     ctx._params.novelId,
     ctx._params.title,
     ctx._params.content,
@@ -40,5 +41,5 @@ export const doNovelChapterAdd = async (ctx: Context) => {
     ctx._params.remarks
   ]
   await query(sql, data)
-  throw new Success()
+  throw new Success({ data: id })
 }

@@ -21,8 +21,9 @@ export const doNovelNoteAdd = async (ctx: Context) => {
   const sort: number = params.sort || 1
   const sql: string =
     'INSERT novels_note (id, target, title, content, classify, sort,is_secret, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const id = getUuId()
   const data = [
-    getUuId(),
+    id,
     params._target,
     params.title,
     params.content,
@@ -36,5 +37,5 @@ export const doNovelNoteAdd = async (ctx: Context) => {
     params.remarks
   ]
   await query(sql, data)
-  throw new Success()
+  throw new Success({ data: id })
 }

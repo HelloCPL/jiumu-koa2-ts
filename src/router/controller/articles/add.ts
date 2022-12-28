@@ -28,8 +28,9 @@ export const doArticleAdd = async (ctx: Context) => {
   const params = ctx._params
   const sql: string =
     'INSERT articles (id, title, content, content_type, cover_img, attachment, type, classify, is_draft, is_secret, sort, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const id = getUuId()
   const data = [
-    getUuId(),
+    id,
     params.title,
     params.content,
     params.contentType,
@@ -65,5 +66,5 @@ export const doArticleAdd = async (ctx: Context) => {
     })
   }
   await execTrans(sqlList)
-  throw new Success()
+  throw new Success({ data: id })
 }
