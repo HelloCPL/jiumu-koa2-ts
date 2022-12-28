@@ -9,7 +9,7 @@ import { Prefix, Convert, Request, Required } from '@/router/router'
 import { doLikeAddConvert, doLikeDeleteConvert } from '@/router/controller/likes/convert'
 import { doLikeAdd } from '@/router/controller/likes/add'
 import { doLikeDelete } from '@/router/controller/likes/delete'
-import { doLikeGetListSelf, doLikeGetList } from '@/router/controller/likes/get'
+import { doLikeGetOne, doLikeGetListSelf, doLikeGetList } from '@/router/controller/likes/get'
 
 @Prefix('like')
 export default class API {
@@ -35,7 +35,17 @@ export default class API {
     await doLikeDelete(ctx)
   }
 
-  // 3 获取本用户的点赞列表
+  // 3 获取指定的一个点赞
+  @Request({
+    path: 'get/one',
+    methods: ['get', 'post']
+  })
+  @Required(['id'])
+  async doLikeGetOne(ctx: Context) {
+    await doLikeGetOne(ctx)
+  }
+
+  // 4 获取本用户的点赞列表
   @Request({
     path: 'get/list/self',
     methods: ['get', 'post']
@@ -44,7 +54,7 @@ export default class API {
     await doLikeGetListSelf(ctx)
   }
 
-  // 4 根据 userId 获取点赞列表
+  // 5 根据 userId 获取点赞列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post']

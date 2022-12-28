@@ -15,6 +15,11 @@ export interface CollectionOptions extends BaseOptions {
   type_label?: string
 }
 
+export interface CollectionOneParams {
+  id: string
+  showUserInfo?: any
+}
+
 // 收藏参数
 export interface CollectionParams {
   userId: string

@@ -5,13 +5,23 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { execTrans } from '@/db'
+import { execTrans, query } from '@/db'
 import { Context } from 'koa'
-import { CollectionOptions, CollectionParams, CollectionReturn } from './interface'
+import { CollectionOneParams, CollectionOptions, CollectionParams, CollectionReturn } from './interface'
 import { validateRange } from '@/utils/validator'
 import { getFileById } from '../files-info/get'
 
-// 根据 userId 获取收藏列表
+// 获取指定的一个收藏
+export const doCollectionGetOne = async (ctx: Context) => {
+  const params = {
+    id: ctx._params.id,
+    showUserInfo: ctx._params.showUserInfo || '1'
+  }
+  const data = await getCollectionOne(params)
+  throw new Success({ data })
+}
+
+// 获取本用户的收藏列表
 export const doCollectionGetListSelf = async (ctx: Context) => {
   const params = {
     userId: ctx._user.id,
@@ -35,6 +45,31 @@ export const doCollectionGetList = async (ctx: Context) => {
   }
   const data = await getCollectionList(params)
   throw new Success(data)
+}
+
+/*
+ * 获取某个收藏
+ */
+
+export const getCollectionOne = async (params: CollectionOneParams): Promise<CollectionOptions | null> => {
+  // 先获取类型
+  const sql1 = 'SELECT t1.type FROM collections t1 WHERE t1.id = ?'
+  const data = [params.id]
+  const res1: any = await query(sql1, data)
+  if (res1 && res1.length) {
+    const type = res1[0].type
+    const typeParams = _getCollectionType(type)
+    // 处理创建者信息字段
+    const userInfoField =
+      params.showUserInfo === '1' ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, ' : ''
+    const sql2 = `SELECT t1.id, t1.target_id, t1.create_user, ${userInfoField} t1.type, t2.label AS type_label, ${typeParams.typeSql} t1.create_time, t1.terminal FROM collections t1 LEFT JOIN tags t2 ON t1.type = t2.code LEFT JOIN users t3 on t1.create_user = t3.id WHERE t1.id = ?`
+    const res2: any = await query(sql2, data)
+    if (res2 && res2.length) {
+      await _handleCollectionData(res2, params.showUserInfo)
+      return res2[0]
+    }
+  }
+  return null
 }
 
 /**

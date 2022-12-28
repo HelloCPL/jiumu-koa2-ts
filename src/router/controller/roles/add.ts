@@ -18,8 +18,9 @@ export const doRoleAdd = async (ctx: Context) => {
   const currentTime = formatDate(new Date())
   const sql: string =
     'INSERT roles (id, code, label, sort, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+  const id = getUuId()
   const data = [
-    getUuId(),
+    id,
     ctx._params.code,
     ctx._params.label,
     sort,
@@ -29,5 +30,5 @@ export const doRoleAdd = async (ctx: Context) => {
     ctx._params.remarks
   ]
   await query(sql, data)
-  throw new Success()
+  throw new Success({ data: id })
 }

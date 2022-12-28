@@ -17,8 +17,9 @@ import { CommentFindResult } from './interface'
 export const doCommentFirstAdd = async (ctx: Context) => {
   const sql: string =
     'INSERT comments_first (id, target_id, content, create_user, type, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  const id = getUuId()
   const data = [
-    getUuId(),
+    id,
     ctx._params.targetId,
     ctx._params.content,
     ctx._user.id,
@@ -27,7 +28,7 @@ export const doCommentFirstAdd = async (ctx: Context) => {
     Terminal[ctx._terminal]
   ]
   await query(sql, data)
-  throw new Success()
+  throw new Success({ data: id })
 }
 
 /**
@@ -37,8 +38,9 @@ export const doCommentSecondAdd = async (ctx: Context) => {
   const commentInfo = <CommentFindResult>await _findCommentById(ctx._params.targetId)
   const sql: string =
     'INSERT comments_second (id, reply_comment_id, reply_content, create_user, create_time, terminal, comment_first_target_id, comment_first_id, reply_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const id = getUuId()
   const data = [
-    getUuId(),
+    id,
     ctx._params.targetId,
     ctx._params.content,
     ctx._user.id,
@@ -49,7 +51,7 @@ export const doCommentSecondAdd = async (ctx: Context) => {
     commentInfo.reply_user
   ]
   await query(sql, data)
-  throw new Success()
+  throw new Success({ data: id })
 }
 
 // 根据评论id寻找评论信息
