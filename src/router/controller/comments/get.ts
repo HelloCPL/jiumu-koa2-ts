@@ -120,6 +120,8 @@ async function _handleCommentList(data: CommentOptions[], params: CommentListPar
     // 处理回复者
     if (params.flag === 1 || (params.flag === 2 && item.create_user === item.reply_user)) {
       item.reply_user = null
+      item.reply_user_name = null
+      item.reply_user_avatar = null
     }
     // 处理子级数量
     if (params.flag === 2) item.comment_count = 0
