@@ -208,7 +208,7 @@
 
 - 返回数组或[]
 - 排序规则
-  一级评论列表 `是否置顶、likeCount点赞总数降序、commentCount评论总数降序、createTime评论时间升序`
+  一级评论列表 `是否置顶、commentCount评论总数降序、likeCount点赞总数降序、createTime评论时间升序`
   二级评论 `是否置顶、createTime评论时间升序`
 
 | 参数名 | 类型 | 说明 |
