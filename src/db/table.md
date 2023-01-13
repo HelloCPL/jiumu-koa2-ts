@@ -59,7 +59,7 @@
 | content | text | 是 | 评论内容 |
 | create_user | v64 | 是 | 创建人id |
 | type | v64 | 是 | 评论来源类型，使用系统标签资源来源标签500范围，用于后面评论统计 |
-| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| is_top | v4 | 否 | 是否置顶，'1' 是 '0' 否，默认 '0' |
 | create_time | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |
 
@@ -77,7 +77,7 @@
 | reply_content | text | 是 | 回复的评论内容 |
 | create_user | v64 | 是 | 创建人id，即回复评论人 |
 | reply_user | v64 | 是 | 被回复的目标人id |
-| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| is_top | v4 | 否 | 是否置顶，'1' 是 '0' 否，默认 '0' |
 | create_time | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |
 
@@ -204,7 +204,7 @@
 | terminal | v64 | 是 | 操作终端 |
 
 
-#### 13 users-roles 用户-角色关联信息表
+#### 13 users_roles 用户-角色关联信息表
 
 - 说明
 
@@ -217,7 +217,7 @@
 | terminal | v64 | 是 | 操作终端 |
 
 
-#### 14 users-tags 用户-特殊标签关联信息表
+#### 14 users_tags 用户-特殊标签关联信息表
 
 - 说明
 
@@ -230,7 +230,7 @@
 | terminal | v64 | 是 | 操作终端 |
 
 
-#### 15 roles-menus 角色-菜单关联信息表
+#### 15 roles_menus 角色-菜单关联信息表
 
 - 说明
 
@@ -243,7 +243,7 @@
 | terminal | v64 | 是 | 操作终端 |
 
 
-#### 16 roles-permissions 角色-权限关联信息表
+#### 16 roles_permissions 角色-权限关联信息表
 
 - 说明
 
@@ -270,9 +270,9 @@
 | attachment | v255 | 否 | 附件，文件id，多个逗号隔开，最多3个 |
 | type | v64 | 是 | 文章类型，取系统标签300范围 |
 | classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
-| is_draft | v4 | 是 | 是否草稿，1 是 0 否，默认0 |
-| is_secret | v4 | 否 | 是否为私密文章，1 是 0 否，默认0 |
-| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| is_draft | v4 | 是 | 是否草稿，'1' 是 '0' 否，默认 '0' |
+| is_secret | v4 | 否 | 是否为私密文章，'1' 是 '0' 否，默认 '0' |
+| is_top | v4 | 否 | 是否置顶，'1' 是 '0' 否，默认 '0' |
 | sort | mediumint | 否 | 排序，越小越前 |
 | create_user | v64 | 是 | 创建用户 |
 | create_time | v64 | 是 | 创建时间 |
@@ -292,8 +292,8 @@
 | attachment | v255 | 是 | 资源文件id，多个逗号隔开，最多3个 |
 | type | v64 | 是 | 资源类型，取系统标签700 |
 | classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
-| is_secret | v4 | 否 | 是否为私密问答，1 是 0 否，默认0 |
-| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| is_secret | v4 | 否 | 是否为私密问答，'1' 是 '0' 否，默认 '0' |
+| is_top | v4 | 否 | 是否置顶，'1' 是 '0' 否，默认 '0' |
 | sort | mediumint | 否 | 排序，越小越前 |
 | create_user | v64 | 是 | 创建用户 |
 | create_time | v64 | 是 | 创建时间 |
@@ -312,10 +312,10 @@
 | title | 255 | 是 | 标题 |
 | content | text | 是 | 内容 |
 | classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
-| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
+| is_top | v4 | 否 | 是否置顶，'1' 是 '0' 否，默认 '0' |
 | sort | mediumint | 否 | 排序，越小越前 |
-| is_draft | v4 | 是 | 是否草稿，1 是 0 否，默认0 |
-| is_secret | v4 | 否 | 是否为私密问答，1 是 0 否，默认0 |
+| is_draft | v4 | 是 | 是否草稿，'1' 是 '0' 否，默认 '0' |
+| is_secret | v4 | 否 | 是否为私密问答，'1' 是 '0' 否，默认 '0' |
 | create_user | v64 | 是 | 创建用户 |
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |
@@ -336,9 +336,9 @@
 | sort | mediumint | 否 | 排序，越小越前 |
 | type | v64 | 否 | 连载类型，取系统标签600 |
 | author | v64 | 是 | 笔名 |
-| is_top | v4 | 否 | 是否置顶，1 是 0 否，默认0 |
-| is_secret | v4 | 否 | 是否为私密，1 是 0 否，默认0 |
-| is_draft | v4 | 否 | 是否为草稿，1 是 0 否，默认0 |
+| is_top | v4 | 否 | 是否置顶，'1' 是 '0' 否，默认 '0' |
+| is_secret | v4 | 否 | 是否为私密，'1' 是 '0' 否，默认 '0' |
+| is_draft | v4 | 否 | 是否为草稿，'1' 是 '0' 否，默认 '0' |
 | create_user | v64 | 是 | 创建用户 |
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |
@@ -357,8 +357,8 @@
 | title | v64 | 是 | 标题 |
 | content | text | 是 | 内容 |
 | sort | mediumint | 是 | 章节序号，越小越前 |
-| is_secret | v4 | 否 | 是否为私密，1 是 0 否，默认0 |
-| is_draft | v4 | 否 | 是否为草稿，1 是 0 否，默认0 |
+| is_secret | v4 | 否 | 是否为私密，'1' 是 '0' 否，默认 '0' |
+| is_draft | v4 | 否 | 是否为草稿，'1' 是 '0' 否，默认 '0' |
 | create_user | v64 | 是 | 创建用户 |
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |
@@ -378,7 +378,7 @@
 | content | text | 是 | 内容 |
 | classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
 | sort | mediumint | 是 | 章节序号，越小越前 |
-| is_secret | v4 | 否 | 是否为私密，1 是 0 否，默认1 |
+| is_secret | v4 | 否 | 是否为私密，'1' 是 '0' 否，默认 '1' |
 | create_user | v64 | 是 | 创建用户 |
 | create_time | v64 | 是 | 创建时间 |
 | update_time | v64 | 是 | 更新时间 |

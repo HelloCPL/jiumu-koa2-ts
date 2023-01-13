@@ -109,8 +109,6 @@ export const doCommentSecondGetList = async (ctx: Context) => {
 async function _handleCommentList(data: CommentOptions[], params: CommentListParams) {
   for (let i = 0, len = data.length; i < len; i++) {
     const item = data[i]
-    console.log(999, item.id, item.comment_count)
-
     // 处理是否点赞
     if (item.is_like) item.is_like = '1'
     else item.is_like = '0'

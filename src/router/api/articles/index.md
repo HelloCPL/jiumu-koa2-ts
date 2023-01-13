@@ -19,11 +19,11 @@
 | content | string | 是 | 内容 |
 | contentType | string | 是 | 内容类型，取系统标签400范围 |
 | type | string | 是 | 文章类型，取系统标签300范围 |
-| isDraft | string | 是 | 是否草稿，1 是 0 否，默认0 |
+| isDraft | string | 是 | 是否草稿，'1' 是 '0' 否，默认 '0' |
 | coverImg | string | 否 | 封面图，图片id，只传一个 |
 | attachment | string | 否 | 附件，文件id，多个逗号隔开，最多3个 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用articleClassify |
-| isSecret | string | 否 | 是否为私密文章，1 是 0 否，默认0 |
+| isSecret | string | 否 | 是否为私密文章，'1' 是 '0' 否，默认 '0' |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 
@@ -59,11 +59,11 @@
 | content | string | 否 | 内容 |
 | contentType | string | 否 | 内容类型，取系统标签400范围 |
 | type | string | 否 | 文章类型，取系统标签300范围 |
-| isDraft | string | 否 | 是否草稿，1 是 0 否，默认0 |
+| isDraft | string | 否 | 是否草稿，'1' 是 '0' 否，默认 '0' |
 | coverImg | string | 否 | 封面图，图片id，只传一个 |
 | attachment | string | 否 | 附件，文件id，多个逗号隔开，最多3个 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用articleClassify |
-| isSecret | string | 否 | 是否为私密文章，1 是 0 否，默认0 |
+| isSecret | string | 否 | 是否为私密文章，'1' 是 '0' 否，默认 '0' |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 
@@ -143,9 +143,9 @@
 | type | string | 文章类型标签code |
 | typeLabel | string | 文章类型标签说明 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，1 是 0 否 |
-| isSecret | string | 是否为私密文章，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isDraft | string | 是否草稿，'1' 是 '0' 否 |
+| isSecret | string | 是否为私密文章，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
@@ -154,11 +154,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | collectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的博客文章，1 是 0 否 |
+| isSelf | string | 是否本人的博客文章，'1' 是 '0' 否 |
 | commentCount | number | 评论总数 |
 
 #### 返回示例
@@ -275,8 +275,8 @@
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | type | string | 否 | 文章类型，取系统标签300范围 |
 | classify | string | 否 | 自定义文章类型，分类类型建议用 articleClassify 单选 |
-| isDraft | string | 否 | 是否草稿，1 是 0 否 |
-| isSecret | string | 否 | 是否为私密文章，1 是 0 否 |
+| isDraft | string | 否 | 是否草稿，'1' 是 '0' 否 |
+| isSecret | string | 否 | 是否为私密文章，'1' 是 '0' 否 |
 | showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
@@ -296,9 +296,9 @@
 | type | string | 文章类型标签code |
 | typeLabel | string | 文章类型标签说明 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，1 是 0 否 |
-| isSecret | string | 是否为私密文章，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isDraft | string | 是否草稿，'1' 是 '0' 否 |
+| isSecret | string | 是否为私密文章，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
@@ -307,11 +307,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | likeCount | number | 收藏总数 |
-| isSelf | string | 是否本人的博客文章，1 是 0 否 |
+| isSelf | string | 是否本人的博客文章，'1' 是 '0' 否 |
 | commentCount | number | 评论总数 |
 
 #### 返回示例
@@ -416,9 +416,9 @@
 | type | string | 文章类型标签code |
 | typeLabel | string | 文章类型标签说明 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，1 是 0 否 |
-| isSecret | string | 是否为私密文章，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isDraft | string | 是否草稿，'1' 是 '0' 否 |
+| isSecret | string | 是否为私密文章，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
@@ -427,11 +427,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | likeCount | number | 收藏总数 |
-| isSelf | string | 是否本人的博客文章，1 是 0 否 |
+| isSelf | string | 是否本人的博客文章，'1' 是 '0' 否 |
 | commentCount | number | 评论总数 |
 
 #### 返回示例
@@ -536,9 +536,9 @@
 | type | string | 文章类型标签code |
 | typeLabel | string | 文章类型标签说明 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，1 是 0 否 |
-| isSecret | string | 是否为私密文章，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isDraft | string | 是否草稿，'1' 是 '0' 否 |
+| isSecret | string | 是否为私密文章，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
@@ -547,11 +547,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | collectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的博客文章，1 是 0 否 |
+| isSelf | string | 是否本人的博客文章，'1' 是 '0' 否 |
 | commentCount | number | 评论总数 |
 
 #### 返回示例
