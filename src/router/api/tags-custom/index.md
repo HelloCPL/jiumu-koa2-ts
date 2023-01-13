@@ -468,7 +468,7 @@
 | label | string | 用户自定义标签描述 |
 | type | string | 用户自定义类型 |
 | sort | number | 排序，值越小越前 |
-| isSelf | string | 是否我的标签 1 是 0 否 |
+| isSelf | string | 是否我的标签 '1' 是 '0' 否 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | createUser | string | 创建用户id |

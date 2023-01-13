@@ -33,6 +33,7 @@ export interface NovelChapterListParams {
   userId: string
   isSecret?: string
   isDraft?: string
+  isConcise?: string
   showUserInfo?: any
 }
 
@@ -46,4 +47,10 @@ export interface NovelChapterOneParams {
   id: string
   userId: string
   showUserInfo?: any
+}
+
+export interface handleNovalChapterParams {
+  userId: string
+  showUserInfo?: any
+  isConcise?: string
 }

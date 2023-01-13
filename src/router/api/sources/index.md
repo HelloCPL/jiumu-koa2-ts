@@ -19,7 +19,7 @@
 | attachment | string | 是 | 资源地址；其中701时为内部资源文件id，多个逗号隔开，最多3个 |
 | type | string | 是 | 资源类型，取系统标签700 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用sourceClassify |
-| isSecret | string | 否 | 是否为私密资源，1 是 0 否，默认0 |
+| isSecret | string | 否 | 是否为私密资源，'1' 是 '0' 否，默认 '0' |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 
@@ -56,7 +56,7 @@
 | type | string | 否 | 资源类型，取系统标签700 |
 | attachment | string | 否 | 资源文件id，多个逗号隔开，最多3个 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用sourceClassify |
-| isSecret | string | 否 | 是否为私密资源，1 是 0 否 |
+| isSecret | string | 否 | 是否为私密资源，'1' 是 '0' 否 |
 | sort | mediumint | 否 | 排序，值越小越前 |
 | remarks | string | 否 | 备注 |
 
@@ -129,8 +129,8 @@
 | title | string | 标题 |
 | attachment | array/[] | 资源文件 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isSecret | string | 是否为私密资源，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isSecret | string | 是否为私密资源，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | type | string | 资源类型标签code |
 | typeLabel | string | 资源类型标签说明 |
@@ -141,11 +141,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | CollectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的资源，1 是 0 否 |
+| isSelf | string | 是否本人的资源，'1' 是 '0' 否 |
 | commentCount | number | 收藏总数 |
 
 #### 返回示例
@@ -241,7 +241,7 @@
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | type | string | 否 | 资源类型，取系统标签700范围 |
 | classify | string | 否 | 自定义文章类型，分类类型建议用sourceClassify，单选 |
-| isSecret | string | 否 | 是否为私密资源，1 是 0 否 |
+| isSecret | string | 否 | 是否为私密资源，'1' 是 '0' 否 |
 | showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
@@ -258,8 +258,8 @@
 | title | string | 标题 |
 | attachment | array/[] | 资源文件 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isSecret | string | 是否为私密资源，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isSecret | string | 是否为私密资源，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | type | string | 资源类型标签code |
 | typeLabel | string | 资源类型标签说明 |
@@ -270,11 +270,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | CollectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的资源，1 是 0 否 |
+| isSelf | string | 是否本人的资源，'1' 是 '0' 否 |
 | commentCount | number | 收藏总数 |
 
 #### 返回示例
@@ -378,8 +378,8 @@
 | title | string | 标题 |
 | attachment | array/[] | 资源文件 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isSecret | string | 是否为私密资源，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isSecret | string | 是否为私密资源，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | type | string | 资源类型标签code |
 | typeLabel | string | 资源类型标签说明 |
@@ -390,11 +390,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | CollectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的资源，1 是 0 否 |
+| isSelf | string | 是否本人的资源，'1' 是 '0' 否 |
 | commentCount | number | 收藏总数 |
 
 #### 返回示例
@@ -498,8 +498,8 @@
 | title | string | 标题 |
 | attachment | array/[] | 资源文件 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isSecret | string | 是否为私密资源，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isSecret | string | 是否为私密资源，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | type | string | 资源类型标签code |
 | typeLabel | string | 资源类型标签说明 |
@@ -510,11 +510,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | CollectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的资源，1 是 0 否 |
+| isSelf | string | 是否本人的资源，'1' 是 '0' 否 |
 | commentCount | number | 收藏总数 |
 
 ```

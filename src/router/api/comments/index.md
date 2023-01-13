@@ -123,15 +123,15 @@
 | createUserAvatar | object/null | 评论者头像 |
 | createTime | string | 创建时间 |
 | terminal | string | 操作终端 |
-| isTop | string | 是否置顶，1 是 0 否 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
 | commentCount | number | 收藏总数 |
 | replyUser | string | 回复的人id |
 | replyUserName | string | 回复的人姓名 |
 | createUserAvatar | object/null | 回复者头像 |
-| isSelf | string | 是否本人的评论，1 是 0 否 |
-| isTargetUser | string | 是否为评论目标的作者，1 是 0 否 |
+| isSelf | string | 是否本人的评论，'1' 是 '0' 否 |
+| isTargetUser | string | 是否为评论目标的作者，'1' 是 '0' 否 |
 | flag | number | 评论级别 1 一级评论 2 二级评论|
 | children | array/[] | 子级，需另外获取 |
 
@@ -224,15 +224,15 @@
 | createUserAvatar | object/null | 评论者头像 |
 | createTime | string | 创建时间 |
 | terminal | string | 操作终端 |
-| isTop | string | 是否置顶，1 是 0 否 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
 | commentCount | number | 收藏总数 |
 | replyUser | string | 回复的人id |
 | replyUserName | string | 回复的人姓名 |
 | createUserAvatar | object/null | 回复者头像 |
-| isSelf | string | 是否本人的评论，1 是 0 否 |
-| isTargetUser | string | 是否为评论目标的作者，1 是 0 否 |
+| isSelf | string | 是否本人的评论，'1' 是 '0' 否 |
+| isTargetUser | string | 是否为评论目标的作者，'1' 是 '0' 否 |
 | flag | number | 评论级别 1 一级评论 2 二级评论|
 | children | array/[] | 子级，需另外获取 |
 

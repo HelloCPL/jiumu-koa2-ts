@@ -22,7 +22,7 @@
 | title | string | 否 | 笔记内容 |
 | classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个，若为连载/连载章节分类类型建议用novelClassify，其他看情况而定 |
 | sort | number | 否 | 序号，从小到大，默认1 |
-| isSecret | string | 否 | 是否为私密笔记，1 是 0 否，默认1 |
+| isSecret | string | 否 | 是否为私密笔记，'1' 是 '0' 否，默认 '1' |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例
@@ -59,7 +59,7 @@
 | title | string | 否 | 笔记内容 |
 | classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个，若为连载/连载章节分类类型建议用novelClassify，其他看情况而定 |
 | sort | number | 否 | 序号，从小到大，默认1 |
-| isSecret | string | 否 | 是否为私密笔记，1 是 0 否，默认1 |
+| isSecret | string | 否 | 是否为私密笔记，'1' 是 '0' 否，默认 '1' |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例
@@ -135,7 +135,7 @@
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
 | sort | number | 排序 |
-| isSecret | string | 是否为私密笔记，1 是 0 否 |
+| isSecret | string | 是否为私密笔记，'1' 是 '0' 否 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
 | createUserAvatar | object/null | 创建者头像 |
@@ -143,7 +143,7 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isSelf | string | 是否本人的笔记，1 是 0 否 |
+| isSelf | string | 是否本人的笔记，'1' 是 '0' 否 |
 
 #### 返回示例
 
@@ -229,7 +229,7 @@
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
-| isSecret | string | 否 | 是否为私密小说，1 是 0 否 |
+| isSecret | string | 否 | 是否为私密小说，'1' 是 '0' 否 |
 | classify | string | 否 | 自定义文章类型，单选，若为连载/连载章节分类类型建议用novelClassify，其他看情况而定 |
 | showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
@@ -249,14 +249,14 @@
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
 | sort | number | 排序 |
-| isSecret | string | 是否为私密笔记，1 是 0 否 |
+| isSecret | string | 是否为私密笔记，'1' 是 '0' 否 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isSelf | string | 是否本人的笔记，1 是 0 否 |
+| isSelf | string | 是否本人的笔记，'1' 是 '0' 否 |
 
 #### 返回示例
 

@@ -19,8 +19,8 @@
 | title | string | 是 | 章节标题 |
 | content | string | 是 | 章节内容 |
 | sort | mediumint | 是 | 章节排序，不可重复，从小到大 |
-| isDraft | string | 是 | 是否为草稿，1 是 0 否 |
-| isSecret | string | 否 | 是否为私密，1 是 0 否，默认0 |
+| isDraft | string | 是 | 是否为草稿，'1' 是 '0' 否 |
+| isSecret | string | 否 | 是否为私密，'1' 是 '0' 否，默认 '0' |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例
@@ -55,8 +55,8 @@
 | title | string | 否 | 章节标题 |
 | content | string | 否 | 章节内容 |
 | sort | mediumint | 否 | 章节排序，不可重复，从小到大 |
-| isDraft | string | 否 | 是否为草稿，1 是 0 否 |
-| isSecret | string | 否 | 是否为私密，1 是 0 否，默认0 |
+| isDraft | string | 否 | 是否为草稿，'1' 是 '0' 否 |
+| isSecret | string | 否 | 是否为私密，'1' 是 '0' 否，默认 '0' |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例
@@ -132,8 +132,8 @@
 | title | string | 标题 |
 | content | string | 内容 |
 | sort | string | 章节排序 |
-| isSecret | string | 是否为私密，1 是 0 否 |
-| isDraft | string | 是否草稿，1 是 0 否 |
+| isSecret | string | 是否为私密，'1' 是 '0' 否 |
+| isDraft | string | 是否草稿，'1' 是 '0' 否 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
 | createUserAvatar | object/null | 创建者头像 |
@@ -141,11 +141,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | collectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的章节，1 是 0 否 |
+| isSelf | string | 是否本人的章节，'1' 是 '0' 否 |
 | commentCount | number | 评论总数 |
 
 #### 返回示例
@@ -216,8 +216,9 @@ shai
 | novelId | string | 是 | 连载id |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
-| isDraft | string | 否 | 是否草稿，1 是 0 否 |
-| isSecret | string | 否 | 是否为私密连载，1 是 0 否 |
+| isDraft | string | 否 | 是否草稿，'1' 是 '0' 否 |
+| isSecret | string | 否 | 是否为私密连载，'1' 是 '0' 否 |
+| isConcise | string | 否 | 是否为简洁模式，'1' 是 '0' 否 默认 '0' |
 | showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
 #### 返回字段说明
@@ -225,6 +226,24 @@ shai
 - 返回数组或[]
 - 排序规则
    `sort升序`
+
+- 简洁模式下 `showUserInfo` 参数无效，返回字段如下
+
+| 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|
+| id | string | 连载章节id |
+| title | string | 标题 |
+| sort | string | 章节排序 |
+| isSecret | string | 是否为私密，'1' 是 '0' 否 |
+| isDraft | string | 是否草稿，'1' 是 '0' 否 |
+| createUser | string | 创建者id |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
+| isSelf | string | 是否本人的章节，'1' 是 '0' 否 |
+
+- 普通模式返回字段如下
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
@@ -234,8 +253,8 @@ shai
 | novelAuthor | string | 连载作者名称 |
 | title | string | 标题 |
 | sort | string | 章节排序 |
-| isSecret | string | 是否为私密，1 是 0 否 |
-| isDraft | string | 是否草稿，1 是 0 否 |
+| isSecret | string | 是否为私密，'1' 是 '0' 否 |
+| isDraft | string | 是否草稿，'1' 是 '0' 否 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
 | createUserAvatar | object/null | 创建者头像 |
@@ -243,11 +262,11 @@ shai
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | collectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的章节，1 是 0 否 |
+| isSelf | string | 是否本人的章节，'1' 是 '0' 否 |
 | commentCount | number | 评论总数 |
 
 #### 返回示例
