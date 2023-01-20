@@ -175,7 +175,7 @@ async function _handleNovel(datas: NovelOptions | NovelOptions[], userId: string
     delete data.comment_count1
     delete data.comment_count2
     // 处理该小说下所有的章节评论总数
-    data.chaptercomment_count = data.chapter_comment_count1 + data.chapter_comment_count2
+    data.chapter_comment_count = data.chapter_comment_count1 + data.chapter_comment_count2
     delete data.chapter_comment_count1
     delete data.chapter_comment_count2
     // 处理创建者头像
