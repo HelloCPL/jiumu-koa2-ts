@@ -19,7 +19,10 @@ interface paramsOptions {
 
 /**
  * 处理 UPDATE 更新语句可更新值
- * options.valid 有效的参数名集合 可带表名、指定数据key 如 pas t1.pas pas:password
+ * options.valid 有效的参数名集合
+ *   !xxx 前缀声明不参数sql字段查询 如 !username
+ *   xxx. 前缀指定表名 users.username
+ *   key:newKey 指定新的key名 如 username:createUser
  * options.data 传参对象
  */
 export const getUpdateSetData = (options: paramsOptions): SQLParamsOptions => {
@@ -27,9 +30,8 @@ export const getUpdateSetData = (options: paramsOptions): SQLParamsOptions => {
   const data: any[] = []
   options.valid.forEach((key) => {
     const keys: KeyOptions = _findKeys(key)
-    if (options.data.hasOwnProperty(keys.dataKey)) {
-      if (data.length === 0) sql += ` ${keys.sqlKey} = ? `
-      else sql += ` , ${keys.sqlKey} = ? `
+    if (options.data.hasOwnProperty(keys.dataKey) && !keys.isSqlKey) {
+      sql = sql ? sql + ` , ${keys.sqlKey} = ? ` : ` ${keys.sqlKey} = ? `
       const value = options.data[keys.dataKey]
       data.push(value)
     }
@@ -39,10 +41,13 @@ export const getUpdateSetData = (options: paramsOptions): SQLParamsOptions => {
 
 /**
  * 处理 SELECT 查询列表时 WHERE 条件语句有效值
- * options.valid 有效的参数名集合 可带表名、指定数据key，如 pas t1.pas pas:password
+ * options.valid
+ *   !xxx 前缀声明不参数sql字段查询 如 !username
+ *   xxx. 前缀指定表名 users.username
+ *   key:newKey 指定新的key名 如 username:createUser
  * options.data 传参对象
  * options.connector 参数间的连接符 默认 AND
- * options.prefix sql为真时添加的前缀
+ * options.prefix sql为真时添加的前缀连接符
  */
 export const getSelectWhereData = (options: paramsOptions): SQLParamsOptions => {
   let sql: string = ''
@@ -53,10 +58,12 @@ export const getSelectWhereData = (options: paramsOptions): SQLParamsOptions => 
     // 传参有参数且值为真或0或false
     const flag =
       options.data.hasOwnProperty(keys.dataKey) &&
-      (options.data[keys.dataKey] || options.data[keys.dataKey] === 0 || options.data[keys.dataKey] === false)
+      (options.data[keys.dataKey] ||
+        options.data[keys.dataKey] === 0 ||
+        options.data[keys.dataKey] === false) &&
+      !keys.isSqlKey
     if (flag) {
-      if (data.length === 0) sql += ` ${keys.sqlKey} = ? `
-      else sql += ` ${connector} ${keys.sqlKey} = ? `
+      sql = sql ? sql + ` ${connector} ${keys.sqlKey} = ? ` : ` ${keys.sqlKey} = ? `
       data.push(options.data[keys.dataKey])
     }
   })
@@ -66,7 +73,11 @@ export const getSelectWhereData = (options: paramsOptions): SQLParamsOptions => 
 
 /**
  * 处理 SELECT 查询列表时 WHERE 条件为 keyword 语句有效值
- * options.valid 需要模糊查询的字段 可带表名、指定数据key，其中key以()括住的可以进行全等比较，如 username t1.username username:createUserName (username)
+ * options.valid
+ *   !xxx 前缀声明不参数sql字段查询 如 !username
+ *   xxx. 前缀指定表名 users.username
+ *   (key) 全选匹配 如 (username)
+ *   key:newKey 指定新的key名 如 username:createUser
  * options.data 传参对象
  * options.connector 参数间的连接符 默认 OR
  * options.prefix sql为真时添加的前缀
@@ -75,24 +86,25 @@ export const getSelectWhereAsKeywordData = (options: paramsOptions): SQLParamsOp
   let sql: string = ''
   const data: any[] = []
   const { connector = 'OR', prefix } = options
-  let keyword: any = options.data.keyword
-  if (typeof keyword === 'string') keyword = keyword.replace(/\s/g, '')
-  // keyword为真或0或false
-  const flag = keyword || keyword === 0 || keyword === false
-  if (flag) {
+  let keywords: any[] =
+    typeof options.data.keyword === 'string' ? options.data.keyword.replace(/\s/g, ',').split(',') : []
+  // 去重
+  keywords = handleKeywords(keywords)
+  keywords.forEach((keyword) => {
     options.valid.forEach((key) => {
       const keys: KeyOptions = _findKeys(key)
-      let compair = 'LIKE'
-      let word = `%${keyword}%`
-      if (keys.isEqual) {
-        compair = '='
-        word = keyword
+      if (!keys.isSqlKey) {
+        let compair = 'LIKE'
+        let word = `%${keyword}%`
+        if (keys.isEqual) {
+          compair = '='
+          word = keyword
+        }
+        sql = sql ? sql + ` ${connector} ${keys.sqlKey} ${compair} ? ` : ` ${keys.sqlKey} ${compair} ? `
+        data.push(word)
       }
-      if (data.length === 0) sql += ` ${keys.sqlKey} ${compair} ? `
-      else sql += ` ${connector} ${keys.sqlKey} ${compair} ? `
-      data.push(word)
     })
-  }
+  })
   if (sql) sql = prefix ? ` ${prefix} (${sql})` : `(${sql})`
   return { sql, data }
 }
@@ -119,7 +131,11 @@ interface OrderReturnOptions {
  */
 /**
  * 模糊搜索时返回搜索替换字段和排序条件
- * options.valid 需要模糊查询的字段、指定字段名称 如 username t1.username t1.username:createUserName
+ * options.valid
+ *   !xxx 前缀声明不参数sql字段查询 如 !username
+ *   xxx. 前缀指定表名 users.username
+ *   (key) 全选匹配 如 (username)
+ *   key:newKey 指定新的key名 如 username:createUser
  * options.data 传参对象
  * options.prefix orderSql为真时添加的前缀
  * options.suffix orderSql为真时添加的后缀 默认 ','
@@ -128,26 +144,31 @@ interface OrderReturnOptions {
 export const getOrderByKeyword = (options: OrderParamsOptions): OrderReturnOptions => {
   let orderValid = ''
   let orderSql = ''
-  const { prefix, suffix = ',', color = '#f56c6c' } = options
-  let keyword: any = options.data.keyword
-  if (typeof keyword === 'string') keyword = keyword.replace(/\s/g, '')
-  const flag = keyword || keyword === 0
   const highlight = options.data.highlight === '1'
+  const { prefix, suffix = ',', color = '#f56c6c' } = options
+  let keywords: any[] =
+    typeof options.data.keyword === 'string' ? options.data.keyword.replace(/\s/g, ',').split(',') : []
+  // 去重
+  keywords = handleKeywords(keywords)
+
   options.valid.forEach((key) => {
-    const { sqlKey, dataKey } = _findKeys(key)
-    if (flag) {
-      let sql: string
-      if (!highlight) {
-        // 不高亮
-        orderValid += ` ${sqlKey}  AS ${dataKey}, `
-        sql = ''
-      } else {
-        orderValid += ` REPLACE(${sqlKey}, '${keyword}', "<span data-search-key='search' style='color: ${color}'>${keyword}</span>") AS ${dataKey},  `
-        sql = ` (select LENGTH(${sqlKey}) - LENGTH('${keyword}')) DESC `
-      }
-      if (orderSql) orderSql += ` , ${sql} `
-      else orderSql += sql
-    } else {
+    const { sqlKey, dataKey, isSqlKey } = _findKeys(key)
+    if (keywords.length) {
+      keywords.forEach((keyword) => {
+        let sql: string = ''
+        if (!highlight) {
+          // 不高亮
+          if (!isSqlKey) orderValid += ` ${sqlKey}  AS ${dataKey}, `
+          sql = ''
+        } else {
+          if (!isSqlKey)
+            orderValid += ` REPLACE(${sqlKey}, '${keyword}', "<span data-search-key='search' style='color: ${color}'>${keyword}</span>") AS ${dataKey},  `
+          sql = ` (select LENGTH(${sqlKey}) - LENGTH('${keyword}')) DESC `
+        }
+        if (orderSql) orderSql += ` , ${sql} `
+        else orderSql += sql
+      })
+    } else if (!isSqlKey) {
       orderValid += ` ${sqlKey} AS ${dataKey}, `
     }
   })
@@ -164,12 +185,24 @@ interface KeyOptions {
   sqlKey: string
   dataKey: string
   isEqual?: boolean // 是否全等比较，模糊查询时可用
+  isSqlKey?: boolean // 是否参数sql字段查询
 }
 /**
  * 获取 SQL 语句字段名，即下划线命名
  * 和 data 参数字段名，即小驼峰命名
+ * str
+ *   !xxx 前缀声明不参数sql字段查询 如 !username
+ *   xxx. 前缀指定表名 users.username
+ *   (key) 全选匹配 如 (username)
+ *   key:newKey 指定新的key名 如 username:createUser
  */
 function _findKeys(str: string): KeyOptions {
+  // 判断是否有 !
+  let isSqlKey = false
+  if (str.startsWith('!')) {
+    isSqlKey = true
+    str = str.substring(1)
+  }
   // 判断是否有逗号
   let t = '' // 表名前缀
   const i2 = str.indexOf('.')
@@ -194,6 +227,18 @@ function _findKeys(str: string): KeyOptions {
   return {
     dataKey,
     sqlKey: (t ? t + '.' : '') + _.snakeCase(sqlKey),
-    isEqual
+    isEqual,
+    isSqlKey
   }
+}
+
+// 关键字去重
+function handleKeywords(arr: any[]): any[] {
+  const _arr: any[] = []
+  if (!arr.length) return _arr
+  arr.forEach((val) => {
+    const flag = val || val === 0 || val === false
+    if (flag && _arr.indexOf(val) === -1) _arr.push(val)
+  })
+  return _arr
 }
