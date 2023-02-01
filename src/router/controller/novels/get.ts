@@ -57,20 +57,15 @@ export const getNovelOne = async (params: NovelOneParams): Promise<NovelOptions 
     '(SELECT COUNT(t8_1.id) FROM comments_first t8_1 WHERE t8_1.target_id IN (SELECT t8_2.id FROM novels_chapter t8_2 WHERE t8_2.novel_id = t1.id)) AS chapter_comment_count1,'
   const chapterCommentCount2 =
     '(SELECT COUNT(t9_1.id) FROM comments_second t9_1 WHERE t9_1.comment_first_target_id IN (SELECT t9_2.id FROM novels_chapter t9_2 WHERE t9_2.novel_id = t1.id)) AS chapter_comment_count2,'
+  // 处理章节数
+  const chapterCount =
+    '(SELECT COUNT(t10.id) FROM novels_chapter t10 WHERE t10.novel_id = ? AND (t10.create_user = ? OR (t10.is_draft = 0 AND t10.is_secret = 0))) AS chapter_count'
+  const chapterCountData = [params.id, params.userId]
   // 处理创建者信息字段
   const userInfoField =
     params.showUserInfo === '1' ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, ' : ''
-
-  const sql: string = `SELECT t1.id, t1.name, t1.introduce, t1.classify, t1.type, t2.label AS type_label, t1.author, t1.is_top, t1.is_secret, t1.is_draft, t1.sort, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, ${chapterLikeCount} t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, ${chapterCollectionCount} (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, ${chapterCommentCount1} (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2, ${chapterCommentCount2} (SELECT COUNT(t10.id) FROM novels_chapter t10 WHERE t10.novel_id = ? AND t10.is_draft = 0 AND (t10.is_secret = 0 OR (t10.is_secret = 1 AND t10.create_user = ?))) AS chapter_count FROM novels t1 LEFT JOIN tags t2 ON t1.type = t2.code LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?)) AND (t1.is_draft = 0 OR (t1.is_draft = 1 AND t1.create_user = ?))`
-  const data = [
-    params.id,
-    params.userId,
-    params.userId,
-    params.userId,
-    params.id,
-    params.userId,
-    params.userId
-  ]
+  const sql: string = `SELECT t1.id, t1.name, t1.introduce, t1.classify, t1.type, t2.label AS type_label, t1.author, t1.is_top, t1.is_secret, t1.is_draft, t1.sort, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, ${chapterLikeCount} t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, ${chapterCollectionCount} (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, ${chapterCommentCount1} (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2, ${chapterCommentCount2} ${chapterCount} FROM novels t1 LEFT JOIN tags t2 ON t1.type = t2.code LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?)) AND (t1.is_draft = 0 OR (t1.is_draft = 1 AND t1.create_user = ?))`
+  const data = [...chapterCountData, params.userId, params.userId, params.id, params.userId, params.userId]
   let res: any = await query(sql, data)
   res = res[0] || null
   if (res) await _handleNovel(res, params.userId, params.showUserInfo)
@@ -140,9 +135,13 @@ export const getNovelList = async (options: NovelListParams): Promise<NovelListR
     '(SELECT COUNT(t8_1.id) FROM comments_first t8_1 WHERE t8_1.target_id IN (SELECT t8_2.id FROM novels_chapter t8_2 WHERE t8_2.novel_id = t1.id)) AS chapter_comment_count1,'
   const chapterCommentCount2 =
     '(SELECT COUNT(t9_1.id) FROM comments_second t9_1 WHERE t9_1.comment_first_target_id IN (SELECT t9_2.id FROM novels_chapter t9_2 WHERE t9_2.novel_id = t1.id)) AS chapter_comment_count2,'
+  // 处理章节数
+  const chapterCount =
+    '(SELECT COUNT(t10.id) FROM novels_chapter t10 WHERE t10.novel_id = t1.id AND (t10.create_user = ? OR (t10.is_draft = 0 AND t10.is_secret = 0))) AS chapter_count'
+  const chapterCountData = [options.userId]
 
-  const sql2 = `SELECT t1.id, ${userInfoField} ${orderParams.orderValid} t1.classify, t1.type, t2.label AS type_label, t1.is_top, t1.sort, t1.is_secret, t1.is_draft, t1.create_user, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, t6.id AS is_collection, ${chapterLikeCount} (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, ${chapterCollectionCount} (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, ${chapterCommentCount1} (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2, ${chapterCommentCount2} (SELECT COUNT(t10.id) FROM novels_chapter t10 WHERE t10.novel_id = t1.id AND t10.is_draft = 0 AND (t10.is_secret = 0 OR (t10.is_secret = 1 AND t10.create_user = ?))) AS chapter_count FROM novels t1 LEFT JOIN tags t2 ON t1.type = t2.code LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
-  const data2 = [options.userId, options.userId, options.userId, ...whereData, pageNo, options.pageSize]
+  const sql2 = `SELECT t1.id, ${userInfoField} ${orderParams.orderValid} t1.classify, t1.type, t2.label AS type_label, t1.is_top, t1.sort, t1.is_secret, t1.is_draft, t1.create_user, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, t6.id AS is_collection, ${chapterLikeCount} (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, ${chapterCollectionCount} (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, ${chapterCommentCount1} (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2, ${chapterCommentCount2} ${chapterCount} FROM novels t1 LEFT JOIN tags t2 ON t1.type = t2.code LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
+  const data2 = [...chapterCountData, options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 }
