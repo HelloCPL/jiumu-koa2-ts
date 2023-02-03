@@ -16,6 +16,7 @@ import {
 } from './interface'
 import _ from 'lodash'
 import { getFileById } from '../files-info/get'
+import { getWordNumber } from '@/utils/tools'
 
 // 获取指定的某个小说章节
 export const doNovelChapterGetOne = async (ctx: Context) => {
@@ -62,7 +63,8 @@ export const getNovelChapterGetOne = async (
   if (res)
     await _handleNovelChapter(res, {
       userId: params.userId,
-      showUserInfo: params.showUserInfo
+      showUserInfo: params.showUserInfo,
+      showContent: true
     })
   return res
 }
@@ -109,7 +111,7 @@ export const getNovelChapterGetList = async (
       options.showUserInfo === '1'
         ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, '
         : ''
-    sql2 = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t2.author AS novel_author, t1.title, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) ${whereSQL} ORDER BY t1.sort LIMIT ?, ?`
+    sql2 = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t2.author AS novel_author, t1.title, t1.content, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) ${whereSQL} ORDER BY t1.sort LIMIT ?, ?`
     data2 = [options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   }
   const res: any = await execTrans([
@@ -154,7 +156,10 @@ async function _handleNovelChapter(
       if (params.showUserInfo === '1' && data.create_user_avatar) {
         data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
       }
+      // 处理字数
+      data.word_count = getWordNumber(data.content)
     }
+    if (!params.showContent) delete data.content
   }
   if (_.isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {
