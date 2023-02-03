@@ -12,6 +12,7 @@ import { getTagCustomByIds } from '../tags-custom/get'
 import { getOrderByKeyword, getSelectWhereAsKeywordData, getSelectWhereData } from '@/utils/handle-sql'
 import _ from 'lodash'
 import { getFileById } from '../files-info/get'
+import { getWordNumber } from '@/utils/tools'
 
 // 获取指定的某个小说
 export const doNovelGetOne = async (ctx: Context) => {
@@ -66,10 +67,27 @@ export const getNovelOne = async (params: NovelOneParams): Promise<NovelOptions 
     params.showUserInfo === '1' ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, ' : ''
   const sql: string = `SELECT t1.id, t1.name, t1.introduce, t1.classify, t1.type, t2.label AS type_label, t1.author, t1.is_top, t1.is_secret, t1.is_draft, t1.sort, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, ${chapterLikeCount} t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, ${chapterCollectionCount} (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, ${chapterCommentCount1} (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2, ${chapterCommentCount2} ${chapterCount} FROM novels t1 LEFT JOIN tags t2 ON t1.type = t2.code LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?)) AND (t1.is_draft = 0 OR (t1.is_draft = 1 AND t1.create_user = ?))`
   const data = [...chapterCountData, params.userId, params.userId, params.id, params.userId, params.userId]
-  let res: any = await query(sql, data)
-  res = res[0] || null
-  if (res) await _handleNovel(res, params.userId, params.showUserInfo)
-  return res
+  const sql2 = 'SELECT update_time, content FROM novels_chapter WHERE novel_id = ?'
+  const data2 = [params.id]
+  const res: any = await execTrans([
+    { sql, data },
+    { sql: sql2, data: data2 }
+  ])
+  const novelInfo = res[0][0] || null
+  if (novelInfo) {
+    await _handleNovel(novelInfo, params.userId, params.showUserInfo)
+    // 处理更新时间和总字数
+    const chapterList = res[1] || []
+    let updateTime = novelInfo.update_time
+    let wordCount = 0
+    chapterList.forEach((item: any) => {
+      if (item.update_time > updateTime) updateTime = item.update_time
+      wordCount += getWordNumber(item.content)
+    })
+    novelInfo.update_time = updateTime
+    novelInfo.word_count = wordCount
+  }
+  return novelInfo
 }
 
 /**

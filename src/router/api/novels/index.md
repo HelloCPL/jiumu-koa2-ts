@@ -143,7 +143,7 @@
 | createUserName | string | 创建者名字 |
 | createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
+| updateTime | string | 更新时间，查询详情时为所有章节的最新更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
 | isLike | string | 是否点赞，'1' 是 '0' 否 |
@@ -156,6 +156,7 @@
 | commentCount | number | 评论总数 |
 | chapterCommentCount | number | 该连载下所有章节的评论总数 |
 | chapterCount | number | 章节总数 非草稿、非私密、或私密且为本人的章节 |
+| wordCount | number | 所有章节总字数，仅查询详情有该字段 |
 
 #### 返回示例
 

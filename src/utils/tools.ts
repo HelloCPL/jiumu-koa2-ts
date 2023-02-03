@@ -171,7 +171,7 @@ export function formatDate(date: any, format = 'YYYY-MM-DD HH:mm:ss'): string {
   }
 }
 
-// 获取 key
+// 获取 key 常用于缓存key名
 export const getKey = (key: string): string => {
   return `jiumu_koa2_ts_${ENV}_${key}`
 }
@@ -238,4 +238,19 @@ export const getTree = (option: TreeOption): any[] => {
   }
   findTree(trees)
   return trees
+}
+
+// 获取文本字数
+// 汉字 单词 符号
+export const getWordNumber = (str?: string): number => {
+  if (!str) return 0
+  try {
+    str = str
+      .replace(/<\/?[^>]*>|(\n|\t|\r)|(\s)/g, '')
+      .replace(/[\x00-\xff]/g, 'm')
+      .replace(/m+/g, '*')
+    return str.length
+  } catch (e) {
+    return 0
+  }
 }
