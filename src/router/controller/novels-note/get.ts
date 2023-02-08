@@ -78,7 +78,7 @@ export const doNovelNoteGetOne = async (params: NovelNoteOneParams): Promise<Nov
   // 处理创建者信息字段
   const userInfoField =
     params.showUserInfo === '1' ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, ' : ''
-  const sql: string = `SELECT t1.id, t1.target, t1.title, t1.content, t1.classify, t1.sort, t1.is_secret, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note t1 LEFT JOIN users t3 ON t1.create_user = t3.id  WHERE t1.id = ? AND (t1.is_secret = 0 OR t1.create_user = ?)`
+  const sql: string = `SELECT t1.id, t1.title, t1.content, t1.classify, t1.sort, t1.is_secret, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note t1 LEFT JOIN users t3 ON t1.create_user = t3.id  WHERE t1.id = ? AND (t1.is_secret = 0 OR t1.create_user = ?)`
   const data = [params.id, params.userId]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -162,11 +162,19 @@ async function _handleNoteChapter(datas: NovelNoteOptions | NovelNoteOptions[], 
         userId: data.create_user
       })
     else data.classify = []
-    // 处理目标集合
-    data.target = await _handleGetTargetIds(data.target, params.targetId)
     // 处理创建者头像
     if (params.showUserInfo === '1' && data.create_user_avatar) {
       data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
+    }
+    // 处理目标集合
+    const sql =
+      'SELECT t1.target_id AS id, t1.target_type AS type, t2.label AS type_label FROM novels_note_link t1 LEFT JOIN tags t2 ON t1.target_type = t2.code WHERE t1.note_id = ?'
+    const res: any = await query(sql, data.id)
+    if (Array.isArray(res) && res.length) {
+      const _target = JSON.stringify(res)
+      data.target = await _handleGetTargetIds(_target, params.targetId)
+    } else {
+      data.target = []
     }
   }
   if (_.isArray(datas)) {
