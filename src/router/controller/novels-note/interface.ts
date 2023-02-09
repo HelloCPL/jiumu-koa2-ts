@@ -10,13 +10,11 @@ export interface NovelNoteTargetOptions {
   title?: string
   type: string
   typeLabel?: string
-  isTarget?: string
 }
 
 // 笔记接口类型
 export interface NovelNoteOptions extends BaseOptions {
   id: string
-  target?: any
   title: string
   content: string
   classify?: any

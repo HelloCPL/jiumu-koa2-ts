@@ -230,7 +230,7 @@
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
-| isSecret | string | 否 | 是否为私密小说，'1' 是 '0' 否 |
+| isSecret | string | 否 | 是否为私密笔记，'1' 是 '0' 否 |
 | classify | string | 否 | 自定义文章类型，单选，若为连载/连载章节分类类型建议用novelClassify，其他看情况而定 |
 | showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
@@ -245,7 +245,7 @@
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
 | id | string | 笔记id |
-| target | array/[] | 所属目标集合 `[{id, title, type, typeLabel, isTarget(是否为当前指定目标 '1' 是 '0' 否) }]` |
+| target | array/[] | 所属目标集合 `[{id, title, type, typeLabel}]` |
 | title | string | 标题 |
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
@@ -273,8 +273,7 @@
           "id": "9e232a68-d0db-45bd-8ba7-e29cc1b70921",
           "type": "504",
           "title": "连续载体1",
-          "typeLabel": "连载来源",
-          "isTarget": "1"
+          "typeLabel": "连载来源"
         }
       ],
       "title": "标题3",
