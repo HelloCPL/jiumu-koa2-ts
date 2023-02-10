@@ -19,30 +19,7 @@ import _ from 'lodash'
 import { getTagCustomByIds } from '../tags-custom/get'
 import { getSelectWhereAsKeywordData, getOrderByKeyword, getSelectWhereData } from '@/utils/handle-sql'
 import { getFileById } from '../files-info/get'
-
-// 可做笔记资源类型 避免重复查询消耗性能，这里暂时写死
-const tList: ObjectAny = {
-  '502': {
-    table: 'questions'
-    // label: '问答来源'
-  },
-  '503': {
-    table: 'sources'
-    // label: '资源文件来源'
-  },
-  '504': {
-    table: 'novels'
-    // label: '连载来源'
-  },
-  '505': {
-    table: 'articles'
-    // label: '博客文章来源'
-  },
-  '507': {
-    table: 'novels_chapter'
-    // label: '连载章节'
-  }
-}
+import { novelNoteLinkTypes } from '../novels-note-link/convert'
 
 // 获取指定的某个笔记
 export const getNovelNoteGetOne = async (ctx: Context) => {
@@ -78,7 +55,7 @@ export const doNovelNoteGetOne = async (params: NovelNoteOneParams): Promise<Nov
   // 处理创建者信息字段
   const userInfoField =
     params.showUserInfo === '1' ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, ' : ''
-  const sql: string = `SELECT t1.id, t1.target, t1.title, t1.content, t1.classify, t1.sort, t1.is_secret, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note t1 LEFT JOIN users t3 ON t1.create_user = t3.id  WHERE t1.id = ? AND (t1.is_secret = 0 OR t1.create_user = ?)`
+  const sql: string = `SELECT t1.id, t1.title, t1.content, t1.classify, t1.sort, t1.is_secret, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note t1 LEFT JOIN users t3 ON t1.create_user = t3.id  WHERE t1.id = ? AND (t1.is_secret = 0 OR t1.create_user = ?)`
   const data = [params.id, params.userId]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -124,17 +101,16 @@ export const getNovelNoteGetList = async (options: NovelNoteListParams): Promise
     whereSQL += ' AND t1.classify LIKE ? '
     whereData.push(`%${options.classify}%`)
   }
-  whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql} AND t1.target like ?`
-  whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data, `%${options.targetId}%`]
+  whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql} AND t2.target_id = ?`
+  whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data, options.targetId]
   // 处理排序规则语句
   const orderSql = `${orderParams.orderSql} t1.sort, t1.update_time DESC`
   // 处理创建者信息字段
   const userInfoField =
     options.showUserInfo === '1' ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, ' : ''
-
-  const sql1: string = `SELECT COUNT(t1.id) AS total FROM novels_note t1 ${whereSQL}`
+  const sql1: string = `SELECT COUNT(t1.id) AS total FROM novels_note_link t2 LEFT JOIN novels_note t1 ON t2.note_id = t1.id ${whereSQL}`
   const data1 = [...whereData]
-  const sql2 = `SELECT t1.id, t1.target, ${orderParams.orderValid} t1.classify, t1.sort, t1.is_secret, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note t1  LEFT JOIN users t3 ON t1.create_user = t3.id ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.classify, t1.sort, t1.is_secret, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note_link t2 LEFT JOIN novels_note t1 ON t2.note_id = t1.id LEFT JOIN users t3 ON t1.create_user = t3.id ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
   const data2 = [...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
@@ -162,11 +138,18 @@ async function _handleNoteChapter(datas: NovelNoteOptions | NovelNoteOptions[], 
         userId: data.create_user
       })
     else data.classify = []
-    // 处理目标集合
-    data.target = await _handleGetTargetIds(data.target, params.targetId)
     // 处理创建者头像
     if (params.showUserInfo === '1' && data.create_user_avatar) {
       data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
+    }
+    // 处理目标集合
+    const sql =
+      'SELECT t1.target_id AS id, t1.target_type AS type, t2.label AS type_label FROM novels_note_link t1 LEFT JOIN tags t2 ON t1.target_type = t2.code WHERE t1.note_id = ?'
+    const res: any = await query(sql, data.id)
+    if (Array.isArray(res) && res.length) {
+      data.target = await _handleGetTargetIds(res)
+    } else {
+      data.target = []
     }
   }
   if (_.isArray(datas)) {
@@ -179,37 +162,21 @@ async function _handleNoteChapter(datas: NovelNoteOptions | NovelNoteOptions[], 
 }
 
 // 获取目标信息
-async function _handleGetTargetIds(target: string, targetId?: string): Promise<NovelNoteTargetOptions[]> {
+async function _handleGetTargetIds(target: NovelNoteTargetOptions[]): Promise<NovelNoteTargetOptions[]> {
   const arr: NovelNoteTargetOptions[] = []
-  let _target: NovelNoteTargetOptions[] = []
-  try {
-    _target = <NovelNoteTargetOptions[]>JSON.parse(target)
-  } catch (e) {}
-  if (Array.isArray(_target) && _target.length) {
-    for (let i = 0, len = _target.length; i < len; i++) {
-      const item = _target[i]
-      if (item.id && item.type) {
-        const t = tList[item.type]
-        if (!t) continue
-        let valid = 't1.title'
-        if (item.type === '502') {
-          valid = 't1.content AS title'
-        } else if (item.type === '504') {
-          valid = 't1.name AS title'
+  for (let i = 0, len = target.length; i < len; i++) {
+    const item = target[i]
+    const currentType = novelNoteLinkTypes[item.type]
+    if (currentType) {
+      const sql = `SELECT ${currentType.titleKey} AS title FROM ${currentType.table} WHERE id = ?`
+      const data = [item.id]
+      const res: any = await query(sql, data)
+      if (res && res.length) {
+        const obj = {
+          ...item,
+          title: res[0].title
         }
-        const sql = `SELECT t1.id, (SELECT t2.label FROM tags t2 WHERE t2.code = ?) AS type_label, ${valid} FROM ${t.table} t1 WHERE t1.id = ?`
-        const data = [item.type, item.id]
-        const res: any = await query(sql, data)
-
-        if (res && res.length) {
-          const obj = {
-            ...item,
-            title: res[0].title,
-            typeLabel: res[0].type_label
-          }
-          if (targetId) obj.isTarget = targetId === item.id ? '1' : '0'
-          arr.push(obj)
-        }
+        arr.push(obj)
       }
     }
   }

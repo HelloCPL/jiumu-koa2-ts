@@ -36,6 +36,7 @@ export enum Message {
   errorLogin = '您的账号已在其他设备登录，如果不是本人操作，请修改密码',
   errorDoing = '操作失败',
   errorPassword = '密码错误',
+  errorType = '类型错误',
 
   dbSQL = '服务器发生错误：数据库查询语句出错',
   dbConnect = '服务器发生错误：创建数据库连接失败',
@@ -76,6 +77,7 @@ export enum Message {
   unexistNovelChapter = '章节不存在',
   existNovelChapterSort = '章节序号已存在，请使用其他序号',
   unexistNovelNote = '笔记不存在',
+  unexistNovelNoteLink = '笔记关联标识不存在',
 
   relevantHasChildren = '有子级关联，请解除子级关联后再操作',
   relevantNoParent = '父级未关联，请关联父级后再操作',

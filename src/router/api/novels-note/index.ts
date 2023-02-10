@@ -23,7 +23,7 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['target', 'content'])
+  @Required(['content'])
   @Convert(doNovelNoteAddConvert)
   async doNovelNoteAdd(ctx: Context) {
     await doNovelNoteAdd(ctx)
