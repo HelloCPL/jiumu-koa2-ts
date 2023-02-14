@@ -17,6 +17,8 @@ export interface NovelNoteLinkOptions extends BaseOptions {
 export interface NovelNoteLinkParams {
   share: string
   userId: string
+  keyword?: string
+  highlight?: '0' | '1'
   pageNo: number
   pageSize: number
 }
