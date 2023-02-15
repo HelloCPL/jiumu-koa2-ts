@@ -21,7 +21,6 @@ export const doNovelNoteAddConvert = async (ctx: Context, next: Next) => {
   // 判断传 targetId 时必传 targetType
   if (ctx._params.targetId) {
     const currentType = novelNoteLinkTypes[ctx._params.targetType]
-    console.log(currentType)
     if (!currentType)
       throw new ExceptionParameter({
         message: Message.errorType

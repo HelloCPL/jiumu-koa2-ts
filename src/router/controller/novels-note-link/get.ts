@@ -45,7 +45,7 @@ const getNovelNoteLinkDeleteGetListSelf = async (
   const whereData = [options.share, options.userId, ...sqlParamsKeyword.data]
   const sql1 = `SELECT COUNT(t1.id) AS total FROM novels_note_link t1 LEFT JOIN novels_note t2 ON t1.note_id = t2.id ${whereSQL}`
   const data1 = [...whereData]
-  const sql2 = `SELECT t1.id, t1.create_time, t1.terminal, t2.id AS note_id, ${orderParams.orderValid} t1.target_id, t1.target_type, t3.label AS target_type_label FROM novels_note_link t1 LEFT JOIN novels_note t2 ON t1.note_id = t2.id LEFT JOIN tags t3 ON t1.target_type = t3.code ${whereSQL} ORDER BY ${orderParams.orderSql} t2.sort, t2.update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, t1.status, t1.create_time, t1.terminal, t2.id AS note_id, ${orderParams.orderValid} t1.target_id, t1.target_type, t3.label AS target_type_label FROM novels_note_link t1 LEFT JOIN novels_note t2 ON t1.note_id = t2.id LEFT JOIN tags t3 ON t1.target_type = t3.code ${whereSQL} ORDER BY ${orderParams.orderSql} t2.sort, t2.update_time DESC LIMIT ?, ?`
   const data2 = [...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },

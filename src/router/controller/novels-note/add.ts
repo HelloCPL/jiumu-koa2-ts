@@ -38,9 +38,10 @@ export const doNovelNoteAdd = async (ctx: Context) => {
   const sqlData = [{ sql, data }]
   if (params.targetId) {
     const sql2 =
-      'INSERT novels_note_link (id, note_id, target_id, target_type, share, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?, ?)'
+      'INSERT novels_note_link (id, status, note_id, target_id, target_type, share, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
     const data2 = [
       getUuId(),
+      '1',
       id,
       params.targetId,
       params.targetType,

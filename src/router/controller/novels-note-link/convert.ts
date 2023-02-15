@@ -40,7 +40,8 @@ export const doNovelNoteLinkAddConvert = async (ctx: Context, next: Next) => {
   })
   // 判断笔记-目标关联是否已存在
   const flag = await _isExist(ctx)
-  if (flag) throw new Success()
+  if (flag === '1') throw new Success()
+  ctx._params.__status = flag
   await next()
 }
 
@@ -51,10 +52,12 @@ export const doNovelNoteLinkAddConvert = async (ctx: Context, next: Next) => {
 export async function doNovelNoteLinkDeleteConvert(ctx: Context, next: Next) {
   // 判断用户-角色关联是否不存在
   const flag = await _isExist(ctx)
-  if (!flag)
+  if (flag === '-1')
     throw new ExceptionParameter({
       message: Message.unexistNovelNoteLink
     })
+  if (flag === '0') throw new Success()
+  ctx._params.__status = flag
   await next()
 }
 
@@ -93,9 +96,18 @@ export const novelNoteLinkTypes: ObjectAny = {
 }
 
 // 判断关联是否存在
-async function _isExist(ctx: Context): Promise<boolean> {
-  const sql = 'SELECT t1.id FROM novels_note_link t1 WHERE t1.id = ? OR (t1.note_id = ? AND t1.target_id = ?)'
+async function _isExist(ctx: Context): Promise<string> {
+  const sql =
+    'SELECT t1.id, t1.status FROM novels_note_link t1 WHERE t1.id = ? OR (t1.note_id = ? AND t1.target_id = ?)'
   const data = [ctx._params.id, ctx._params.noteId, ctx._params.targetId]
   const res: any = await query(sql, data)
-  return res && res.length
+  let flag = '-1'
+  if (res && res.length) {
+    if (res[0].status === '1') {
+      flag = '1'
+    } else {
+      flag = '0'
+    }
+  }
+  return flag
 }

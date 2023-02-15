@@ -96,7 +96,8 @@
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
 | id | string | id |
-| noteId | string | 笔记id |
+| status | string | 笔记id |
+| noteId | string | 状态 '0' 不关联 '1' 关联 默认 '1' |
 | noteTitle | string | 笔记标题 |
 | targetId | string | 目标id |
 | targetType | string | 目标类型 |

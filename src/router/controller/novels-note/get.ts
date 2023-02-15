@@ -101,8 +101,8 @@ export const getNovelNoteGetList = async (options: NovelNoteListParams): Promise
     whereSQL += ' AND t1.classify LIKE ? '
     whereData.push(`%${options.classify}%`)
   }
-  whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql} AND t2.target_id = ?`
-  whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data, options.targetId]
+  whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql} AND t2.target_id = ? AND t2.status = ? `
+  whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data, options.targetId, '1']
   // 处理排序规则语句
   const orderSql = `${orderParams.orderSql} t1.sort, t1.update_time DESC`
   // 处理创建者信息字段
@@ -144,8 +144,8 @@ async function _handleNoteChapter(datas: NovelNoteOptions | NovelNoteOptions[], 
     }
     // 处理目标集合
     const sql =
-      'SELECT t1.target_id AS id, t1.target_type AS type, t2.label AS type_label FROM novels_note_link t1 LEFT JOIN tags t2 ON t1.target_type = t2.code WHERE t1.note_id = ?'
-    const res: any = await query(sql, data.id)
+      'SELECT t1.target_id AS id, t1.target_type AS type, t2.label AS type_label FROM novels_note_link t1 LEFT JOIN tags t2 ON t1.target_type = t2.code WHERE t1.note_id = ? AND t1.status = ?'
+    const res: any = await query(sql, [data.id, '1'])
     if (Array.isArray(res) && res.length) {
       data.target = await _handleGetTargetIds(res)
     } else {
