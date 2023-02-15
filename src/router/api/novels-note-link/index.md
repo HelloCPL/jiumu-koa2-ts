@@ -80,13 +80,18 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | share | string | 是 | 笔记的共享字段 |
+| keyword | string | 否 | 关键字 |
+| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认 '1' |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 
 #### 返回字段说明
 
 - 返回数组或[]
-- 按笔记的 `sort升序、updateTime更新时间降序` 排序
+- 按笔记的
+  `搜索相似度(noteTitle)降序`
+  `sort升序、updateTime更新时间降序`
+排序
 
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
