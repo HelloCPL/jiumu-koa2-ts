@@ -163,116 +163,13 @@
 }
 ```
 
-<!-- ## ---------------- 废弃 获取本用户的所有文件/图片列表 返回数组或[] ---------------------
-
+## ---------------- 切片上传 ---------------------
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取指定本用户的所有文件/图片列表 返回数组或[]
+- 切片上传，用于大文件上传，每次只传一个
 
-#### 请求
 
-- `get | post` 
-- `file/get/list/self`
+## ---------------- 删除某个/整个切片 ---------------------
 
-#### 参数
-
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| pageNo | number | 否 | 页码，默认1 |
-| pageSize | number | 否 | 每页页数，默认10 |
-| suffix | string | 否 | 指定后缀类型，多个用逗号隔开 如 'png,docx' |
-
-#### 返回字段说明
-
-- 返回数组或[]
-
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 文件id |
-| filePath | string | 文件完整路径 |
-| fileName | string | 文件名称 |
-| fileSize | number | 文件大小，单位 B |
-| suffix | string | 文件后缀 |
-| staticPlace | string | 文件存放位置 |
-| createUser | string | 创建者 |
-| isSecret | string | 是否私密文件，'1' 是 '0' 否 |
-| checkValidTime | string | 如果为私密链接查看有效期，单位天 |
-| createTime | string | 创建时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
-
-#### 返回示例
-
-```
-{
-  "code": 200,
-  "message": "操作成功",
-  "data": [
-    {
-      "id": "012d28c4-959c-4874-bb03-474d66d0792a",
-      "filePath": "http://localhost:3030/files/afad2f70-fa5c-11eb-ab7b-db29bdd8c894.png",
-      "fileName": "avatar6.png",
-      "fileSize": 28326,
-      "suffix": "png",
-      "staticPlace": "files",
-      "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-      "isSecret": "0",
-      "checkValidTime": 3,
-      "createTime": "2021-08-11 12:29:15",
-      "terminal": "管理端",
-      "remarks": null
-    }
-  ],
-  "total": 9
-}
-``` -->
-
-<!-- 由于保密性废弃
-## ---------------- 获取指定用户的所有文件/图片列表 返回数组或[] ---------------------
-
-#### 简要描述
-
-- `pc | web | app | wechat` 端
-- 获取指定用户的所有文件/图片列表，返回数组或[]
-
-#### 请求
-
-- `get | post` 
-- `file/get/list/byuserid`
-
-#### 参数
-
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| userId | string | 是 | 用户id |
-| pageNo | number | 否 | 页码，默认1 |
-| pageSize | number | 否 | 每页页数，默认10 |
-| suffix | string | 否 | 指定后缀类型，多个用逗号隔开 如 'png,docx' |
-
-#### 返回示例
-
-```
-{
-  "code": 200,
-  "message": "操作成功",
-  "data": [
-    {
-      "id": "012d28c4-959c-4874-bb03-474d66d0792a",
-      "filePath": "http://localhost:3030/files/afad2f70-fa5c-11eb-ab7b-db29bdd8c894.png",
-      "fileName": "avatar6.png",
-      "fileSize": 28326,
-      "suffix": "png",
-      "staticPlace": "files",
-      "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-      "isSecret": "0",
-      "checkValidTime": 3,
-      "createTime": "2021-08-11 12:29:15",
-      "terminal": "管理端",
-      "remarks": null
-    }
-  ],
-  "total": 9
-}
-```
- -->
+## ---------------- 切片合并 ---------------------

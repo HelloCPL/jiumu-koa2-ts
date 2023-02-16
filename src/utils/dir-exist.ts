@@ -27,7 +27,7 @@ function mkdir(dir: string) {
   })
 }
 
-// 判断目录是否存在，不存在创建目录
+// 判断目录是否存在，不存在则创建目录
 export async function dirExist(dir: string) {
   const isExist = await getStat(dir)
   // @ts-ignore

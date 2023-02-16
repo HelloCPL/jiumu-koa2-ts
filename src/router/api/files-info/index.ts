@@ -6,7 +6,7 @@
 
 import { Context } from 'koa'
 import { Prefix, Request, Required, Convert } from '@/router/router'
-import { doFileAdd, doFileAddChunk } from '@/router/controller/files-info/add'
+import { doFileAdd, doFileChunkAdd } from '@/router/controller/files-info/add'
 import { doFileGetOne } from '@/router/controller/files-info/get'
 import { doFileDelete } from '@/router/controller/files-info/delete'
 import { doFileDeleteConvert, doFileGetOneConvert } from '@/router/controller/files-info/convert'
@@ -44,32 +44,13 @@ export default class API {
     await doFileGetOne(ctx)
   }
 
-  // 4 获取指定用户的所有文件/图片列表 返回数组或[]
-  // @Request({
-  //   path: 'get/list/byuserid',
-  //   methods: ['post', 'get'],
-  // })
-  // @Required(['userId'])
-  // async doFileGetListByUserId(ctx: Context) {
-  //   await doFileGetListByUserId(ctx)
-  // }
-
-  // 5 获取本用户的所有文件/图片列表 返回数组或[]
-  // @Request({
-  //   path: 'get/list/self',
-  //   methods: ['post', 'get'],
-  // })
-  // async doFileGetListSelf(ctx: Context) {
-  //   await doFileGetListSelf(ctx)
-  // }
-
-  // 6. 大文件上传切片
+  // 4. 切片上传，用于大文件上传
   @Request({
-    path: 'add/big',
+    path: 'chunk/add',
     methods: ['post']
   })
   @Required(['fileHash', 'chunkHash'])
-  async doFileAddChunk(ctx: Context) {
-    await doFileAddChunk(ctx)
+  async doFileChunkAdd(ctx: Context) {
+    await doFileChunkAdd(ctx)
   }
 }

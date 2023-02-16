@@ -19,6 +19,8 @@ import { verifyStatic } from './lib/verify-auth'
 import { initCompress } from './lib/compress'
 import { toPath } from './utils/tools'
 
+import '@/test/test'
+
 const app: Koa = new Koa()
 
 // 处理跨域
