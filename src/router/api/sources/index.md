@@ -16,7 +16,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | title | string | 是 | 资源标题 |
-| attachment | string | 是 | 资源地址；其中701时为内部资源文件id，多个逗号隔开，最多3个 |
+| attachment | string | 是 | 资源地址；其中701时为内部资源文件id，多个逗号隔开 |
 | type | string | 是 | 资源类型，取系统标签700 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用sourceClassify |
 | isSecret | string | 否 | 是否为私密资源，'1' 是 '0' 否，默认 '0' |

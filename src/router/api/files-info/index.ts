@@ -6,10 +6,15 @@
 
 import { Context } from 'koa'
 import { Prefix, Request, Required, Convert } from '@/router/router'
-import { doFileAdd, doFileChunkAdd } from '@/router/controller/files-info/add'
+import { doFileAdd } from '@/router/controller/files-info/add'
+import { doFileChunkAdd, doFileChunkMerge, doFileChunkVerify } from '@/router/controller/files-info/chunk'
 import { doFileGetOne } from '@/router/controller/files-info/get'
 import { doFileDelete } from '@/router/controller/files-info/delete'
-import { doFileDeleteConvert, doFileGetOneConvert } from '@/router/controller/files-info/convert'
+import {
+  doFileDeleteConvert,
+  doFileGetOneConvert,
+  doFileChunkMergeConvert
+} from '@/router/controller/files-info/convert'
 
 @Prefix('file')
 export default class API {
@@ -49,8 +54,29 @@ export default class API {
     path: 'chunk/add',
     methods: ['post']
   })
-  @Required(['fileHash', 'chunkHash'])
+  @Required(['fileHash', 'chunkIndex&isInt'])
   async doFileChunkAdd(ctx: Context) {
     await doFileChunkAdd(ctx)
+  }
+
+  // 5. 切片合并，用于大文件上传
+  @Request({
+    path: 'chunk/merge',
+    methods: ['get', 'post']
+  })
+  @Required(['fileName', 'fileHash', 'chunkSize&isInt', 'chunkLength&isInt'])
+  @Convert(doFileChunkMergeConvert)
+  async doFileChunkMerge(ctx: Context) {
+    await doFileChunkMerge(ctx)
+  }
+
+  // 6. 校验大文件是否存在
+  @Request({
+    path: 'chunk/verify',
+    methods: ['get', 'post']
+  })
+  @Required(['fileHash', 'fileName'])
+  async doFileChunkVerify(ctx: Context) {
+    await doFileChunkVerify(ctx)
   }
 }

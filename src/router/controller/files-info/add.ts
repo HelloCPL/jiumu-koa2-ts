@@ -14,7 +14,6 @@ import _ from 'lodash'
 import { getFileById } from './get'
 import { Terminal } from '@/enums'
 import { FileInfoOptions } from './interface'
-import { dirExist } from '@/utils/dir-exist'
 import { createFile, getPath, sureIsDirSync } from './tools'
 
 /**
@@ -82,29 +81,4 @@ async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | n
   await query(sql, data)
   const fileInfo = await getFileById(id, ctx._user.id)
   return fileInfo
-}
-
-/*
- * 切片上传，用于大文件上传
-https://juejin.cn/post/7016498747496464415
-fileHash
-chunkHash = fileHash + index
- */
-export const doFileChunkAdd = async (ctx: Context) => {
-  const files: any = ctx.request.files
-  // const file = ctx.request.files.chunk
-  const file = files.file as File
-  const fileHash = ctx._params.fileHash
-  const chunkHash = ctx._params.chunkHash
-  const chunkdir = `files_temp/${fileHash}`
-
-  // 判断目录是否存在，不存在则创建
-  await dirExist(chunkdir)
-  const chunkIndex = chunkHash.split('-')[1]
-  console.log(chunkIndex)
-  // 判断文件是否存在
-  // 写入切片
-
-  // 写文件
-  throw new Success()
 }

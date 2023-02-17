@@ -289,11 +289,29 @@
 |:---:|:---:|:---:|:---:|
 | id | v64 | 是 | 资源id |
 | title | 255 | 是 | 标题 |
-| attachment | v255 | 是 | 资源文件id，多个逗号隔开，最多3个 |
+| attachment | text | 是 | 资源文件id，多个逗号隔开 |
 | type | v64 | 是 | 资源类型，取系统标签700 |
 | classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
 | is_secret | v4 | 否 | 是否为私密问答，'1' 是 '0' 否，默认 '0' |
 | is_top | v4 | 否 | 是否置顶，'1' 是 '0' 否，默认 '0' |
+| sort | mediumint | 否 | 排序，越小越前 |
+| create_user | v64 | 是 | 创建用户 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |
+| remarks | v255 | 否 | 备注 |
+
+#### 18 sources_link 资源所属的外部资源记录信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | id |
+| title | v255 | 是 | 标题 |
+| link | v255 | 是 | 外部资源链接地址 |
+| cover_img1 | v64 | 否 | 封面图id，内部资源，只传一个 |
+| cover_img2 | v64 | 否 | 封面图链接，直接采用外部地址 |
 | sort | mediumint | 否 | 排序，越小越前 |
 | create_user | v64 | 是 | 创建用户 |
 | create_time | v64 | 是 | 创建时间 |

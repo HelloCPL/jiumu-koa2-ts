@@ -169,7 +169,120 @@
 - `pc | web | app | wechat` 端
 - 切片上传，用于大文件上传，每次只传一个
 
+#### 请求
 
-## ---------------- 删除某个/整个切片 ---------------------
+- `post`
+- `file/chunk/add`
+
+#### 参数
+
+| 参数名 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| fileHash | string | 是 | 文件哈希，`body` 传参 |
+| chunkIndex | number | 是 | 切片索引，`body` 传参 |
+
+#### 返回字段说明
+
+- 任何结果codo都为200，data返回字段说明
+- 200 成功
+- 404 资源不存在
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": 200,
+  "total": 0
+}
+```
 
 ## ---------------- 切片合并 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 切片合并，用于大文件上传
+
+#### 请求
+
+- `post`
+- `file/chunk/add`
+
+#### 参数
+
+| 参数名 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| fileName | string | 是 | 文件哈希 |
+| fileHash | string | 是 | 文件哈希 |
+| chunkSize | number | 是 | 每段切片大小 大小必须大于零 |
+| chunkLength | number | 是 | 切片总长度 长度必须大于零 |
+| fileSize | number | 否 | 文件大小  |
+| isSecret | string | 否 | 是否私有文件 默认 0  |
+| remarks | string | 否 | 备注 |
+
+#### 返回字段说明
+
+- 如果为真，则表明该索引切片未上传，用逗号隔开的字符串，如 '1,13' 请重新上传
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": {
+    "id": "d93b9321-bad4-4605-804c-e284a53c333c",
+    "filePath": "http://localhost:3030/files/86c2cb50-fa76-11eb-a739-9f5ab7713dc1.png",
+    "fileName": "avatar6.png",
+    "fileSize": 28326,
+    "suffix": "png",
+    "staticPlace": "files",
+    "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
+    "createUserName": "超级管理员",
+    "isSecret": "0",
+    "checkValidTime": 3,
+    "createTime": "2021-08-11 15:34:13",
+    "terminal": "管理端",
+    "remarks": null
+  },
+  "total": 0
+}
+```
+
+## ---------------- 校验大文件是否上传 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 校验大文件是否存在
+
+#### 请求
+
+- `get | post`
+- `file/chunk/add`
+
+#### 参数
+
+| 参数名 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| fileHash | string | 是 | 文件哈希 |
+| fileName | string | 是 | 文件名 |
+
+#### 返回字段说明
+
+- data返回字段说明
+- true 资源已存在
+- false 资源不存在
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": true,
+  "total": 0
+}
+```

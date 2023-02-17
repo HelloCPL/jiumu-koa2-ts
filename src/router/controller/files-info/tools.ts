@@ -140,8 +140,8 @@ export async function createFile(file: File, dir: string, filePath: string) {
   // 创建可读流
   const reader: ReadStream = fs.createReadStream(file.path)
   const savePath = path.join(dir, filePath)
-  const upStream: WriteStream = fs.createWriteStream(savePath)
-  reader.pipe(upStream)
+  const writeStream: WriteStream = fs.createWriteStream(savePath)
+  reader.pipe(writeStream)
 }
 
 /*
