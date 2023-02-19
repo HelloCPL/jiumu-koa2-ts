@@ -73,6 +73,7 @@ export enum Message {
   unexistArticle = '文章不存在',
   unexistQuestion = '问答不存在',
   unexistSource = '资源不存在',
+  unexistSourceLink = '资源的外部资源信息不存在',
   unexistNovel = '连续载体不存在',
   unexistNovelChapter = '章节不存在',
   existNovelChapterSort = '章节序号已存在，请使用其他序号',

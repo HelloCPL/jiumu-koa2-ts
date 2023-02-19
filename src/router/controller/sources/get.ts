@@ -125,8 +125,24 @@ export const getSourceList = async (options: SourceListParams): Promise<SourceLi
 async function _handleSource(datas: SourceOptions | SourceOptions[], userId: string, showUserInfo?: any) {
   const _handleList = async (data: SourceOptions) => {
     // 处理附件
-    if (data.attachment && data.type === '701')
-      data.attachment = await getFileByIds(data.attachment, data.create_user)
+    if (data.attachment) {
+      if (data.type === '701') {
+        data.attachment = await getFileByIds(data.attachment, data.create_user)
+      } else {
+        const sql =
+          'SELECT t1.id, t1.title, t1.link, t1.cover_img1, t1.cover_img2, t1.sort, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM sources_link t1 WHERE FIND_IN_SET(t1.id, ?) ORDER BY t1.sort, t1.update_time DESC'
+        const res: any = await query(sql, data.attachment)
+        if (Array.isArray(res) && res.length) {
+          for (let i = 0, len = res.length; i < len; i++) {
+            if (res[i].cover_img1) {
+              res[i].cover_img1 = await getFileById(res[i].cover_img1, data.create_user)
+            }
+          }
+        }
+        data.attachment = res
+      }
+    }
+
     // 处理自定义标签
     if (data.classify)
       data.classify = await getTagCustomByIds({

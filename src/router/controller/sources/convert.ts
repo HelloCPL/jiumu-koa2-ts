@@ -12,7 +12,7 @@ import { ExceptionParameter, ExceptionForbidden } from '@/utils/http-exception'
 
 /**
  * 新增时
- * 判断 type 是否系统标签300范围
+ * 判断 type 是否系统标签700范围
  */
 export const doSourceAddConvert = async (ctx: Context, next: Next) => {
   await validateRange({
