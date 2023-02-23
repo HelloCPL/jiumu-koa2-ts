@@ -54,7 +54,7 @@
 | id | string | 是 | 资源id |
 | title | string | 否 | 资源标题 |
 | type | string | 否 | 资源类型，取系统标签700 |
-| attachment | string | 否 | 资源文件id，多个逗号隔开，最多3个 |
+| attachment | string | 否 | 资源地址；其中701时为内部资源文件id，多个逗号隔开 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用sourceClassify |
 | isSecret | string | 否 | 是否为私密资源，'1' 是 '0' 否 |
 | sort | mediumint | 否 | 排序，值越小越前 |
@@ -147,6 +147,23 @@
 | CollectionCount | number | 收藏总数 |
 | isSelf | string | 是否本人的资源，'1' 是 '0' 否 |
 | commentCount | number | 收藏总数 |
+
+- 其中 attachment 为内部资源返回为文件类字段
+  为资源的外部资源信息字段如下
+
+| 参数名 | 类型 | 说明 |
+|:---:|:---:|:---:|
+| id | string | id |
+| title | string | 标题 |
+| link | string | 链接地址 |
+| cover_img1 | object/null | 封面图，内部图片 |
+| cover_img2 | string | 封面图，外部链接地址 |
+| sort | number | 排序，值越小越前，默认1 |
+| createUser | string | 创建者id |
+| createTime | string | 创建时间 |
+| updateTime | string | 更新时间 |
+| terminal | string | 操作终端 |
+| remarks | string | 备注 |
 
 #### 返回示例
 
@@ -256,7 +273,6 @@
 |:---:|:---:|:---:|
 | id | string | 资源id |
 | title | string | 标题 |
-| attachment | array/[] | 资源文件 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
 | isSecret | string | 是否为私密资源，'1' 是 '0' 否 |
 | isTop | string | 是否置顶，'1' 是 '0' 否 |
@@ -290,24 +306,6 @@
       "title": "<span data-search-key='search' style='color: #f56c6c'>资源</span>标题6",
       "type": "701",
       "typeLabel": "内部文件/图片id来源",
-      "attachment": [
-        {
-          "id": "82b7e221-f6b6-4b9a-a41a-8d2d93b9c689",
-          "filePath": "http://localhost:3030/sources/c67bcdd0-711f-11ec-ba07-331148890c46.png",
-          "fileName": "1-吴晓炫.png",
-          "fileSize": 306947,
-          "suffix": "png",
-          "staticPlace": "sources",
-          "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-          "createUserName": "超级管理员",
-          "isSecret": "0",
-          "checkValidTime": 3,
-          "createTime": "2022-01-09 15:43:02",
-          "updateTime": "2022-01-09 20:08:20",
-          "terminal": "管理端",
-          "remarks": null
-        }
-      ],
       "classify": [
         {
           "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
@@ -376,7 +374,6 @@
 |:---:|:---:|:---:|
 | id | string | 资源id |
 | title | string | 标题 |
-| attachment | array/[] | 资源文件 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
 | isSecret | string | 是否为私密资源，'1' 是 '0' 否 |
 | isTop | string | 是否置顶，'1' 是 '0' 否 |
@@ -410,24 +407,6 @@
       "title": "<span data-search-key='search' style='color: #f56c6c'>资源</span>标题6",
       "type": "701",
       "typeLabel": "内部文件/图片id来源",
-      "attachment": [
-        {
-          "id": "82b7e221-f6b6-4b9a-a41a-8d2d93b9c689",
-          "filePath": "http://localhost:3030/sources/c67bcdd0-711f-11ec-ba07-331148890c46.png",
-          "fileName": "1-吴晓炫.png",
-          "fileSize": 306947,
-          "suffix": "png",
-          "staticPlace": "sources",
-          "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-          "createUserName": "超级管理员",
-          "isSecret": "0",
-          "checkValidTime": 3,
-          "createTime": "2022-01-09 15:43:02",
-          "updateTime": "2022-01-09 20:08:20",
-          "terminal": "管理端",
-          "remarks": null
-        }
-      ],
       "classify": [
         {
           "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
@@ -496,7 +475,6 @@
 |:---:|:---:|:---:|
 | id | string | 资源id |
 | title | string | 标题 |
-| attachment | array/[] | 资源文件 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
 | isSecret | string | 是否为私密资源，'1' 是 '0' 否 |
 | isTop | string | 是否置顶，'1' 是 '0' 否 |
@@ -528,24 +506,6 @@
       "title": "<span data-search-key='search' style='color: #f56c6c'>资源</span>标题6",
       "type": "701",
       "typeLabel": "内部文件/图片id来源",
-      "attachment": [
-        {
-          "id": "82b7e221-f6b6-4b9a-a41a-8d2d93b9c689",
-          "filePath": "http://localhost:3030/sources/c67bcdd0-711f-11ec-ba07-331148890c46.png",
-          "fileName": "1-吴晓炫.png",
-          "fileSize": 306947,
-          "suffix": "png",
-          "staticPlace": "sources",
-          "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
-          "createUserName": "超级管理员",
-          "isSecret": "0",
-          "checkValidTime": 3,
-          "createTime": "2022-01-09 15:43:02",
-          "updateTime": "2022-01-09 20:08:20",
-          "terminal": "管理端",
-          "remarks": null
-        }
-      ],
       "classify": [
         {
           "id": "b2888c02-ffec-4039-8ec3-91ec4a8716d4",
