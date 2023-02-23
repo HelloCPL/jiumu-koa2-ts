@@ -7,7 +7,7 @@ import { File } from 'formidable'
 import { createFile, deleteDirSync, getPath, judgeDirSync, sureIsDirSync } from './tools'
 import { ExceptionHttp, Success } from '@/utils/http-exception'
 import { Code, Terminal } from '@/enums'
-import fs, { ReadStream, Stats, WriteStream } from 'fs'
+import fs from 'fs'
 import { formatDate, getSuffix, getUuId } from '@/utils/tools'
 import { query } from '@/db'
 import { getFileById } from './get'
@@ -35,6 +35,19 @@ export const doFileChunkAdd = async (ctx: Context) => {
     }
     throw new Success({ data: Code.success })
   } else throw new Success({ data: Code.notFound })
+}
+
+/*
+ * 删除指定文件的所有切片
+ */
+export const doFileChunkDelete = async (ctx: Context) => {
+  const dir = getPath('files_big_upload_temp', ctx._params.fileHash)
+  // 判断文件是否存在 不存在则创建
+  const type = judgeDirSync(dir)
+  if (type !== -1) {
+    await deleteDirSync(dir)
+  }
+  throw new Success()
 }
 
 /*

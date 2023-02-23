@@ -7,7 +7,12 @@
 import { Context } from 'koa'
 import { Prefix, Request, Required, Convert } from '@/router/router'
 import { doFileAdd } from '@/router/controller/files-info/add'
-import { doFileChunkAdd, doFileChunkMerge, doFileChunkVerify } from '@/router/controller/files-info/chunk'
+import {
+  doFileChunkAdd,
+  doFileChunkDelete,
+  doFileChunkMerge,
+  doFileChunkVerify
+} from '@/router/controller/files-info/chunk'
 import { doFileGetOne } from '@/router/controller/files-info/get'
 import { doFileDelete } from '@/router/controller/files-info/delete'
 import {
@@ -59,7 +64,17 @@ export default class API {
     await doFileChunkAdd(ctx)
   }
 
-  // 5. 切片合并，用于大文件上传
+  // 5. 切片上传，用于大文件上传
+  @Request({
+    path: 'chunk/delete',
+    methods: ['get', 'post']
+  })
+  @Required(['fileHash'])
+  async doFileChunkDelete(ctx: Context) {
+    await doFileChunkDelete(ctx)
+  }
+
+  // 6. 切片合并，用于大文件上传
   @Request({
     path: 'chunk/merge',
     methods: ['get', 'post']
@@ -70,7 +85,7 @@ export default class API {
     await doFileChunkMerge(ctx)
   }
 
-  // 6. 校验大文件是否存在
+  // 7. 校验大文件是否存在
   @Request({
     path: 'chunk/verify',
     methods: ['get', 'post']
