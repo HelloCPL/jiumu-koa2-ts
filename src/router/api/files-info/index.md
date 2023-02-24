@@ -18,7 +18,7 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | isSecret | string | 否 | 是否私有文件 默认 0 ，`query` 传参 |
-| staticPlace | string | 否 | 文件存放位置 可选 `files images videos editors sources` 默认 `files` ，`query` 传参 |
+| staticPlace | string | 否 | 文件存放位置 可选 `files images videos editors sources files_big` 默认 `files` ，`query` 传参 |
 | remarks | string | 否 | 备注说明 `query` 传参 |
 
 #### 返回字段说明
@@ -178,8 +178,8 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| fileHash | string | 是 | 文件哈希，`body` 传参 |
-| chunkIndex | number | 是 | 切片索引，`body` 传参 |
+| fileHash | string | 是 | 文件哈希 |
+| chunkIndex | number | 是 | 切片索引 |
 
 #### 返回字段说明
 
@@ -253,6 +253,7 @@
 | chunkLength | number | 是 | 切片总长度 长度必须大于零 |
 | fileSize | number | 否 | 文件大小  |
 | isSecret | string | 否 | 是否私有文件 默认 0  |
+| staticPlace | string | 否 | 文件存放位置 可选 `files images videos editors sources files_big` 默认 `files_big` |
 | remarks | string | 否 | 备注 |
 
 #### 返回字段说明
@@ -306,8 +307,8 @@
 #### 返回字段说明
 
 - data返回字段说明
-- true 资源已存在
-- false 资源不存在
+- 存在返回 文件信息
+- 不存在返回 null
 
 #### 返回示例
 
@@ -315,7 +316,7 @@
 {
   "code": 200,
   "message": "操作成功",
-  "data": true,
+  "data": null,
   "total": 0
 }
 ```

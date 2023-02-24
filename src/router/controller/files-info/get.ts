@@ -32,8 +32,8 @@ export const getFileById = async (
 ): Promise<FileInfoOptions | null> => {
   if (!fileId) return null
   const userInfoField = showUserInfo === '1' ? ' t2.username AS create_user_name, ' : ''
-  const sql = `SELECT t1.id, t1.file_path, t1.file_name, t1.file_size, t1.suffix, t1.static_place, t1.create_user, ${userInfoField} t1.is_secret, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM files_info t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
-  const data = [fileId, userId]
+  const sql = `SELECT t1.id, t1.file_path, t1.file_name, t1.file_size, t1.suffix, t1.static_place, t1.create_user, ${userInfoField} t1.is_secret, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM files_info t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE (t1.id = ? OR t1.file_path = ?) AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
+  const data = [fileId, fileId, userId]
   const res: any = await query(sql, data)
   if (res && res.length) return _handleFile(<FileInfoOptions>res[0])
   return null

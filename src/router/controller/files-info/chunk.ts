@@ -11,6 +11,7 @@ import fs from 'fs'
 import { formatDate, getSuffix, getUuId } from '@/utils/tools'
 import { query } from '@/db'
 import { getFileById } from './get'
+import { validateRange } from '@/utils/validator'
 
 /*
  * 切片上传，用于大文件上传
@@ -55,10 +56,21 @@ export const doFileChunkDelete = async (ctx: Context) => {
  */
 export const doFileChunkMerge = async (ctx: Context) => {
   const params = ctx._params
+  const params2: any = await validateRange(
+    [
+      {
+        value: ctx._data.query.staticPlace,
+        range: ['files', 'images', 'videos', 'editors', 'sources', 'files_big'],
+        default: 'files_big'
+      }
+    ],
+    true
+  )
+  const staticPlace = params2[0]
   const fileHash = params.fileHash
   const fileName = fileHash + '_' + params.fileName
-  const chunkSize = params.chunkSize
-  const chunkLength = params.chunkLength
+  const chunkSize = Number(params.chunkSize)
+  const chunkLength = Number(params.chunkLength)
   let count: number = 0
   // 读取切片
   const dir = getPath('files_big_upload_temp', fileHash)
@@ -75,7 +87,10 @@ export const doFileChunkMerge = async (ctx: Context) => {
     // 合并
     for (let i = 0; i < chunkLength; i++) {
       const chunkPath = getPath('files_big_upload_temp', fileHash, i + '')
-      const fileDir = getPath('files_big', fileName)
+      const fileDir = getPath(staticPlace, fileName)
+      // 确保目录存在
+      const fileBigDir = getPath(staticPlace)
+      sureIsDirSync(fileBigDir)
       // 创建可写流
       const writeStream = fs.createWriteStream(fileDir, {
         start: i * chunkSize
@@ -103,7 +118,7 @@ export const doFileChunkMerge = async (ctx: Context) => {
       params.fileName,
       params.fileSize || chunkSize * chunkLength,
       getSuffix(params.fileName),
-      'files_big',
+      staticPlace,
       ctx._user.id,
       params.isSecret || '0',
       createTime,
@@ -122,7 +137,6 @@ export const doFileChunkMerge = async (ctx: Context) => {
  */
 export const doFileChunkVerify = async (ctx: Context) => {
   const params = ctx._params
-  const dir = getPath('files_big', `${params.fileHas}_${params.fileName}`)
-  const type = judgeDirSync(dir)
-  throw new Success({ data: type === 0 })
+  const file = await getFileById(`${params.fileHash}_${params.fileName}`, ctx._user.id)
+  throw new Success({ data: file })
 }

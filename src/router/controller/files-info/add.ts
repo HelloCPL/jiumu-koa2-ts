@@ -45,8 +45,8 @@ async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | n
       { value: ctx._data.query.isSecret, range: ['0', '1'], default: '0' },
       {
         value: ctx._data.query.staticPlace,
-        range: ['files', 'images', 'videos', 'editors', 'sources'],
-        default: ''
+        range: ['files', 'images', 'videos', 'editors', 'sources', 'files_big'],
+        default: 'files'
       }
     ],
     true
