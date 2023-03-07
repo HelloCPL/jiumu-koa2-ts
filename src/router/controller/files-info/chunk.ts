@@ -138,5 +138,10 @@ export const doFileChunkMerge = async (ctx: Context) => {
 export const doFileChunkVerify = async (ctx: Context) => {
   const params = ctx._params
   const file = await getFileById(`${params.fileHash}_${params.fileName}`, ctx._user.id)
-  throw new Success({ data: file })
+  if (file) {
+    const dir = getPath(file.static_place, `${params.fileHash}_${params.fileName}`)
+    const type = judgeDirSync(dir)
+    if (type !== -1) throw new Success({ data: file })
+  }
+  throw new Success()
 }
