@@ -226,7 +226,7 @@ function _findKeys(str: string): KeyOptions {
   }
   return {
     dataKey,
-    sqlKey: (t ? t + '.' : '') + _.snakeCase(sqlKey),
+    sqlKey: formatKey((t ? t + '.' : '') + _.snakeCase(sqlKey)),
     isEqual,
     isSqlKey
   }
@@ -241,4 +241,14 @@ function handleKeywords(arr: any[]): any[] {
     if (flag && _arr.indexOf(val) === -1) _arr.push(val)
   })
   return _arr
+}
+
+// sql key 去除数字前的 _
+const formatKey = (str: string): string => {
+  const i: number = str.search(/_\d+/)
+  if (i === 0) str = str.slice(1, str.length)
+  else if (i !== -1) str = str.slice(0, i) + str.slice(i + 1, str.length)
+  const i2 = str.search(/_\d+/)
+  if (i2 !== -1) return formatKey(str)
+  return str
 }
