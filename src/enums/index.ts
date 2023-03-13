@@ -79,6 +79,8 @@ export enum Message {
   existNovelChapterSort = '章节序号已存在，请使用其他序号',
   unexistNovelNote = '笔记不存在',
   unexistNovelNoteLink = '笔记关联标识不存在',
+  existCipherCode = '秘钥code已存在',
+  unexistCipherCode = '秘钥code不存在',
 
   relevantHasChildren = '有子级关联，请解除子级关联后再操作',
   relevantNoParent = '父级未关联，请关联父级后再操作',

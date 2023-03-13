@@ -301,7 +301,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 18 sources_link 资源所属的外部资源记录信息表
+#### 19 sources_link 资源所属的外部资源记录信息表
 
 - 说明
 
@@ -320,7 +320,7 @@
 | remarks | v255 | 否 | 备注 |
 
 
-#### 19 questions 问答信息表
+#### 20 questions 问答信息表
 
 - 说明
 
@@ -341,7 +341,7 @@
 | remarks | v255 | 否 | 备注 |
 
 
-#### 20 novels 连载信息表
+#### 21 novels 连载信息表
 
 - 说明
 
@@ -364,7 +364,7 @@
 | remarks | v255 | 否 | 备注 |
 
 
-#### 21 novels_chapter 连载章节信息表
+#### 22 novels_chapter 连载章节信息表
 
 - 说明
 
@@ -384,7 +384,7 @@
 | remarks | v255 | 否 | 备注 |
 
 
-#### 22 novels_note 笔记（不止连载）信息表
+#### 23 novels_note 笔记（不止连载）信息表
 
 - 说明
 
@@ -402,7 +402,7 @@
 | terminal | v64 | 是 | 操作终端 |
 | remarks | v255 | 否 | 备注 |
 
-#### 23 novels_note_link 笔记关联信息表
+#### 24 novels_note_link 笔记关联信息表
 
 - 说明
 
@@ -414,4 +414,35 @@
 | target_type | v64 | 是 | 关联目标的类型，暂时只支持 ['502','503','504','505','507'] |
 | share | v64 | 否 | 共享字段，用于可共同关联的列表 |
 | create_time | v64 | 是 | 创建时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+#### 25 ciphers 密码信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | id |
+| title | v255 | 是 | 标题 |
+| account | v255 | 是 | 账号 |
+| cipher | v255 | 是 | 密码 |
+| type | v64 | 是 | 等级，取系统标签800范围 |
+| classify | v255 | 否 | 自定义分类，用户自定义标签id集合，多个用逗号隔开 |
+| sort | mediumint | 是 | 排序，越小越前 |
+| create_user | v64 | 是 | 创建用户 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
+| terminal | v64 | 是 | 操作终端 |
+
+#### 26 ciphers_code 个人密码的秘钥code信息表
+
+- 说明
+
+| 字段名称 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| id | v64 | 是 | id |
+| code | v64 | 是 | 个人秘钥code |
+| create_user | v64 | 是 | 创建用户 |
+| create_time | v64 | 是 | 创建时间 |
+| update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
