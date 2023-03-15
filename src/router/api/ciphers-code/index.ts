@@ -6,7 +6,10 @@
 
 import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
-import { doCipherCodeAddConvert } from '@/router/controller/ciphers-code/convert'
+import { doCipherCodeAddConvert, doCipherCodeUpdateConvert } from '@/router/controller/ciphers-code/convert'
+import { doCipherCodeAdd } from '@/router/controller/ciphers-code/add'
+import { doCipherCodeUpdate } from '@/router/controller/ciphers-code/update'
+import { doCipherCodeCheck } from '@/router/controller/ciphers-code/check'
 
 @Prefix('cipher-code')
 export default class API {
@@ -18,7 +21,7 @@ export default class API {
   @Required(['code'])
   @Convert(doCipherCodeAddConvert)
   async doCipherCodeAdd(ctx: Context) {
-    // await doCipherCodeAdd(ctx)
+    await doCipherCodeAdd(ctx)
   }
 
   // 2 秘钥code修改
@@ -26,10 +29,10 @@ export default class API {
     path: 'update',
     methods: ['post']
   })
-  @Required(['id', 'code'])
-  // @Convert(doCipherCodeUpdateConvert)
+  @Required(['code', 'oldCode'])
+  @Convert(doCipherCodeUpdateConvert)
   async doCipherCodeUpdate(ctx: Context) {
-    // await doCipherCodeUpdate(ctx)
+    await doCipherCodeUpdate(ctx)
   }
 
   // 3 查看秘钥code是否存在
@@ -38,6 +41,6 @@ export default class API {
     methods: ['post']
   })
   async doCipherCodeCheck(ctx: Context) {
-    // await doCipherCodeCheck(ctx)
+    await doCipherCodeCheck(ctx)
   }
 }

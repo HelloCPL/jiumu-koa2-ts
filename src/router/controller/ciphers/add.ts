@@ -1,5 +1,5 @@
 /**
- * @description 密码新增
+ * @description 口令新增
  * @author cpl
  * @create 2023-03-13 16:22:12
  */
@@ -12,7 +12,7 @@ import { formatDate, getUuId } from '@/utils/tools'
 import { Context } from 'koa'
 
 /*
- * 密码新增
+ * 口令新增
  */
 export const doCipherAdd = async (ctx: Context) => {
   const sort: number = ctx._params.sort || 1
@@ -28,6 +28,7 @@ export const doCipherAdd = async (ctx: Context) => {
     params.title,
     account,
     cipher,
+    params.type,
     params.classify,
     sort,
     ctx._user.id,

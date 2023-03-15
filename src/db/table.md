@@ -416,7 +416,7 @@
 | create_time | v64 | 是 | 创建时间 |
 | terminal | v64 | 是 | 操作终端 |
 
-#### 25 ciphers 密码信息表
+#### 25 ciphers 口令信息表
 
 - 说明
 
@@ -434,7 +434,7 @@
 | update_time | v64 | 是 | 更新时间 |
 | terminal | v64 | 是 | 操作终端 |
 
-#### 26 ciphers_code 个人密码的秘钥code信息表
+#### 26 ciphers_code 个人口令的秘钥code信息表
 
 - 说明
 

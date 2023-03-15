@@ -54,7 +54,7 @@
 | link | string | 否 | 外部资源链接地址 |
 | cover_img1 | string | 否 | 封面图id，内部资源，只传一个 |
 | cover_img2 | string | 否 | 封面图链接，直接采用外部地址 |
-| sort | mediumint | 否 | 排序，值越小越前，默认1 |
+| sort | mediumint | 否 | 排序，值越小越前 |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例

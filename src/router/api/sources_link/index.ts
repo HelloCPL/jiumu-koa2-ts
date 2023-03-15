@@ -32,7 +32,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doSourceLinkUpdateConvert)
+  @Convert(doSourceLinkDeleteConvert, doSourceLinkUpdateConvert)
   async doSourceLinkUpdate(ctx: Context) {
     await doSourceLinkUpdate(ctx)
   }

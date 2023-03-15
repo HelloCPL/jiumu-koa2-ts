@@ -111,9 +111,9 @@ function _handleRequiredParams(params: string[]): ValidatorOptions[] {
  * @update 2021-01-23 15:09:34
  */
 export const Convert =
-  (middleware: Function): MethodDecorator =>
+  (...middleware: Function[]): MethodDecorator =>
   (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
     target[key] = sureIsArray(target[key])
-    target[key].splice(target[key].length - 1, 0, middleware)
+    target[key].splice(target[key].length - 1, 0, ...middleware)
     return descriptor
   }

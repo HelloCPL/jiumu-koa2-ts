@@ -64,7 +64,7 @@
 | attachment | string | 否 | 附件，文件id，多个逗号隔开，最多3个 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用articleClassify |
 | isSecret | string | 否 | 是否为私密文章，'1' 是 '0' 否，默认 '0' |
-| sort | mediumint | 否 | 排序，值越小越前，默认1 |
+| sort | mediumint | 否 | 排序，值越小越前 |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例

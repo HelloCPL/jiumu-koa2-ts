@@ -4,7 +4,10 @@
  * @create 2023-03-13 17:47:58
  */
 
+import { query } from '@/db'
 import { Message } from '@/enums'
+import { decrypt } from '@/utils/crypto'
+import { ExceptionNotFound, ExceptionParameter } from '@/utils/http-exception'
 import { Next } from 'koa'
 import { Context } from 'vm'
 import { isExist } from '../convert'
@@ -22,4 +25,47 @@ export const doCipherCodeAddConvert = async (ctx: Context, next: Next) => {
     message: Message.existCipherCode
   })
   await next()
+}
+
+/**
+ * 编辑时
+ * 判断是否不存在
+ * 验证 oldCode 是否一致
+ * 验证新 code 是否与老的 code 一样
+ */
+export const doCipherCodeUpdateConvert = async (ctx: Context, next: Next) => {
+  const sql: string = 'SELECT t1.id, t1.code FROM ciphers_code t1 WHERE t1.create_user = ?'
+  const res: any = await query(sql, ctx._user.id)
+  if (!res.length) {
+    throw new ExceptionNotFound({
+      message: Message.unexistCipherCode
+    })
+  }
+  const oldCode = ctx._params.oldCode
+  const code = ctx._params.code
+  const _code = decrypt(res[0].code)
+  if (oldCode !== _code) {
+    throw new ExceptionParameter({
+      message: `参数oldCode${Message.errorCipherCode}`
+    })
+  }
+  if (code === _code) {
+    throw new ExceptionParameter({
+      message: '参数code新的秘钥不能与老的秘钥相同'
+    })
+  }
+  await next()
+}
+
+/*
+ * 校验个人秘钥code是否存在
+ */
+export const isExistCipherCode = async (ctx: Context): Promise<boolean> => {
+  let flag = false
+  const sql: string = 'SELECT t1.id FROM ciphers_code t1 WHERE t1.create_user = ?'
+  const res: any = await query(sql, ctx._user.id)
+  if (res && res.length) {
+    flag = true
+  }
+  return flag
 }
