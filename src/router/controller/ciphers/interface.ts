@@ -18,6 +18,7 @@ export interface CipherListParams {
   keyword?: string
   type?: string
   classify?: string
+  highlight?: string
 }
 
 // 口令对象接口类型
@@ -29,6 +30,8 @@ export interface CipherOptions extends BaseOptions {
   type_label?: string
   classify?: any
   sort?: number
+  key_str?: string
+  iv_str?: string
 }
 
 // 口令列表获取返回类型

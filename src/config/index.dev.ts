@@ -35,8 +35,8 @@ function createConfig(): ConfigOptions {
     TOKEN: {
       // token 信息配置
       SECRET_KEY: 'dev_jiumu', // key
-      VALID_TIME: 60 * 60 * 24 * 7, // token 有效期24小时
-      REFRESH_VALID_TIME: 60 * 60 * 24 * 7 // 刷新 token 有效期7天
+      VALID_TIME: 60 * 60 * 24 * 7, // token 有效期7天
+      REFRESH_VALID_TIME: 60 * 60 * 24 * 15 // tokenRefresh 有效期15天
     },
     BASE_URL: 'http://localhost:3030/', // 默认服务路径
     STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-static'), // 静态资源路径
@@ -53,8 +53,8 @@ function createConfig(): ConfigOptions {
     LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-logs'), // 日志记录路径
     CRYPTOJS_KEY: '', // crypto-js 加密字符
     CRYPTOJS_IV: '', // crypto-js 加密字符
-    MAX_FIELDS_SIZE: 500 * 1024 * 1024, // 静态资源上传最大文件大小 默认500m
-    FILE_VAILD_TIME: 3 * 24 * 60 * 60 * 1000, // 非公开静态资源链接有效期
+    MAX_FIELDS_SIZE: 20 * 1024 * 1024, // 静态资源上传最大文件大小 默认20m 注意：切片上传不受限制
+    FILE_VAILD_TIME: 7 * 24 * 60 * 60 * 1000, // 非公开静态资源链接有效期7天
     IS_VERIFY_TOKEN_BY_REDIS: true, // 是否使用redis在线校验token信息 为false时将不校验IS_ALLOW_MULTIPLE_LOGIN条件
     IS_ALLOW_MULTIPLE_LOGIN: true, // 同一账号是否允许在不同设备不同平台（如浏览器）同时登录
     IS_VERIFY_API_PERMISSION: false, // 是否校验非公开api的用户请求权限

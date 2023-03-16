@@ -64,7 +64,7 @@ export default class API {
     await doFileChunkAdd(ctx)
   }
 
-  // 5. 切片上传，用于大文件上传
+  // 5. 删除指定文件的所有切片，用于大文件上传
   @Request({
     path: 'chunk/delete',
     methods: ['get', 'post']

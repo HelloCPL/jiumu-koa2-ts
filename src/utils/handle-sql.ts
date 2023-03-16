@@ -30,7 +30,7 @@ export const getUpdateSetData = (options: paramsOptions): SQLParamsOptions => {
   const data: any[] = []
   options.valid.forEach((key) => {
     const keys: KeyOptions = _findKeys(key)
-    if (options.data.hasOwnProperty(keys.dataKey) && !keys.isSqlKey) {
+    if (options.data.hasOwnProperty(keys.dataKey) && keys.isSqlKey) {
       sql = sql ? sql + ` , ${keys.sqlKey} = ? ` : ` ${keys.sqlKey} = ? `
       const value = options.data[keys.dataKey]
       data.push(value)
@@ -61,7 +61,7 @@ export const getSelectWhereData = (options: paramsOptions): SQLParamsOptions => 
       (options.data[keys.dataKey] ||
         options.data[keys.dataKey] === 0 ||
         options.data[keys.dataKey] === false) &&
-      !keys.isSqlKey
+      keys.isSqlKey
     if (flag) {
       sql = sql ? sql + ` ${connector} ${keys.sqlKey} = ? ` : ` ${keys.sqlKey} = ? `
       data.push(options.data[keys.dataKey])
@@ -87,13 +87,15 @@ export const getSelectWhereAsKeywordData = (options: paramsOptions): SQLParamsOp
   const data: any[] = []
   const { connector = 'OR', prefix } = options
   let keywords: any[] =
-    typeof options.data.keyword === 'string' ? options.data.keyword.replace(/\s/g, ',').split(',') : []
+    typeof options.data.keyword === 'string'
+      ? options.data.keyword.replace(/[\s|;|；|，]/g, ',').split(',')
+      : []
   // 去重
   keywords = handleKeywords(keywords)
   keywords.forEach((keyword) => {
     options.valid.forEach((key) => {
       const keys: KeyOptions = _findKeys(key)
-      if (!keys.isSqlKey) {
+      if (keys.isSqlKey) {
         let compair = 'LIKE'
         let word = `%${keyword}%`
         if (keys.isEqual) {
@@ -147,28 +149,32 @@ export const getOrderByKeyword = (options: OrderParamsOptions): OrderReturnOptio
   const highlight = options.data.highlight === '1'
   const { prefix, suffix = ',', color = '#f56c6c' } = options
   let keywords: any[] =
-    typeof options.data.keyword === 'string' ? options.data.keyword.replace(/\s/g, ',').split(',') : []
+    typeof options.data.keyword === 'string'
+      ? options.data.keyword
+          .replace(/[\s|;|；|，]/g, ',')
+          .split(',')
+          .filter((val) => val)
+      : []
   // 去重
   keywords = handleKeywords(keywords)
 
   options.valid.forEach((key) => {
     const { sqlKey, dataKey, isSqlKey } = _findKeys(key)
     if (keywords.length) {
-      keywords.forEach((keyword) => {
-        let sql: string = ''
-        if (!highlight) {
-          // 不高亮
-          if (!isSqlKey) orderValid += ` ${sqlKey}  AS ${dataKey}, `
-          sql = ''
-        } else {
-          if (!isSqlKey)
-            orderValid += ` REPLACE(${sqlKey}, '${keyword}', "<span data-search-key='search' style='color: ${color}'>${keyword}</span>") AS ${dataKey},  `
-          sql = ` (select LENGTH(${sqlKey}) - LENGTH('${keyword}')) DESC `
-        }
-        if (orderSql) orderSql += ` , ${sql} `
-        else orderSql += sql
-      })
-    } else if (!isSqlKey) {
+      if (highlight) {
+        keywords.forEach((keyword) => {
+          orderValid = `REPLACE(${
+            orderValid || sqlKey
+          }, '${keyword}', "<span data-search-key='search' style='color: ${color}'>${keyword}</span>")`
+          const sql = ` (select LENGTH(${sqlKey}) - LENGTH('${keyword}')) DESC `
+          if (orderSql) orderSql += ` , ${sql} `
+          else orderSql += sql
+        })
+        if (orderValid) orderValid = ` ${orderValid} AS ${dataKey}, `
+      } else if (isSqlKey) {
+        orderValid += ` ${sqlKey}  AS ${dataKey}, `
+      }
+    } else if (isSqlKey) {
       orderValid += ` ${sqlKey} AS ${dataKey}, `
     }
   })
@@ -185,7 +191,7 @@ interface KeyOptions {
   sqlKey: string
   dataKey: string
   isEqual?: boolean // 是否全等比较，模糊查询时可用
-  isSqlKey?: boolean // 是否参数sql字段查询
+  isSqlKey?: boolean // 是否参与sql字段查询
 }
 /**
  * 获取 SQL 语句字段名，即下划线命名
@@ -198,9 +204,9 @@ interface KeyOptions {
  */
 function _findKeys(str: string): KeyOptions {
   // 判断是否有 !
-  let isSqlKey = false
+  let isSqlKey = true
   if (str.startsWith('!')) {
-    isSqlKey = true
+    isSqlKey = false
     str = str.substring(1)
   }
   // 判断是否有逗号
