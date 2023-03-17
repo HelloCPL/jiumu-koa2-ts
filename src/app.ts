@@ -18,8 +18,8 @@ import Static from 'koa-static'
 import { verifyStatic } from './lib/verify-auth'
 import { initCompress } from './lib/compress'
 import { toPath } from './utils/tools'
-
-import '@/test/test'
+import { useMDAPI } from './router/mdapi'
+import { mountRequest } from '@/lib/mount-parameter'
 
 const app: Koa = new Koa()
 
@@ -36,6 +36,10 @@ app.use(
 )
 // 初始化全局变量/常量
 InitGlobal.init()
+
+// 初始化请求参数
+app.use(mountRequest)
+
 // 全局异常捕获
 app.use(catchError)
 // 注册路由
@@ -47,6 +51,8 @@ route.init()
  */
 app.use(verifyStatic) // 校验静态资源访问权限
 app.use(Static(STATIC_URL))
+// mkapi 文档静态资源
+useMDAPI(app)
 // 启用 gizp 压缩
 initCompress(app)
 
