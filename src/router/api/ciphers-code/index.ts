@@ -9,7 +9,7 @@ import { Prefix, Convert, Request, Required } from '@/router/router'
 import { doCipherCodeAddConvert, doCipherCodeUpdateConvert } from '@/router/controller/ciphers-code/convert'
 import { doCipherCodeAdd } from '@/router/controller/ciphers-code/add'
 import { doCipherCodeUpdate } from '@/router/controller/ciphers-code/update'
-import { doCipherCodeCheck } from '@/router/controller/ciphers-code/check'
+import { doCipherCodeCheckSelf, doCipherCodeExistSelf } from '@/router/controller/ciphers-code/check'
 
 @Prefix('cipher-code')
 export default class API {
@@ -35,12 +35,22 @@ export default class API {
     await doCipherCodeUpdate(ctx)
   }
 
-  // 3 查看秘钥code是否存在
+  // 3 查看个人秘钥code是否存在
   @Request({
-    path: 'check',
+    path: 'exist/self',
     methods: ['post']
   })
-  async doCipherCodeCheck(ctx: Context) {
-    await doCipherCodeCheck(ctx)
+  async doCipherCodeExistSelf(ctx: Context) {
+    await doCipherCodeExistSelf(ctx)
+  }
+
+  // 4 校验个人秘钥code是否正确
+  @Request({
+    path: 'check/self',
+    methods: ['post']
+  })
+  @Required(['code'])
+  async doCipherCodeCheckSelf(ctx: Context) {
+    await doCipherCodeCheckSelf(ctx)
   }
 }

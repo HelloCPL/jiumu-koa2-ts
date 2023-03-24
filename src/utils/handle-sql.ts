@@ -162,15 +162,17 @@ export const getOrderByKeyword = (options: OrderParamsOptions): OrderReturnOptio
     const { sqlKey, dataKey, isSqlKey } = _findKeys(key)
     if (keywords.length) {
       if (highlight) {
+        let _orderValid = ''
         keywords.forEach((keyword) => {
-          orderValid = `REPLACE(${
-            orderValid || sqlKey
-          }, '${keyword}', "<span data-search-key='search' style='color: ${color}'>${keyword}</span>")`
+          let valid = _orderValid || sqlKey
+          valid = valid.trimEnd()
+          if (valid.endsWith(',')) valid = valid.substring(0, valid.length - 1)
+          _orderValid = `REPLACE(${valid}, '${keyword}', "<span data-search-key='search' style='color: ${color}'>${keyword}</span>")`
           const sql = ` (select LENGTH(${sqlKey}) - LENGTH('${keyword}')) DESC `
           if (orderSql) orderSql += ` , ${sql} `
           else orderSql += sql
         })
-        if (orderValid) orderValid = ` ${orderValid} AS ${dataKey}, `
+        if (_orderValid) orderValid += ` ${_orderValid} AS ${dataKey}, `
       } else if (isSqlKey) {
         orderValid += ` ${sqlKey}  AS ${dataKey}, `
       }

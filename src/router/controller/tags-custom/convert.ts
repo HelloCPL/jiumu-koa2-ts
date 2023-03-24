@@ -20,6 +20,7 @@ export const doTagCustomAddConvert = async (ctx: Context, next: Next) => {
     table: 'tags_custom',
     where: [
       { key: 'label', value: ctx._params.label },
+      { key: 'type', value: ctx._params.type },
       { key: 'create_user', value: ctx._user.id }
     ],
     throwType: true,
