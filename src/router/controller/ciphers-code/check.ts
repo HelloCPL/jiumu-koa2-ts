@@ -22,7 +22,7 @@ export const doCipherCodeExistSelf = async (ctx: Context) => {
  * 校验个人秘钥code是否正确
  */
 export const doCipherCodeCheckSelf = async (ctx: Context) => {
-  const sql = 'SELECT t1.code FROM ciphers t1 WHERE t1.create_user = ?'
+  const sql = 'SELECT t1.code FROM ciphers_code t1 WHERE t1.create_user = ?'
   const res: any = await query(sql, ctx._user.id)
   if (res && res.length) {
     const code = decrypt(res[0].code)
