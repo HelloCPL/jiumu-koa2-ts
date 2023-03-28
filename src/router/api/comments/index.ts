@@ -9,7 +9,11 @@ import { Prefix, Convert, Request, Required } from '@/router/router'
 import { doCommentAddConvert, doCommentDeleteByIdConvert } from '@/router/controller/comments/convert'
 import { doCommentFirstAdd, doCommentSecondAdd } from '@/router/controller/comments/add'
 import { doCommentDeleteById } from '@/router/controller/comments/delete'
-import { doCommentFirstGetList, doCommentSecondGetList } from '@/router/controller/comments/get'
+import {
+  doCommentGetOne,
+  doCommentFirstGetList,
+  doCommentSecondGetList
+} from '@/router/controller/comments/get'
 
 @Prefix('comment')
 export default class API {
@@ -54,7 +58,17 @@ export default class API {
     await doCommentDeleteById(ctx)
   }
 
-  // 4 获取评论列表
+  // 4 获取指定的某条评论
+  @Request({
+    path: 'get/one',
+    methods: ['get', 'post']
+  })
+  @Required(['id'])
+  async doCommentGetOne(ctx: Context) {
+    await doCommentGetOne(ctx)
+  }
+
+  // 5 获取评论列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post']

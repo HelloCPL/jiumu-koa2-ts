@@ -17,9 +17,9 @@
 |:---:|:---:|:---:|:---:|
 | title | string | 是 | 问答标题 |
 | content | string | 是 | 内容 |
-| isDraft | string | 是 | 是否草稿，1 是 0 否，默认0 |
+| isDraft | string | 是 | 是否草稿，'1' 是 '0' 否，默认 '0' |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用questionClassify |
-| isSecret | string | 否 | 是否为私密问答，1 是 0 否，默认0 |
+| isSecret | string | 否 | 是否为私密问答，'1' 是 '0' 否，默认 '0' |
 | sort | mediumint | 否 | 排序，值越小越前，默认1 |
 | remarks | string | 否 | 备注 |
 
@@ -29,7 +29,7 @@
 {
   "code": 200,
   "message": "操作成功",
-  "data": null,
+  "data": "25598ae2-83c4-4cde-972e-fc0574f83d1e",
   "total": 0
 }
 ```
@@ -53,9 +53,9 @@
 | id | string | 是 | 问答id |
 | title | string | 否 | 问答标题 |
 | content | string | 否 | 内容 |
-| isDraft | string | 否 | 是否草稿，1 是 0 否 |
+| isDraft | string | 否 | 是否草稿，'1' 是 '0' 否 |
 | classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用questionClassify |
-| isSecret | string | 否 | 是否为私密问答，1 是 0 否 |
+| isSecret | string | 否 | 是否为私密问答，'1' 是 '0' 否 |
 | sort | mediumint | 否 | 排序，值越小越前 |
 | remarks | string | 否 | 备注 |
 
@@ -80,7 +80,7 @@
 #### 请求
 
 - `get | post`
-- `question/update`
+- `question/delete`
 
 #### 参数
 
@@ -128,9 +128,9 @@
 | title | string | 标题 |
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，1 是 0 否 |
-| isSecret | string | 是否为私密问答，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isDraft | string | 是否草稿，'1' 是 '0' 否 |
+| isSecret | string | 是否为私密问答，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
@@ -139,11 +139,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | likeCount | number | 收藏总数 |
-| isSelf | string | 是否本人的问答，1 是 0 否 |
+| isSelf | string | 是否本人的问答，'1' 是 '0' 否 |
 | commentCount | number | 收藏总数 |
 
 #### 返回示例
@@ -224,8 +224,8 @@
 | pageSize | number | 否 | 每页页数，默认 10 |
 | keyword | string | 否 | 关键字 |
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| isDraft | string | 否 | 是否草稿，1 是 0 否 |
-| isSecret | string | 否 | 是否为私密问答，1 是 0 否 |
+| isDraft | string | 否 | 是否草稿，'1' 是 '0' 否 |
+| isSecret | string | 否 | 是否为私密问答，'1' 是 '0' 否 |
 | classify | string | 否 | 自定义文章类型，分类类型建议用questionClassify，单选 |
 | showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
@@ -243,9 +243,9 @@
 | title | string | 标题 |
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，1 是 0 否 |
-| isSecret | string | 是否为私密问答，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isDraft | string | 是否草稿，'1' 是 '0' 否 |
+| isSecret | string | 是否为私密问答，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
@@ -254,12 +254,12 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
-| likeCount | number | 收藏总数 |
-| isSelf | string | 是否本人的问答，1 是 0 否 |
-| commentCount | number | 收藏总数 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
+| collectionCount | number | 收藏总数 |
+| isSelf | string | 是否本人的问答，'1' 是 '0' 否 |
+| commentCount | number | 评论总数 |
 
 #### 返回示例
 
@@ -346,9 +346,9 @@
 | title | string | 标题 |
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，1 是 0 否 |
-| isSecret | string | 是否为私密问答，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isDraft | string | 是否草稿，'1' 是 '0' 否 |
+| isSecret | string | 是否为私密问答，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
@@ -357,11 +357,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | likeCount | number | 收藏总数 |
-| isSelf | string | 是否本人的问答，1 是 0 否 |
+| isSelf | string | 是否本人的问答，'1' 是 '0' 否 |
 | commentCount | number | 收藏总数 |
 
 #### 返回示例
@@ -449,9 +449,9 @@
 | title | string | 标题 |
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，1 是 0 否 |
-| isSecret | string | 是否为私密问答，1 是 0 否 |
-| isTop | string | 是否置顶，1 是 0 否 |
+| isDraft | string | 是否草稿，'1' 是 '0' 否 |
+| isSecret | string | 是否为私密问答，'1' 是 '0' 否 |
+| isTop | string | 是否置顶，'1' 是 '0' 否 |
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
@@ -460,11 +460,11 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isLike | string | 是否点赞，1 是 0 否 |
+| isLike | string | 是否点赞，'1' 是 '0' 否 |
 | likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，1 是 0 否 |
+| isCollection | string | 是否收藏，'1' 是 '0' 否 |
 | likeCount | number | 收藏总数 |
-| isSelf | string | 是否本人的问答，1 是 0 否 |
+| isSelf | string | 是否本人的问答，'1' 是 '0' 否 |
 | commentCount | number | 收藏总数 |
 
 #### 返回示例

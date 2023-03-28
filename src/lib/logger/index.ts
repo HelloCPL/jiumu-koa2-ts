@@ -38,8 +38,8 @@ const formatLogger: LoggerOptions = {
 
   // 响应日志
   response(options: ParamsOptions, ctx?: Context) {
-    const requestCount = ctx ? ctx._requestCount : global._requestCount
-    const requestStart = ctx ? ctx._requestStart : global._requestStart
+    const requestCount = ctx ? ctx._requestCount : global._requestCount || 0
+    const requestStart = ctx ? ctx._requestStart : global._requestStart || 0
     const requestEnd = process.hrtime.bigint()
     const costTime = requestEnd - requestStart
     let logText = ''

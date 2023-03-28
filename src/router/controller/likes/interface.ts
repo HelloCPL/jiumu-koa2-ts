@@ -15,6 +15,11 @@ export interface LikeOptions extends BaseOptions {
   type_label?: string
 }
 
+export interface LikeOneParams {
+  id: string
+  showUserInfo?: any
+}
+
 // 点赞参数
 export interface LikeParams {
   userId: string

@@ -4,8 +4,6 @@
  * @update 2021-08-07 15:15:08
  */
 
-import fs, { ReadStream, WriteStream } from 'fs'
-import path from 'path'
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
 import { validateRange } from '@/utils/validator'
@@ -16,8 +14,7 @@ import _ from 'lodash'
 import { getFileById } from './get'
 import { Terminal } from '@/enums'
 import { FileInfoOptions } from './interface'
-import { dirExist } from '@/utils/dir-exist'
-import { STATIC_URL, STATIC_DIRS } from '@/config'
+import { createFile, getPath, sureIsDirSync } from './tools'
 
 /**
  * 文件上传 可上传一个或多个文件 返回数组格式
@@ -48,8 +45,8 @@ async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | n
       { value: ctx._data.query.isSecret, range: ['0', '1'], default: '0' },
       {
         value: ctx._data.query.staticPlace,
-        range: ['files', 'images', 'videos', 'editors', 'sources'],
-        default: ''
+        range: ['files', 'images', 'videos', 'editors', 'sources', 'files_big'],
+        default: 'files'
       }
     ],
     true
@@ -60,7 +57,9 @@ async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | n
   const id = getUuId()
   const filePath = getFileRandomName(<string>file.name)
   // 先写文件
-  await _readerStream(file, staticPlace, filePath)
+  const dir = getPath(staticPlace)
+  sureIsDirSync(dir)
+  await createFile(file, dir, filePath)
   // 再写入数据库
   const sql =
     'INSERT files_info (id, file_path, file_name, file_size, suffix,static_place, create_user, is_secret, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
@@ -82,44 +81,4 @@ async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | n
   await query(sql, data)
   const fileInfo = await getFileById(id, ctx._user.id)
   return fileInfo
-}
-
-/*
- * 写文件
- * file 文件 staticPlace 文件存放位置 filePath 文件名
- */
-const _readerStream = async (file: File, staticPlace: string, filePath: string) => {
-  const dir = path.join(STATIC_URL, `${staticPlace}`)
-  // 判断目录是否存在，不存在则创建
-  await dirExist(dir)
-  // 创建可读流
-  const reader: ReadStream = fs.createReadStream(file.path)
-  const savePath = path.join(dir, filePath)
-  const upStream: WriteStream = fs.createWriteStream(savePath)
-  reader.pipe(upStream)
-}
-
-/*
- * 大文件上传切片 只传一个
-https://juejin.cn/post/7016498747496464415
-fileHash
-chunkHash = fileHash + index
- */
-export const doFileAddChunk = async (ctx: Context) => {
-  const files: any = ctx.request.files
-  // const file = ctx.request.files.chunk
-  const file = files.file as File
-  const fileHash = ctx._params.fileHash
-  const chunkHash = ctx._params.chunkHash
-  const chunkdir = `files_temp/${fileHash}`
-
-  // 判断目录是否存在，不存在则创建
-  await dirExist(chunkdir)
-  const chunkIndex = chunkHash.split('-')[1]
-  console.log(chunkIndex)
-  // 判断文件是否存在
-  // 写入切片
-
-  // 写文件
-  throw new Success()
 }

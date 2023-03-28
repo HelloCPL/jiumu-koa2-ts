@@ -8,7 +8,7 @@
 export interface FileInfoOptions extends BaseOptions {
   id: string
   file_path: string
-  file_name?: string
+  file_name: string
   file_size?: number
   suffix?: string
   type?: string

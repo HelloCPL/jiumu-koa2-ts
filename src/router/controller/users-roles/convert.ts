@@ -7,7 +7,7 @@
 import { Context, Next } from 'koa'
 import { query } from '@/db'
 import { Message } from '@/enums'
-import { Success } from '@/utils/http-exception'
+import { ExceptionParameter, Success } from '@/utils/http-exception'
 import { isExist } from '../convert'
 
 /**
@@ -44,7 +44,10 @@ export const doUserRoleAddConvert = async (ctx: Context, next: Next) => {
 export async function doUserRoleDeleteConvert(ctx: Context, next: Next) {
   // 判断用户-角色关联是否不存在
   const flag = await _isExist(ctx)
-  if (!flag) throw new Success()
+  if (!flag)
+    throw new ExceptionParameter({
+      message: Message.unexistUserRole
+    })
   await next()
 }
 

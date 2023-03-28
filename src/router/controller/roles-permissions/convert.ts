@@ -7,7 +7,7 @@
 import { Context, Next } from 'koa'
 import { query } from '@/db'
 import { Message } from '@/enums'
-import { Success } from '@/utils/http-exception'
+import { ExceptionParameter, Success } from '@/utils/http-exception'
 import { isExist } from '../convert'
 
 /**
@@ -44,7 +44,10 @@ export const doRolePermissionAddConvert = async (ctx: Context, next: Next) => {
 export async function doRolePermissionDeleteConvert(ctx: Context, next: Next) {
   // 判断角色-权限关联是否不存在
   const flag = await _isExist(ctx)
-  if (!flag) throw new Success()
+  if (!flag)
+    throw new ExceptionParameter({
+      message: Message.unexistRolePermission
+    })
   await next()
 }
 

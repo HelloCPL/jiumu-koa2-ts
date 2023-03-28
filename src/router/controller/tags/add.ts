@@ -19,8 +19,9 @@ export const doTagAdd = async (ctx: Context) => {
   const currentTime = formatDate(new Date())
   const sql: string =
     'INSERT tags (id, parent_code, code, label, sort, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const id = getUuId()
   const data = [
-    getUuId(),
+    id,
     parentCode,
     ctx._params.code,
     ctx._params.label,
@@ -31,5 +32,5 @@ export const doTagAdd = async (ctx: Context) => {
     ctx._params.remarks
   ]
   await query(sql, data)
-  throw new Success()
+  throw new Success({ data: id })
 }

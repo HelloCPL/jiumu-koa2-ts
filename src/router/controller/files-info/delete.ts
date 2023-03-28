@@ -7,9 +7,7 @@
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
 import { execTrans } from '@/db'
-import fs, { Stats } from 'fs'
-import path from 'path'
-import { STATIC_URL } from '@/config'
+import { deleteFileSync, getPath } from './tools'
 
 interface FileDeleteOptions extends ObjectAny {
   file_path: string
@@ -29,9 +27,8 @@ export const doFileDelete = async (ctx: Context) => {
   const filesPath: FileDeleteOptions[] = res[0]
   if (filesPath.length) {
     filesPath.forEach((item: FileDeleteOptions) => {
-      const filePath: string = path.join(STATIC_URL, `${item.static_place}`, item.file_path)
-      const stat: Stats = fs.statSync(filePath)
-      if (stat.isFile()) fs.unlinkSync(filePath)
+      const dir = getPath(item.static_place, item.file_path)
+      deleteFileSync(dir)
     })
   }
   throw new Success()

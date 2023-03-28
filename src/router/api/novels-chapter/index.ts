@@ -23,7 +23,7 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['novelId', 'title', 'content', 'sort', 'isDraft'])
+  @Required(['novelId', 'title', 'content', 'sort&isInt', 'isDraft'])
   @Convert(doNovelChapterAddConvert)
   async doNovelChapterAdd(ctx: Context) {
     await doNovelChapterAdd(ctx)

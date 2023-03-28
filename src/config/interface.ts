@@ -51,6 +51,7 @@ export interface ConfigOptions extends ObjectAny {
   IS_VERIFY_API_PERMISSION: boolean
   IS_VERIFY_STATIC_PERMISSION: boolean
   IS_PRINT_LOG: boolean
+  IS_SHOW_MDAPI: boolean
 }
 
 export interface SecretConfigOption {

@@ -28,6 +28,7 @@ export interface NovelOptions extends BaseOptions {
   comment_count?: number
   chapter_comment_count?: number
   chapter_count?: number
+  word_count?: number
 }
 
 // 获取列表参数类型接口

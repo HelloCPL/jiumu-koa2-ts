@@ -12,17 +12,11 @@ import { ExceptionParameter, ExceptionForbidden } from '@/utils/http-exception'
 
 /**
  * 修改时
- * 判断问答是否不存在，且是否为自己发布的问答
+ * 判断问答是否不存在，且是否为自己发布的问答 使用 doQuestionDeleteConvert
  * 若传 isDraft 判断 isDraft 是否 ['1', '0'] 范围
  * 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
  */
 export const doQuestionUpdateConvert = async (ctx: Context, next: Next) => {
-  // 判断问答是否不存在
-  const sql = 'SELECT id, create_user FROM questions WHERE id = ?'
-  const res: any = await query(sql, ctx._params.id)
-  if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistQuestion })
-  // 是否为自己发布的问答
-  if (res[0]['create_user'] !== ctx._user.id) throw new ExceptionForbidden({ message: Message.forbidden })
   // 若传 isDraft 判断 isDraft 是否 ['1', '0'] 范围
   if (ctx._params.hasOwnProperty('isDraft')) {
     await validateRange({

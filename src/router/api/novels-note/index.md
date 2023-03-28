@@ -17,12 +17,14 @@
 
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
-| target | array | 是 | 所属目标对象集合 `[{id, type}]`，其中type暂时支持['502', '503', '504', '505', '507'] |
 | content | string | 是 | 笔记内容 |
+| targetId | string | 否 | 关联目标id 若传id必须传关联目标类型 |
+| targetType | string | 否 | 关联目标类型 暂时支持['502', '503', '504', '505', '507'] |
+| targetShare | string | 否 | 关联目标共享字段，用于可共同关联的列表 |
 | title | string | 否 | 笔记内容 |
 | classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个，若为连载/连载章节分类类型建议用novelClassify，其他看情况而定 |
 | sort | number | 否 | 序号，从小到大，默认1 |
-| isSecret | string | 否 | 是否为私密笔记，1 是 0 否，默认1 |
+| isSecret | string | 否 | 是否为私密笔记，'1' 是 '0' 否，默认 '1' |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例
@@ -31,7 +33,7 @@
 {
   "code": 200,
   "message": "操作成功",
-  "data": null,
+  "data": "32767960-a653-47c4-839f-cc1983f6723c",
   "total": 0
 }
 ```
@@ -54,12 +56,11 @@
 | 参数名 | 类型 | 是否必填 | 说明 |
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 笔记id |
-| target | array | 否 | 所属目标对象集合 `[{id, type}]`，其中type暂时支持['502', '503', '504', '505', '507'] |
 | content | string | 否 | 笔记内容 |
 | title | string | 否 | 笔记内容 |
 | classify | string | 否 | 自定义标签分类的id，如人物、武器等，最多三个，若为连载/连载章节分类类型建议用novelClassify，其他看情况而定 |
 | sort | number | 否 | 序号，从小到大，默认1 |
-| isSecret | string | 否 | 是否为私密笔记，1 是 0 否，默认1 |
+| isSecret | string | 否 | 是否为私密笔记，'1' 是 '0' 否，默认 '1' |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例
@@ -78,7 +79,7 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 删除笔记，仅本人可删除
+- 删除笔记，仅本人可删除 同时会删除关联的笔记
 
 #### 请求
 
@@ -135,7 +136,7 @@
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
 | sort | number | 排序 |
-| isSecret | string | 是否为私密笔记，1 是 0 否 |
+| isSecret | string | 是否为私密笔记，'1' 是 '0' 否 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
 | createUserAvatar | object/null | 创建者头像 |
@@ -143,7 +144,7 @@
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isSelf | string | 是否本人的笔记，1 是 0 否 |
+| isSelf | string | 是否本人的笔记，'1' 是 '0' 否 |
 
 #### 返回示例
 
@@ -229,7 +230,7 @@
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
-| isSecret | string | 否 | 是否为私密小说，1 是 0 否 |
+| isSecret | string | 否 | 是否为私密笔记，'1' 是 '0' 否 |
 | classify | string | 否 | 自定义文章类型，单选，若为连载/连载章节分类类型建议用novelClassify，其他看情况而定 |
 | showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
 
@@ -244,19 +245,19 @@
 | 参数名 | 类型 | 说明 |
 |:---:|:---:|:---:|
 | id | string | 笔记id |
-| target | array/[] | 所属目标集合 `[{id, title, type, typeLabel, isTarget(是否为当前指定目标 '1' 是 '0' 否) }]` |
+| target | array/[] | 所属目标集合 `[{id, title, type, typeLabel}]` |
 | title | string | 标题 |
 | content | string | 内容 |
 | classify | array/[] | 用户自定义标签，文件数组/[] |
 | sort | number | 排序 |
-| isSecret | string | 是否为私密笔记，1 是 0 否 |
+| isSecret | string | 是否为私密笔记，'1' 是 '0' 否 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | terminal | string | 操作终端 |
 | remarks | string | 备注 |
-| isSelf | string | 是否本人的笔记，1 是 0 否 |
+| isSelf | string | 是否本人的笔记，'1' 是 '0' 否 |
 
 #### 返回示例
 
@@ -272,8 +273,7 @@
           "id": "9e232a68-d0db-45bd-8ba7-e29cc1b70921",
           "type": "504",
           "title": "连续载体1",
-          "typeLabel": "连载来源",
-          "isTarget": "1"
+          "typeLabel": "连载来源"
         }
       ],
       "title": "标题3",

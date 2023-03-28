@@ -11,7 +11,7 @@ export interface NovelChapterOptions extends BaseOptions {
   novel_name?: string
   novel_author?: string
   title: string
-  content: string
+  content?: string
   sort: number
   is_secret: string
   is_draft: string
@@ -23,6 +23,7 @@ export interface NovelChapterOptions extends BaseOptions {
   is_collection?: string
   collection_count?: number
   comment_count?: number
+  word_count?: number
 }
 
 // 获取列表参数类型接口
@@ -33,6 +34,7 @@ export interface NovelChapterListParams {
   userId: string
   isSecret?: string
   isDraft?: string
+  isConcise?: string
   showUserInfo?: any
 }
 
@@ -46,4 +48,11 @@ export interface NovelChapterOneParams {
   id: string
   userId: string
   showUserInfo?: any
+}
+
+export interface handleNovalChapterParams {
+  userId: string
+  showUserInfo?: any
+  isConcise?: string
+  showContent?: boolean
 }

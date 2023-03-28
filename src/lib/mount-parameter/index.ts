@@ -11,11 +11,10 @@ import { getTerminal } from '@/utils/tools'
 import xss from '@/utils/xss'
 import _ from 'lodash'
 
-/**
- * 挂载参数
- * 即 ctx._data 包含 {body query path header}
+/*
+ * 初始化请求参数
  */
-export const mountParameter = async (ctx: Context, next: Next) => {
+export const mountRequest = async (ctx: Context, next: Next) => {
   // 记录日志
   const cost = BigInt(2 * 1e6) // 中间消费时间
   global._requestStart = process.hrtime.bigint() - cost
@@ -23,7 +22,14 @@ export const mountParameter = async (ctx: Context, next: Next) => {
   global._requestCount++
   ctx._requestCount = global._requestCount
   global._results = {}
+  await next()
+}
 
+/**
+ * 挂载参数
+ * 即 ctx._data 包含 {body query path header}
+ */
+export const mountParameter = async (ctx: Context, next: Next) => {
   // 处理参数
   const v: any = await new LinValidator().validate(ctx)
   ctx._data = <DataOptions>v.data

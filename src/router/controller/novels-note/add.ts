@@ -6,7 +6,7 @@
 
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
-import { query } from '@/db'
+import { execTrans, query } from '@/db'
 import { Terminal } from '@/enums'
 import { formatDate, getUuId } from '@/utils/tools'
 import { validateRange } from '@/utils/validator'
@@ -20,10 +20,10 @@ export const doNovelNoteAdd = async (ctx: Context) => {
   const currentTime = formatDate(new Date())
   const sort: number = params.sort || 1
   const sql: string =
-    'INSERT novels_note (id, target, title, content, classify, sort,is_secret, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    'INSERT novels_note (id, title, content, classify, sort,is_secret, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const id = getUuId()
   const data = [
-    getUuId(),
-    params._target,
+    id,
     params.title,
     params.content,
     params.classify,
@@ -35,6 +35,25 @@ export const doNovelNoteAdd = async (ctx: Context) => {
     Terminal[ctx._terminal],
     params.remarks
   ]
-  await query(sql, data)
-  throw new Success()
+  const sqlData = [{ sql, data }]
+  if (params.targetId) {
+    const sql2 =
+      'INSERT novels_note_link (id, status, note_id, target_id, target_type, share, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+    const data2 = [
+      getUuId(),
+      '1',
+      id,
+      params.targetId,
+      params.targetType,
+      params.targetShare,
+      currentTime,
+      Terminal[ctx._terminal]
+    ]
+    sqlData.push({
+      sql: sql2,
+      data: data2
+    })
+  }
+  await execTrans(sqlData)
+  throw new Success({ data: id })
 }

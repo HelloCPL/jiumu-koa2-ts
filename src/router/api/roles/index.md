@@ -26,7 +26,7 @@
 {
   "code": 200,
   "message": "操作成功",
-  "data": null,
+  "data": "d6bb3323-b581-4b46-b7e4-4da9a899ea6c",
   "total": 0
 }
 ```
@@ -50,7 +50,7 @@
 | id | string | 是 | 角色id |
 | code | string | 是 | 角色code，不能重复 |
 | label | string | 是 | 角色说明 |
-| sort | mediumint | 否 | 排序，值越小越前，默认1 |
+| sort | mediumint | 否 | 排序，值越小越前 |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例

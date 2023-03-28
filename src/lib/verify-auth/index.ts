@@ -10,7 +10,7 @@
 import { Context, Next } from 'koa'
 import { analysisToken } from '@/router/controller/users/token'
 import { Code, Message } from '@/enums'
-import { ExceptionHttp, ExceptionAuthFailed } from '@/utils/http-exception'
+import { ExceptionHttp, ExceptionAuthFailed, ExceptionNotFound } from '@/utils/http-exception'
 import { getSuffix, toPath } from '@/utils/tools'
 import { query } from '@/db'
 import { decrypt } from '@/utils/crypto'
@@ -93,6 +93,8 @@ export const verifyStatic = async (ctx: Context, next: Next) => {
           throw new ExceptionHttp({ message: Message.lockedTime, code: Code.locked })
         }
       }
+    } else if (url.startsWith('/pc/mdapi/') && !url.endsWith('index.md')) {
+      throw new ExceptionNotFound()
     }
   }
   await next()

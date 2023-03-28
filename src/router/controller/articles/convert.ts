@@ -35,7 +35,7 @@ export const doArticleAddConvert = async (ctx: Context, next: Next) => {
 
 /**
  * 修改时
- * 判断博客文章是否不存在，且是否为自己发布的博客文章
+ * 判断博客文章是否不存在，且是否为自己发布的博客文章 使用 doArticleDeleteConvert
  * 若传 contentType 判断 contentType 是否系统标签400范围
  * 若传 type 判断 type 是否系统标签300范围
  * 若传 isDraft 判断 isDraft 是否 ['1', '0'] 范围
@@ -43,12 +43,6 @@ export const doArticleAddConvert = async (ctx: Context, next: Next) => {
  * 若传 isTop 判断 isTop 是否 ['1', '0'] 范围
  */
 export const doArticleUpdateConvert = async (ctx: Context, next: Next) => {
-  // 判断博客文章是否不存在
-  const sql = 'SELECT id, create_user FROM articles WHERE id = ?'
-  const res: any = await query(sql, ctx._params.id)
-  if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistArticle })
-  // 是否为自己发布的博客文章
-  if (res[0]['create_user'] !== ctx._user.id) throw new ExceptionForbidden({ message: Message.forbidden })
   // 若传 contentType 判断 contentType 是否系统标签400范围
   if (ctx._params.hasOwnProperty('contentType')) {
     await validateRange({

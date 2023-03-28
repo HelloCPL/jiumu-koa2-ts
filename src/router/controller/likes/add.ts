@@ -16,8 +16,9 @@ import { formatDate, getUuId } from '@/utils/tools'
 export const doLikeAdd = async (ctx: Context) => {
   const sql: string =
     'INSERT likes (id, target_id, create_user, type, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?)'
+  const id = getUuId()
   const data = [
-    getUuId(),
+    id,
     ctx._params.targetId,
     ctx._user.id,
     ctx._params.type,
@@ -25,5 +26,5 @@ export const doLikeAdd = async (ctx: Context) => {
     Terminal[ctx._terminal]
   ]
   await query(sql, data)
-  throw new Success()
+  throw new Success({ data: id })
 }

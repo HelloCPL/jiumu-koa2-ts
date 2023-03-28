@@ -16,7 +16,7 @@ interface ExistDataOptions {
 
 interface ExistBaseOptions {
   table: string // 指定表名称
-  throwType?: boolean // 抛出条件，但 noThrow 为 false 有效
+  throwType?: boolean // 抛出条件，当 noThrow 为 false 有效
   message?: string // 指定提示消息
   noThrow?: boolean // 不抛出错误，如果不抛出则返回是否存在
 }

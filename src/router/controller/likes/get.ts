@@ -5,12 +5,22 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { execTrans } from '@/db'
+import { execTrans, query } from '@/db'
 import { Context } from 'koa'
-import { LikeOptions, LikeParams, LikeReturn } from './interface'
+import { LikeOneParams, LikeOptions, LikeParams, LikeReturn } from './interface'
 import { getFileById } from '../files-info/get'
 
-// 根据 userId 获取点赞列表
+// 获取指定的一个点赞
+export const doLikeGetOne = async (ctx: Context) => {
+  const params = {
+    id: ctx._params.id,
+    showUserInfo: ctx._params.showUserInfo || '1'
+  }
+  const data = await getListOne(params)
+  throw new Success({ data })
+}
+
+// 获取本用户的点赞列表
 export const doLikeGetListSelf = async (ctx: Context) => {
   const params = {
     userId: ctx._user.id,
@@ -34,8 +44,24 @@ export const doLikeGetList = async (ctx: Context) => {
   throw new Success(data)
 }
 
+/*
+ * 获取指定的一个点赞
+ */
+export const getListOne = async (params: LikeOneParams): Promise<LikeOptions | null> => {
+  // 处理创建者信息字段
+  const userInfoField =
+    params.showUserInfo === '1' ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, ' : ''
+  const sql = `SELECT t1.id, t1.target_id, t1.create_user, ${userInfoField} t1.type, t2.label AS type_label, t1.create_time, t1.terminal FROM likes t1 LEFT JOIN tags t2 ON t1.type = t2.code LEFT JOIN users t3 ON t1.create_user = t3.id WHERE t1.id = ?`
+  const data = [params.id]
+  const res: any = await query(sql, data)
+  if (res && res.length) {
+    await _handleLike(res, params.showUserInfo)
+    return res
+  } else return null
+}
+
 /**
- * 获取角色列表
+ * 获取点赞列表
  */
 export const getLikeList = async (params: LikeParams): Promise<LikeReturn> => {
   // 处理创建者信息字段

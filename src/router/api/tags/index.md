@@ -27,7 +27,7 @@
 {
   "code": 200,
   "message": "操作成功",
-  "data": null,
+  "data": "2906d294-a11d-4f82-a601-988013e6dd01",
   "total": 0
 }
 ```
@@ -52,7 +52,7 @@
 | code | string | 否 | 标签code，不能重复 |
 | label | string | 否 | 标签说明 |
 | parentCode | string | 否 | 父级标签code |
-| sort | mediumint | 否 | 排序，值越小越前，默认1 |
+| sort | mediumint | 否 | 排序，值越小越前 |
 | remarks | string | 否 | 备注 |
 
 #### 返回示例

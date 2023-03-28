@@ -9,7 +9,11 @@ import { Prefix, Convert, Request, Required } from '@/router/router'
 import { doCollectionAddConvert, doCollectionDeleteConvert } from '@/router/controller/collections/convert'
 import { doCollectionAdd } from '@/router/controller/collections/add'
 import { doCollectionDelete } from '@/router/controller/collections/delete'
-import { doCollectionGetListSelf, doCollectionGetList } from '@/router/controller/collections/get'
+import {
+  doCollectionGetOne,
+  doCollectionGetListSelf,
+  doCollectionGetList
+} from '@/router/controller/collections/get'
 
 @Prefix('collection')
 export default class API {
@@ -37,6 +41,16 @@ export default class API {
 
   // 3 获取本用户的收藏列表
   @Request({
+    path: 'get/one',
+    methods: ['get', 'post']
+  })
+  @Required(['id'])
+  async doCollectionGetOne(ctx: Context) {
+    await doCollectionGetOne(ctx)
+  }
+
+  // 4 获取本用户的收藏列表
+  @Request({
     path: 'get/list/self',
     methods: ['get', 'post']
   })
@@ -44,7 +58,7 @@ export default class API {
     await doCollectionGetListSelf(ctx)
   }
 
-  // 4 根据 userId 获取收藏列表
+  // 5 根据 userId 获取收藏列表
   @Request({
     path: 'get/list',
     methods: ['get', 'post']

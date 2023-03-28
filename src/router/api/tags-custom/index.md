@@ -26,7 +26,7 @@
 {
   "code": 200,
   "message": "操作成功",
-  "data": null,
+  "data": "2c395423-4d47-4ec5-9ae1-4c8211a4b289",
   "total": 0
 }
 ```
@@ -49,7 +49,7 @@
 |:---:|:---:|:---:|:---:|
 | id | string | 是 | 用户自定义标签id |
 | label | string | 否 | 用户自定义标签说明 |
-| sort | mediumint | 否 | 排序，值越小越前，默认1 |
+| sort | mediumint | 否 | 排序，值越小越前 |
 | type | string | 否 | 自定义类型，用户可通过自定义type，获取时传type以区分不同的用户自定义标签，一般由前端定义 |
 
 #### 返回示例
@@ -468,7 +468,7 @@
 | label | string | 用户自定义标签描述 |
 | type | string | 用户自定义类型 |
 | sort | number | 排序，值越小越前 |
-| isSelf | string | 是否我的标签 1 是 0 否 |
+| isSelf | string | 是否我的标签 '1' 是 '0' 否 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
 | createUser | string | 创建用户id |

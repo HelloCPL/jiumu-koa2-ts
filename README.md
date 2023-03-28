@@ -132,3 +132,14 @@
      - `附件id` `用户自定义标签id` 参数不作是否存在校验
      - `系统标签code` `['1', '0']等指定范围` 参数会作是否存在校验
      - 其他参数类型看 `api/**/index.md` 说明即可
+
+  4. 静态资源单独放在 `jiumu-koa2-ts-[null | test | prod]-static` 目录，会自动创建
+    - `files` 一般存放 文件
+    - `images` 一般存放 图片
+    - `videos` 一般存放 视频
+    - `editors` 一般存放 富文本上传资源
+    - `sources` 一般存放 资源
+    - `files_big` 一般存放 大文件
+    - `files_big_upload_temp` 一般存放 大文件上传切片缓存
+    - `files_big_download_temp` 一般存放 大文件下载分片缓存
+    

@@ -48,7 +48,7 @@ export const getSourceOne = async (params: SourceOneParams): Promise<SourceOptio
   // 处理创建者信息字段
   const userInfoField =
     params.showUserInfo === '1' ? ' t2.username AS create_user_name, t2.avatar AS create_user_avatar, ' : ''
-  const sql: string = `SELECT t1.id, t1.title, t1.attachment, t1.type, t9.label as type_label, t1.classify, t1.is_secret, t1.is_top, t1.sort, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t3.id AS is_like, (SELECT COUNT(t4.id) FROM likes t4 WHERE t4.target_id = t1.id AND t1.id) AS like_count, t5.id AS is_collection, (SELECT COUNT(t6.id) FROM collections t6 WHERE t6.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t7.id) FROM comments_first t7 WHERE t7.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t8.id) FROM comments_second t8 WHERE t8.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM sources t1 LEFT JOIN users t2 ON t1.create_user = t2.id LEFT JOIN likes t3 ON (t1.id = t3.target_id AND t3.create_user = ?) LEFT JOIN collections t5 ON (t1.id = t5.target_id AND t5.create_user = ?) LEFT JOIN tags t9 ON t1.type = t9.code  WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
+  const sql: string = `SELECT t1.id, t1.title, t1.attachment, t1.type, t9.label as type_label, t1.classify, t1.is_secret, t1.is_top, t1.sort, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t3.id AS is_like, (SELECT COUNT(t4.id) FROM likes t4 WHERE t4.target_id = t1.id) AS like_count, t5.id AS is_collection, (SELECT COUNT(t6.id) FROM collections t6 WHERE t6.target_id = t1.id) AS collection_count, (SELECT COUNT(t7.id) FROM comments_first t7 WHERE t7.target_id = t1.id) AS comment_count1, (SELECT COUNT(t8.id) FROM comments_second t8 WHERE t8.comment_first_target_id = t1.id) AS comment_count2 FROM sources t1 LEFT JOIN users t2 ON t1.create_user = t2.id LEFT JOIN likes t3 ON (t1.id = t3.target_id AND t3.create_user = ?) LEFT JOIN collections t5 ON (t1.id = t5.target_id AND t5.create_user = ?) LEFT JOIN tags t9 ON t1.type = t9.code  WHERE t1.id = ? AND (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?))`
   const data = [params.userId, params.userId, params.id, params.userId]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -69,7 +69,7 @@ export const getSourceList = async (options: SourceListParams): Promise<SourceLi
   })
   // 处理搜索排序
   const orderParams = getOrderByKeyword({
-    valid: ['t4.(username):createUserName', 't1.title'],
+    valid: ['!t4.(username):createUserName', 't1.title'],
     data: options
   })
   // 处理普通where参数
@@ -110,7 +110,7 @@ export const getSourceList = async (options: SourceListParams): Promise<SourceLi
     options.showUserInfo === '1' ? ' t4.username AS create_user_name, t4.avatar AS create_user_avatar, ' : ''
   const sql1 = `SELECT COUNT(t1.id) AS total FROM sources t1 LEFT JOIN users t4 ON t1.create_user = t4.id ${whereSQL}`
   const data1 = [...whereData]
-  const sql2 = `SELECT t1.id, t1.title, t1.type, t3.label AS type_label, t1.attachment, t1.classify, t1.is_secret, t1.is_top, t1.sort, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t5.id AS is_like, (SELECT COUNT(t6.id) FROM likes t6 WHERE t6.target_id = t1.id AND t1.id) AS like_count, t7.id AS is_collection, (SELECT COUNT(t8.id) FROM collections t8 WHERE t8.target_id = t1.id AND t1.id) AS collection_count, (SELECT COUNT(t9.id) FROM comments_first t9 WHERE t9.target_id = t1.id AND t1.id) AS comment_count1, (SELECT COUNT(t10.id) FROM comments_second t10 WHERE t10.comment_first_target_id = t1.id AND t1.id) AS comment_count2 FROM sources t1 LEFT JOIN tags t3 ON t1.type = t3.code LEFT JOIN users t4 ON t1.create_user = t4.id LEFT JOIN likes t5 ON (t1.id = t5.target_id AND t5.create_user = ?) LEFT JOIN collections t7 ON (t1.id = t7.target_id AND t7.create_user = ?) ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, t1.type, t3.label AS type_label, t1.classify, t1.is_secret, t1.is_top, t1.sort, t1.create_user, ${userInfoField} ${orderParams.orderValid} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t5.id AS is_like, (SELECT COUNT(t6.id) FROM likes t6 WHERE t6.target_id = t1.id) AS like_count, t7.id AS is_collection, (SELECT COUNT(t8.id) FROM collections t8 WHERE t8.target_id = t1.id) AS collection_count, (SELECT COUNT(t9.id) FROM comments_first t9 WHERE t9.target_id = t1.id) AS comment_count1, (SELECT COUNT(t10.id) FROM comments_second t10 WHERE t10.comment_first_target_id = t1.id) AS comment_count2 FROM sources t1 LEFT JOIN tags t3 ON t1.type = t3.code LEFT JOIN users t4 ON t1.create_user = t4.id LEFT JOIN likes t5 ON (t1.id = t5.target_id AND t5.create_user = ?) LEFT JOIN collections t7 ON (t1.id = t7.target_id AND t7.create_user = ?) ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
   const data2 = [options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
@@ -125,8 +125,24 @@ export const getSourceList = async (options: SourceListParams): Promise<SourceLi
 async function _handleSource(datas: SourceOptions | SourceOptions[], userId: string, showUserInfo?: any) {
   const _handleList = async (data: SourceOptions) => {
     // 处理附件
-    if (data.attachment && data.type === '701')
-      data.attachment = await getFileByIds(data.attachment, data.create_user)
+    if (data.attachment) {
+      if (data.type === '701') {
+        data.attachment = await getFileByIds(data.attachment, data.create_user)
+      } else {
+        const sql =
+          'SELECT t1.id, t1.title, t1.link, t1.cover_img1, t1.cover_img2, t1.sort, t1.create_user, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM sources_link t1 WHERE FIND_IN_SET(t1.id, ?) AND t1.create_user = ? ORDER BY t1.sort, t1.update_time DESC'
+        const res: any = await query(sql, [data.attachment, data.create_user])
+        if (Array.isArray(res) && res.length) {
+          for (let i = 0, len = res.length; i < len; i++) {
+            if (res[i].cover_img1) {
+              res[i].cover_img1 = await getFileById(res[i].cover_img1, data.create_user)
+            }
+          }
+        }
+        data.attachment = res
+      }
+    }
+
     // 处理自定义标签
     if (data.classify)
       data.classify = await getTagCustomByIds({

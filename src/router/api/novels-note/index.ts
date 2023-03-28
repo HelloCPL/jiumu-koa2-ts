@@ -23,7 +23,7 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['target', 'content'])
+  @Required(['content'])
   @Convert(doNovelNoteAddConvert)
   async doNovelNoteAdd(ctx: Context) {
     await doNovelNoteAdd(ctx)
@@ -35,7 +35,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doNovelNoteUpdateConvert)
+  @Convert(doNovelNoteDeleteConvert, doNovelNoteUpdateConvert)
   async doNovelNoteUpdate(ctx: Context) {
     await doNovelNoteUpdate(ctx)
   }

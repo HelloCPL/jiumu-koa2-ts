@@ -6,10 +6,20 @@
 
 import { Context } from 'koa'
 import { Prefix, Request, Required, Convert } from '@/router/router'
-import { doFileAdd, doFileAddChunk } from '@/router/controller/files-info/add'
+import { doFileAdd } from '@/router/controller/files-info/add'
+import {
+  doFileChunkAdd,
+  doFileChunkDelete,
+  doFileChunkMerge,
+  doFileChunkVerify
+} from '@/router/controller/files-info/chunk'
 import { doFileGetOne } from '@/router/controller/files-info/get'
 import { doFileDelete } from '@/router/controller/files-info/delete'
-import { doFileDeleteConvert, doFileGetOneConvert } from '@/router/controller/files-info/convert'
+import {
+  doFileDeleteConvert,
+  doFileGetOneConvert,
+  doFileChunkMergeConvert
+} from '@/router/controller/files-info/convert'
 
 @Prefix('file')
 export default class API {
@@ -44,32 +54,44 @@ export default class API {
     await doFileGetOne(ctx)
   }
 
-  // 4 获取指定用户的所有文件/图片列表 返回数组或[]
-  // @Request({
-  //   path: 'get/list/byuserid',
-  //   methods: ['post', 'get'],
-  // })
-  // @Required(['userId'])
-  // async doFileGetListByUserId(ctx: Context) {
-  //   await doFileGetListByUserId(ctx)
-  // }
-
-  // 5 获取本用户的所有文件/图片列表 返回数组或[]
-  // @Request({
-  //   path: 'get/list/self',
-  //   methods: ['post', 'get'],
-  // })
-  // async doFileGetListSelf(ctx: Context) {
-  //   await doFileGetListSelf(ctx)
-  // }
-
-  // 6. 大文件上传切片
+  // 4. 切片上传，用于大文件上传
   @Request({
-    path: 'add/big',
+    path: 'chunk/add',
     methods: ['post']
   })
-  @Required(['fileHash', 'chunkHash'])
-  async doFileAddChunk(ctx: Context) {
-    await doFileAddChunk(ctx)
+  @Required(['fileHash', 'chunkIndex&isInt'])
+  async doFileChunkAdd(ctx: Context) {
+    await doFileChunkAdd(ctx)
+  }
+
+  // 5. 删除指定文件的所有切片，用于大文件上传
+  @Request({
+    path: 'chunk/delete',
+    methods: ['get', 'post']
+  })
+  @Required(['fileHash'])
+  async doFileChunkDelete(ctx: Context) {
+    await doFileChunkDelete(ctx)
+  }
+
+  // 6. 切片合并，用于大文件上传
+  @Request({
+    path: 'chunk/merge',
+    methods: ['get', 'post']
+  })
+  @Required(['fileName', 'fileHash', 'chunkSize&isInt', 'chunkLength&isInt'])
+  @Convert(doFileChunkMergeConvert)
+  async doFileChunkMerge(ctx: Context) {
+    await doFileChunkMerge(ctx)
+  }
+
+  // 7. 校验大文件是否存在
+  @Request({
+    path: 'chunk/verify',
+    methods: ['get', 'post']
+  })
+  @Required(['fileHash', 'fileName'])
+  async doFileChunkVerify(ctx: Context) {
+    await doFileChunkVerify(ctx)
   }
 }
