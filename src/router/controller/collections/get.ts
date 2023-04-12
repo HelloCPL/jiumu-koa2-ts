@@ -99,6 +99,7 @@ export const getCollectionList = async (params: CollectionParams): Promise<Colle
     { sql: sql2, data: data2 }
   ])
   const collectionData = <CollectionOptions[]>res[1]
+  console.log(11, collectionData)
   await _handleCollectionData(collectionData, params.showUserInfo)
   return {
     total: res[0][0]['total'],
@@ -123,7 +124,7 @@ function _getCollectionType(type: string) {
     const ta = `tt${index + 1}`
     let key = 'title'
     if (val === '504') key = 'name'
-    typeSql += ` (SELECT ${ta}.${key} FROM ${t} ${ta} WHERE ${ta}.id = t1.target_id AND t1.type = '${val}'  AND ${ta}.id) AS title_${t}, `
+    typeSql += ` (SELECT ${ta}.${key} FROM ${t} ${ta} WHERE ${ta}.id = t1.target_id AND t1.type = '${val}') AS title_${t}, `
   })
   return {
     typeSql,
