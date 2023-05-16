@@ -89,7 +89,8 @@ const myxss = new FilterXSS({
           name === 'noreset' ||
           name === 'target'))
     if (flag) return name + '="' + escapeAttrValue(value) + '"'
-  }
+  },
+  escapeHtml: (html) => html
 })
 
 export default myxss
