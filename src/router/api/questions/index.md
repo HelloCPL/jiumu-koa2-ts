@@ -110,6 +110,7 @@
 
 - `get | post`
 - `question/get/one`
+- 公开
 
 #### 参数
 
@@ -314,11 +315,11 @@
 - `pc | web | app | wechat` 端
 - 获取指定用户非草稿且公开的问答列表
 
-
 #### 请求
 
 - `get | post`
 - `question/get/list/byuserid`
+- 公开
 
 #### 参数
 
@@ -422,6 +423,7 @@
 
 - `get | post`
 - `question/get/list`
+- 公开
 
 #### 参数
 

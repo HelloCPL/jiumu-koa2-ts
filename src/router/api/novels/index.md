@@ -114,6 +114,7 @@
 
 - `get | post`
 - `novel/get/one`
+- 公开
 
 #### 参数
 
@@ -325,6 +326,8 @@
 
 - `get | post`
 - `novel/get/list/byuserid`
+- 公开
+
 #### 参数
 
 | 参数名 | 类型 | 是否必填 | 说明 |
@@ -414,6 +417,7 @@
 
 - `get | post`
 - `novel/get/list`
+- 公开
 
 #### 参数
 

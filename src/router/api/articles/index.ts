@@ -54,7 +54,8 @@ export default class API {
   // 4 获取指定的博客文章
   @Request({
     path: 'get/one',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   @Required(['id'])
   async doArticleGetOne(ctx: Context) {
@@ -74,7 +75,8 @@ export default class API {
   // 6 获取指定用户非草稿且公开的博客文章列表
   @Request({
     path: 'get/list/byuserid',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   @Required(['userId'])
   async doArticleGetListByUserId(ctx: Context) {
