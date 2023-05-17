@@ -385,6 +385,7 @@
 
 - `get | post`
 - `article/get/list/byuserid`
+- 公开
 
 #### 参数
 
