@@ -54,7 +54,8 @@ export default class API {
   // 4 获取指定的小说
   @Request({
     path: 'get/one',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   @Required(['id'])
   async doNovelGetOne(ctx: Context) {
@@ -74,7 +75,8 @@ export default class API {
   // 6 获取指定用户所有非草稿且公开的小说列表
   @Request({
     path: 'get/list/byuserid',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   @Required(['userId'])
   async doNovelGetListByUserId(ctx: Context) {
@@ -86,7 +88,8 @@ export default class API {
   // 7 获取所有的非草稿且公开小说列表
   @Request({
     path: 'get/list',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   async doNovelGetList(ctx: Context) {
     ctx._params.userId = null

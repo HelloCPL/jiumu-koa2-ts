@@ -54,7 +54,8 @@ export default class API {
   // 4. 获取指定的小说章节
   @Request({
     path: 'get/one',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   @Required(['id'])
   async doNovelChapterGetOne(ctx: Context) {
@@ -64,7 +65,8 @@ export default class API {
   // 5. 获取指定小说所有的章节列表
   @Request({
     path: 'get/list',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   @Required(['novelId'])
   async doNovelChapterGetList(ctx: Context) {

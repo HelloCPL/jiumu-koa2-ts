@@ -111,6 +111,7 @@
 
 - `get | post`
 - `novel-chapter/get/one`
+- 公开
 
 #### 参数
 
@@ -209,6 +210,7 @@ shai
 
 - `get | post`
 - `novel-chapter/get/list`
+- 公开
 
 #### 参数
 
