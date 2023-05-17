@@ -17,25 +17,33 @@ import { decrypt } from '@/utils/crypto'
 import dayjs from 'dayjs'
 import Logger from '../logger'
 import { IS_VERIFY_API_PERMISSION, IS_VERIFY_STATIC_PERMISSION, STATIC_DIRS } from '@/config'
+import { getTerminal } from '@/utils/tools'
 
 /**
  * 拦截普通路由请求 token 权限
  */
 export const verifyRoute = async (ctx: Context, next: Next) => {
   const url = toPath(ctx.request.url)
-  if (global._unlessPath.indexOf(url) === -1) {
+  Logger.request(ctx)
+  if (global._unlessPath.indexOf(url) === -1 || ctx.request.header['authorization']) {
     const tokenInfo = await analysisToken(ctx)
     if (tokenInfo.code === Code.success) {
       ctx._user = tokenInfo.data
       if (IS_VERIFY_API_PERMISSION) {
         await verifyApiByUser(ctx, next)
       }
-    } else {
-      Logger.request(ctx)
+    } else if (global._unlessPath.indexOf(url) === -1) {
       throw new ExceptionAuthFailed(tokenInfo)
     }
   }
-  Logger.request(ctx)
+  if (!ctx._user) {
+    ctx._user = {
+      id: '',
+      phone: '',
+      terminal: getTerminal(ctx),
+      'user-agent': <string>ctx.request.header['user-agent']
+    }
+  }
   await next()
 }
 

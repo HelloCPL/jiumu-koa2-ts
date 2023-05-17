@@ -86,7 +86,8 @@ export default class API {
   // 7 获取所有非草稿且公开的博客文章列表
   @Request({
     path: 'get/list',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   async doArticleGetList(ctx: Context) {
     ctx._params.userId = null
