@@ -49,7 +49,8 @@ export default class API {
   // 4 获取指定的问答
   @Request({
     path: 'get/one',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   @Required(['id'])
   async doQuestionGetOne(ctx: Context) {
@@ -69,7 +70,8 @@ export default class API {
   // 6 获取指定用户非草稿且公开的问答列表
   @Request({
     path: 'get/list/byuserid',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   @Required(['userId'])
   async doQuestionGetListByUserId(ctx: Context) {
@@ -81,7 +83,8 @@ export default class API {
   // 7 获取所有非草稿且公开问答列表
   @Request({
     path: 'get/list',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   async doQuestionGetList(ctx: Context) {
     ctx._params.userId = null

@@ -118,6 +118,7 @@
 
 - `get | post`
 - `article/get/one`
+- 公开
 
 #### 参数
 
@@ -506,6 +507,7 @@
 
 - `get | post`
 - `article/get/list`
+- 公开
 
 #### 参数
 

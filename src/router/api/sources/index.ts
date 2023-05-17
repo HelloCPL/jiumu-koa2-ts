@@ -54,7 +54,8 @@ export default class API {
   // 4 获取指定的资源
   @Request({
     path: 'get/one',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   @Required(['id'])
   async doSourceGetOne(ctx: Context) {
@@ -74,7 +75,8 @@ export default class API {
   // 6 获取指定用户公开的资源列表
   @Request({
     path: 'get/list/byuserid',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   @Required(['userId'])
   async doSourceGetListByUserId(ctx: Context) {
@@ -85,7 +87,8 @@ export default class API {
   // 7 获取所有公开的问答列表
   @Request({
     path: 'get/list',
-    methods: ['get', 'post']
+    methods: ['get', 'post'],
+    unless: true
   })
   async doSourceGetList(ctx: Context) {
     ctx._params.userId = null

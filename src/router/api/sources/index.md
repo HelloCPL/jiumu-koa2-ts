@@ -111,6 +111,7 @@
 
 - `get | post`
 - `source/get/one`
+- 公开
 
 #### 参数
 
@@ -348,6 +349,7 @@
 
 - `get | post`
 - `source/get/list/byuserid`
+- 公开
 
 #### 参数
 
@@ -449,6 +451,7 @@
 
 - `get | post`
 - `source/get/list`
+- 公开
 
 #### 参数
 
