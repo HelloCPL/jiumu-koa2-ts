@@ -55,16 +55,13 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
   const token = tokenOrigin.name
   const tokenInfo: TokenOptions = <TokenOptions>JWT.decode(token)
   try {
-    // 校验 token 是否有效 并获取解析后的信息
-    const tokenVerify: TokenOptions = <TokenOptions>JWT.verify(token, TOKEN.SECRET_KEY)
+    // redis在线校验token信息
     if (IS_VERIFY_TOKEN_BY_REDIS) {
-      // redis在线校验token信息
-
       // 获取redis同步的token信息
       const tokenKey = _getTokenKey({
-        id: tokenVerify.id,
-        terminal: tokenVerify.terminal,
-        'user-agent': tokenVerify['user-agent'],
+        id: tokenInfo.id,
+        terminal: tokenInfo.terminal,
+        'user-agent': tokenInfo['user-agent'],
         key
       })
       const tokenRedis: any = await clientGet(tokenKey)
@@ -73,25 +70,25 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
       if (
         !tokenRedis ||
         !tokenRedisInfo ||
-        tokenVerify.phone !== tokenRedisInfo.phone ||
-        tokenVerify.id !== tokenRedisInfo.id
+        tokenInfo.phone !== tokenRedisInfo.phone ||
+        tokenInfo.id !== tokenRedisInfo.id
       )
         return { message: Message.authLogin, code: Code.authLogin }
       // 校验登录设备、请求路径与终端的信息是否一致
       const uuid = <string>ctx.request.header['user-agent']
-      if (ctx._terminal !== tokenVerify.terminal || uuid !== tokenVerify['user-agent'])
+      if (ctx._terminal !== tokenInfo.terminal || uuid !== tokenInfo['user-agent'])
         return { message: Message.errorDevice, code: Code.forbidden }
       // 校验是否允许多平台登录
-      if (tokenVerify['user-agent'] !== tokenRedisInfo['user-agent']) {
+      if (tokenInfo['user-agent'] !== tokenRedisInfo['user-agent']) {
         if (IS_ALLOW_MULTIPLE_LOGIN) return { message: Message.errorDevice, code: Code.forbidden }
         else return { message: Message.errorLogin, code: Code.forbidden }
       }
-    } else if (!tokenVerify.id) {
+    } else if (!tokenInfo.id) {
       return { message: Message.forbidden, code: Code.forbidden }
     } else {
       // mysql校验token用户是否合法
       const sql = 'SELECT id FROM users where id = ?'
-      const res: any = await query(sql, tokenVerify.id)
+      const res: any = await query(sql, tokenInfo.id)
       if (!res.length) {
         return { message: Message.authLogin, code: Code.authLogin }
       }
@@ -113,4 +110,23 @@ export function _getTokenKey(info: TokenSaveParamsOptions): string {
   if (IS_ALLOW_MULTIPLE_LOGIN)
     return `${info.id}_${PUBLIC_PATH}_${info.terminal}_${info['user-agent']}_${info.key}`
   else return `${info.id}_${PUBLIC_PATH}_${info.terminal}_${info.key}`
+}
+
+/*
+ * 解析直接给定的token
+ */
+export function verifyToken(token: string): TokenOptions | null {
+  let info = null
+  if (!token) return info
+  let str = token
+  if (str.startsWith('Basic ')) {
+    str = Base64.decode(str.substr(6))
+    if (str.endsWith(':')) str = str.substring(0, str.length - 1)
+  }
+  try {
+    info = <TokenOptions>JWT.verify(str, TOKEN.SECRET_KEY)
+  } catch (e) {
+    info = null
+  }
+  return info
 }
