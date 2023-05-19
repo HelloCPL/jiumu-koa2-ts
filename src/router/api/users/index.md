@@ -11,6 +11,7 @@
 
 - `post`
 - `user/register`
+- 公开
 
 #### 参数
 
@@ -48,6 +49,7 @@
 
 - `pc | web | app | wechat` 端
 - 用户登录
+- 公开
 
 #### 请求
 
@@ -471,6 +473,7 @@
 
 - `post get`
 - `user/update/token`
+- 公开
 
 #### 参数
 - 将`tokenRefresh`放在`header`请求头`authorization`上即可
@@ -510,9 +513,12 @@
 
 - `post get`
 - `user/exit`
+- 公开
 
 #### 参数
-- 无
+| 参数名 | 类型 | 是否必填 | 说明 |
+|:---:|:---:|:---:|:---:|
+| tokenRefresh | string | 否 | 刷新token，可选，以防token过期确保同步redis，建议传入 |
 
 #### 返回示例
 
