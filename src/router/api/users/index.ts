@@ -129,7 +129,8 @@ export default class API {
   // 11 退出登录
   @Request({
     path: 'exit',
-    methods: ['post', 'get']
+    methods: ['post', 'get'],
+    unless: true
   })
   async doUserExit(ctx: Context) {
     await doUserExit(ctx)
