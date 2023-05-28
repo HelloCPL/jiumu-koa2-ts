@@ -29,6 +29,9 @@ app.use(KoaCors())
 app.use(
   KoaBody({
     multipart: true,
+    jsonLimit: '10mb',
+    formLimit: '128kb',
+    textLimit: '128kb',
     formidable: {
       maxFieldsSize: MAX_FIELDS_SIZE // 设置上传文件大小最大限制
     }
