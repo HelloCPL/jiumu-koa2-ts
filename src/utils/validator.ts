@@ -10,11 +10,11 @@
  */
 
 import { Rule, LinValidator } from '@/lib/lin-validator'
-import _ from 'lodash'
 import { ExceptionHttp, ExceptionParameter } from './http-exception'
 import { Message } from '@/enums'
 import { getTagByParentCode } from '@/router/controller/tags/get'
 import { TagOptions } from '@/router/controller/tags/interface'
+import { isArray, isBoolean, isPlainObject, isString } from 'lodash'
 
 type RulesOptions = any[]
 
@@ -29,9 +29,9 @@ class ValidatorParam extends LinValidator {
   }
 
   protected setRule(rule: ValidatorOptions) {
-    if (!_.isArray(rule.rules) || rule.rules.length === 0) throw new ExceptionHttp({ message: Message.rules })
+    if (!isArray(rule.rules) || rule.rules.length === 0) throw new ExceptionHttp({ message: Message.rules })
     const ruleList = []
-    if (_.isArray(rule.rules[0])) {
+    if (isArray(rule.rules[0])) {
       rule.rules.forEach((item: any) => {
         ruleList.push(new Rule(item[0], item[1], item[2]))
       })
@@ -53,7 +53,7 @@ class ValidatorParam extends LinValidator {
 export class ValidatorParameter extends ValidatorParam {
   constructor(rules: ValidatorOptions) {
     super()
-    if (_.isPlainObject(rules)) {
+    if (isPlainObject(rules)) {
       this.setRule(rules)
     } else {
       throw new ExceptionHttp({ message: Message.rules })
@@ -71,7 +71,7 @@ export class ValidatorParameter extends ValidatorParam {
 export class ValidatorParameters extends ValidatorParam {
   constructor(rules: ValidatorOptions[]) {
     super()
-    if (_.isArray(rules)) {
+    if (isArray(rules)) {
       for (let i = 0, len = rules.length; i < len; i++) {
         const rule = rules[i]
         this.setRule(rule)
@@ -98,10 +98,10 @@ export const validateRange = async (data: RangeOptions | RangeOptions[], noThrow
   const _handleValid = async (info: RangeOptions) => {
     let flag = false
     if (info.value || info.value === 0 || info.value === false) {
-      if (_.isArray(info.range)) {
+      if (isArray(info.range)) {
         // @ts-ignore
         info.range.find((val) => {
-          if (_.isBoolean(info.value)) {
+          if (isBoolean(info.value)) {
             if (info.value === val) {
               flag = true
               return true
@@ -113,7 +113,7 @@ export const validateRange = async (data: RangeOptions | RangeOptions[], noThrow
             }
           }
         })
-      } else if (_.isString(info.range)) {
+      } else if (isString(info.range)) {
         const res = await getTagByParentCode(info.range)
         if (res && res.length) {
           const codes = _getTagsCode(res)
@@ -125,7 +125,7 @@ export const validateRange = async (data: RangeOptions | RangeOptions[], noThrow
     else if (noThrow) return info.default
     else throw new ExceptionParameter({ message: info.message || Message.parameter })
   }
-  if (_.isArray(data)) {
+  if (isArray(data)) {
     const targetData: any[] = []
     for (let i = 0, len = data.length; i < len; i++) {
       const value = await _handleValid(data[i])
@@ -143,7 +143,7 @@ function _getTagsCode(data: TagOptions[]): string[] {
   const _handleGetCode = (arr: TagOptions[]) => {
     arr.forEach((item) => {
       codes.push(item.code)
-      if (_.isArray(item.children) && item.children.length) _handleGetCode(item.children)
+      if (isArray(item.children) && item.children.length) _handleGetCode(item.children)
     })
   }
   _handleGetCode(data)

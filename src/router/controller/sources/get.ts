@@ -11,7 +11,7 @@ import { SourceOptions, SourceListParams, SourceListReturn, SourceOneParams } fr
 import { getFileById, getFileByIds } from '../files-info/get'
 import { getTagCustomByIds } from '../tags-custom/get'
 import { getSelectWhereAsKeywordData, getSelectWhereData, getOrderByKeyword } from '@/utils/handle-sql'
-import _ from 'lodash'
+import { isArray } from 'lodash'
 
 // 获取指定的某个资源
 export const doSourceGetOne = async (ctx: Context) => {
@@ -168,7 +168,7 @@ async function _handleSource(datas: SourceOptions | SourceOptions[], userId: str
       data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
     }
   }
-  if (_.isArray(datas)) {
+  if (isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {
       await _handleList(datas[i])
     }

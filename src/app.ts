@@ -20,6 +20,7 @@ import { initCompress } from './lib/compress'
 import { toPath } from './utils/tools'
 import { useMDAPI } from './router/mdapi'
 import { mountRequest } from '@/lib/mount-parameter'
+import Logger from '@/lib/logger'
 
 const app: Koa = new Koa()
 
@@ -60,5 +61,10 @@ useMDAPI(app)
 initCompress(app)
 
 Http.createServer(app.callback()).listen(PORT, () => {
-  console.log(`${toPath(BASE_URL, PUBLIC_PATH)} is running...`)
+  Logger.info(
+    {
+      message: `服务启动成功 ${toPath(BASE_URL, PUBLIC_PATH)} is running...`
+    },
+    true
+  )
 })

@@ -11,7 +11,7 @@
 import { Context, Next } from 'koa'
 import { symbolRoutePrefix, Route } from './index'
 import { ValidatorParameters, ValidatorOptions } from '@/utils/validator'
-import _ from 'lodash'
+import { isArray } from 'lodash'
 import { sureIsArray } from '@/utils/tools'
 import { RequestOptions, RouteOptions } from './interface'
 import { MessageParameter, Message } from '@/enums'
@@ -39,7 +39,7 @@ export const Prefix =
 export const Request =
   (options: RequestOptions): MethodDecorator =>
   (target: ObjectAny, key: string | symbol, descriptor: PropertyDescriptor) => {
-    if (!(_.isArray(options.terminals) && options.terminals.length))
+    if (!(isArray(options.terminals) && options.terminals.length))
       options.terminals = ['pc', 'app', 'web', 'wechat']
     Route.__DecoratedRouters.set(
       <RouteOptions>{

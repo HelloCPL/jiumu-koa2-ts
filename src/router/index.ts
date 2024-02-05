@@ -10,8 +10,9 @@ import path from 'path'
 import glob from 'glob'
 import { sureIsArray, toPath } from '@/utils/tools'
 import { RouteOptions } from './interface'
-import { mountParameter } from '@/lib/mount-parameter'
+// import { mountParameter } from '@/lib/mount-parameter'
 import { verifyRoute } from '@/lib/verify-auth'
+import Logger from '@/lib/logger'
 
 const router = new Router()
 
@@ -35,16 +36,18 @@ export class Route {
    * 自动注册路由 初始化
    */
   init() {
+    Logger.info({ message: '路由注册 初始化' })
     // 加载 api 接口
     glob.sync(path.join(__dirname, './api/**/*.js')).forEach((item) => {
       require(item)
     })
+    Logger.info({ message: '路由注册 添加白名单；匹配路由注册' })
     for (const [config, controller] of Route.__DecoratedRouters) {
       // 处理路由中间件方法
       const controllers: Function[] = sureIsArray(controller)
       // 自定义路由中间件 自己调整中间件顺序
       const middleares: Function[] = [
-        mountParameter, // 挂载参数处理
+        // mountParameter, // 挂载参数处理
         verifyRoute // 权限校验
       ]
       controllers.unshift(...middleares)
@@ -55,7 +58,9 @@ export class Route {
         routePaths.push(toPath(value, config.target[symbolRoutePrefix], config.path))
       })
       // 不做校验的路由集合
-      if (config.unless) global._unlessPath.push(...routePaths)
+      if (config.unless) {
+        global._unlessPath.push(...routePaths)
+      }
 
       // 匹配路由
       controllers.forEach((_controller) => {
@@ -69,8 +74,8 @@ export class Route {
     }
 
     // 组装匹配好的路由
-
     this.app.use(this.router.routes())
+    Logger.info({ message: '路由注册 完成' })
     // 处理不存在的路由
     this.app.use(this.router.allowedMethods())
   }

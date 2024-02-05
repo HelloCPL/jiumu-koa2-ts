@@ -42,6 +42,7 @@ export interface ConfigOptions extends ObjectAny {
   STATIC_URL: string
   STATIC_DIRS: string[]
   LOGS_URL: string
+  LOGD_DAYS_TO_KEEP: number
   CRYPTOJS_KEY: string
   CRYPTOJS_IV: string
   MAX_FIELDS_SIZE: number

@@ -48,9 +48,11 @@ function createConfig(): ConfigOptions {
       'sources',
       'files_big',
       'files_big_upload_temp',
-      'files_big_download_temp'
+      'files_big_download_temp',
+      'store'
     ], // 静态资源目录
     LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-prod-logs'), // 日志记录路径
+    LOGD_DAYS_TO_KEEP: 30, // 日志有效保留最长时间，超过则清除 单位 day
     CRYPTOJS_KEY: '', // crypto-js 加密字符
     CRYPTOJS_IV: '', // crypto-js 加密字符
     MAX_FIELDS_SIZE: 30 * 1024 * 1024, // 静态资源上传最大文件大小 默认30m 注意：切片上传不受限制
