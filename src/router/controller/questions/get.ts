@@ -10,8 +10,8 @@ import { Context } from 'koa'
 import { QuestionOptions, QuestionListParams, QuestionListReturn, QuestionOneParams } from './interface'
 import { getTagCustomByIds } from '../tags-custom/get'
 import { getSelectWhereAsKeywordData, getSelectWhereData, getOrderByKeyword } from '@/utils/handle-sql'
-import _ from 'lodash'
 import { getFileById } from '../files-info/get'
+import { isArray } from 'lodash'
 
 // 获取指定的某个问答
 export const doQuestionGetOne = async (ctx: Context) => {
@@ -152,7 +152,7 @@ async function _handleQuestion(
       data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
     }
   }
-  if (_.isArray(datas)) {
+  if (isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {
       await _handleList(datas[i])
     }

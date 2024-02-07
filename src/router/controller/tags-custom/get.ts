@@ -17,7 +17,7 @@ import {
 } from './interface'
 import { getSelectWhereData, getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
 import { getFileById } from '../files-info/get'
-import _ from 'lodash'
+import { isArray } from 'lodash'
 
 // 获取我的指定一个或多个自定义标签
 export const getTagCustomGetIdsSelf = async (ctx: Context) => {
@@ -140,7 +140,7 @@ async function _handleTagCustom(datas: TagCustomOptions[], params: TagCustomHand
       data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
     }
   }
-  if (_.isArray(datas)) {
+  if (isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {
       await _handleList(datas[i])
     }

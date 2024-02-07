@@ -7,7 +7,7 @@
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
 import { execTrans } from '@/db'
-import { deleteFileSync, getPath } from './tools'
+import { deleteFileSync, getPath } from '@/utils/files'
 
 interface FileDeleteOptions extends ObjectAny {
   file_path: string

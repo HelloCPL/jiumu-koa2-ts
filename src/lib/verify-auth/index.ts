@@ -14,17 +14,14 @@ import { ExceptionHttp, ExceptionAuthFailed, ExceptionNotFound } from '@/utils/h
 import { getSuffix, toPath } from '@/utils/tools'
 import { query } from '@/db'
 import { decrypt } from '@/utils/crypto'
-import dayjs from 'dayjs'
-import Logger from '../logger'
 import { IS_VERIFY_API_PERMISSION, IS_VERIFY_STATIC_PERMISSION, STATIC_DIRS } from '@/config'
-import { getTerminal } from '@/utils/tools'
+import { getTerminal, getDateValueOf, getCurrentTime } from '@/utils/tools'
 
 /**
  * 拦截普通路由请求 token 权限
  */
 export const verifyRoute = async (ctx: Context, next: Next) => {
   const url = toPath(ctx.request.url)
-  Logger.request(ctx)
   if (global._unlessPath.indexOf(url) === -1 || ctx.request.header['authorization']) {
     const tokenInfo = await analysisToken(ctx)
     if (tokenInfo.code === Code.success) {
@@ -93,8 +90,8 @@ export const verifyStatic = async (ctx: Context, next: Next) => {
         }
         // 校验链接有效期
         try {
-          const targetTime = dayjs(Number(vt)).valueOf()
-          const currentTime = dayjs().valueOf()
+          const targetTime = getDateValueOf(Number(vt))
+          const currentTime = getDateValueOf(getCurrentTime())
           if (targetTime < currentTime)
             throw new ExceptionHttp({ message: Message.lockedTime, code: Code.locked })
         } catch (e) {

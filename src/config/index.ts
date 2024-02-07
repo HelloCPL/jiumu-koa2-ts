@@ -8,14 +8,14 @@ const env = process.argv[2]
 import { ConfigOptions } from './interface'
 
 function createConfig(): ConfigOptions {
-  if (env === 'dev') {
-    const config = require('./index.dev')
+  if (env === 'prod') {
+    const config = require('./index.prod')
     return config.default || config
   } else if (env === 'test') {
     const config = require('./index.test')
     return config.default || config
   } else {
-    const config = require('./index.prod')
+    const config = require('./index.dev')
     return config.default || config
   }
 }
@@ -34,6 +34,7 @@ export const {
   STATIC_URL,
   STATIC_DIRS,
   LOGS_URL,
+  LOGD_DAYS_TO_KEEP,
   CRYPTOJS_KEY,
   CRYPTOJS_IV,
   MAX_FIELDS_SIZE,

@@ -39,7 +39,7 @@ function createConfig(): ConfigOptions {
       REFRESH_VALID_TIME: 60 * 60 * 24 * 7 // tokenRefresh 有效期7天
     },
     BASE_URL: 'https://www.jiumublog.cn/', // 默认服务路径
-    STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-test-static'), // 静态资源路径
+    STATIC_URL: path.resolve(process.cwd(), '../jiumu-koa2-ts-test-static'), // 静态资源路径
     STATIC_DIRS: [
       'files',
       'images',
@@ -48,13 +48,15 @@ function createConfig(): ConfigOptions {
       'sources',
       'files_big',
       'files_big_upload_temp',
-      'files_big_download_temp'
+      'files_big_download_temp',
+      'store'
     ], // 静态资源目录
-    LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-test-logs'), // 日志记录路径
+    LOGS_URL: path.resolve(process.cwd(), '../jiumu-koa2-ts-test-logs'), // 日志记录路径
+    LOGD_DAYS_TO_KEEP: 15, // 日志有效保留最长时间，超过则清除 单位 day
     CRYPTOJS_KEY: '', // crypto-js 加密字符
     CRYPTOJS_IV: '', // crypto-js 加密字符
-    MAX_FIELDS_SIZE: 20 * 1024 * 1024, // 静态资源上传最大文件大小 默认20m 注意：切片上传不受限制
-    FILE_VAILD_TIME: 7 * 24 * 60 * 60 * 1000, // 非公开静态资源链接有效期7天
+    MAX_FIELDS_SIZE: 20 * 1024 * 1024, // 静态资源上传最大文件大小 默认20m 注意：切片上传不受限制 单位 B
+    FILE_VAILD_TIME: 7 * 24 * 60 * 60 * 1000, // 非公开静态资源链接有效期7天 单位 ms
     IS_VERIFY_TOKEN_BY_REDIS: true, // 是否使用redis在线校验token信息 为false时将不校验IS_ALLOW_MULTIPLE_LOGIN条件
     IS_ALLOW_MULTIPLE_LOGIN: true, // 同一账号是否允许在不同设备不同平台（如浏览器）同时登录
     IS_VERIFY_API_PERMISSION: false, // 是否校验非公开api的用户请求权限

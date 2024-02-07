@@ -12,7 +12,7 @@ import Static from 'koa-static'
 
 export const useMDAPI = (app: Koa) => {
   if (IS_SHOW_MDAPI) {
-    const p = path.resolve(__dirname, '../../src/router/api')
+    const p = path.resolve(process.cwd(), 'src/router/api')
     app.use(koaMount('/pc/mdapi', Static(p)))
   }
 }

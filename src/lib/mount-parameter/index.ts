@@ -9,12 +9,19 @@ import { LinValidator } from '../lin-validator'
 import { DataOptions } from './interface'
 import { getTerminal } from '@/utils/tools'
 import xss from '@/utils/xss'
-import _ from 'lodash'
+import { isArray, isPlainObject, isString } from 'lodash'
+import Logger from '../logger'
 
 /*
  * 初始化请求参数
  */
 export const mountRequest = async (ctx: Context, next: Next) => {
+  Logger.info({ message: '处理参数挂载' })
+  const v: any = await new LinValidator().validate(ctx)
+  ctx._data = <DataOptions>v.data
+  ctx._params = getParams(ctx)
+  ctx._terminal = getTerminal(ctx)
+
   // 记录日志
   const cost = BigInt(2 * 1e6) // 中间消费时间
   global._requestStart = process.hrtime.bigint() - cost
@@ -22,6 +29,7 @@ export const mountRequest = async (ctx: Context, next: Next) => {
   global._requestCount++
   ctx._requestCount = global._requestCount
   global._results = {}
+  Logger.request(ctx)
   await next()
 }
 
@@ -30,12 +38,6 @@ export const mountRequest = async (ctx: Context, next: Next) => {
  * 即 ctx._data 包含 {body query path header}
  */
 export const mountParameter = async (ctx: Context, next: Next) => {
-  // 处理参数
-  const v: any = await new LinValidator().validate(ctx)
-  ctx._data = <DataOptions>v.data
-  ctx._params = getParams(ctx)
-  ctx._terminal = getTerminal(ctx)
-
   await next()
 }
 
@@ -56,19 +58,19 @@ export const getParams = (ctx: Context): ObjectAny => {
 // 递归对参数进行xss处理
 function handleXSS(obj: any) {
   // 如果是对象
-  if (_.isPlainObject(obj)) {
+  if (isPlainObject(obj)) {
     for (const key in <ObjectAny>obj) {
-      if (_.isString(obj[key])) {
+      if (isString(obj[key])) {
         obj[key] = xss.process(obj[key])
-      } else if (_.isPlainObject(obj[key]) || _.isArray(obj[key])) {
+      } else if (isPlainObject(obj[key]) || isArray(obj[key])) {
         handleXSS(obj[key])
       }
     }
-  } else if (_.isArray(obj)) {
+  } else if (isArray(obj)) {
     for (let key = 0, len = obj.length; key < len; key++) {
-      if (_.isString(obj[key])) {
+      if (isString(obj[key])) {
         obj[key] = xss.process(obj[key])
-      } else if (_.isPlainObject(obj[key]) || _.isArray(obj[key])) {
+      } else if (isPlainObject(obj[key]) || isArray(obj[key])) {
         handleXSS(obj[key])
       }
     }

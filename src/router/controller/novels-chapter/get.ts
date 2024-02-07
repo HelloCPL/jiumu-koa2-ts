@@ -14,9 +14,9 @@ import {
   NovelChapterOneParams,
   handleNovalChapterParams
 } from './interface'
-import _ from 'lodash'
 import { getFileById } from '../files-info/get'
 import { getWordNumber } from '@/utils/tools'
+import { isArray } from 'lodash'
 
 // 获取指定的某个小说章节
 export const doNovelChapterGetOne = async (ctx: Context) => {
@@ -161,7 +161,7 @@ async function _handleNovelChapter(
     }
     if (!params.showContent) delete data.content
   }
-  if (_.isArray(datas)) {
+  if (isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {
       await _handleList(datas[i])
     }

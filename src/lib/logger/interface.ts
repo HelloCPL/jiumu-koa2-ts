@@ -25,4 +25,5 @@ export interface LoggerOptions {
   response: (options: ParamsOptions, ctx?: Context) => void
   query: (options: QueryParamsOptions) => void
   error: (options: ParamsOptions, ctx?: Context) => void
+  info: (options: ParamsOptions, isLog?: boolean) => void
 }
