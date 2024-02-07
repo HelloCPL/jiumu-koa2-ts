@@ -1,10 +1,26 @@
 ## 个人樛木博客网站（PC管理端、PC应用端、移动端、小程序、混合App）的后台系统项目
 
-## 项目运行
+### 项目启动
+
+- 安装依赖
 
 `npm i` （运行完后会自动执行 npm run prepare）
 
-`npm run dev` 可根据需要运行不同环境 `dev test start`
+#### 项目运行，以下仅指本地运行
+
+```shell
+
+npm run dev
+
+# 强制更新
+# npm run dev force
+# 本地运行其他环境，使用 `mode` 指定环境变量，如 `test` `prod`
+# npm run dev mode=test
+```
+
+### 项目打包
+
+`npm run build`
 
 
 ### 目录说明
@@ -109,7 +125,7 @@
   3. 路由模块（核心）
      - 定义路由前缀类装饰器(`@Prefix`)、路由请求方法装饰器(`@Request`)、校验路由必传参数及类型方法装饰器(`@Required`)、添加路由自定义中间件方法装饰器(`@Convert`)
      - 构建 `Route` 自动注册路由类，使用静态属性 `__DecoratedRouters` 保存装饰的路由
-     - 在 `init` 实例方法中使用 `glob` 插件自动引入 `router/api` 目录下的路由文件，然后遍历 `__DecoratedRouters`，先收集公开路由集合，再挂载自定义中间件，最后经处理后注册路由
+     - 在 `init` 实例方法中手动引入 `router/api` 目录下的路由文件，然后遍历 `__DecoratedRouters`，先收集公开路由集合，再挂载自定义中间件，最后经处理后注册路由
      - 在 `router/api` 目录按数据表名称构建路由功能模块接口，其中 `index.md` 为该模块 `api` 的使用说明文档
      - 在 `router/controller` 目录构建对应名称的业务处理模块目录，主要实现业务逻辑处理、数据库查询和数据返回等，其中 `convert.ts` 为该模块的中间件方法集合，一般用于数据校验，其他业务方法细分至每个单独的文件，一般以 `增(add) 删(delete) 查(get) 改(update)` 划分
 

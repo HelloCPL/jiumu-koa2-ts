@@ -217,31 +217,10 @@ export function Danger_deleteDirSync(dir: string) {
  * dir 指定目录
  * suffix 指定后缀 不传 默认所有类型文件
  */
-export async function readDir(dir: string, suffix?: string): Promise<string[] | null> {
+export function readDir(dir: string, suffix?: string, recursion?: boolean): Promise<string[] | null> {
   return new Promise((resolve) => {
-    judgeDir(dir).then((status) => {
-      if (status === 1) {
-        fs.readdir(dir, (err, files) => {
-          if (!err && isArray(files)) {
-            const result = files
-              .filter((value) => {
-                const flag = judgeDirSync(path.join(dir, value)) === 0
-                if (suffix && suffix.includes('.')) {
-                  return flag && value.endsWith(suffix)
-                } else {
-                  return flag
-                }
-              })
-              .map((value) => path.join(dir, value))
-            resolve(result)
-          } else {
-            resolve(null)
-          }
-        })
-      } else {
-        resolve(null)
-      }
-    })
+    const files = readDirSync(dir, suffix, recursion)
+    resolve(files)
   })
 }
 
@@ -249,23 +228,31 @@ export async function readDir(dir: string, suffix?: string): Promise<string[] | 
  * 获取指定目录下的所有文件 同步
  * dir 指定目录
  * suffix 指定后缀 不传 默认所有类型文件
+ * recursion 是否递归遍历
  */
-export function readDirSync(dir: string, suffix?: string): string[] | null {
+export function readDirSync(dir: string, suffix?: string, recursion?: boolean): string[] | null {
+  const result: string[] = []
+  const _read = (result: string[], dir: string) => {
+    const files = fs.readdirSync(dir)
+    files.forEach((value: string) => {
+      const newDir = path.resolve(dir, value)
+      const code = judgeDirSync(newDir)
+      if (code === 0) {
+        if (suffix && value.includes('.')) {
+          if (value.endsWith(suffix)) result.push(newDir)
+        } else {
+          result.push(newDir)
+        }
+      } else if (code === 1 && recursion) {
+        _read(result, newDir)
+      }
+    })
+  }
   const status = judgeDirSync(dir)
   if (status === 1) {
-    return fs
-      .readdirSync(dir)
-      .filter((value) => {
-        const flag = judgeDirSync(path.join(dir, value)) === 0
-        if (suffix && suffix.includes('.')) {
-          return flag && value.endsWith(suffix)
-        } else {
-          return flag
-        }
-      })
-      .map((value) => path.join(dir, value))
+    _read(result, dir)
   }
-  return null
+  return result
 }
 
 /**

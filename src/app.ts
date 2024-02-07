@@ -61,10 +61,9 @@ useMDAPI(app)
 initCompress(app)
 
 Http.createServer(app.callback()).listen(PORT, () => {
-  Logger.info(
-    {
-      message: `服务启动成功 ${toPath(BASE_URL, PUBLIC_PATH)} is running...`
-    },
-    true
-  )
+  let message = `服务启动成功:\n  Local:   http://localhost:${PORT}`
+  if (!BASE_URL.includes('localhost')) {
+    message += `\n  Network: ${toPath(BASE_URL, PUBLIC_PATH)}`
+  }
+  Logger.info({ message }, true)
 })

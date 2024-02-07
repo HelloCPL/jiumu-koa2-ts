@@ -39,7 +39,7 @@ function createConfig(): ConfigOptions {
       REFRESH_VALID_TIME: 60 * 60 * 24 * 3 // tokenRefresh 有效期3天
     },
     BASE_URL: 'https://www.jiumublog.cn/', // 默认服务路径
-    STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-prod-static'), // 静态资源路径
+    STATIC_URL: path.resolve(process.cwd(), '../jiumu-koa2-ts-prod-static'), // 静态资源路径
     STATIC_DIRS: [
       'files',
       'images',
@@ -51,7 +51,7 @@ function createConfig(): ConfigOptions {
       'files_big_download_temp',
       'store'
     ], // 静态资源目录
-    LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-prod-logs'), // 日志记录路径
+    LOGS_URL: path.resolve(process.cwd(), '../jiumu-koa2-ts-prod-logs'), // 日志记录路径
     LOGD_DAYS_TO_KEEP: 30, // 日志有效保留最长时间，超过则清除 单位 day
     CRYPTOJS_KEY: '', // crypto-js 加密字符
     CRYPTOJS_IV: '', // crypto-js 加密字符

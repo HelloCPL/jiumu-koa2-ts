@@ -6,11 +6,8 @@
 
 import Koa from 'koa'
 import Router from 'koa-router'
-import path from 'path'
-import glob from 'glob'
 import { sureIsArray, toPath } from '@/utils/tools'
 import { RouteOptions } from './interface'
-// import { mountParameter } from '@/lib/mount-parameter'
 import { verifyRoute } from '@/lib/verify-auth'
 import Logger from '@/lib/logger'
 
@@ -38,16 +35,39 @@ export class Route {
   init() {
     Logger.info({ message: '路由注册 初始化' })
     // 加载 api 接口
-    glob.sync(path.join(__dirname, './api/**/*.js')).forEach((item) => {
-      require(item)
-    })
+    require('./api/articles/index')
+    require('./api/ciphers-code/index')
+    require('./api/ciphers/index')
+    require('./api/collections/index')
+    require('./api/comments/index')
+    require('./api/do-top/index')
+    require('./api/files-info/index')
+    require('./api/likes/index')
+    require('./api/login-info/index')
+    require('./api/menus/index')
+    require('./api/novels-chapter/index')
+    require('./api/novels-note-link/index')
+    require('./api/novels-note/index')
+    require('./api/novels/index')
+    require('./api/permissions/index')
+    require('./api/questions/index')
+    require('./api/roles-menus/index')
+    require('./api/roles-permissions/index')
+    require('./api/roles/index')
+    require('./api/sources-link/index')
+    require('./api/sources/index')
+    require('./api/tags-custom/index')
+    require('./api/tags/index')
+    require('./api/users-roles/index')
+    require('./api/users-tags/index')
+    require('./api/users/index')
+
     Logger.info({ message: '路由注册 添加白名单；匹配路由注册' })
     for (const [config, controller] of Route.__DecoratedRouters) {
       // 处理路由中间件方法
       const controllers: Function[] = sureIsArray(controller)
       // 自定义路由中间件 自己调整中间件顺序
       const middleares: Function[] = [
-        // mountParameter, // 挂载参数处理
         verifyRoute // 权限校验
       ]
       controllers.unshift(...middleares)
