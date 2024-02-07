@@ -8,7 +8,7 @@
  *   getSelectWhereAsKeywordData // 处理 SELECT 查询列表时 WHERE 条件为 keyword 语句有效值
  */
 
-import _ from 'lodash'
+import { camelCase, snakeCase } from 'lodash'
 
 interface paramsOptions {
   valid: string[]
@@ -218,7 +218,7 @@ function _findKeys(str: string): KeyOptions {
     t = str.substring(0, i2)
     str = str.substring(i2 + 1)
   }
-  let dataKey = _.camelCase(str)
+  let dataKey = camelCase(str)
   let sqlKey = str
   let isEqual = false
   // 判断是否有分号
@@ -234,7 +234,7 @@ function _findKeys(str: string): KeyOptions {
   }
   return {
     dataKey,
-    sqlKey: formatKey((t ? t + '.' : '') + _.snakeCase(sqlKey)),
+    sqlKey: formatKey((t ? t + '.' : '') + snakeCase(sqlKey)),
     isEqual,
     isSqlKey
   }

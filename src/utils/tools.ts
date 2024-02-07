@@ -6,7 +6,7 @@
  *   toPath // 返回格式后的路径
  *   sureIsArray // 确保返回数组集合方法
  *   toCamelCase // 将数组或对象 key 名称转换成 驼峰命名
- *   isObject // 判断是否为对象
+ *   isObject2 // 判断是否为对象
  *   getSuffix // 获取文件后缀
  *   getUuId // 生成唯一id标识
  *   getFileRandomName // 生成文件随机名字
@@ -18,8 +18,8 @@
  */
 
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid'
-import _ from 'lodash'
-import dayjs from 'dayjs'
+import _, { isString } from 'lodash'
+import dayjs, { ManipulateType } from 'dayjs'
 import { ENV } from '@/config'
 import { Context } from 'koa'
 import { TerminalType } from '@/enums'
@@ -56,7 +56,7 @@ export function toCamelCase<T>(results: T): T {
   const _toObjectKey = (obj: ObjectAny) => {
     const newObj: ObjectAny = {}
     for (const key in obj) {
-      if (isObject(obj[key])) newObj[_.camelCase(key)] = _toObjectKey(obj[key])
+      if (isObject2(obj[key])) newObj[_.camelCase(key)] = _toObjectKey(obj[key])
       else if (_.isArray(obj[key])) newObj[_.camelCase(key)] = _toArrayKey(obj[key])
       else newObj[_.camelCase(key)] = obj[key]
     }
@@ -66,14 +66,14 @@ export function toCamelCase<T>(results: T): T {
   const _toArrayKey = (arr: ObjectAny[]) => {
     for (let i = 0, len = arr.length; i < len; i++) {
       if (_.isArray(arr[i])) arr[i] = _toArrayKey(<ObjectAny[]>arr[i])
-      else if (isObject(arr[i])) arr[i] = _toObjectKey(arr[i])
+      else if (isObject2(arr[i])) arr[i] = _toObjectKey(arr[i])
     }
     return arr
   }
   if (_.isArray(results))
     // @ts-ignore
     return _toArrayKey(results)
-  else if (isObject(results))
+  else if (isObject2(results))
     // @ts-ignore
     return _toObjectKey(results)
   return results
@@ -82,7 +82,7 @@ export function toCamelCase<T>(results: T): T {
 /**
  * 判断是否为对象，补充 lodash 不能识别数据库查询返回的数据是否为对象的问题
  */
-export function isObject(obj: any): boolean {
+export function isObject2(obj: any): boolean {
   return _.isPlainObject(obj) || (typeof obj === 'object' && toString.call(obj) === '[object Object]')
 }
 
@@ -161,14 +161,53 @@ export function getFileRandomName(fileName: string): string {
   return uuidv1() + '.' + suffix
 }
 
+/**
+ * 获取文件名称
+ * path 可以是路径或文件名称
+ * noSuffix 是否去除后缀
+ */
+export function getFileName(path: string, noSuffix?: boolean): string {
+  if (!isString(path)) return ''
+  let name: string = path.replace(/.*(\\|\/)+/g, '')
+  if (noSuffix) {
+    const i = name.lastIndexOf('.')
+    if (i !== 1) name = name.substring(0, i)
+  }
+  return name
+}
+
 // 格式化日期
 export function formatDate(date: any, format = 'YYYY-MM-DD HH:mm:ss'): string {
-  if (!date) return ''
-  try {
-    return dayjs(date).format(format)
-  } catch (e) {
-    return ''
+  if (!date || !dayjs(date).isValid()) return ''
+  return dayjs(date).format(format)
+}
+
+/**
+ * 获取当前时间
+ */
+export function getCurrentTime(format = 'YYYY-MM-DD HH:mm:ss') {
+  const current = dayjs()
+  return formatDate(current, format)
+}
+
+/**
+ * 获取时间戳
+ */
+export const getDateValueOf = (date: any) => {
+  if (!date || !dayjs(date).isValid()) return 0
+  return dayjs(date).valueOf()
+}
+
+/**
+ * 当前时间是否在所给时间之前
+ */
+export const isBeforeTargetDate = (date?: string, value?: any, unit: ManipulateType = 'day'): boolean => {
+  if (date && dayjs(date).isValid()) {
+    let d = dayjs(date)
+    if (Number(value)) d = d.add(Number(value), unit)
+    if (dayjs(getCurrentTime()).isBefore(d)) return true
   }
+  return false
 }
 
 // 获取 key 常用于缓存key名

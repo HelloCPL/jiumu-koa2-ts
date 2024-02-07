@@ -5,14 +5,14 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '@/db'
+import { execTrans } from '@/db'
 import { Context } from 'koa'
 import { NovelOptions, NovelListParams, NovelListReturn, NovelOneParams } from './interface'
 import { getTagCustomByIds } from '../tags-custom/get'
 import { getOrderByKeyword, getSelectWhereAsKeywordData, getSelectWhereData } from '@/utils/handle-sql'
-import _ from 'lodash'
 import { getFileById } from '../files-info/get'
 import { getWordNumber } from '@/utils/tools'
+import { isArray } from 'lodash'
 
 // 获取指定的某个小说
 export const doNovelGetOne = async (ctx: Context) => {
@@ -201,7 +201,7 @@ async function _handleNovel(datas: NovelOptions | NovelOptions[], userId: string
       data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
     }
   }
-  if (_.isArray(datas)) {
+  if (isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {
       await _handleList(datas[i])
     }

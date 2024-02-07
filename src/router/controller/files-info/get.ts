@@ -7,11 +7,10 @@
 import { Context } from 'koa'
 import { query } from '@/db'
 import { BASE_URL, PUBLIC_PATH, FILE_VAILD_TIME } from '@/config'
-import dayjs from 'dayjs'
 import { encrypt } from '@/utils/crypto'
 import { Success } from '@/utils/http-exception'
 import { FileInfoOptions } from './interface'
-import { toPath } from '@/utils/tools'
+import { getCurrentTime, getDateValueOf, toPath } from '@/utils/tools'
 
 /**
  * 获取一个指定文件 返回对象或null
@@ -69,7 +68,7 @@ export function _handleFile(file: FileInfoOptions): FileInfoOptions {
   if (file.is_secret === '1') {
     let queryParams = '?'
     // 添加用户标识和链接有效期
-    const vt: string = (dayjs().valueOf() + FILE_VAILD_TIME).toString()
+    const vt: string = (getDateValueOf(getCurrentTime()) + FILE_VAILD_TIME).toString()
     queryParams += `vt=${encrypt(vt)}`
     queryParams += `&uid=${encrypt(file.create_user)}`
     file.file_path += queryParams

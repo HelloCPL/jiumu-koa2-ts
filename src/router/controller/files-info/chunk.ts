@@ -4,7 +4,7 @@
 
 import { Context } from 'koa'
 import { File } from 'formidable'
-import { createFile, deleteDirSync, getPath, judgeDirSync, sureIsDirSync } from './tools'
+import { createFile, Danger_deleteDirSync, getPath, judgeDirSync, sureIsDirSync } from '@/utils/files'
 import { ExceptionHttp, Success } from '@/utils/http-exception'
 import { Code, Terminal } from '@/enums'
 import fs from 'fs'
@@ -46,7 +46,7 @@ export const doFileChunkDelete = async (ctx: Context) => {
   // 判断文件是否存在 不存在则创建
   const type = judgeDirSync(dir)
   if (type !== -1) {
-    await deleteDirSync(dir)
+    await Danger_deleteDirSync(dir)
   }
   throw new Success()
 }
@@ -101,7 +101,7 @@ export const doFileChunkMerge = async (ctx: Context) => {
         if (count === chunkLength) {
           // 删除目录
           setTimeout(() => {
-            deleteDirSync(dir)
+            Danger_deleteDirSync(dir)
           }, 2000)
         }
       })

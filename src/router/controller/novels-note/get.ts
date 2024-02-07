@@ -15,11 +15,11 @@ import {
   NovelNoteOneParams,
   NoteChapterParams
 } from './interface'
-import _ from 'lodash'
 import { getTagCustomByIds } from '../tags-custom/get'
 import { getSelectWhereAsKeywordData, getOrderByKeyword, getSelectWhereData } from '@/utils/handle-sql'
 import { getFileById } from '../files-info/get'
 import { novelNoteLinkTypes } from '../novels-note-link/convert'
+import { isArray } from 'lodash'
 
 // 获取指定的某个笔记
 export const getNovelNoteGetOne = async (ctx: Context) => {
@@ -152,7 +152,7 @@ async function _handleNoteChapter(datas: NovelNoteOptions | NovelNoteOptions[], 
       data.target = []
     }
   }
-  if (_.isArray(datas)) {
+  if (isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {
       await _handleList(datas[i])
     }

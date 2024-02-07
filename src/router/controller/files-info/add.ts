@@ -10,11 +10,11 @@ import { validateRange } from '@/utils/validator'
 import { getFileRandomName, getSuffix, getUuId, formatDate, getStaticPlace } from '@/utils/tools'
 import { query } from '@/db'
 import { File } from 'formidable'
-import _ from 'lodash'
 import { getFileById } from './get'
 import { Terminal } from '@/enums'
 import { FileInfoOptions } from './interface'
-import { createFile, getPath, sureIsDirSync } from './tools'
+import { createFile, getPath, sureIsDirSync } from '@/utils/files'
+import { isArray } from 'lodash'
 
 /**
  * 文件上传 可上传一个或多个文件 返回数组格式
@@ -23,7 +23,7 @@ export const doFileAdd = async (ctx: Context) => {
   const files: any = ctx.request.files
   const file: File = files.file
   const fileList: FileInfoOptions[] = []
-  if (_.isArray(file)) {
+  if (isArray(file)) {
     for (const val of file) {
       const fileInfo = await _writeFile(ctx, val)
       if (fileInfo) fileList.push(fileInfo)

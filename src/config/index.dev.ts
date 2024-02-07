@@ -39,7 +39,7 @@ function createConfig(): ConfigOptions {
       REFRESH_VALID_TIME: 60 * 60 * 24 * 15 // tokenRefresh 有效期15天
     },
     BASE_URL: 'http://localhost:3030/', // 默认服务路径
-    STATIC_URL: path.join(__dirname, '../../../jiumu-koa2-ts-static'), // 静态资源路径
+    STATIC_URL: path.resolve(process.cwd(), '../jiumu-koa2-ts-static'), // 静态资源路径
     STATIC_DIRS: [
       'files',
       'images',
@@ -48,9 +48,11 @@ function createConfig(): ConfigOptions {
       'sources',
       'files_big',
       'files_big_upload_temp',
-      'files_big_download_temp'
+      'files_big_download_temp',
+      'store'
     ], // 静态资源目录
-    LOGS_URL: path.join(__dirname, '../../../jiumu-koa2-ts-logs'), // 日志记录路径
+    LOGS_URL: path.resolve(process.cwd(), '../jiumu-koa2-ts-logs'), // 日志记录路径
+    LOGD_DAYS_TO_KEEP: 15, // 日志有效保留最长时间，超过则清除 单位 day
     CRYPTOJS_KEY: '', // crypto-js 加密字符
     CRYPTOJS_IV: '', // crypto-js 加密字符
     MAX_FIELDS_SIZE: 20 * 1024 * 1024, // 静态资源上传最大文件大小 默认20m 注意：切片上传不受限制

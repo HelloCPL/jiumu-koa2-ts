@@ -10,10 +10,10 @@
 
 import Redis, { RedisClient } from 'redis'
 import { IS_VERIFY_TOKEN_BY_REDIS, REDIS } from '@/config'
-import _ from 'lodash'
 import { getKey } from '@/utils/tools'
 import Logger from '@/lib/logger'
 import { RedisOptions } from './interface'
+import { isBoolean, isNull, isNumber, isObject, isUndefined } from 'lodash'
 
 function createRedis() {
   let redisClient: RedisClient | null = null
@@ -21,7 +21,7 @@ function createRedis() {
     redisClient = Redis.createClient(REDIS.PORT, REDIS.HOST)
     // 登录
     redisClient.auth(REDIS.PASSWORD, () => {
-      console.log('redis 登录成功')
+      Logger.info({ message: 'redis 登录成功' }, true)
     })
     // 监听 redis 错误事件
     redisClient.on('error', (err) => {
@@ -102,11 +102,11 @@ function createRedis() {
 }
 
 function _handleSetItem(key: string, value: any): RedisOptions {
-  if (_.isObject(value)) value = JSON.stringify(value)
-  if (_.isNumber(value)) value = `__number__${value.toString()}`
-  if (_.isBoolean(value)) value = `__boolean__${value.toString()}`
-  if (_.isUndefined(value)) value = '__undefined__'
-  if (_.isNull(value)) value = '__null__'
+  if (isObject(value)) value = JSON.stringify(value)
+  if (isNumber(value)) value = `__number__${value.toString()}`
+  if (isBoolean(value)) value = `__boolean__${value.toString()}`
+  if (isUndefined(value)) value = '__undefined__'
+  if (isNull(value)) value = '__null__'
   value = value || ''
   return { key, value }
 }

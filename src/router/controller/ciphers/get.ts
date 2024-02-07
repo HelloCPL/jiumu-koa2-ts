@@ -10,9 +10,9 @@ import { getOrderByKeyword, getSelectWhereAsKeywordData, getSelectWhereData } fr
 import { Success } from '@/utils/http-exception'
 import { getUuId } from '@/utils/tools'
 import { Context } from 'koa'
-import _ from 'lodash'
 import { getTagCustomByIds } from '../tags-custom/get'
 import { CipherListParams, CipherListReturn, CipherOneParams, CipherOptions } from './interface'
+import { isArray } from 'lodash'
 
 // 获取本人的某个口令
 export const doCipherGetOneSelf = async (ctx: Context) => {
@@ -126,7 +126,7 @@ async function _handleCipher(datas: CipherOptions | CipherOptions[]) {
       data.cipher = encrypt(data.cipher, key_str, iv_str)
     }
   }
-  if (_.isArray(datas)) {
+  if (isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {
       await _handleList(datas[i])
     }
