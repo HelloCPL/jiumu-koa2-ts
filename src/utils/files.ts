@@ -6,7 +6,6 @@ import { STATIC_URL } from '@/config'
 import fs, { ReadStream, Stats, WriteStream } from 'fs'
 import { File } from 'formidable'
 import path from 'path'
-import { isArray } from 'lodash'
 import zlib from 'zlib'
 
 /*

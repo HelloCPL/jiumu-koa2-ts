@@ -64,10 +64,6 @@ interface StoreOption {
   encrypt?: boolean // 缓存内容是否加密
 }
 
-interface StoreDeleteOption {
-  repeat?: boolean
-}
-
 abstract class StoreAbstractClass {
   static set: (key: string, value: any, option?: StoreOption) => void
   static get: (key: string) => any

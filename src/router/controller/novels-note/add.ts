@@ -6,7 +6,7 @@
 
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
-import { execTrans, query } from '@/db'
+import { execTrans } from '@/db'
 import { Terminal } from '@/enums'
 import { formatDate, getUuId } from '@/utils/tools'
 import { validateRange } from '@/utils/validator'

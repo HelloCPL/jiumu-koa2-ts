@@ -49,7 +49,7 @@ export const getPermissionList = async (params: PermissionParmsOptions): Promise
   const pageNo = (params.pageNo - 1) * params.pageSize
   // 处理搜索
   const sqlParams = getSelectWhereAsKeywordData({
-    valid: ['t1.label', 't1.code'],
+    valid: ['t1.label', 't1.code', 't1.href'],
     data: params,
     prefix: 'WHERE'
   })

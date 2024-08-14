@@ -9,7 +9,6 @@ import { Message } from '@/enums'
 import { validateRange } from '@/utils/validator'
 import { query } from '@/db'
 import { ExceptionParameter, ExceptionForbidden } from '@/utils/http-exception'
-import { NovelNoteTargetOptions } from './interface'
 import { novelNoteLinkTypes } from '../novels-note-link/convert'
 import { isExist } from '../convert'
 
@@ -65,32 +64,4 @@ export const doNovelNoteDeleteConvert = async (ctx: Context, next: Next) => {
   // 是否为自己发布的笔记
   if (res[0]['create_user'] !== ctx._user.id) throw new ExceptionForbidden({ message: Message.forbidden })
   await next()
-}
-
-/*
- * 废弃
- * 判断target是否合法
- * 0 合法 1 type 有问题 2 id 有问题
- */
-function _judgeTarget(target: NovelNoteTargetOptions[]) {
-  const typeList = ['502', '503', '504', '505', '507']
-  let flag = 0
-  if (Array.isArray(target) && target.length) {
-    for (let i = 0, len = target.length; i < len; i++) {
-      if (!target[i].id) {
-        flag = 2
-        break
-      } else if (typeList.indexOf(target[i].type) === -1) {
-        flag = 1
-        break
-      }
-    }
-  } else flag = 2
-  if (flag === 1) {
-    throw new ExceptionParameter({
-      message: "target里的type参数必须为['502', '503', '504', '505', '507']范围"
-    })
-  } else if (flag === 2) {
-    throw new ExceptionParameter({ message: 'target的id参数必传' })
-  }
 }
