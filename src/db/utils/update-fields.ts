@@ -5,17 +5,16 @@ import { handleField } from './tools'
  *   options.valid 有效的字段集合，字段名规则遵循 @handleField 规则
  *   options.data 参数对象（即客户端传过来的参数对象）
  */
-export const getUpdateFields = (options: SQLOptionsBase): SQLOptionsResult => {
+export const getUpdateFields = (options: SQLUtilsOptionsBase): SQLUtilsOptionsResult => {
   const sqls: string[] = []
   const data: any[] = []
   options.valid.forEach((key) => {
     const result = handleField(key)
     if (result.isValid && options.data.hasOwnProperty(result.dataField)) {
-      sqls.push(` ${result.field} = ?`)
+      sqls.push(` ${result.field} = ? `)
       data.push(options.data[result.dataField])
     }
   })
-
   return {
     sql: sqls.join(','),
     data
