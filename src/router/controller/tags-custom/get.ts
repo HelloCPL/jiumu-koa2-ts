@@ -5,7 +5,7 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '@/db'
+import { query, execTrans, getSelectWhereFields, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
 import {
   TagCustomOptions,
@@ -15,7 +15,7 @@ import {
   TagCustomSelfParams,
   TagCustomHandleParams
 } from './interface'
-import { getSelectWhereData, getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
+import {  getOrderByKeyword } from '@/utils/handle-sql'
 import { getFileById } from '../files-info/get'
 import { isArray } from 'lodash'
 
@@ -89,14 +89,14 @@ export const doTagCustomListType = async (userId?: string): Promise<TagCustomTyp
 export const doTagCustomList = async (options: TagCustomListParams): Promise<TagCustomListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理筛选参数
-  const sqlParams = getSelectWhereData({
+  const sqlParams = getSelectWhereFields({
     valid: ['t1.type', 't1.create_user'],
     data: options,
     prefix: 'WHERE'
   })
   // 处理搜索
   const prefix = sqlParams.sql ? 'AND' : 'WHERE'
-  const sqlParamsKeyword = getSelectWhereAsKeywordData({
+  const sqlParamsKeyword = getSelectWhereKeyword({
     valid: ['t1.label'],
     data: options,
     prefix

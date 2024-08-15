@@ -6,16 +6,15 @@
 
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
-import { query } from '@/db'
+import { query, getUpdateFields } from '@/db'
 import { formatDate } from '@/utils/tools'
-import { getUpdateSetData } from '@/utils/handle-sql'
 
 /**
  * 用户自定义标签修改
  */
 export const doTagCustomUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateSetData({
+  const sqlParams = getUpdateFields({
     valid: ['label', 'sort', 'type', 'update_time'],
     data: ctx._params
   })

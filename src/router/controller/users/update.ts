@@ -6,9 +6,8 @@
 
 import { Context } from 'koa'
 import { Success, ExceptionForbidden } from '@/utils/http-exception'
-import { query } from '@/db'
+import { query, getUpdateFields } from '@/db'
 import { formatDate } from '@/utils/tools'
-import { getUpdateSetData } from '@/utils/handle-sql'
 import { analysisToken } from './token'
 import { Code, Message } from '@/enums'
 import { handleDoubleToken } from './register'
@@ -45,7 +44,7 @@ export const doUserUpdateToken = async (ctx: Context) => {
 // 根据 userId 修改指定用户基本信息
 export const updateUserBaseByUserId = async (ctx: Context, userId: string): Promise<void> => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateSetData({
+  const sqlParams = getUpdateFields({
     valid: ['username', 'sex', 'birthday', 'avatar', 'professional', 'address', 'update_time', 'remarks'],
     data: ctx._params
   })

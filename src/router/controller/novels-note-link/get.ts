@@ -4,12 +4,12 @@
  * @create 2023-02-07 14:57:04
  */
 
-import { execTrans, query } from '@/db'
+import { execTrans, query, getSelectWhereKeyword } from '@/db'
 import { Success } from '@/utils/http-exception'
 import { Context } from 'koa'
 import { NovelNoteLinkOptions, NovelNoteLinkParams, NovelNoteLinkReturnOption } from './interface'
 import { novelNoteLinkTypes } from './convert'
-import { getOrderByKeyword, getSelectWhereAsKeywordData } from '@/utils/handle-sql'
+import { getOrderByKeyword } from '@/utils/handle-sql'
 
 // 获取本用户的可共享关联的笔记列表
 export const doNovelNoteLinkDeleteGetListSelf = async (ctx: Context) => {
@@ -31,7 +31,7 @@ const getNovelNoteLinkDeleteGetListSelf = async (
 ): Promise<NovelNoteLinkReturnOption> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理keyword参数
-  const sqlParamsKeyword = getSelectWhereAsKeywordData({
+  const sqlParamsKeyword = getSelectWhereKeyword({
     valid: ['t2.title'],
     data: options,
     prefix: 'AND'

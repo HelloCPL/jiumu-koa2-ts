@@ -5,12 +5,12 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '@/db'
+import { query, execTrans, getSelectWhereFields, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
 import { SourceOptions, SourceListParams, SourceListReturn, SourceOneParams } from './interface'
 import { getFileById, getFileByIds } from '../files-info/get'
 import { getTagCustomByIds } from '../tags-custom/get'
-import { getSelectWhereAsKeywordData, getSelectWhereData, getOrderByKeyword } from '@/utils/handle-sql'
+import { getOrderByKeyword } from '@/utils/handle-sql'
 import { isArray } from 'lodash'
 
 // 获取指定的某个资源
@@ -62,7 +62,7 @@ export const getSourceOne = async (params: SourceOneParams): Promise<SourceOptio
 export const getSourceList = async (options: SourceListParams): Promise<SourceListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理keyword参数
-  const sqlParamsKeyword = getSelectWhereAsKeywordData({
+  const sqlParamsKeyword = getSelectWhereKeyword({
     valid: ['t4.(username)', 't1.title'],
     data: options,
     prefix: 'AND'
@@ -73,7 +73,7 @@ export const getSourceList = async (options: SourceListParams): Promise<SourceLi
     data: options
   })
   // 处理普通where参数
-  const sqlParams = getSelectWhereData({
+  const sqlParams = getSelectWhereFields({
     valid: ['t1.create_user', 't1.type'],
     data: options,
     prefix: 'AND'

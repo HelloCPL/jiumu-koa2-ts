@@ -4,9 +4,9 @@
  * @create 2023-03-14 15:43:24
  */
 
-import { execTrans, query } from '@/db'
+import { execTrans, query, getSelectWhereFields, getSelectWhereKeyword } from '@/db'
 import { decrypt, encrypt } from '@/utils/crypto'
-import { getOrderByKeyword, getSelectWhereAsKeywordData, getSelectWhereData } from '@/utils/handle-sql'
+import { getOrderByKeyword } from '@/utils/handle-sql'
 import { Success } from '@/utils/http-exception'
 import { getUuId } from '@/utils/tools'
 import { Context } from 'koa'
@@ -58,7 +58,7 @@ export const getCipherGetOneSelf = async (params: CipherOneParams): Promise<Ciph
 export const getCipherGetList = async (options: CipherListParams): Promise<CipherListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理keyword参数
-  const sqlParamsKeyword = getSelectWhereAsKeywordData({
+  const sqlParamsKeyword = getSelectWhereKeyword({
     valid: ['t1.title'],
     data: options,
     prefix: 'AND'
@@ -69,7 +69,7 @@ export const getCipherGetList = async (options: CipherListParams): Promise<Ciphe
     data: options
   })
   // 处理普通where参数
-  const sqlParams = getSelectWhereData({
+  const sqlParams = getSelectWhereFields({
     valid: ['t1.type'],
     data: options,
     prefix: 'AND'

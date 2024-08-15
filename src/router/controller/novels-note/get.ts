@@ -5,7 +5,7 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '@/db'
+import { query, execTrans, getSelectWhereFields, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
 import {
   NovelNoteOptions,
@@ -16,7 +16,7 @@ import {
   NoteChapterParams
 } from './interface'
 import { getTagCustomByIds } from '../tags-custom/get'
-import { getSelectWhereAsKeywordData, getOrderByKeyword, getSelectWhereData } from '@/utils/handle-sql'
+import { getOrderByKeyword } from '@/utils/handle-sql'
 import { getFileById } from '../files-info/get'
 import { novelNoteLinkTypes } from '../novels-note-link/convert'
 import { isArray } from 'lodash'
@@ -70,7 +70,7 @@ export const doNovelNoteGetOne = async (params: NovelNoteOneParams): Promise<Nov
 export const getNovelNoteGetList = async (options: NovelNoteListParams): Promise<NovelNoteListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理keyword参数
-  const sqlParamsKeyword = getSelectWhereAsKeywordData({
+  const sqlParamsKeyword = getSelectWhereKeyword({
     valid: ['t1.title', 't1.content'],
     data: options,
     prefix: 'AND'
@@ -81,7 +81,7 @@ export const getNovelNoteGetList = async (options: NovelNoteListParams): Promise
     data: options
   })
   // 处理普通where参数
-  const sqlParams = getSelectWhereData({
+  const sqlParams = getSelectWhereFields({
     valid: ['t1.is_secret'],
     data: options,
     prefix: 'AND'

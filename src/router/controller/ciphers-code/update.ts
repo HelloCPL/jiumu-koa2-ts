@@ -4,9 +4,8 @@
  * @create 2023-03-14 10:24:22
  */
 
-import { query } from '@/db'
+import { query, getUpdateFields } from '@/db'
 import { encrypt } from '@/utils/crypto'
-import { getUpdateSetData } from '@/utils/handle-sql'
 import { Success } from '@/utils/http-exception'
 import { formatDate } from '@/utils/tools'
 import { Context } from 'koa'
@@ -17,7 +16,7 @@ import { Context } from 'koa'
 export const doCipherCodeUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
   ctx._params.code = encrypt(ctx._params.code)
-  const sqlParams = getUpdateSetData({
+  const sqlParams = getUpdateFields({
     valid: ['code', 'update_time'],
     data: ctx._params
   })

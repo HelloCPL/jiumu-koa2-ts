@@ -5,9 +5,9 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '@/db'
+import { query, execTrans, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
-import { getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
+import { getOrderByKeyword } from '@/utils/handle-sql'
 import { RoleOptions, RoleParamsOptions, RoleReturnOptions } from './interface'
 import { getAllRoleByUserId } from '../users-roles/get'
 import { UserRoleByUserIdParams } from '../users-roles/interface'
@@ -63,7 +63,7 @@ export const getMenuOne = async (id: string): Promise<RoleOptions | null> => {
 export const getMenuList = async (params: RoleParamsOptions): Promise<RoleReturnOptions> => {
   const pageNo = (params.pageNo - 1) * params.pageSize
   // 处理搜索
-  const sqlParams = getSelectWhereAsKeywordData({
+  const sqlParams = getSelectWhereKeyword({
     valid: ['t1.label'],
     data: params,
     prefix: 'WHERE'

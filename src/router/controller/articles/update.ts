@@ -6,9 +6,8 @@
 
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
-import { execTrans } from '@/db'
+import { execTrans, getUpdateFields } from '@/db'
 import { formatDate } from '@/utils/tools'
-import { getUpdateSetData } from '@/utils/handle-sql'
 import { SQLOptions } from '@/db/interface'
 
 /**
@@ -16,7 +15,7 @@ import { SQLOptions } from '@/db/interface'
  */
 export const doArticleUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateSetData({
+  const sqlParams = getUpdateFields({
     valid: [
       'title',
       'content',

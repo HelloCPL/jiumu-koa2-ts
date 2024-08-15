@@ -6,16 +6,15 @@
 
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
-import { query } from '@/db'
+import { query, getUpdateFields } from '@/db'
 import { formatDate } from '@/utils/tools'
-import { getUpdateSetData } from '@/utils/handle-sql'
 
 /**
  * 资源的外部资源信息修改
  */
 export const doSourceLinkUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateSetData({
+  const sqlParams = getUpdateFields({
     valid: ['title', 'link', 'cover_img1', 'cover_img2', 'sort', 'update_time', 'remarks'],
     data: ctx._params
   })

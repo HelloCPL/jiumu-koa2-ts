@@ -5,11 +5,11 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { execTrans } from '@/db'
+import { execTrans, getSelectWhereFields, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
 import { NovelOptions, NovelListParams, NovelListReturn, NovelOneParams } from './interface'
 import { getTagCustomByIds } from '../tags-custom/get'
-import { getOrderByKeyword, getSelectWhereAsKeywordData, getSelectWhereData } from '@/utils/handle-sql'
+import { getOrderByKeyword } from '@/utils/handle-sql'
 import { getFileById } from '../files-info/get'
 import { getWordNumber } from '@/utils/tools'
 import { isArray } from 'lodash'
@@ -96,7 +96,7 @@ export const getNovelOne = async (params: NovelOneParams): Promise<NovelOptions 
 export const getNovelList = async (options: NovelListParams): Promise<NovelListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理keyword参数
-  const sqlParamsKeyword = getSelectWhereAsKeywordData({
+  const sqlParamsKeyword = getSelectWhereKeyword({
     valid: ['t1.name', 't1.(author)', 't3.(username)', 't1.introduce'],
     data: options,
     prefix: 'AND'
@@ -108,7 +108,7 @@ export const getNovelList = async (options: NovelListParams): Promise<NovelListR
   })
 
   // 处理普通where参数
-  const sqlParams = getSelectWhereData({
+  const sqlParams = getSelectWhereFields({
     valid: ['t1.create_user', 't1.type', 't1.is_draft'],
     data: options,
     prefix: 'AND'

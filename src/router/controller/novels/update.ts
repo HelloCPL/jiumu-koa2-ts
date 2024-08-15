@@ -6,16 +6,15 @@
 
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
-import { query } from '@/db'
+import { query, getUpdateFields } from '@/db'
 import { formatDate } from '@/utils/tools'
-import { getUpdateSetData } from '@/utils/handle-sql'
 
 /**
  * 小说修改
  */
 export const doNovelUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateSetData({
+  const sqlParams = getUpdateFields({
     valid: [
       'name',
       'introduce',

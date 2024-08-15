@@ -5,9 +5,9 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '@/db'
+import { query, execTrans, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
-import { getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
+import { getOrderByKeyword } from '@/utils/handle-sql'
 import { PermissionOptions, PermissionParmsOptions, PermissionReturnOptions } from './interface'
 
 // 获取指定的某个权限
@@ -48,7 +48,7 @@ export const getPermissionOne = async (id: string): Promise<PermissionOptions | 
 export const getPermissionList = async (params: PermissionParmsOptions): Promise<PermissionReturnOptions> => {
   const pageNo = (params.pageNo - 1) * params.pageSize
   // 处理搜索
-  const sqlParams = getSelectWhereAsKeywordData({
+  const sqlParams = getSelectWhereKeyword({
     valid: ['t1.label', 't1.code', 't1.href'],
     data: params,
     prefix: 'WHERE'

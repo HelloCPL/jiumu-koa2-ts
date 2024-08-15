@@ -5,11 +5,11 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '@/db'
+import { query, execTrans, getSelectWhereFields, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
 import { QuestionOptions, QuestionListParams, QuestionListReturn, QuestionOneParams } from './interface'
 import { getTagCustomByIds } from '../tags-custom/get'
-import { getSelectWhereAsKeywordData, getSelectWhereData, getOrderByKeyword } from '@/utils/handle-sql'
+import { getOrderByKeyword } from '@/utils/handle-sql'
 import { getFileById } from '../files-info/get'
 import { isArray } from 'lodash'
 
@@ -62,7 +62,7 @@ export const getQuestionOne = async (params: QuestionOneParams): Promise<Questio
 export const getQuestionList = async (options: QuestionListParams): Promise<QuestionListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理keyword参数
-  const sqlParamsKeyword = getSelectWhereAsKeywordData({
+  const sqlParamsKeyword = getSelectWhereKeyword({
     valid: ['t4.(username)', 't1.title'],
     data: options,
     prefix: 'AND'
@@ -73,7 +73,7 @@ export const getQuestionList = async (options: QuestionListParams): Promise<Ques
     data: options
   })
   // 处理普通where参数
-  const sqlParams = getSelectWhereData({
+  const sqlParams = getSelectWhereFields({
     valid: ['t1.create_user', 't1.is_draft'],
     data: options,
     prefix: 'AND'

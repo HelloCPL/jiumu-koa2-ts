@@ -15,6 +15,8 @@ import { SQLOptions, ErrorOptions } from './interface'
 import { Message } from '@/enums'
 import Logger from '@/lib/logger'
 
+export * from './utils'
+
 /**
  * 创建连接池
  */

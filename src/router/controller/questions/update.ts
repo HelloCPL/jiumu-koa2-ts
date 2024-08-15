@@ -6,16 +6,15 @@
 
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
-import { query } from '@/db'
+import { query, getUpdateFields } from '@/db'
 import { formatDate } from '@/utils/tools'
-import { getUpdateSetData } from '@/utils/handle-sql'
 
 /**
  * 问答修改
  */
 export const doQuestionUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateSetData({
+  const sqlParams = getUpdateFields({
     valid: ['title', 'content', 'is_draft', 'classify', 'is_secret', 'sort', 'update_time', 'remarks'],
     data: ctx._params
   })

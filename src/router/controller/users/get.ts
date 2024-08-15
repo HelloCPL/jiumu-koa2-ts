@@ -5,11 +5,11 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '@/db'
+import { query, execTrans, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
 import { UserOptions, UserListParams, UserListReturn } from './interface'
 import { getFileById } from '../files-info/get'
-import { getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
+import { getOrderByKeyword } from '@/utils/handle-sql'
 
 // 获取本用户信息
 export const doUserGetSelf = async (ctx: Context) => {
@@ -56,7 +56,7 @@ export const getUserOne = async (id: string): Promise<UserOptions | null> => {
 export const getUserList = async (options: UserListParams): Promise<UserListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理搜索关键字
-  const sqlParams = getSelectWhereAsKeywordData({
+  const sqlParams = getSelectWhereKeyword({
     valid: ['t1.(phone)', 't1.username'],
     data: options,
     prefix: 'WHERE'
