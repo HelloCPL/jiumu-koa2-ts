@@ -14,12 +14,12 @@ import { formatDate } from '@/utils/tools'
  */
 export const doTagCustomUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateFields({
+  const fieldsResult = getUpdateFields({
     valid: ['label', 'sort', 'type', 'update_time'],
     data: ctx._params
   })
-  const sql: string = `UPDATE tags_custom SET ${sqlParams.sql} WHERE id = ? AND create_user = ?`
-  const data = [...sqlParams.data, ctx._params.id, ctx._user.id]
+  const sql: string = `UPDATE tags_custom SET ${fieldsResult.sql} WHERE id = ? AND create_user = ?`
+  const data = [...fieldsResult.data, ctx._params.id, ctx._user.id]
   await query(sql, data)
   throw new Success()
 }

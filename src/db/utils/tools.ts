@@ -4,7 +4,9 @@ import { camelCase, snakeCase, uniq } from 'lodash'
  * 处理某个字段是否参与查询，且返回查询时的规则
  * field 参与的字段
  *   '!field' 以 '!' 开头表示不参与查询，如 '!name'
- *   '@field' 以 '@' 开头表示参与 keyword where 条件的查询，但不参与 highlight 的返回字段，仅为高亮查询设置
+ *   '@field' 参与 keyword where 条件的查询；仅为高亮查询设置
+ *            以一个 '@' 不参与 highlight 的返回字段（keyword为真时且 highlight 为真时仍参与返回），
+ *            以两个以上 '@' 全程不参与 highlight 的返回字段
  *   '(field)' 以 '()' 包裹表示全选匹配，如 '(name)'
  *   'xxx.field' 以 'xxx.' 开头表示指定表名称，如 'users.name'
  *   'field:newField' 以 ':xxx' 表示将该字段重命名，如 'name:username'
@@ -16,9 +18,9 @@ export const handleField = (key: string): SQLUtilsKeyResult => {
     isValid = false
     key = key.substring(1)
   }
-  let isValidHighlight = true
-  if (key.startsWith('@')) {
-    isValidHighlight = false
+  let validHighlightCount = 0
+  while(key.startsWith('@')) {
+    validHighlightCount += 1
     key = key.substring(1)
   }
   let t = ''
@@ -35,9 +37,13 @@ export const handleField = (key: string): SQLUtilsKeyResult => {
     dataField = key.substring(i2 + 1)
   }
   let isEqual = false
-  if (/^\(.*\)$/.test(field)) {
+  const reg = /^\(.*\)$/
+  if (reg.test(field)) {
     isEqual = true
     field = field.substring(1, field.length - 1)
+  }
+  if(reg.test(dataField)) {
+    dataField = dataField.substring(1, dataField.length - 1)
   }
 
   return {
@@ -45,7 +51,7 @@ export const handleField = (key: string): SQLUtilsKeyResult => {
     dataField: camelCase(dataField),
     isEqual,
     isValid,
-    isValidHighlight
+    validHighlightCount
   }
 }
 

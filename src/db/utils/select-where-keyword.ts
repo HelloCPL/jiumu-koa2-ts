@@ -49,17 +49,15 @@ function getOrderKeyword(options: SQLUtilsOptionsOrderKeyword, keywords: string[
     const highlight = options.data.highlight === '1'
     options.valid.forEach((field) => {
       const result = handleField(field)
-      if (keywords.length && highlight) {
+      if (keywords.length && highlight && result.validHighlightCount < 2) {
         let _orderFields = ''
         keywords.forEach((keyword) => {
-          if (result.isValid && result.isValidHighlight) {
             _orderFields = handleOrderFields(_orderFields, result.field, keyword)
-          }
           const orderSql = ` (select LENGTH(${result.field}) - LENGTH('${keyword}')) DESC `
           orderSqls.push(orderSql)
         })
         if (_orderFields) orderFields += ` ${_orderFields} AS ${result.dataField}, `
-      } else if (result.isValid && result.isValidHighlight) {
+      } else if (result.isValid && result.validHighlightCount === 0) {
         orderFields += ` ${result.field}  AS ${result.dataField}, `
       }
     })

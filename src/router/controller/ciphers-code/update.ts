@@ -16,12 +16,12 @@ import { Context } from 'koa'
 export const doCipherCodeUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
   ctx._params.code = encrypt(ctx._params.code)
-  const sqlParams = getUpdateFields({
+  const fieldsResult = getUpdateFields({
     valid: ['code', 'update_time'],
     data: ctx._params
   })
-  const sql: string = `UPDATE ciphers_code SET ${sqlParams.sql} WHERE create_user = ?`
-  const data = [...sqlParams.data, ctx._user.id]
+  const sql: string = `UPDATE ciphers_code SET ${fieldsResult.sql} WHERE create_user = ?`
+  const data = [...fieldsResult.data, ctx._user.id]
   await query(sql, data)
   throw new Success()
 }

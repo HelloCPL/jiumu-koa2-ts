@@ -6,7 +6,6 @@
 
 import { execTrans, query, getSelectWhereFields, getSelectWhereKeyword } from '@/db'
 import { decrypt, encrypt } from '@/utils/crypto'
-import { getOrderByKeyword } from '@/utils/handle-sql'
 import { Success } from '@/utils/http-exception'
 import { getUuId } from '@/utils/tools'
 import { Context } from 'koa'
@@ -58,18 +57,14 @@ export const getCipherGetOneSelf = async (params: CipherOneParams): Promise<Ciph
 export const getCipherGetList = async (options: CipherListParams): Promise<CipherListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理keyword参数
-  const sqlParamsKeyword = getSelectWhereKeyword({
+  const keywordResult = getSelectWhereKeyword({
     valid: ['t1.title'],
     data: options,
-    prefix: 'AND'
-  })
-  // 处理搜索排序
-  const orderParams = getOrderByKeyword({
-    valid: ['t1.title'],
-    data: options
+    prefix: 'AND',
+    isOrderKeyword: true
   })
   // 处理普通where参数
-  const sqlParams = getSelectWhereFields({
+  const fieldsResult = getSelectWhereFields({
     valid: ['t1.type'],
     data: options,
     prefix: 'AND'
@@ -83,12 +78,12 @@ export const getCipherGetList = async (options: CipherListParams): Promise<Ciphe
     whereSQL += ' AND t1.classify LIKE ? '
     whereData.push(`%${options.classify}%`)
   }
-  whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql}`
-  whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data]
+  whereSQL += `${keywordResult.sql}${fieldsResult.sql}`
+  whereData = [...whereData, ...keywordResult.data, ...fieldsResult.data]
 
   const sql1 = `SELECT COUNT(t1.id) AS total FROM ciphers t1 ${whereSQL}`
   const data1 = [...whereData]
-  const sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.account, t1.cipher, t1.type, t2.label AS type_label, t1.classify, t1.sort, t1.create_user, t1.create_time, t1.update_time, t1.terminal FROM ciphers t1 LEFT JOIN tags t2 ON t1.type = t2.code ${whereSQL} ORDER BY ${orderParams.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, ${keywordResult.orderFields} t1.account, t1.cipher, t1.type, t2.label AS type_label, t1.classify, t1.sort, t1.create_user, t1.create_time, t1.update_time, t1.terminal FROM ciphers t1 LEFT JOIN tags t2 ON t1.type = t2.code ${whereSQL} ORDER BY ${keywordResult.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
   const data2 = [...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },

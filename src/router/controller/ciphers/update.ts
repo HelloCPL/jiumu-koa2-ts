@@ -18,12 +18,12 @@ export const doCipherUpdate = async (ctx: Context) => {
   params.updateTime = formatDate(new Date())
   if (params.account) params.account = encrypt(params.account)
   if (params.cipher) params.cipher = encrypt(params.cipher)
-  const sqlParams = getUpdateFields({
+  const fieldsResult = getUpdateFields({
     valid: ['title', 'account', 'cipher', 'type', 'classify', 'sort', 'update_time'],
     data: params
   })
-  const sql: string = `UPDATE ciphers SET ${sqlParams.sql} WHERE id = ?`
-  const data = [...sqlParams.data, params.id]
+  const sql: string = `UPDATE ciphers SET ${fieldsResult.sql} WHERE id = ?`
+  const data = [...fieldsResult.data, params.id]
   await query(sql, data)
   throw new Success()
 }

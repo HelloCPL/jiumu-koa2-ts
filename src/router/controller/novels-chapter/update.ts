@@ -14,12 +14,12 @@ import { formatDate } from '@/utils/tools'
  */
 export const doNovelChapterUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateFields({
+  const fieldsResult = getUpdateFields({
     valid: ['title', 'content', 'sort', 'is_draft', 'is_secret', 'update_time', 'remarks'],
     data: ctx._params
   })
-  const sql: string = `UPDATE novels_chapter SET ${sqlParams.sql} WHERE id = ?`
-  const data = [...sqlParams.data, ctx._params.id]
+  const sql: string = `UPDATE novels_chapter SET ${fieldsResult.sql} WHERE id = ?`
+  const data = [...fieldsResult.data, ctx._params.id]
   await query(sql, data)
   throw new Success()
 }

@@ -14,12 +14,12 @@ import { formatDate } from '@/utils/tools'
  */
 export const doRoleUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateFields({
+  const fieldsResult = getUpdateFields({
     valid: ['code', 'label', 'sort', 'update_time', 'remarks'],
     data: ctx._params
   })
-  const sql: string = `UPDATE roles SET ${sqlParams.sql} WHERE id = ?`
-  const data = [...sqlParams.data, ctx._params.id]
+  const sql: string = `UPDATE roles SET ${fieldsResult.sql} WHERE id = ?`
+  const data = [...fieldsResult.data, ctx._params.id]
   await query(sql, data)
   throw new Success()
 }

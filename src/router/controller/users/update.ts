@@ -44,11 +44,11 @@ export const doUserUpdateToken = async (ctx: Context) => {
 // 根据 userId 修改指定用户基本信息
 export const updateUserBaseByUserId = async (ctx: Context, userId: string): Promise<void> => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateFields({
+  const fieldsResult = getUpdateFields({
     valid: ['username', 'sex', 'birthday', 'avatar', 'professional', 'address', 'update_time', 'remarks'],
     data: ctx._params
   })
-  const sql: string = `UPDATE users SET ${sqlParams.sql} WHERE id = ?`
-  const data = [...sqlParams.data, userId]
+  const sql: string = `UPDATE users SET ${fieldsResult.sql} WHERE id = ?`
+  const data = [...fieldsResult.data, userId]
   await query(sql, data)
 }

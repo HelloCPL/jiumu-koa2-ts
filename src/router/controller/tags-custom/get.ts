@@ -15,7 +15,6 @@ import {
   TagCustomSelfParams,
   TagCustomHandleParams
 } from './interface'
-import {  getOrderByKeyword } from '@/utils/handle-sql'
 import { getFileById } from '../files-info/get'
 import { isArray } from 'lodash'
 
@@ -89,29 +88,25 @@ export const doTagCustomListType = async (userId?: string): Promise<TagCustomTyp
 export const doTagCustomList = async (options: TagCustomListParams): Promise<TagCustomListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理筛选参数
-  const sqlParams = getSelectWhereFields({
+  const fieldsResult = getSelectWhereFields({
     valid: ['t1.type', 't1.create_user'],
     data: options,
     prefix: 'WHERE'
   })
   // 处理搜索
-  const prefix = sqlParams.sql ? 'AND' : 'WHERE'
-  const sqlParamsKeyword = getSelectWhereKeyword({
+  const prefix = fieldsResult.sql ? 'AND' : 'WHERE'
+  const keywordResult = getSelectWhereKeyword({
     valid: ['t1.label'],
     data: options,
-    prefix
-  })
-  // 处理搜索排序
-  const orderParams = getOrderByKeyword({
-    valid: ['t1.label'],
-    data: options
+    prefix,
+    isOrderKeyword: true
   })
   // 处理创建者信息字段
   const userInfoField =
     options.showUserInfo === '1' ? ' t2.username AS create_user_name, t2.avatar AS create_user_avatar, ' : ''
-  const sql1 = `SELECT COUNT(t1.id) AS total FROM tags_custom t1 ${sqlParams.sql} ${sqlParamsKeyword.sql}`
-  const data1 = [...sqlParams.data, ...sqlParamsKeyword.data]
-  const sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.sort, t1.type, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id ${sqlParams.sql} ${sqlParamsKeyword.sql} ORDER BY ${orderParams.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
+  const sql1 = `SELECT COUNT(t1.id) AS total FROM tags_custom t1 ${fieldsResult.sql} ${keywordResult.sql}`
+  const data1 = [...fieldsResult.data, ...keywordResult.data]
+  const sql2 = `SELECT t1.id, ${keywordResult.orderFields} t1.sort, t1.type, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id ${fieldsResult.sql} ${keywordResult.sql} ORDER BY ${keywordResult.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
   const data2 = [...data1, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },

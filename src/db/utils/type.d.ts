@@ -11,7 +11,7 @@ interface SQLUtilsOptions extends SQLUtilsOptionsBase {
 }
 
 // sql 语句处理返回结果
-interface SQLUtilsOptionsResult extends ObjectAny {
+interface SQLUtilsOptionsResult {
   sql: string
   data: any[]
 }
@@ -33,5 +33,5 @@ interface SQLUtilsKeyResult {
   dataField: string // 返回的data字段
   isEqual: boolean // 是否全等比较
   isValid: boolean // 是否参与比较
-  isValidHighlight: boolean // 高亮查询时是否给出 SELECT 的字段
+  validHighlightCount: number // 高亮查询时是否给出 SELECT 的字段 0 参与 1 部分参与 2以上 全程参与
 }

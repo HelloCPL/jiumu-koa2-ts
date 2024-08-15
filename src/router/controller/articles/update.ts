@@ -15,7 +15,7 @@ import { SQLOptions } from '@/db/interface'
  */
 export const doArticleUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateFields({
+  const fieldsResult = getUpdateFields({
     valid: [
       'title',
       'content',
@@ -32,8 +32,8 @@ export const doArticleUpdate = async (ctx: Context) => {
     ],
     data: ctx._params
   })
-  const sql: string = `UPDATE articles SET ${sqlParams.sql} WHERE id = ?`
-  const data = [...sqlParams.data, ctx._params.id]
+  const sql: string = `UPDATE articles SET ${fieldsResult.sql} WHERE id = ?`
+  const data = [...fieldsResult.data, ctx._params.id]
   const sqlList: SQLOptions[] = [{ sql, data }]
   // 同步更新文件公开性
   if (ctx._params.hasOwnProperty('isSecret')) {
