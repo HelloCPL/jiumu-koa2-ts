@@ -52,7 +52,7 @@ function getOrderKeyword(options: SQLUtilsOptionsOrderKeyword, keywords: string[
       if (keywords.length && highlight && result.validHighlightCount < 2) {
         let _orderFields = ''
         keywords.forEach((keyword) => {
-            _orderFields = handleOrderFields(_orderFields, result.field, keyword)
+          _orderFields = handleOrderFields(_orderFields, result.field, keyword)
           const orderSql = ` (select LENGTH(${result.field}) - LENGTH('${keyword}')) DESC `
           orderSqls.push(orderSql)
         })

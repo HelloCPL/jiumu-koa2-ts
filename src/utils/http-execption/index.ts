@@ -11,7 +11,7 @@
  *   Success // 特殊异常 成功类异常用于返回数据
  */
 
-import { toCamelCase } from './tools'
+import { toCamelCase } from '../tools'
 import { Message, Code, CodeValue } from '@/enums'
 
 // 异常类接口类型

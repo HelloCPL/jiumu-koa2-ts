@@ -8,7 +8,7 @@ import { File } from 'formidable'
 import path from 'path'
 import zlib from 'zlib'
 import { isArray } from 'lodash'
-import { getFileName, getSuffix, getUuId } from './tools'
+import { getFileName, getSuffix, getUuId } from '../tools'
 
 /*
  * 获取路径

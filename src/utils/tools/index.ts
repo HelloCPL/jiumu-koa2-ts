@@ -23,10 +23,13 @@ import dayjs, { ManipulateType } from 'dayjs'
 import { ENV } from '@/config'
 import { Context } from 'koa'
 import { TerminalType } from '@/enums'
+import { imagesSuffix, videoSuffix } from './config'
 
 /**
- * 返回格式后的路径
- * 如 member/list 或 member/list/ ==> /member/list
+ * 返回格式后的路径，仅返回路径，不保留参数
+ * @param ...arg 路径片段
+ * @returns 返回完整的路径
+ *   如 member/list 或 member/list/ ==> /member/list
  */
 export function toPath(...arg: string[]): string {
   const getPath = (path: string) => {
@@ -43,6 +46,8 @@ export function toPath(...arg: string[]): string {
 
 /**
  * 确保返回数组集合方法
+ * @param arr 任意类型
+ * @returns any[]
  */
 export function sureIsArray(arr: any): any[] {
   return Array.isArray(arr) ? arr : [arr]
@@ -86,7 +91,11 @@ export function isObject2(obj: any): boolean {
   return _.isPlainObject(obj) || (typeof obj === 'object' && toString.call(obj) === '[object Object]')
 }
 
-// 获取文件后缀
+/**
+ * 获取文件后缀
+ * @param path 路径
+ * @param separator 指定分隔符，默认 '.'
+ */
 export function getSuffix(path: string | undefined | null, separator = '.'): string {
   if (!path) return ''
   let suffix = ''
@@ -99,48 +108,12 @@ export function getSuffix(path: string | undefined | null, separator = '.'): str
   return suffix
 }
 
-// 根据文件名获取资源存放位置
+/**
+ * 根据文件名获取资源存放位置，仅对普通的 'images' 'videos' 'files' 资源
+ * @param fileName 文件名称
+ */
 export function getStaticPlace(fileName: string): string {
   const suffix = getSuffix(fileName)
-  const imagesSuffix = [
-    'jpg',
-    'jpeg',
-    'png',
-    'gif',
-    'svg',
-    'bmp',
-    'tiff',
-    'dxf',
-    'cgm',
-    'cdr',
-    'eps',
-    'emf',
-    'pict',
-    'raw'
-  ]
-  const videoSuffix = [
-    'wmv',
-    'asf',
-    'asx',
-    'rm',
-    'ram',
-    'rmvb',
-    'mpg',
-    'mpeg',
-    'mpe',
-    '3gp',
-    'mov',
-    'mp4',
-    'm4v',
-    'avi',
-    'dat',
-    'mkv',
-    'flv',
-    'vob',
-    'qt',
-    'navi',
-    'divx'
-  ]
   if (imagesSuffix.indexOf(suffix) !== -1) {
     return 'images'
   } else if (videoSuffix.indexOf(suffix) !== -1) {
@@ -150,12 +123,17 @@ export function getStaticPlace(fileName: string): string {
   }
 }
 
-// 生成唯一id标识
+/**
+ * 生成唯一id标识
+ */
 export function getUuId(): string {
   return uuidv4()
 }
 
-// 生成文件随机名字
+/**
+ * 根据文件名称生成文件随机名字
+ * @param fileName 文件名称
+ */
 export function getFileRandomName(fileName: string): string {
   const suffix = getSuffix(fileName)
   return uuidv1() + '.' + suffix
@@ -163,8 +141,8 @@ export function getFileRandomName(fileName: string): string {
 
 /**
  * 获取文件名称
- * path 可以是路径或文件名称
- * noSuffix 是否去除后缀
+ * @param path 可以是路径或文件名称
+ * @param noSuffix 是否去除后缀
  */
 export function getFileName(path: string, noSuffix?: boolean): string {
   if (!isString(path)) return ''
@@ -173,10 +151,13 @@ export function getFileName(path: string, noSuffix?: boolean): string {
     const i = name.lastIndexOf('.')
     if (i !== 1) name = name.substring(0, i)
   }
+  name = name.replace(/\?.*/, '')
   return name
 }
 
-// 格式化日期
+/**
+ * 格式化日期
+ */
 export function formatDate(date: any, format = 'YYYY-MM-DD HH:mm:ss'): string {
   if (!date || !dayjs(date).isValid()) return ''
   return dayjs(date).format(format)
@@ -296,7 +277,7 @@ export const getWordNumber = (str?: string): number => {
 
 /**
  * 将多个空格替换成一个空格
-*/
+ */
 export const replaceMultipleSpaces = (str: string) => {
   return str.replace(/\s+/g, ' ')
 }
