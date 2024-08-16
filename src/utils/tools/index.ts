@@ -12,6 +12,8 @@ import { TerminalType } from '@/enums'
 import { imagesSuffix, videoSuffix } from './config'
 
 export * from './date'
+export * from './os'
+export * from './timeout'
 
 /**
  * 返回格式后的路径，仅返回路径，不保留参数
@@ -166,14 +168,6 @@ export const getTerminal = (ctx: Context): TerminalType => {
   const url: string = ctx.request.url
   const terminal: TerminalType = <TerminalType>url.substring(1, url.indexOf('/', 1)).toLowerCase()
   return terminal
-}
-
-/**
- * 获取客户端IP
- * @returns 返回请求 ip 地址
- */
-export const getIP = (ctx: Context) => {
-  return ctx.ip || ctx.req.headers['x-forwarded-for'] || ctx.req.socket.remoteAddress
 }
 
 interface TreeOption {
