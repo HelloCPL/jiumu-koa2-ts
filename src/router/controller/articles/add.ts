@@ -16,7 +16,7 @@ import { SQLOptions } from '@/db/interface'
  * 博客文章新增
  */
 export const doArticleAdd = async (ctx: Context) => {
-  const paramsData = await validateRange(
+  const rangeResult = await validateRange(
     [
       { value: ctx._params.isDraft, range: ['1', '0'], default: '0' },
       { value: ctx._params.isSecret, range: ['1', '0'], default: '0' }
@@ -38,8 +38,8 @@ export const doArticleAdd = async (ctx: Context) => {
     params.attachment,
     params.type,
     params.classify,
-    paramsData[0],
-    paramsData[1],
+    rangeResult[0],
+    rangeResult[1],
     sort,
     ctx._user.id,
     currentTime,
@@ -54,14 +54,14 @@ export const doArticleAdd = async (ctx: Context) => {
   if (params.coverImg) {
     sqlList.push({
       sql: sql1,
-      data: [paramsData[1], currentTime, ctx._user.id, params.coverImg],
+      data: [rangeResult[1], currentTime, ctx._user.id, params.coverImg],
       noThrow: true
     })
   }
   if (params.attachment) {
     sqlList.push({
       sql: sql1,
-      data: [paramsData[1], currentTime, ctx._user.id, params.attachment],
+      data: [rangeResult[1], currentTime, ctx._user.id, params.attachment],
       noThrow: true
     })
   }

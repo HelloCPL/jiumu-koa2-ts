@@ -16,7 +16,7 @@ import { validateRange } from '@/utils/validator'
  */
 export const doNovelNoteAdd = async (ctx: Context) => {
   const params = ctx._params
-  const paramsData = await validateRange([{ value: params.isSecret, range: ['1', '0'], default: '1' }], true)
+  const isSecret = await validateRange({ value: params.isSecret, range: ['1', '0'], default: '1' }, true)
   const currentTime = formatDate(new Date())
   const sort: number = params.sort || 1
   const sql: string =
@@ -28,7 +28,7 @@ export const doNovelNoteAdd = async (ctx: Context) => {
     params.content,
     params.classify,
     sort,
-    paramsData[0],
+    isSecret,
     ctx._user.id,
     currentTime,
     currentTime,

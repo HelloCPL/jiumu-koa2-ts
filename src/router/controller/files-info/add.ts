@@ -40,7 +40,7 @@ export const doFileAdd = async (ctx: Context) => {
  * 先保存文件再入库
  */
 async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | null> {
-  const params: any = await validateRange(
+  const rangeResult: any = await validateRange(
     [
       { value: ctx._data.query.isSecret, range: ['0', '1'], default: '0' },
       {
@@ -51,8 +51,8 @@ async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | n
     ],
     true
   )
-  const isSecret = params[0]
-  const staticPlace = params[1] || getStaticPlace(<string>file.name)
+  const isSecret = rangeResult[0]
+  const staticPlace = rangeResult[1] || getStaticPlace(<string>file.name)
   const createTime = formatDate(new Date())
   const id = getUuId()
   const filePath = getFileRandomName(<string>file.name)
