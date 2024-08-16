@@ -22,13 +22,8 @@ export async function catchError(ctx: Context, next: Next) {
     _saveLogger(ctx, error, isExceptionHttp)
     ctx.status = Code.success
     if (isExceptionHttp) {
-      const data: ExceptionOptions = {
-        code: error.code,
-        message: error.message,
-        data: error.data,
-        total: error.total
-      }
-      ctx.body = data
+      const { code, message, data, total } = error as ExceptionHttp
+      ctx.body = { code, message, data, total }
     } else {
       const data: ExceptionOptions = {
         code: Code.error,
@@ -56,7 +51,7 @@ function _saveLogger(ctx: Context, error: any, isExceptionHttp: boolean) {
     Logger.error(
       {
         code: Code.error,
-        message: '未知错误',
+        message: Message.unknown,
         error: error
       },
       ctx

@@ -23,6 +23,7 @@ export enum Message {
   rules = '服务器发生错误，校验规则有误',
   authLogin = '令牌已失效，请重新登录',
   authRefresh = '令牌已过期，请重新刷新',
+  unknown = '未知错误',
 
   lockedAuth = '资源受保护，无权限查看',
   lockedTime = '资源受保护，链接已过期',
@@ -30,6 +31,9 @@ export enum Message {
   register = '注册成功',
   login = '登录成功',
   exit = '退出成功',
+
+  redisLoginSuccess = 'redis 登录成功',
+  redisError = 'redis 发生错误',
 
   noToken = '权限不足，令牌不存在',
   errorDevice = '登录设备异常，请重新登录',

@@ -264,3 +264,32 @@ export const countWordCharactersAndWords = (text?: string): WordCount => {
 export const replaceMultipleSpaces = (text: string): string => {
   return text.replace(/\s+/g, ' ')
 }
+
+/**
+ * 将 JSON 格式文本转为对象
+ * @param text 文本
+ * @returns 返回转换后的对象
+ */
+export const toParse = (text: string): ObjectAny | null => {
+  try {
+    if (text && isString(text)) return JSON.parse(text)
+    if (isObject2(text)) return text as unknown as ObjectAny
+    return null
+  } catch (e) {
+    return null
+  }
+}
+
+/**
+ * 将对象转为 JSON 格式文本
+ * @param obj 要转换的对象或数组
+ * @returns 返回转换后的文本
+ */
+export const toStringify = (obj: any): string => {
+  try {
+    if (isObject2(obj)) return JSON.stringify(obj)
+    return ''
+  } catch (e) {
+    return ''
+  }
+}

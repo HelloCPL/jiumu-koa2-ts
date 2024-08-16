@@ -14,6 +14,7 @@ import { getKey } from '@/utils/tools'
 import Logger from '@/lib/logger'
 import { RedisOptions } from './interface'
 import { isBoolean, isNull, isNumber, isObject, isUndefined } from 'lodash'
+import { Message } from '@/enums'
 
 function createRedis() {
   let redisClient: RedisClient | null = null
@@ -21,13 +22,12 @@ function createRedis() {
     redisClient = Redis.createClient(REDIS.PORT, REDIS.HOST)
     // 登录
     redisClient.auth(REDIS.PASSWORD, () => {
-      Logger.info({ message: 'redis 登录成功' }, true)
+      Logger.info({ message: Message.redisLoginSuccess }, true)
     })
     // 监听 redis 错误事件
     redisClient.on('error', (err) => {
-      // Logger.error('redis 发生错误', err, 'redis 发生错误')
       Logger.error({
-        message: 'redis 发生错误',
+        message: Message.redisError,
         error: err
       })
     })
@@ -38,11 +38,10 @@ function createRedis() {
       key = getKey(key)
       return new Promise((resolve, reject) => {
         const options = _handleSetItem(key, value)
-        // @ts-ignore
         redisClient.set(options.key, options.value, (err: any) => {
           if (err) {
             Logger.error({
-              message: 'redis 发生错误',
+              message: Message.redisError,
               error: err
             })
             reject(err)
@@ -61,7 +60,7 @@ function createRedis() {
         redisClient.get(key, (err: any, value) => {
           if (err) {
             Logger.error({
-              message: 'redis 发生错误',
+              message: Message.redisError,
               error: err
             })
             reject(err)
@@ -77,11 +76,10 @@ function createRedis() {
       key = getKey(key)
       return new Promise((resolve, reject) => {
         try {
-          // @ts-ignore
           redisClient.del(key, (err: any) => {
             if (err) {
               Logger.error({
-                message: 'redis 发生错误',
+                message: Message.redisError,
                 error: err
               })
               reject(err)

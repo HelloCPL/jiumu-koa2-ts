@@ -1,7 +1,6 @@
 /**
  * 依赖收集
  */
-
 export default class Subscriber {
   collection: any[] = []
   add(fn: Function, ...arg: any[]) {
