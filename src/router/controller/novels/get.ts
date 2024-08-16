@@ -10,7 +10,7 @@ import { Context } from 'koa'
 import { NovelOptions, NovelListParams, NovelListReturn, NovelOneParams } from './interface'
 import { getTagCustomByIds } from '../tags-custom/get'
 import { getFileById } from '../files-info/get'
-import { getWordNumber } from '@/utils/tools'
+import { countWordCharactersAndWords } from '@/utils/tools'
 import { isArray } from 'lodash'
 
 // 获取指定的某个小说
@@ -81,7 +81,7 @@ export const getNovelOne = async (params: NovelOneParams): Promise<NovelOptions 
     let wordCount = 0
     chapterList.forEach((item: any) => {
       if (item.update_time > updateTime) updateTime = item.update_time
-      wordCount += getWordNumber(item.content)
+      wordCount += countWordCharactersAndWords(item.content).wordCount
     })
     novelInfo.update_time = updateTime
     novelInfo.word_count = wordCount

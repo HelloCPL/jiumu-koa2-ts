@@ -10,7 +10,7 @@
  */
 
 import { Rule, LinValidator } from '@/lib/lin-validator'
-import { ExceptionHttp, ExceptionParameter } from './http-exception'
+import { ExceptionHttp, ExceptionParameter } from '../http-exception'
 import { Message } from '@/enums'
 import { getTagByParentCode } from '@/router/controller/tags/get'
 import { TagOptions } from '@/router/controller/tags/interface'
@@ -91,8 +91,8 @@ interface RangeOptions {
 
 /**
  * 校验指定参数是否在指定范围内容，如果不在默认抛出错误
- * 如果 noThrow=true 返回指定参数
- * 如果 data 参数是数组，如果 noThrow=true 则返回对应数量的指定参数
+ * @param data 校验对象或数组，如果 data 参数是数组，如果 noThrow=true 则返回对应数量的指定参数
+ * @param noThrow 不满足条件是，是否不抛出错误，如果 noThrow=true 返回指定参数
  */
 export const validateRange = async (data: RangeOptions | RangeOptions[], noThrow?: boolean) => {
   const _handleValid = async (info: RangeOptions) => {

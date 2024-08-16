@@ -15,7 +15,7 @@ import {
   handleNovalChapterParams
 } from './interface'
 import { getFileById } from '../files-info/get'
-import { getWordNumber } from '@/utils/tools'
+import { countWordCharactersAndWords } from '@/utils/tools'
 import { isArray } from 'lodash'
 
 // 获取指定的某个小说章节
@@ -157,7 +157,7 @@ async function _handleNovelChapter(
         data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
       }
       // 处理字数
-      data.word_count = getWordNumber(data.content)
+      data.word_count = countWordCharactersAndWords(data.content).wordCount
     }
     if (!params.showContent) delete data.content
   }

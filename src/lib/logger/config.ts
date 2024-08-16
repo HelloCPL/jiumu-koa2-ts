@@ -47,7 +47,13 @@ export function getConfig() {
 export const clearExpiredLogs = () => {
   const key = 'clear-logs-time'
   const clearLogsTime = Store.get(key)
-  if (!clearLogsTime || !isBeforeTargetDate(clearLogsTime, 1)) {
+  if (
+    !clearLogsTime ||
+    !isBeforeTargetDate({
+      date: clearLogsTime,
+      value: 1
+    })
+  ) {
     Store.set(key, getCurrentTime())
     readDir(LOGS_URL).then((paths) => {
       if (isArray(paths)) {
@@ -59,7 +65,14 @@ export const clearExpiredLogs = () => {
             if (i1 !== -1) {
               const d = file.substring(i1 + 2).substring(0, 10)
               const reg = /\d{4}-\d{2}-\d{2}/
-              if (reg.test(d) && !isBeforeTargetDate(d, LOGD_DAYS_TO_KEEP)) status = true
+              if (
+                reg.test(d) &&
+                !isBeforeTargetDate({
+                  date: d,
+                  value: LOGD_DAYS_TO_KEEP
+                })
+              )
+                status = true
             }
             return {
               status,

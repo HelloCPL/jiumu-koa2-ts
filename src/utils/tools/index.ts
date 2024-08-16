@@ -2,28 +2,16 @@
  * @description 封装常用方法
  * @author chen
  * @update 2021-01-25 16:03:11
- * @list 方法集合说明
- *   toPath // 返回格式后的路径
- *   sureIsArray // 确保返回数组集合方法
- *   toCamelCase // 将数组或对象 key 名称转换成 驼峰命名
- *   isObject2 // 判断是否为对象
- *   getSuffix // 获取文件后缀
- *   getUuId // 生成唯一id标识
- *   getFileRandomName // 生成文件随机名字
- *   formatDate // 格式化日期
- *   getKey // 获取 key
- *   getTerminal // 获取路径 terminal
- *   getIP // 获取路径 terminal
- *   getTree // 获取树结构
  */
 
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid'
-import _, { isString } from 'lodash'
-import dayjs, { ManipulateType } from 'dayjs'
+import { isString, isArray, camelCase, isPlainObject, uniqBy } from 'lodash'
 import { ENV } from '@/config'
 import { Context } from 'koa'
 import { TerminalType } from '@/enums'
 import { imagesSuffix, videoSuffix } from './config'
+
+export * from './date'
 
 /**
  * 返回格式后的路径，仅返回路径，不保留参数
@@ -47,7 +35,7 @@ export function toPath(...arg: string[]): string {
 /**
  * 确保返回数组集合方法
  * @param arr 任意类型
- * @returns any[]
+ * @returns 返回数组
  */
 export function sureIsArray(arr: any): any[] {
   return Array.isArray(arr) ? arr : [arr]
@@ -61,21 +49,21 @@ export function toCamelCase<T>(results: T): T {
   const _toObjectKey = (obj: ObjectAny) => {
     const newObj: ObjectAny = {}
     for (const key in obj) {
-      if (isObject2(obj[key])) newObj[_.camelCase(key)] = _toObjectKey(obj[key])
-      else if (_.isArray(obj[key])) newObj[_.camelCase(key)] = _toArrayKey(obj[key])
-      else newObj[_.camelCase(key)] = obj[key]
+      if (isObject2(obj[key])) newObj[camelCase(key)] = _toObjectKey(obj[key])
+      else if (isArray(obj[key])) newObj[camelCase(key)] = _toArrayKey(obj[key])
+      else newObj[camelCase(key)] = obj[key]
     }
     return newObj
   }
   // 处理数组 key
   const _toArrayKey = (arr: ObjectAny[]) => {
     for (let i = 0, len = arr.length; i < len; i++) {
-      if (_.isArray(arr[i])) arr[i] = _toArrayKey(<ObjectAny[]>arr[i])
+      if (isArray(arr[i])) arr[i] = _toArrayKey(<ObjectAny[]>arr[i])
       else if (isObject2(arr[i])) arr[i] = _toObjectKey(arr[i])
     }
     return arr
   }
-  if (_.isArray(results))
+  if (isArray(results))
     // @ts-ignore
     return _toArrayKey(results)
   else if (isObject2(results))
@@ -88,13 +76,14 @@ export function toCamelCase<T>(results: T): T {
  * 判断是否为对象，补充 lodash 不能识别数据库查询返回的数据是否为对象的问题
  */
 export function isObject2(obj: any): boolean {
-  return _.isPlainObject(obj) || (typeof obj === 'object' && toString.call(obj) === '[object Object]')
+  return isPlainObject(obj) || (typeof obj === 'object' && toString.call(obj) === '[object Object]')
 }
 
 /**
  * 获取文件后缀
  * @param path 路径
  * @param separator 指定分隔符，默认 '.'
+ * @returns 返回后缀
  */
 export function getSuffix(path: string | undefined | null, separator = '.'): string {
   if (!path) return ''
@@ -108,11 +97,14 @@ export function getSuffix(path: string | undefined | null, separator = '.'): str
   return suffix
 }
 
+type StaticPlaceReturn = 'images' | 'videos' | 'files'
+
 /**
  * 根据文件名获取资源存放位置，仅对普通的 'images' 'videos' 'files' 资源
  * @param fileName 文件名称
+ * @returns 返回对应的资源目录名称
  */
-export function getStaticPlace(fileName: string): string {
+export function getStaticPlace(fileName: string): StaticPlaceReturn {
   const suffix = getSuffix(fileName)
   if (imagesSuffix.indexOf(suffix) !== -1) {
     return 'images'
@@ -125,6 +117,7 @@ export function getStaticPlace(fileName: string): string {
 
 /**
  * 生成唯一id标识
+ * @returns 返回 id
  */
 export function getUuId(): string {
   return uuidv4()
@@ -133,6 +126,7 @@ export function getUuId(): string {
 /**
  * 根据文件名称生成文件随机名字
  * @param fileName 文件名称
+ * @returns 返回文件名称
  */
 export function getFileRandomName(fileName: string): string {
   const suffix = getSuffix(fileName)
@@ -156,99 +150,84 @@ export function getFileName(path: string, noSuffix?: boolean): string {
 }
 
 /**
- * 格式化日期
+ * 获取 key 常用于缓存key名
+ * @param key 初始 key
+ * @returns 返回修饰后的 key
  */
-export function formatDate(date: any, format = 'YYYY-MM-DD HH:mm:ss'): string {
-  if (!date || !dayjs(date).isValid()) return ''
-  return dayjs(date).format(format)
-}
-
-/**
- * 获取当前时间
- */
-export function getCurrentTime(format = 'YYYY-MM-DD HH:mm:ss') {
-  const current = dayjs()
-  return formatDate(current, format)
-}
-
-/**
- * 获取时间戳
- */
-export const getDateValueOf = (date: any) => {
-  if (!date || !dayjs(date).isValid()) return 0
-  return dayjs(date).valueOf()
-}
-
-/**
- * 当前时间是否在所给时间之前
- */
-export const isBeforeTargetDate = (date?: string, value?: any, unit: ManipulateType = 'day'): boolean => {
-  if (date && dayjs(date).isValid()) {
-    let d = dayjs(date)
-    if (Number(value)) d = d.add(Number(value), unit)
-    if (dayjs(getCurrentTime()).isBefore(d)) return true
-  }
-  return false
-}
-
-// 获取 key 常用于缓存key名
 export const getKey = (key: string): string => {
   return `jiumu_koa2_ts_${ENV}_${key}`
 }
 
-// 获取路径 terminal
+/**
+ * 获取请求的终端，路径 terminal
+ * @returns 返回终端类型
+ */
 export const getTerminal = (ctx: Context): TerminalType => {
   const url: string = ctx.request.url
   const terminal: TerminalType = <TerminalType>url.substring(1, url.indexOf('/', 1)).toLowerCase()
   return terminal
 }
 
-// 获取客户端IP
+/**
+ * 获取客户端IP
+ * @returns 返回请求 ip 地址
+ */
 export const getIP = (ctx: Context) => {
   return ctx.ip || ctx.req.headers['x-forwarded-for'] || ctx.req.socket.remoteAddress
 }
 
-// 获取树结构
 interface TreeOption {
   data: any[]
   parentCode: any
   parentKey?: string
   key?: string
 }
+/**
+ * 将一维数组转为树结构
+ * @param option.data 任意类型数组
+ * @param option.parentCode 指定父级的值
+ * @param option.parentKey? 父级属性 key
+ * @param option.key? 属性 key
+ * @returns 返回树结构数组
+ */
 export const getTree = (option: TreeOption): any[] => {
-  const parentKey = option.parentKey || 'parent_code'
-  const key = option.key || 'code'
-  const trees: any[] = []
+  const { data, parentCode, parentKey = 'parent_code', key = 'code' } = option
+  if (!data.length) return []
   // 去重
-  const originData = _.uniqBy(option.data, 'id')
-  // 排序
-  if (originData.length) {
-    if (originData[0].update_time) {
-      originData.sort((a, b) => {
+  const originData = uniqBy(data, 'id')
+  // 降序排序
+  const sortData = (data: any[]) => {
+    if (data[0]?.update_time) {
+      data.sort((a, b) => {
         if (a.update_time > b.update_time) return 1
         else if (a.update_time < b.update_time) return -1
         else return 0
       })
     }
-    if (originData[0].sort || originData[0].sort === 0) {
-      originData.sort((a, b) => {
-        if (a.sort > b.sort) return 1
-        else if (a.sort < b.sort) return -1
+    if (data[0]?.sort || data[0]?.sort === 0) {
+      data.sort((a, b) => {
+        if (a.update_time > b.update_time) return 1
+        else if (a.update_time < b.update_time) return -1
         else return 0
       })
     }
   }
+  sortData(originData)
+  const trees: any[] = []
+  const subTrees: any[] = []
   // 获取第一级
   originData.forEach((item) => {
     item.children = []
-    if ((!option.parentCode && !item[parentKey]) || option.parentCode === item[parentKey]) {
+    if ((!parentCode && !item[parentKey]) || parentCode === item[parentKey]) {
       trees.push(item)
+    } else {
+      subTrees.push(item)
     }
   })
   // 递归获取子级
   const findTree = (arr: any[]) => {
     arr.forEach((list) => {
-      originData.forEach((obj) => {
+      subTrees.forEach((obj) => {
         if (obj[parentKey] === list[key]) {
           list.children.push(obj)
         }
@@ -260,24 +239,34 @@ export const getTree = (option: TreeOption): any[] => {
   return trees
 }
 
-// 获取文本字数
-// 汉字 单词 符号
-export const getWordNumber = (str?: string): number => {
-  if (!str) return 0
-  try {
-    str = str
-      .replace(/<\/?[^>]*>|(\n|\t|\r)|(\s)/g, '')
-      .replace(/[\x00-\xff]/g, 'm')
-      .replace(/m+/g, '*')
-    return str.length
-  } catch (e) {
-    return 0
+type WordCount = {
+  characterCount: number
+  wordCount: number
+}
+/**
+ * 计算指定文本的字符数和单词数
+ * @param text 指定文本
+ * @returns 返回字符数和单词数
+ */
+export const countWordCharactersAndWords = (text?: string): WordCount => {
+  let wordCount = 0
+  let characterCount = 0
+  if (text) {
+    const noHtml = text.replace(/<[^>]*>/g, '')
+    const singleSpaces = noHtml.replace(/\s+/g, ' ').trim()
+    // 计算单词数（假设单词由空格分隔）
+    wordCount = singleSpaces.split(' ').filter((word) => word.length > 0).length
+    // 计算字符数（包括 Unicode 字符）
+    characterCount = noHtml.replace(/\s/g, '').length
   }
+  return { characterCount, wordCount }
 }
 
 /**
  * 将多个空格替换成一个空格
+ * @param text 指定文本
+ * @returns 返回文本
  */
-export const replaceMultipleSpaces = (str: string) => {
-  return str.replace(/\s+/g, ' ')
+export const replaceMultipleSpaces = (text: string): string => {
+  return text.replace(/\s+/g, ' ')
 }
