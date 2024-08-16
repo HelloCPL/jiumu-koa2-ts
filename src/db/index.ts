@@ -14,6 +14,9 @@ import { ExceptionHttp } from '@/utils/http-exception'
 import { SQLOptions, ErrorOptions } from './interface'
 import { Message } from '@/enums'
 import Logger from '@/lib/logger'
+import { replaceMultipleSpaces } from '@/utils/tools'
+
+export * from './utils'
 
 /**
  * 创建连接池
@@ -33,6 +36,7 @@ const pool: Pool = MySQL.createPool({
  */
 export function query(sql: string, data?: any, noThrow?: boolean) {
   return new Promise((resolve, reject) => {
+    sql = replaceMultipleSpaces(sql)
     pool.query(sql, data, async (err, results: any) => {
       if (err) return _throwError(reject, { sql, data, err })
       // 新增或更新或删除数据失败抛出错误
@@ -56,6 +60,9 @@ export function query(sql: string, data?: any, noThrow?: boolean) {
  */
 export function execTrans(sqlList: SQLOptions[]) {
   return new Promise((resolve, reject) => {
+    sqlList.forEach(item => {
+      item.sql = replaceMultipleSpaces(item.sql)
+    })
     // 连接数据库
     pool.getConnection((err, connection: PoolConnection) => {
       if (err) return _throwError(reject, { message: Message.dbConnect, err })

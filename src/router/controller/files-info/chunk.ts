@@ -56,17 +56,14 @@ export const doFileChunkDelete = async (ctx: Context) => {
  */
 export const doFileChunkMerge = async (ctx: Context) => {
   const params = ctx._params
-  const params2: any = await validateRange(
-    [
-      {
-        value: ctx._data.query.staticPlace,
-        range: ['files', 'images', 'videos', 'editors', 'sources', 'files_big'],
-        default: 'files_big'
-      }
-    ],
+  const staticPlace = await validateRange(
+    {
+      value: ctx._data.query.staticPlace,
+      range: ['files', 'images', 'videos', 'editors', 'sources', 'files_big'],
+      default: 'files_big'
+    },
     true
   )
-  const staticPlace = params2[0]
   const fileHash = params.fileHash
   const fileName = fileHash + '_' + params.fileName
   const chunkSize = Number(params.chunkSize)

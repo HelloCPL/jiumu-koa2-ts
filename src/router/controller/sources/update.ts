@@ -6,9 +6,8 @@
 
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
-import { execTrans } from '@/db'
+import { execTrans, getUpdateFields } from '@/db'
 import { formatDate } from '@/utils/tools'
-import { getUpdateSetData } from '@/utils/handle-sql'
 import { SQLOptions } from '@/db/interface'
 
 /**
@@ -16,12 +15,12 @@ import { SQLOptions } from '@/db/interface'
  */
 export const doSourceUpdate = async (ctx: Context) => {
   ctx._params.updateTime = formatDate(new Date())
-  const sqlParams = getUpdateSetData({
+  const fieldsResult = getUpdateFields({
     valid: ['title', 'attachment', 'type', 'classify', 'is_secret', 'sort', 'update_time', 'remarks'],
     data: ctx._params
   })
-  const sql: string = `UPDATE sources SET ${sqlParams.sql} WHERE id = ?`
-  const data = [...sqlParams.data, ctx._params.id]
+  const sql: string = `UPDATE sources SET ${fieldsResult.sql} WHERE id = ?`
+  const data = [...fieldsResult.data, ctx._params.id]
   const sqlList: SQLOptions[] = [{ sql, data }]
   // 如果是 701 ，同步静态资源公开性
   if (ctx._params.hasOwnProperty('isSecret') && ctx._params._type === '701') {

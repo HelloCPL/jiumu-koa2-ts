@@ -5,7 +5,7 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '@/db'
+import { query, execTrans, getSelectWhereFields, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
 import {
   NovelNoteOptions,
@@ -16,7 +16,6 @@ import {
   NoteChapterParams
 } from './interface'
 import { getTagCustomByIds } from '../tags-custom/get'
-import { getSelectWhereAsKeywordData, getOrderByKeyword, getSelectWhereData } from '@/utils/handle-sql'
 import { getFileById } from '../files-info/get'
 import { novelNoteLinkTypes } from '../novels-note-link/convert'
 import { isArray } from 'lodash'
@@ -70,18 +69,14 @@ export const doNovelNoteGetOne = async (params: NovelNoteOneParams): Promise<Nov
 export const getNovelNoteGetList = async (options: NovelNoteListParams): Promise<NovelNoteListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理keyword参数
-  const sqlParamsKeyword = getSelectWhereAsKeywordData({
+  const keywordResult = getSelectWhereKeyword({
     valid: ['t1.title', 't1.content'],
     data: options,
-    prefix: 'AND'
-  })
-  // 处理搜索排序
-  const orderParams = getOrderByKeyword({
-    valid: ['t1.title', 't1.content'],
-    data: options
+    prefix: 'AND',
+    isOrderKeyword: true
   })
   // 处理普通where参数
-  const sqlParams = getSelectWhereData({
+  const fieldsResult = getSelectWhereFields({
     valid: ['t1.is_secret'],
     data: options,
     prefix: 'AND'
@@ -101,16 +96,16 @@ export const getNovelNoteGetList = async (options: NovelNoteListParams): Promise
     whereSQL += ' AND t1.classify LIKE ? '
     whereData.push(`%${options.classify}%`)
   }
-  whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql} AND t2.target_id = ? AND t2.status = ? `
-  whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data, options.targetId, '1']
+  whereSQL += `${keywordResult.sql}${fieldsResult.sql} AND t2.target_id = ? AND t2.status = ? `
+  whereData = [...whereData, ...keywordResult.data, ...fieldsResult.data, options.targetId, '1']
   // 处理排序规则语句
-  const orderSql = `${orderParams.orderSql} t1.sort, t1.update_time DESC`
+  const orderSql = `${keywordResult.orderSql} t1.sort, t1.update_time DESC`
   // 处理创建者信息字段
   const userInfoField =
     options.showUserInfo === '1' ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, ' : ''
   const sql1: string = `SELECT COUNT(t1.id) AS total FROM novels_note_link t2 LEFT JOIN novels_note t1 ON t2.note_id = t1.id ${whereSQL}`
   const data1 = [...whereData]
-  const sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.classify, t1.sort, t1.is_secret, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note_link t2 LEFT JOIN novels_note t1 ON t2.note_id = t1.id LEFT JOIN users t3 ON t1.create_user = t3.id ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, ${keywordResult.orderFields} t1.classify, t1.sort, t1.is_secret, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_note_link t2 LEFT JOIN novels_note t1 ON t2.note_id = t1.id LEFT JOIN users t3 ON t1.create_user = t3.id ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
   const data2 = [...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },

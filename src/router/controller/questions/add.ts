@@ -15,7 +15,7 @@ import { validateRange } from '@/utils/validator'
  * 问答新增
  */
 export const doQuestionAdd = async (ctx: Context) => {
-  const paramsData = await validateRange(
+  const rangeResult = await validateRange(
     [
       { value: ctx._params.isDraft, range: ['1', '0'], default: '0' },
       { value: ctx._params.isSecret, range: ['1', '0'], default: '0' }
@@ -33,8 +33,8 @@ export const doQuestionAdd = async (ctx: Context) => {
     params.title,
     params.content,
     params.classify,
-    paramsData[0],
-    paramsData[1],
+    rangeResult[0],
+    rangeResult[1],
     sort,
     ctx._user.id,
     currentTime,

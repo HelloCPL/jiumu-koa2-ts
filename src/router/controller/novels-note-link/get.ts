@@ -4,12 +4,11 @@
  * @create 2023-02-07 14:57:04
  */
 
-import { execTrans, query } from '@/db'
+import { execTrans, query, getSelectWhereKeyword } from '@/db'
 import { Success } from '@/utils/http-exception'
 import { Context } from 'koa'
 import { NovelNoteLinkOptions, NovelNoteLinkParams, NovelNoteLinkReturnOption } from './interface'
 import { novelNoteLinkTypes } from './convert'
-import { getOrderByKeyword, getSelectWhereAsKeywordData } from '@/utils/handle-sql'
 
 // 获取本用户的可共享关联的笔记列表
 export const doNovelNoteLinkDeleteGetListSelf = async (ctx: Context) => {
@@ -31,21 +30,17 @@ const getNovelNoteLinkDeleteGetListSelf = async (
 ): Promise<NovelNoteLinkReturnOption> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理keyword参数
-  const sqlParamsKeyword = getSelectWhereAsKeywordData({
-    valid: ['t2.title'],
-    data: options,
-    prefix: 'AND'
-  })
-  // 处理搜索排序
-  const orderParams = getOrderByKeyword({
+  const keywordResult = getSelectWhereKeyword({
     valid: ['t2.title:note_title'],
-    data: options
+    data: options,
+    prefix: 'AND',
+    isOrderKeyword: true
   })
-  const whereSQL = `WHERE t1.share = ? AND t2.create_user = ? ${sqlParamsKeyword.sql}`
-  const whereData = [options.share, options.userId, ...sqlParamsKeyword.data]
+  const whereSQL = `WHERE t1.share = ? AND t2.create_user = ? ${keywordResult.sql}`
+  const whereData = [options.share, options.userId, ...keywordResult.data]
   const sql1 = `SELECT COUNT(t1.id) AS total FROM novels_note_link t1 LEFT JOIN novels_note t2 ON t1.note_id = t2.id ${whereSQL}`
   const data1 = [...whereData]
-  const sql2 = `SELECT t1.id, t1.status, t1.create_time, t1.terminal, t2.id AS note_id, ${orderParams.orderValid} t1.target_id, t1.target_type, t3.label AS target_type_label FROM novels_note_link t1 LEFT JOIN novels_note t2 ON t1.note_id = t2.id LEFT JOIN tags t3 ON t1.target_type = t3.code ${whereSQL} ORDER BY ${orderParams.orderSql} t2.sort, t2.update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, t1.status, t1.create_time, t1.terminal, t2.id AS note_id, ${keywordResult.orderFields} t1.target_id, t1.target_type, t3.label AS target_type_label FROM novels_note_link t1 LEFT JOIN novels_note t2 ON t1.note_id = t2.id LEFT JOIN tags t3 ON t1.target_type = t3.code ${whereSQL} ORDER BY ${keywordResult.orderSql} t2.sort, t2.update_time DESC LIMIT ?, ?`
   const data2 = [...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },

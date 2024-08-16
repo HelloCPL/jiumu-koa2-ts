@@ -6,7 +6,7 @@
 
 import log4js from 'log4js'
 import { getConfig, clearExpiredLogs } from './config'
-import _, { isObject } from 'lodash'
+import { isObject } from 'lodash'
 import { Context } from 'koa'
 import { IS_PRINT_LOG } from '@/config'
 import { ParamsOptions, QueryParamsOptions, LoggerOptions } from './interface'

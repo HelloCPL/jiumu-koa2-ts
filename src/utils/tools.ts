@@ -293,3 +293,10 @@ export const getWordNumber = (str?: string): number => {
     return 0
   }
 }
+
+/**
+ * 将多个空格替换成一个空格
+*/
+export const replaceMultipleSpaces = (str: string) => {
+  return str.replace(/\s+/g, ' ')
+}

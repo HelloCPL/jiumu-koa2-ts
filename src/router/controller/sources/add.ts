@@ -16,10 +16,7 @@ import { SQLOptions } from '@/db/interface'
  * 资源新增
  */
 export const doSourceAdd = async (ctx: Context) => {
-  const paramsData = await validateRange(
-    [{ value: ctx._params.isSecret, range: ['1', '0'], default: '0' }],
-    true
-  )
+  const isSecret = await validateRange({ value: ctx._params.isSecret, range: ['1', '0'], default: '0' }, true)
   const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
   const params = ctx._params
@@ -32,7 +29,7 @@ export const doSourceAdd = async (ctx: Context) => {
     params.type,
     params.attachment,
     params.classify,
-    paramsData[0],
+    isSecret,
     sort,
     ctx._user.id,
     currentTime,
@@ -45,7 +42,7 @@ export const doSourceAdd = async (ctx: Context) => {
   if (params.type === '701') {
     const sql2: string =
       'UPDATE files_info SET is_secret = ? , update_time = ? WHERE create_user = ? AND FIND_IN_SET(id, ?)'
-    const data2 = [paramsData[0], currentTime, ctx._user.id, params.attachment]
+    const data2 = [isSecret, currentTime, ctx._user.id, params.attachment]
     sqlList.push({
       sql: sql2,
       data: data2,

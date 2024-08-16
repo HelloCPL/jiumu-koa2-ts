@@ -5,9 +5,8 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '@/db'
+import { query, execTrans, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
-import { getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
 import { RoleOptions, RoleParamsOptions, RoleReturnOptions } from './interface'
 import { getAllRoleByUserId } from '../users-roles/get'
 import { UserRoleByUserIdParams } from '../users-roles/interface'
@@ -63,18 +62,14 @@ export const getMenuOne = async (id: string): Promise<RoleOptions | null> => {
 export const getMenuList = async (params: RoleParamsOptions): Promise<RoleReturnOptions> => {
   const pageNo = (params.pageNo - 1) * params.pageSize
   // 处理搜索
-  const sqlParams = getSelectWhereAsKeywordData({
+  const keywordResult = getSelectWhereKeyword({
     valid: ['t1.label'],
     data: params,
-    prefix: 'WHERE'
+    prefix: 'WHERE',
+    isOrderKeyword: true
   })
-  // 处理搜索排序
-  const orderParams = getOrderByKeyword({
-    valid: ['t1.label'],
-    data: params
-  })
-  const sql1 = `SELECT COUNT(t1.id) AS total FROM roles t1 ${sqlParams.sql}`
-  const data1 = [...sqlParams.data]
+  const sql1 = `SELECT COUNT(t1.id) AS total FROM roles t1 ${keywordResult.sql}`
+  const data1 = [...keywordResult.data]
   const data2 = []
   // 是否与指定用户关联
   let sqlUserId = ''
@@ -101,7 +96,7 @@ export const getMenuList = async (params: RoleParamsOptions): Promise<RoleReturn
     data2.push(params.menuId)
   }
   data2.push(...data1, pageNo, params.pageSize)
-  const sql2 = `SELECT t1.id, t1.code, ${orderParams.orderValid} t1.sort, t1.configurable, t1.create_time, t1.update_time, ${sqlUserId} ${sqlPermissionId} ${sqlMenuId} t1.terminal, t1.remarks FROM roles t1 ${sqlUserIdLeft} ${sqlPermissionIdLeft} ${sqlParams.sql} ${sqlMenuIdLeft} ORDER BY ${orderParams.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, t1.code, ${keywordResult.orderFields} t1.sort, t1.configurable, t1.create_time, t1.update_time, ${sqlUserId} ${sqlPermissionId} ${sqlMenuId} t1.terminal, t1.remarks FROM roles t1 ${sqlUserIdLeft} ${sqlPermissionIdLeft} ${keywordResult.sql} ${sqlMenuIdLeft} ORDER BY ${keywordResult.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 }

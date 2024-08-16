@@ -12,22 +12,24 @@ import { CRYPTOJS_KEY, CRYPTOJS_IV } from '@/config'
 
 /**
  * crypto-js 加密方法
- * password 参数 keyStr 加密字符串 ivStr 加密字符串
+ * @param str 要加密的字符串
+ * @param keyStr 加密字符串 key
+ * @param ivStr 加密字符串 iv
  */
-export function encrypt(str: string, keyStr?: string, ivStr?: string): string {
-  if (!str) return str
+export function encrypt(word: string, keyStr?: string, ivStr?: string): string {
+  if (!word) return ''
   try {
     keyStr = keyStr ? keyStr : CRYPTOJS_KEY
     ivStr = ivStr ? ivStr : CRYPTOJS_IV
     const key = CryptoJS.enc.Utf8.parse(keyStr)
     const iv = CryptoJS.enc.Utf8.parse(ivStr)
-    const srcs = CryptoJS.enc.Utf8.parse(str)
+    const srcs = CryptoJS.enc.Utf8.parse(word)
     return CryptoJS.AES.encrypt(srcs, key, {
       iv,
       mode: CryptoJS.mode.CBC,
       padding: CryptoJS.pad.ZeroPadding
     }).toString()
-  } catch (e) {
+  } catch (_e) {
     return ''
   }
 }
@@ -48,7 +50,7 @@ export function decrypt(str: string, keyStr?: string, ivStr?: string): string {
       padding: CryptoJS.pad.ZeroPadding
     }).toString(CryptoJS.enc.Utf8)
     return formatStr(descyptStr)
-  } catch (e) {
+  } catch (_e) {
     return ''
   }
 }

@@ -5,11 +5,10 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { query, execTrans } from '@/db'
+import { query, execTrans, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
 import { UserOptions, UserListParams, UserListReturn } from './interface'
 import { getFileById } from '../files-info/get'
-import { getSelectWhereAsKeywordData, getOrderByKeyword } from '@/utils/handle-sql'
 
 // 获取本用户信息
 export const doUserGetSelf = async (ctx: Context) => {
@@ -56,26 +55,22 @@ export const getUserOne = async (id: string): Promise<UserOptions | null> => {
 export const getUserList = async (options: UserListParams): Promise<UserListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理搜索关键字
-  const sqlParams = getSelectWhereAsKeywordData({
+  const keywordResult = getSelectWhereKeyword({
     valid: ['t1.(phone)', 't1.username'],
     data: options,
-    prefix: 'WHERE'
+    prefix: 'WHERE',
+    isOrderKeyword: true
   })
-  // 处理搜索排序
-  const orderParams = getOrderByKeyword({
-    valid: ['t1.(phone)', 't1.username'],
-    data: options
-  })
-  const sql1 = `SELECT COUNT(t1.id) AS total FROM users t1 ${sqlParams.sql}`
-  const data1 = [...sqlParams.data]
+  const sql1 = `SELECT COUNT(t1.id) AS total FROM users t1 ${keywordResult.sql}`
+  const data1 = [...keywordResult.data]
   let sql2: string
   let data2: any[]
   if (options.simple === '1') {
-    sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.create_time, t1.update_time, t1.terminal FROM users t1 ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.update_time DESC LIMIT ?, ?`
-    data2 = [...sqlParams.data, pageNo, options.pageSize]
+    sql2 = `SELECT t1.id, ${keywordResult.orderFields} t1.create_time, t1.update_time, t1.terminal FROM users t1 ${keywordResult.sql} ORDER BY ${keywordResult.orderSql} t1.update_time DESC LIMIT ?, ?`
+    data2 = [...keywordResult.data, pageNo, options.pageSize]
   } else {
-    sql2 = `SELECT t1.id, ${orderParams.orderValid} t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code ${sqlParams.sql} ORDER BY ${orderParams.orderSql} t1.update_time DESC LIMIT ?, ?`
-    data2 = [...sqlParams.data, pageNo, options.pageSize]
+    sql2 = `SELECT t1.id, ${keywordResult.orderFields} t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code ${keywordResult.sql} ORDER BY ${keywordResult.orderSql} t1.update_time DESC LIMIT ?, ?`
+    data2 = [...keywordResult.data, pageNo, options.pageSize]
   }
   const res: any = await execTrans([
     { sql: sql1, data: data1 },

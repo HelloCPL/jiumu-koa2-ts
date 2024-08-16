@@ -14,7 +14,7 @@ import { ExceptionHttp, ExceptionParameter } from './http-exception'
 import { Message } from '@/enums'
 import { getTagByParentCode } from '@/router/controller/tags/get'
 import { TagOptions } from '@/router/controller/tags/interface'
-import { isArray, isBoolean, isPlainObject, isString } from 'lodash'
+import { isArray, isPlainObject, isString } from 'lodash'
 
 type RulesOptions = any[]
 
@@ -84,9 +84,9 @@ export class ValidatorParameters extends ValidatorParam {
 
 interface RangeOptions {
   value: any // 校验值
-  range: any[] | string // 校验范围，自定义数据数组或指定标签
+  range: any[] | string // 校验范围，自定义数据数组或指定code标签（指父级code）
   message?: string
-  default?: any // 默认值
+  default?: any // 指定value无值时赋予的默认值
 }
 
 /**
@@ -101,16 +101,9 @@ export const validateRange = async (data: RangeOptions | RangeOptions[], noThrow
       if (isArray(info.range)) {
         // @ts-ignore
         info.range.find((val) => {
-          if (isBoolean(info.value)) {
-            if (info.value === val) {
-              flag = true
-              return true
-            }
-          } else {
-            if (info.value === val) {
-              flag = true
-              return true
-            }
+          if (info.value === val) {
+            flag = true
+            return true
           }
         })
       } else if (isString(info.range)) {

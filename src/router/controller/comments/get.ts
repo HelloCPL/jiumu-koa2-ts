@@ -8,7 +8,6 @@ import { Success } from '@/utils/http-exception'
 import { execTrans, query } from '@/db'
 import { Context } from 'koa'
 import { CommentListParams, CommentOptions } from './interface'
-// import { getSelectWhereData } from '@/utils/handle-sql'
 import { getFileById } from '../files-info/get'
 
 // 获取指定的某条评论

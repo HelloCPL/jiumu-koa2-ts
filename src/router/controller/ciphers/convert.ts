@@ -10,7 +10,6 @@ import { ExceptionForbidden, ExceptionNotFound, ExceptionParameter } from '@/uti
 import { validateRange } from '@/utils/validator'
 import { Context, Next } from 'koa'
 import { isExistCipherCode } from '../ciphers-code/convert'
-import { isExist } from '../convert'
 
 /**
  * 新增时

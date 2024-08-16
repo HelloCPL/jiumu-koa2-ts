@@ -15,7 +15,7 @@ import { validateRange } from '@/utils/validator'
  * 小说章节新增
  */
 export const doNovelChapterAdd = async (ctx: Context) => {
-  const paramsData = await validateRange(
+  const rangeResult = await validateRange(
     [
       { value: ctx._params.isDraft, range: ['1', '0'], default: '0' },
       { value: ctx._params.isSecret, range: ['1', '0'], default: '0' }
@@ -32,8 +32,8 @@ export const doNovelChapterAdd = async (ctx: Context) => {
     ctx._params.title,
     ctx._params.content,
     ctx._params.sort,
-    paramsData[1],
-    paramsData[0],
+    rangeResult[1],
+    rangeResult[0],
     ctx._user.id,
     currentTime,
     currentTime,

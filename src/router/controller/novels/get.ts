@@ -5,11 +5,10 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { execTrans } from '@/db'
+import { execTrans, getSelectWhereFields, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
 import { NovelOptions, NovelListParams, NovelListReturn, NovelOneParams } from './interface'
 import { getTagCustomByIds } from '../tags-custom/get'
-import { getOrderByKeyword, getSelectWhereAsKeywordData, getSelectWhereData } from '@/utils/handle-sql'
 import { getFileById } from '../files-info/get'
 import { getWordNumber } from '@/utils/tools'
 import { isArray } from 'lodash'
@@ -96,19 +95,14 @@ export const getNovelOne = async (params: NovelOneParams): Promise<NovelOptions 
 export const getNovelList = async (options: NovelListParams): Promise<NovelListReturn> => {
   const pageNo = (options.pageNo - 1) * options.pageSize
   // 处理keyword参数
-  const sqlParamsKeyword = getSelectWhereAsKeywordData({
-    valid: ['t1.name', 't1.(author)', 't3.(username)', 't1.introduce'],
+  const keywordResult = getSelectWhereKeyword({
+    valid: ['t1.name', 't1.(author)', '@t3.(username):createUserName', 't1.introduce'],
     data: options,
-    prefix: 'AND'
+    prefix: 'AND',
+    isOrderKeyword: true
   })
-  // 处理搜索排序
-  const orderParams = getOrderByKeyword({
-    valid: ['t1.name', 't1.author', '!t3.(username):createUserName', 't1.introduce'],
-    data: options
-  })
-
   // 处理普通where参数
-  const sqlParams = getSelectWhereData({
+  const fieldsResult = getSelectWhereFields({
     valid: ['t1.create_user', 't1.type', 't1.is_draft'],
     data: options,
     prefix: 'AND'
@@ -128,16 +122,16 @@ export const getNovelList = async (options: NovelListParams): Promise<NovelListR
     whereSQL += ' AND t1.classify LIKE ? '
     whereData.push(`%${options.classify}%`)
   }
-  whereSQL += `${sqlParamsKeyword.sql}${sqlParams.sql}`
-  whereData = [...whereData, ...sqlParamsKeyword.data, ...sqlParams.data]
+  whereSQL += `${keywordResult.sql}${fieldsResult.sql}`
+  whereData = [...whereData, ...keywordResult.data, ...fieldsResult.data]
   // 处理排序规则语句
   let orderSql
   if (options.createUser) {
     // 指定用户排序
-    orderSql = `${orderParams.orderSql} t1.sort, t1.update_time DESC`
+    orderSql = `${keywordResult.orderSql} t1.sort, t1.update_time DESC`
   } else {
     // 指定用户排序
-    orderSql = `${orderParams.orderSql} t1.is_top DESC, (like_count + chapter_like_count) DESC, (collection_count + chapter_collection_count) DESC, t1.update_time DESC`
+    orderSql = `${keywordResult.orderSql} t1.is_top DESC, (like_count + chapter_like_count) DESC, (collection_count + chapter_collection_count) DESC, t1.update_time DESC`
   }
   // 处理创建者信息字段
   const userInfoField =
@@ -158,7 +152,7 @@ export const getNovelList = async (options: NovelListParams): Promise<NovelListR
     '(SELECT COUNT(t10.id) FROM novels_chapter t10 WHERE t10.novel_id = t1.id AND (t10.create_user = ? OR (t10.is_draft = 0 AND t10.is_secret = 0))) AS chapter_count'
   const chapterCountData = [options.userId]
 
-  const sql2 = `SELECT t1.id, ${userInfoField} ${orderParams.orderValid} t1.classify, t1.type, t2.label AS type_label, t1.is_top, t1.sort, t1.is_secret, t1.is_draft, t1.create_user, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, t6.id AS is_collection, ${chapterLikeCount} (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, ${chapterCollectionCount} (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, ${chapterCommentCount1} (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2, ${chapterCommentCount2} ${chapterCount} FROM novels t1 LEFT JOIN tags t2 ON t1.type = t2.code LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
+  const sql2 = `SELECT t1.id, ${userInfoField} ${keywordResult.orderFields} t1.classify, t1.type, t2.label AS type_label, t1.is_top, t1.sort, t1.is_secret, t1.is_draft, t1.create_user, t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, t6.id AS is_collection, ${chapterLikeCount} (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, ${chapterCollectionCount} (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, ${chapterCommentCount1} (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2, ${chapterCommentCount2} ${chapterCount} FROM novels t1 LEFT JOIN tags t2 ON t1.type = t2.code LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) ${whereSQL} ORDER BY ${orderSql} LIMIT ?, ?`
   const data2 = [...chapterCountData, options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
