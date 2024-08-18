@@ -6,7 +6,7 @@
 
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
-import { _getTokenKey, verifyToken } from './token'
+import { _getTokenKey, getTokenInfo } from './token'
 import { clientDel } from '@/db/redis'
 import { Message } from '@/enums'
 
@@ -14,8 +14,8 @@ import { Message } from '@/enums'
  * 修改本用户基本信息
  */
 export const doUserExit = async (ctx: Context) => {
-  let tokenInfo = verifyToken(<string>ctx.req.headers.authorization)
-  if (!tokenInfo) tokenInfo = verifyToken(ctx._params.tokenRefresh)
+  let tokenInfo = getTokenInfo(<string>ctx.req.headers.authorization)
+  if (!tokenInfo) tokenInfo = getTokenInfo(ctx._params.tokenRefresh)
   if (tokenInfo) {
     const tokenKey = _getTokenKey({
       id: tokenInfo.id,

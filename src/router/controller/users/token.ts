@@ -47,6 +47,9 @@ export const gernerateToken = async (ctx: Context, info: TokenParamsOptions): Pr
 
 /**
  * 解析 token 信息
+ * @param ctx 上下文
+ * @param key? 指定 key ，'token' | 'token_refresh' 默认 'token'
+ * @returns 返回解析后的数据结构
  */
 export const analysisToken = async (ctx: Context, key: string = 'token'): Promise<ExceptionOptions> => {
   const tokenOrigin = BasicAuth(ctx.req)
@@ -113,9 +116,11 @@ export function _getTokenKey(info: TokenSaveParamsOptions): string {
 }
 
 /*
- * 解析直接给定的token
+ * 获取 token 里包含的信息并返回
+ * @param token 原始的 token 字符串
+ * @returns 返回 token 解析后包含的信息
  */
-export function verifyToken(token: string): TokenOptions | null {
+export function getTokenInfo(token: string): TokenOptions | null {
   let info = null
   if (!token) return info
   let str = token
