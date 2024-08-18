@@ -13,7 +13,7 @@ import { query } from '@/db'
  */
 export const verifyRoute = async (ctx: Context, next: Next) => {
   const url = toPath(ctx.request.url)
-  const flag1 = isStaticUrl(url)
+  const flag1 = !isStaticUrl(url)
   const flag2 = global._unlessPath.indexOf(url) === -1 || ctx.request.header['authorization']
   if (flag1 && flag2) {
     const tokenInfo = await analysisToken(ctx)
