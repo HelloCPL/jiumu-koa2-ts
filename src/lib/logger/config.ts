@@ -5,39 +5,56 @@
  */
 
 import { LOGS_URL, LOGD_DAYS_TO_KEEP } from '@/config'
-import { deleteFile, readDir } from '@/utils/files'
-import { Store } from '@/utils/store'
+import { deleteFile, readDir, sureIsDir } from '@/utils/files'
 import { getCurrentTime, getFileName, isBeforeTargetDate } from '@/utils/tools'
 import { isArray } from 'lodash'
-
 import path from 'path'
+import log4js from 'log4js'
+import { storeProject } from '@/utils/store'
 
-// 普通日志信息
-const infoFileName = 'info' // 文件名
+/**
+ * 日志类
+ */
+export class Log {
+  static isInit = false
+  static init(names: string[]) {
+    if (this.isInit) return
+    this.initDir()
+    const obj = this.getConfig(names)
+    log4js.configure(obj)
+    this.isInit = true
+  }
 
-export function getConfig() {
-  return {
-    // 日志格式等设置
-    appenders: {
-      'rule-console': { type: 'console' },
-      infoLogger: {
+  // 初始化目录
+  static initDir() {
+    sureIsDir(LOGS_URL)
+  }
+
+  // 获取配置
+  static getConfig(names: string[]) {
+    const config: any = {
+      appenders: {
+        'rule-console': { type: 'console' }
+      },
+      // 供外部调用的名称与对应设置定义
+      categories: {
+        default: { appenders: ['rule-console'], level: 'all' }
+      },
+      baseLogPath: LOGS_URL
+    }
+    names.forEach((name) => {
+      config.appenders[name] = {
         type: 'dateFile',
-        filename: path.join(LOGS_URL, infoFileName),
+        filename: path.join(LOGS_URL, name),
         pattern: '-yyyy-MM-dd-hh.log',
         alwaysIncludePattern: true,
         encoding: 'utf-8',
-        maxLogSize: 5 * 1024 * 1024, // 5 m
+        maxLogSize: 3 * 1024 * 1024, // 3 m
         numBackups: 3
       }
-    },
-    // 供外部调用的名称与对应设置定义
-    categories: {
-      default: { appenders: ['rule-console'], level: 'all' },
-      infoLogger: { appenders: ['infoLogger'], level: 'all' },
-      // "errorLogger": { "appenders": ["errorLogger"], "level": "all" },
-      http: { appenders: ['infoLogger'], level: 'info' }
-    },
-    baseLogPath: LOGS_URL
+      config.categories[name] = { appenders: [name], level: 'info' }
+    })
+    return config
   }
 }
 
@@ -46,7 +63,7 @@ export function getConfig() {
  */
 export const clearExpiredLogs = () => {
   const key = 'clear-logs-time'
-  const clearLogsTime = Store.get(key)
+  const clearLogsTime = storeProject.get(key)
   if (
     !clearLogsTime ||
     !isBeforeTargetDate({
@@ -54,7 +71,7 @@ export const clearExpiredLogs = () => {
       value: 1
     })
   ) {
-    Store.set(key, getCurrentTime())
+    storeProject.set(key, getCurrentTime())
     readDir(LOGS_URL).then((paths) => {
       if (isArray(paths)) {
         const logs = paths

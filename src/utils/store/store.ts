@@ -147,7 +147,7 @@ export class StoreData implements StoreAbstractClass {
     const data = origin[key]
     const sync = option?.sync !== false
     if (isArray(data) && data.length && index >= 0) {
-      if (value != undefined) {
+      if (value !== undefined) {
         data.splice(index, len, value)
       } else {
         data.splice(index, len)

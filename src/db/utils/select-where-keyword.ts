@@ -6,6 +6,8 @@ import { handleField, handleKeyword, handleOrderFields } from './tools'
  * options.data 传参对象（需包含 keyword 字段，其中分隔符遵循 @handleKeyword 规则 ）
  * options.connector 多个筛选条件间的连接符，默认 OR
  * options.prefix 查询 sql 语句为真时要添加的前缀
+ * options.orderPrefix 排序查询 sql 语句为真时要添加的前缀
+ * options.orderSuffix 排序查询 sql 语句为真时要添加的后缀
  * options.isOrderKeyword 是否需要处理搜索替换字段和排序条件
  */
 export const getSelectWhereKeyword = (
@@ -20,7 +22,7 @@ export const getSelectWhereKeyword = (
     options.valid.forEach((field) => {
       const result = handleField(field)
       if (result.isValid) {
-        const compair = result.isEqual ? '=' : 'LINK'
+        const compair = result.isEqual ? '=' : 'LIKE'
         const word = result.isEqual ? keyword : `%${keyword}%`
         sqls.push(` ${result.field} ${compair} ? `)
         data.push(word)
@@ -44,8 +46,10 @@ export const getSelectWhereKeyword = (
  */
 function getOrderKeyword(options: SQLUtilsOptionsOrderKeyword, keywords: string[]) {
   let orderFields = ''
-  const orderSqls: string[] = []
-  if (options.isOrderKeyword) {
+  let orderSql = ''
+  const { isOrderKeyword, orderSuffix = ',', orderPrefix } = options
+  if (isOrderKeyword) {
+    const orderSqls: string[] = []
     const highlight = options.data.highlight === '1'
     options.valid.forEach((field) => {
       const result = handleField(field)
@@ -61,9 +65,12 @@ function getOrderKeyword(options: SQLUtilsOptionsOrderKeyword, keywords: string[
         orderFields += ` ${result.field}  AS ${result.dataField}, `
       }
     })
+    orderSql = orderSqls.join(',')
+    orderSql && orderPrefix ? (orderSql = ` ${orderPrefix} ${orderSql} `) : ''
+    orderSql && orderSuffix ? (orderSql = ` ${orderSql} ${orderSuffix} `) : ''
   }
   return {
     orderFields,
-    orderSql: orderSqls.join(',')
+    orderSql
   }
 }

@@ -9,7 +9,7 @@
 import { Context, Next } from 'koa'
 import { ExceptionHttp, ExceptionOptions } from '@/utils/http-exception'
 import { Code, Message } from '@/enums'
-import Logger from '../logger'
+import { logger, loggerError } from '../logger'
 
 /**
  * 全局捕捉异常集合
@@ -39,22 +39,19 @@ export async function catchError(ctx: Context, next: Next) {
 // 记录响应日志
 function _saveLogger(ctx: Context, error: any, isExceptionHttp: boolean) {
   if (isExceptionHttp) {
-    Logger.response(
-      {
-        code: error.code,
-        message: error.message,
-        data: error.data
-      },
-      ctx
-    )
+    logger.response({
+      code: error.code,
+      message: error.message,
+      data: error.data,
+      requestCount: ctx._requestCount,
+      requestStart: ctx._requestStart
+    })
   } else {
-    Logger.error(
-      {
-        code: Code.error,
-        message: Message.unknown,
-        error: error
-      },
-      ctx
-    )
+    loggerError.error({
+      code: Code.error,
+      message: Message.unknown,
+      error: error,
+      requestCount: ctx._requestCount
+    })
   }
 }

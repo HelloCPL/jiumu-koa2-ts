@@ -13,7 +13,7 @@ import { DATABASE } from '@/config'
 import { ExceptionHttp } from '@/utils/http-exception'
 import { SQLOptions, ErrorOptions } from './interface'
 import { Message } from '@/enums'
-import Logger from '@/lib/logger'
+import { logger, loggerError } from '@/lib/logger'
 import { replaceMultipleSpaces } from '@/utils/tools'
 
 export * from './utils'
@@ -48,7 +48,7 @@ export function query(sql: string, data?: any, noThrow?: boolean) {
       )
         return _throwError(reject, { message: Message.errorDoing, sql, data, err })
       // 记录日志
-      Logger.query({ message: Message.success, sql, data })
+      logger.query({ message: Message.success, sql, data })
       resolve(results)
     })
   })
@@ -60,7 +60,7 @@ export function query(sql: string, data?: any, noThrow?: boolean) {
  */
 export function execTrans(sqlList: SQLOptions[]) {
   return new Promise((resolve, reject) => {
-    sqlList.forEach(item => {
+    sqlList.forEach((item) => {
       item.sql = replaceMultipleSpaces(item.sql)
     })
     // 连接数据库
@@ -85,7 +85,7 @@ export function execTrans(sqlList: SQLOptions[]) {
               })
             connection.release()
             // 记录日志
-            Logger.query({ message: Message.success, data: sqlList })
+            logger.query({ message: Message.success, data: sqlList })
             resolve(results)
           })
         })
@@ -100,7 +100,6 @@ export function execTrans(sqlList: SQLOptions[]) {
 function _handleExceTransSQLParams(reject: any, connection: PoolConnection, sqlList: SQLOptions[]) {
   const queryArr: any[] = []
   sqlList.forEach((item) => {
-    // Logger.query(item.sql, item.data)
     const temp = function (cb: Function) {
       connection.query(item.sql, item.data, (err: any, results: any) => {
         if (err)
@@ -134,7 +133,7 @@ function _handleExceTransSQLParams(reject: any, connection: PoolConnection, sqlL
 
 // 普通错误抛出异常
 function _throwError(reject: any, errorMessage: ErrorOptions) {
-  Logger.query({
+  loggerError.error({
     code: errorMessage.code,
     message: errorMessage.message || Message.dbSQL,
     sql: errorMessage.sql,
@@ -153,7 +152,7 @@ function _throwError(reject: any, errorMessage: ErrorOptions) {
 // 事务查询发生错误时回滚并返回错误
 function _handleExceTransRollback(reject: any, connection: PoolConnection, errorMessage: ErrorOptions) {
   connection.rollback(() => {
-    Logger.query({
+    loggerError.error({
       code: errorMessage.code,
       message: errorMessage.message || Message.dbSQL,
       sql: errorMessage.sql,

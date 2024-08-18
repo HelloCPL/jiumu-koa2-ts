@@ -42,7 +42,7 @@ export const doSourceUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isSecret,
       range: ['1', '0'],
-      message: "isSecret参数必须为['1', '0']范围"
+      message: 'isSecret参数必须为[\'1\', \'0\']范围'
     })
   }
   // 若传 type 判断type是否系统标签700范围

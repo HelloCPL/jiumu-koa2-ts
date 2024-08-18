@@ -2,8 +2,8 @@ import { STATIC_DIRS, STATIC_URL } from '@/config'
 import path from 'path'
 import { judgeDirSync, sureIsDirSync } from '@/utils/files'
 import jsonfile from 'jsonfile'
-import { isBoolean, isNull, isNumber, isObject, isString } from 'lodash'
-import { toParse, toStringify } from '../tools'
+import { isObject, isString } from 'lodash'
+import { parseStoreData, stringifyStoreData, toParse, toStringify } from '../tools'
 import { decrypt, encrypt } from '../crypto'
 
 /**
@@ -83,7 +83,7 @@ export class StoreJson {
 function toEncryptOrDecrypt2(value: string, isEncrypt = true): string {
   if (isEncrypt) {
     // 加密
-    const _val = _setItemFormat(value)
+    const _val = stringifyStoreData(value)
     if (!_val || _val.includes('__encrypt__')) return _val
     return encrypt(_val) + '__encrypt__'
   } else {
@@ -93,28 +93,6 @@ function toEncryptOrDecrypt2(value: string, isEncrypt = true): string {
       value = value.replace(/__encrypt__/g, '')
       value = decrypt(value)
     }
-    return _getItemFormat(value)
+    return parseStoreData(value)
   }
-}
-
-// 格式化存储数据
-function _setItemFormat(value: any) {
-  if (Object.is(value, NaN)) return '__NaN__'
-  else if (isNull(value)) return '__Null__'
-  else if (value === undefined) return '__Undefined__'
-  else if (isBoolean(value)) return `__Boolean__${value.toString().replace(/__Boolean__/gi, '')}`
-  else if (isNumber(value)) return `__Number__${value.toString().replace(/__Number__/gi, '')}`
-  return value
-}
-
-// 解构存储数据格式
-function _getItemFormat(value: any): any {
-  if (!value) return value
-  else if (value === '__NaN__') return NaN
-  else if (value === '__Null__') return null
-  else if (value === '__Undefined__') return undefined
-  else if (value === '__Boolean__true') return true
-  else if (value === '__Boolean__false') return false
-  else if (isString(value) && value.startsWith('__Number__')) return Number(value.substring(10))
-  return value
 }

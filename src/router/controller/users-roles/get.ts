@@ -59,7 +59,6 @@ export const getAllRoleByUserId = async (
       { sql: sql1, data: [options.userId] },
       { sql: sql2, data: [options.userId, pageNo, options.pageSize] }
     ])
-    console.log(res[1])
     return {
       total: res[0][0]['total'],
       data: res[1]

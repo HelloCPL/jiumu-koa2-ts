@@ -10,34 +10,30 @@ import { DataOptions } from './interface'
 import { getTerminal } from '@/utils/tools'
 import xss from '@/utils/xss'
 import { isArray, isPlainObject, isString } from 'lodash'
-import Logger from '../logger'
+import { logger } from '../logger'
 
 /*
  * 初始化请求参数
  */
 export const mountRequest = async (ctx: Context, next: Next) => {
-  Logger.info({ message: '处理参数挂载' })
+  // 记录请求时间
+  const cost = BigInt(2 * 1e6) // 中间消费时间
+  global._requestStart = process.hrtime.bigint() - cost
+  ctx._requestStart = global._requestStart
+  // 记录请求次数
+  global._requestCount++
+  ctx._requestCount = global._requestCount
+  logger.info({
+    message: '处理请求参数挂载',
+    requestCount: ctx._requestCount
+  })
   const v: any = await new LinValidator().validate(ctx)
   ctx._data = <DataOptions>v.data
   ctx._params = getParams(ctx)
   ctx._terminal = getTerminal(ctx)
-
-  // 记录日志
-  const cost = BigInt(2 * 1e6) // 中间消费时间
-  global._requestStart = process.hrtime.bigint() - cost
-  ctx._requestStart = global._requestStart
-  global._requestCount++
-  ctx._requestCount = global._requestCount
+  logger.request(ctx)
+  // 请求上次请求的缓存结果
   global._results = {}
-  Logger.request(ctx)
-  await next()
-}
-
-/**
- * 挂载参数
- * 即 ctx._data 包含 {body query path header}
- */
-export const mountParameter = async (ctx: Context, next: Next) => {
   await next()
 }
 

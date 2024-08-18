@@ -7,19 +7,18 @@
 import Http from 'http'
 import KoaCors from '@koa/cors'
 import KoaBody from 'koa-body'
+import { app } from './app'
 import { MAX_FIELDS_SIZE, STATIC_URL, PORT, ENV, BASE_URL, PUBLIC_PATH } from '@/config'
 import InitGlobal from '@/global'
+import { mountRequest } from '@/lib/mount-parameter'
 import { catchError } from '@/lib/catch-error'
 import { Route } from '@/router'
-import Static from 'koa-static'
 import { verifyStatic } from '@/lib/verify-auth'
+import Static from 'koa-static'
+import { useMDAPI } from '@/router/mdapi'
 import { initCompress } from '@/lib/compress'
 import { toPath } from '@/utils/tools'
-import { useMDAPI } from '@/router/mdapi'
-import { mountRequest } from '@/lib/mount-parameter'
-import Logger from '@/lib/logger'
-
-import { app } from './app'
+import { logger } from '@/lib/logger'
 
 // 处理跨域
 app.use(KoaCors())
@@ -57,14 +56,14 @@ route.init()
 app.use(verifyStatic) // 校验静态资源访问权限
 app.use(Static(STATIC_URL))
 
-// mkapi 文档静态资源
+// 注册 mkapi 文档静态资源
 useMDAPI(app)
 
 // 启用 gizp 压缩
 initCompress(app)
 
 /**
- *  ------------------------------------  Server ---------------------------------------
+ *  ---------------------  Server ---------------------
  */
 
 const server = Http.createServer(app.callback())
@@ -85,7 +84,7 @@ const startServer = (): Promise<StartReturn> => {
       if (!BASE_URL.includes('localhost')) {
         message += `\n  Network: ${toPath(BASE_URL, PUBLIC_PATH)}`
       }
-      Logger.info({ message }, true)
+      logger.info({ message }, true)
       resolve({ port: PORT, env: ENV })
     })
   })
@@ -98,7 +97,7 @@ const startServer = (): Promise<StartReturn> => {
 const closeServer = (): Promise<boolean> => {
   return new Promise((resolve) => {
     server.close(() => {
-      Logger.info({ message: 'Server closed.' }, true)
+      logger.info({ message: 'Server closed.' }, true)
       resolve(true)
     })
   })

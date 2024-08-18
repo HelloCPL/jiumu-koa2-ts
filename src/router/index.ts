@@ -9,7 +9,7 @@ import Router from 'koa-router'
 import { sureIsArray, toPath } from '@/utils/tools'
 import { RouteOptions } from './interface'
 import { verifyRoute } from '@/lib/verify-auth'
-import Logger from '@/lib/logger'
+import { logger } from '@/lib/logger'
 
 const router = new Router()
 
@@ -33,7 +33,7 @@ export class Route {
    * 自动注册路由 初始化
    */
   init() {
-    Logger.info({ message: '路由注册 初始化' })
+    logger.info({ message: '路由注册 初始化' })
     // 加载 api 接口
     require('./api/articles/index')
     require('./api/ciphers-code/index')
@@ -62,7 +62,7 @@ export class Route {
     require('./api/users-tags/index')
     require('./api/users/index')
 
-    Logger.info({ message: '路由注册 添加白名单；匹配路由注册' })
+    logger.info({ message: '路由注册 添加白名单；匹配路由注册' })
     for (const [config, controller] of Route.__DecoratedRouters) {
       // 处理路由中间件方法
       const controllers: Function[] = sureIsArray(controller)
@@ -95,7 +95,7 @@ export class Route {
 
     // 组装匹配好的路由
     this.app.use(this.router.routes())
-    Logger.info({ message: '路由注册 完成' })
+    logger.info({ message: '路由注册 完成' })
     // 处理不存在的路由
     this.app.use(this.router.allowedMethods())
   }

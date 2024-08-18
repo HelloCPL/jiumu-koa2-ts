@@ -25,9 +25,9 @@ import { MessageParameter, Message } from '@/enums'
  */
 export const Prefix =
   (prefix: string): ClassDecorator =>
-  (target: Function) => {
-    target.prototype[symbolRoutePrefix] = prefix
-  }
+    (target: Function) => {
+      target.prototype[symbolRoutePrefix] = prefix
+    }
 
 /**
  * @author chen
@@ -38,18 +38,18 @@ export const Prefix =
  */
 export const Request =
   (options: RequestOptions): MethodDecorator =>
-  (target: ObjectAny, key: string | symbol, descriptor: PropertyDescriptor) => {
-    if (!(isArray(options.terminals) && options.terminals.length))
-      options.terminals = ['pc', 'app', 'web', 'wechat']
-    Route.__DecoratedRouters.set(
+    (target: ObjectAny, key: string | symbol, descriptor: PropertyDescriptor) => {
+      if (!(isArray(options.terminals) && options.terminals.length))
+        options.terminals = ['pc', 'app', 'web', 'wechat']
+      Route.__DecoratedRouters.set(
       <RouteOptions>{
         target,
         ...options
       },
       target[key as string]
-    )
-    return descriptor
-  }
+      )
+      return descriptor
+    }
 
 /**
  * @author chen
@@ -60,16 +60,16 @@ export const Request =
  */
 export const Required =
   (params: string[]): MethodDecorator =>
-  (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-    target[key] = sureIsArray(target[key])
-    target[key].splice(0, 0, middleware)
-    return descriptor
-    async function middleware(ctx: Context, next: Next) {
-      const newParams: ValidatorOptions[] = _handleRequiredParams(params)
-      await new ValidatorParameters(newParams).validate(ctx)
-      await next()
+    (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
+      target[key] = sureIsArray(target[key])
+      target[key].splice(0, 0, middleware)
+      return descriptor
+      async function middleware(ctx: Context, next: Next) {
+        const newParams: ValidatorOptions[] = _handleRequiredParams(params)
+        await new ValidatorParameters(newParams).validate(ctx)
+        await next()
+      }
     }
-  }
 // 校验必传参数
 function _handleRequiredParams(params: string[]): ValidatorOptions[] {
   const data: ValidatorOptions[] = []
@@ -112,8 +112,8 @@ function _handleRequiredParams(params: string[]): ValidatorOptions[] {
  */
 export const Convert =
   (...middleware: Function[]): MethodDecorator =>
-  (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-    target[key] = sureIsArray(target[key])
-    target[key].splice(target[key].length - 1, 0, ...middleware)
-    return descriptor
-  }
+    (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
+      target[key] = sureIsArray(target[key])
+      target[key].splice(target[key].length - 1, 0, ...middleware)
+      return descriptor
+    }

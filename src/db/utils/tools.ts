@@ -19,7 +19,7 @@ export const handleField = (key: string): SQLUtilsKeyResult => {
     key = key.substring(1)
   }
   let validHighlightCount = 0
-  while(key.startsWith('@')) {
+  while (key.startsWith('@')) {
     validHighlightCount += 1
     key = key.substring(1)
   }
@@ -42,12 +42,13 @@ export const handleField = (key: string): SQLUtilsKeyResult => {
     isEqual = true
     field = field.substring(1, field.length - 1)
   }
-  if(reg.test(dataField)) {
+  if (reg.test(dataField)) {
     dataField = dataField.substring(1, dataField.length - 1)
   }
+  field = snakeCase(field)
 
   return {
-    field: formatField(t ? t + '.' : '' + snakeCase(field)),
+    field: formatField(t ? t + '.' + field : field),
     dataField: camelCase(dataField),
     isEqual,
     isValid,
@@ -112,5 +113,5 @@ export function handleOrderFields(orderField: string, field: string, keyword: st
   let replaced = orderField || field
   replaced = replaced.trimEnd()
   if (replaced.endsWith(',')) replaced = replaced.substring(0, replaced.length - 1)
-  return `REPLACE(${replaced}, '${keyword}', "<span data-search-key='search' style='color: ${color}'>${keyword}</span>")`
+  return `REPLACE(${replaced}, '${keyword}', "<span data-search-key='search' style='color: ${color};'>${keyword}</span>")`
 }

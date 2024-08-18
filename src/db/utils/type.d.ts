@@ -19,6 +19,8 @@ interface SQLUtilsOptionsResult {
 // sql 处理方法参数
 interface SQLUtilsOptionsOrderKeyword extends SQLUtilsOptions {
   isOrderKeyword?: boolean // 是否处理 order keyword 的排序
+  orderPrefix?: string // order by 排序时的前缀
+  orderSuffix?: string // order by 排序时的后缀
 }
 
 // keyword 搜索条件需要高亮显示结果时 语句返回结果

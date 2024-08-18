@@ -54,7 +54,7 @@ export const doNovelUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isDraft,
       range: ['1', '0'],
-      message: "isDraft参数必须为['1', '0']范围"
+      message: 'isDraft参数必须为[\'1\', \'0\']范围'
     })
   }
   // 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
@@ -62,7 +62,7 @@ export const doNovelUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isSecret,
       range: ['1', '0'],
-      message: "isSecret参数必须为['1', '0']范围"
+      message: 'isSecret参数必须为[\'1\', \'0\']范围'
     })
   }
   await next()

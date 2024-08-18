@@ -10,23 +10,21 @@
 
 import Redis, { RedisClient } from 'redis'
 import { IS_VERIFY_TOKEN_BY_REDIS, REDIS } from '@/config'
-import { getKey } from '@/utils/tools'
-import Logger from '@/lib/logger'
-import { RedisOptions } from './interface'
-import { isBoolean, isNull, isNumber, isObject, isUndefined } from 'lodash'
+import { getKey, parseStoreData, stringifyStoreData } from '@/utils/tools'
+import { logger, loggerError } from '@/lib/logger'
 import { Message } from '@/enums'
 
 function createRedis() {
-  let redisClient: RedisClient | null = null
+  let redisClient: RedisClient
   if (IS_VERIFY_TOKEN_BY_REDIS) {
     redisClient = Redis.createClient(REDIS.PORT, REDIS.HOST)
     // 登录
     redisClient.auth(REDIS.PASSWORD, () => {
-      Logger.info({ message: Message.redisLoginSuccess }, true)
+      logger.info({ message: Message.redisLoginSuccess }, true)
     })
     // 监听 redis 错误事件
     redisClient.on('error', (err) => {
-      Logger.error({
+      loggerError.error({
         message: Message.redisError,
         error: err
       })
@@ -37,10 +35,9 @@ function createRedis() {
     if (redisClient) {
       key = getKey(key)
       return new Promise((resolve, reject) => {
-        const options = _handleSetItem(key, value)
-        redisClient.set(options.key, options.value, (err: any) => {
+        redisClient.set(key, stringifyStoreData(value), (err: any) => {
           if (err) {
-            Logger.error({
+            loggerError.error({
               message: Message.redisError,
               error: err
             })
@@ -59,12 +56,12 @@ function createRedis() {
         // @ts-ignore
         redisClient.get(key, (err: any, value) => {
           if (err) {
-            Logger.error({
+            loggerError.error({
               message: Message.redisError,
               error: err
             })
             reject(err)
-          } else resolve(_handleGetItem(value))
+          } else resolve(parseStoreData(value))
         })
       })
     }
@@ -78,7 +75,7 @@ function createRedis() {
         try {
           redisClient.del(key, (err: any) => {
             if (err) {
-              Logger.error({
+              loggerError.error({
                 message: Message.redisError,
                 error: err
               })
@@ -97,31 +94,6 @@ function createRedis() {
     clientGet,
     clientDel
   }
-}
-
-function _handleSetItem(key: string, value: any): RedisOptions {
-  if (isObject(value)) value = JSON.stringify(value)
-  if (isNumber(value)) value = `__number__${value.toString()}`
-  if (isBoolean(value)) value = `__boolean__${value.toString()}`
-  if (isUndefined(value)) value = '__undefined__'
-  if (isNull(value)) value = '__null__'
-  value = value || ''
-  return { key, value }
-}
-
-function _handleGetItem(value: any): any {
-  if (!value) return value
-  if (value.startsWith('__number__')) return Number(value.substring(10))
-  if (value.startsWith('__boolean__true')) return true
-  if (value.startsWith('__boolean__false')) return false
-  if (value === '__undefined__') return undefined
-  if (value === '__null__') return null
-  try {
-    value = JSON.parse(value)
-  } catch (e) {
-    //
-  }
-  return value
 }
 
 export const { clientSet, clientGet, clientDel } = createRedis()
