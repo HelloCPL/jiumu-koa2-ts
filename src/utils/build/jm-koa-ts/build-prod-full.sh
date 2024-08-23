@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# 1. 定义相关变量
-jm_myenv=prod                              # 指定发布环境
+# 1. 定义相关变量及引入公共函数
+
+jm_myenv=prod                              # 指定发布的环境
+jm_branch=main                             # 指定发布的分支名称
 jm_base_dir=/data/front/jiumu-koa2-ts      # 基础项目目录路径
 jm_back_dir=/data/backups/jiumu-koa2-ts    # 项目记录存放目录路径
 jm_back_dir_time=$(date "+%Y-%m-%d-%H-%M") # 项目记录存放时间
@@ -10,21 +12,7 @@ jm_target_file=jiumu-koa2-ts-${jm_myenv}   # 项目目录名称
 jm_pm2_name=jiumu-koa2-ts-${jm_myenv}      # pm2 运行名称
 jm_start_time=$(date +%s)                  # 项目开始运行时间，单位 s
 
-# 日志打印函数
-jm_fn_log() {
-  local jm_log_time=$(date '+%Y-%m-%d %H:%M:%S')
-  echo "[${jm_log_time}] $1"
-}
-# 构建成功函数
-jm_fn_build_success() {
-  local jm_end_time=$(date +%s)
-  jm_fn_log "构建 ${jm_target_file} 项目成功!!! 总用时 $((jm_end_time - jm_start_time)) 秒"
-}
-# 构建失败函数
-jm_fn_build_error() {
-  local jm_end_time=$(date +%s)
-  jm_fn_log "构建 ${jm_target_file} 项目失败!!! 总用时 $((jm_end_time - jm_start_time)) 秒"
-}
+source ./common_functions.sh
 
 jm_fn_log "开始构建 ${jm_target_file} 项目"
 
@@ -36,7 +24,7 @@ if [ -d "${jm_target_file}" ]; then
 fi
 
 jm_fn_log "正在下载项目代码"
-git clone 'git@github.com:HelloCPL/jiumu-koa2-ts.git' -b main "${jm_target_file}" || {
+git clone 'git@github.com:HelloCPL/jiumu-koa2-ts.git' -b ${jm_branch} "${jm_target_file}" || {
   jm_fn_build_error
   exit 1
 }
@@ -74,12 +62,16 @@ if [ -d "${jm_tmp_dir}/${jm_target_file}/dist" ]; then
   # 6. 复制项目新代码到指定存放目录
   jm_fn_log "正在复制项目新代码到指定存放目录"
   mkdir -p "${jm_base_dir}/${jm_target_file}"
-  mv -vf "${jm_tmp_dir}/${jm_target_file}/*" "${jm_base_dir}/${jm_target_file}/"
+  mv -vf ${jm_tmp_dir}/${jm_target_file}/{.*,}* "${jm_base_dir}/${jm_target_file}/"
+
+  cd "${jm_base_dir}/${jm_target_file}" || {
+    jm_fn_build_error
+    exit 1
+  }
 
   # 7. 备份构建记录
   jm_fn_log "正在备份构建记录"
   mkdir -p "${jm_back_dir}/${jm_target_file}/${jm_back_dir_time}"
-  cd "${jm_base_dir}/${jm_target_file}"
   cp -r . "${jm_back_dir}/${jm_target_file}/${jm_back_dir_time}" --parents --exclude='node_modules' --exclude='.git'
 
   # 8. 启动新服务实例，构建完成
@@ -90,13 +82,13 @@ else
   jm_fn_build_error
 fi
 
-# 正式环境打包特点
+# koa服务正式环境打包特点
 # 每次都全面更新整个项目代码并重新安装依赖，构建时间教长
 # 全面更新，完全同步最新代码
 # 先打包，后停止原有服务，对原有服务时间影响较短
 
 # 以下为正式环境构建逻辑
-# 1. 定义相关变量及函数
+# 1. 定义相关变量及引入公共函数
 # 2. 进入临时存放目录并下载代码仓库
 # 复制私密配置文件到项目目录
 # 3. 下载项目依赖

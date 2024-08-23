@@ -1,58 +1,61 @@
 #!/bin/bash
 
-# 测试环境静态资源托管服务打包特点
-# 每次都全面更新整个项目代码并重新安装依赖，构建时间教长
-# 全面更新，完全同步最新代码
+# 1. 定义相关变量及引入公共函数
+
+jm_myenv=prod                           # 指定发布的环境
+jm_branch=main                          # 指定发布的分支名称
+jm_myport=7302                          # 指定服务端口号
+jm_base_dir=/data/front/jiumu-static    # 基础项目服务目录路径
+jm_target_file=jiumu-static-${jm_myenv} # 项目目录名称
+jm_pm2_name=jiumu-static-${jm_myenv}    # pm2 运行名称
+jm_start_time=$(date +%s)               # 项目开始运行时间，单位 s
+
+source ./common_functions.sh
+
+jm_fn_log "开始构建 ${jm_target_file} 项目"
+
+# 2. 停止并删除旧的服务实例
+jm_fn_log "pm2 停止并删除旧的服务实例"
+pm2 stop ${jm_pm2_name} && pm2 delete ${jm_pm2_name} || true
+
+# 3. 进入指定项目存放目录
+cd ${jm_base_dir}
+
+if [[ -d "${jm_target_file}" ]]; then
+  # 3.1 若已存在代码仓库，则直接更新代码
+  jm_fn_log "正在更新项目代码"
+  cd "${jm_target_file}"
+  git pull origin ${jm_branch} || {
+    jm_fn_build_error
+    exit 1
+  }
+else
+  # 3.2 若不存在，则下载代码仓库
+  jm_fn_log "正在下载项目代码"
+  git clone 'git@github.com:HelloCPL/jiumu-static.git' -b ${jm_branch} "${jm_target_file}" || {
+    jm_fn_build_error
+    exit 1
+  }
+  cd "${jm_target_file}" || {
+    jm_fn_build_error
+    exit 1
+  }
+fi
+
+# 4. 启动新服务实例，构建完成
+jm_fn_log "正在启动新服务实例"
+pm2 start "http-server ./ -p ${jm_myport} --cors --gzip true -d false" --name ${jm_pm2_name}
+jm_fn_build_success
+
+# 静态资源托管服务正式环境（增量打包）打包特点
+# 每次只更新项目新的代码，整个构建时间较短
+# 遵循 git pull 更新原则，极端情况下可能出现新代码不同步情况
 # 先停止原有服务，后更新代码，对原有服务时间影响较长
 
-# 以下为正式环境构建逻辑
-# 1. 定义相关变量
-# 2. 进入临时存放目录下载全新项目代码
-# 3. 停止原有项目服务，并删除原有项目代码
-# 4. 复制项目新代码到指定存放目录
-# 5. 启动项目服务，构建完成
-
-# 1. 定义相关变量
-# 指定发布环境
-myenv=prod
-# 指定服务端口号
-myport=7302
-# 基础项目服务目录路径
-base_dir=/data/front/jiumu-static
-# 临时存放项目路径
-tmp_dir=/tmp/source
-# 项目目录名称
-target_file=jiumu-static-${myenv}
-# pm2 运行名称
-pm2_name=jiumu-static-${myenv}
-
-echo "****************** 开始构建 ${target_file} 项目 ***********************"
-# 2. 进入临时存放目录下载全新项目代码
-cd ${tmp_dir}
-if [ -d "${target_file}" ];then
-  rm -rf ${target_file}
-fi
-echo "正在下载项目代码..."
-git clone git@github.com:HelloCPL/jiumu-static.git -b main ${target_file}
-if [ -d "${target_file}" ];then
-  # 3. 停止原有项目服务，并删除原有项目代码
-  echo "正在停止原有项目服务..."
-  pm2 stop ${pm2_name}
-  pm2 delete ${pm2_name}
-  echo "正在将原有项目删除..."
-  cd ${base_dir}
-  if  [ -d "${target_file}" ];then
-    rm -rf ${target_file}
-  fi
-  # 4. 复制项目新代码到指定存放目录
-  echo "正在复制项目新代码..."
-  mkdir -p ${base_dir}/${target_file}
-  mv -vf ${tmp_dir}/${target_file}/* ${base_dir}/${target_file}/
-  cd ${base_dir}/${target_file}
-  # 5. 启动项目服务，构建完成
-  echo "正在启动项目服务..."
-  pm2 start "http-server ./ -p ${myport} --cors --gzip true -d false" --name ${pm2_name}
-  echo "项目启动成功!"
-else
-  echo "******************* 构建 ${target_file} 项目失败 ***********************"
-fi
+# 以下为正式环境（增量打包）构建逻辑
+# 1. 定义相关变量及引入公共函数
+# 2. 停止并删除旧的服务实例（防止实例对本地文件上锁）
+# 3. 进入指定项目存放目录
+#   3.1 若已存在代码仓库，则直接更新代码
+#   3.2 若不存在，则下载代码仓库
+# 4. 启动新服务实例，构建完成
