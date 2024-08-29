@@ -9,6 +9,9 @@ interface ObjectAny {
   [x: string]: any
 }
 
+// 状态
+type BaseStatus = '0' | '1'
+
 // 返回SQL表数据基本类型
 interface BaseOptions extends ObjectAny {
   create_time: string

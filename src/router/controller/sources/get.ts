@@ -122,7 +122,10 @@ async function _handleSource(datas: SourceOptions | SourceOptions[], userId: str
     // 处理附件
     if (data.attachment) {
       if (data.type === '701') {
-        data.attachment = await getFileByIds(data.attachment, data.create_user)
+        data.attachment = await getFileByIds({
+          ids: data.attachment,
+          userId: data.create_user
+        })
       } else {
         const sql =
           'SELECT t1.id, t1.title, t1.link, t1.cover_img1, t1.cover_img2, t1.sort, t1.create_user, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM sources_link t1 WHERE FIND_IN_SET(t1.id, ?) AND t1.create_user = ? ORDER BY t1.sort, t1.update_time DESC'
@@ -130,7 +133,10 @@ async function _handleSource(datas: SourceOptions | SourceOptions[], userId: str
         if (Array.isArray(res) && res.length) {
           for (let i = 0, len = res.length; i < len; i++) {
             if (res[i].cover_img1) {
-              res[i].cover_img1 = await getFileById(res[i].cover_img1, data.create_user)
+              res[i].cover_img1 = await getFileById({
+                id: res[i].cover_img1,
+                userId: data.create_user
+              })
             }
           }
         }
@@ -160,7 +166,10 @@ async function _handleSource(datas: SourceOptions | SourceOptions[], userId: str
     delete data.comment_count2
     // 处理创建者头像
     if (showUserInfo === '1' && data.create_user_avatar) {
-      data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
+      data.create_user_avatar = await getFileById({
+        id: data.create_user_avatar,
+        userId: data.create_user
+      })
     }
   }
   if (isArray(datas)) {

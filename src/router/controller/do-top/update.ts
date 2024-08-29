@@ -8,7 +8,7 @@ import { Context } from 'koa'
 import { Success, ExceptionForbidden, ExceptionParameter } from '@/utils/http-exception'
 import { query } from '@/db'
 import { CommentFindResult } from '../comments/interface'
-import { _findCommentById } from '../comments/add'
+import { findCommentById } from '../comments/add'
 import { Message } from '@/enums'
 
 // 可置顶资源类型
@@ -46,7 +46,7 @@ export const doTopUpdate = async (ctx: Context) => {
  * 评论置顶/取消操作
  */
 export const doTopUpdateComment = async (ctx: Context) => {
-  const commentInfo = <CommentFindResult>await _findCommentById(ctx._params.id)
+  const commentInfo = <CommentFindResult>await findCommentById(ctx._params.id)
   let sql = ''
   if (commentInfo.flag === 1) {
     sql = 'UPDATE comments_first SET is_top = ? WHERE id = ? '

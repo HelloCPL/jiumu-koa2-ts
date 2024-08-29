@@ -44,7 +44,10 @@ export const getUserOne = async (id: string): Promise<UserOptions | null> => {
   const res: any = await query(sql, id)
   if (res && res.length) {
     const userInfo: UserOptions = <UserOptions>res[0]
-    userInfo.avatar = await getFileById(userInfo.avatar, userInfo.id)
+    userInfo.avatar = await getFileById({
+      id: userInfo.avatar,
+      userId: userInfo.id
+    })
     return userInfo
   } else return null
 }
@@ -79,7 +82,10 @@ export const getUserList = async (options: UserListParams): Promise<UserListRetu
   const targetData: UserOptions[] = <UserOptions[]>res[1]
   if (options.simple !== '1')
     for (let i = 0, len = targetData.length; i < len; i++) {
-      targetData[i]['avatar'] = await getFileById(targetData[i]['avatar'], targetData[i]['id'])
+      targetData[i]['avatar'] = await getFileById({
+        id: targetData[i]['avatar'],
+        userId: targetData[i]['id']
+      })
     }
   return {
     total: res[0][0]['total'],

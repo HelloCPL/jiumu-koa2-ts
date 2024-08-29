@@ -91,7 +91,10 @@ const _handleLike = async (data: LikeOptions[], showUserInfo?: any) => {
   for (let i = 0, len = data.length; i < len; i++) {
     const item = data[i]
     if (showUserInfo === '1' && item.create_user_avatar) {
-      item.create_user_avatar = await getFileById(item.create_user_avatar, item.create_user)
+      item.create_user_avatar = await getFileById({
+        id: item.create_user_avatar,
+        userId: item.create_user
+      })
     }
   }
 }

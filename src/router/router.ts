@@ -57,13 +57,13 @@ export const Request =
 export const Required =
   (params: string[]): MethodDecorator =>
   (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-    async function middleware(ctx: Context, next: Next) {
+    async function requiredParameter(ctx: Context, next: Next) {
       const newParams: ValidatorOptions[] = generateRequiredParams(params)
       await new ValidatorParameters(newParams).validate(ctx)
       await next()
     }
     target[key] = sureIsArray(target[key])
-    target[key].splice(0, 0, middleware)
+    target[key].splice(0, 0, requiredParameter)
     return descriptor
   }
 

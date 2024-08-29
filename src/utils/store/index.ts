@@ -1,5 +1,3 @@
-export const a = 123
-
 import { StoreJson } from './jsonfile'
 import { StoreData } from './store'
 

@@ -135,9 +135,15 @@ async function _handleCommentList(data: CommentOptions[], params: CommentListPar
       )
     // 处理评论者或回复者头像
     if (params.showUserInfo === '1' && item.create_user_avatar)
-      item.create_user_avatar = await getFileById(item.create_user_avatar, item.create_user)
+      item.create_user_avatar = await getFileById({
+        id: item.create_user_avatar,
+        userId: item.create_user
+      })
     if (params.showUserInfo === '1' && item.reply_user && item.reply_user_avatar)
-      item.reply_user_avatar = await getFileById(item.reply_user_avatar, item.reply_user)
+      item.reply_user_avatar = await getFileById({
+        id: item.reply_user_avatar,
+        userId: item.reply_user
+      })
     item.flag = params.flag
   }
 }

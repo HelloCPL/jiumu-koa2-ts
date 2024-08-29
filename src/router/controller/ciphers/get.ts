@@ -5,13 +5,10 @@
  */
 
 import { execTrans, query, getSelectWhereFields, getSelectWhereKeyword } from '@/db'
-import { decrypt, encrypt } from '@/utils/crypto'
 import { Success } from '@/utils/http-exception'
-import { getUuId } from '@/utils/tools'
 import { Context } from 'koa'
-import { getTagCustomByIds } from '../tags-custom/get'
 import { CipherListParams, CipherListReturn, CipherOneParams, CipherOptions } from './interface'
-import { isArray } from 'lodash'
+import { handleCipher } from './utils'
 
 // 获取本人的某个口令
 export const doCipherGetOneSelf = async (ctx: Context) => {
@@ -42,12 +39,16 @@ export const doCipherGetListSelf = async (ctx: Context) => {
  * 获取本人的某个口令，返回对象或null
  */
 export const getCipherGetOneSelf = async (params: CipherOneParams): Promise<CipherOptions | null> => {
-  const sql: string =
-    'SELECT t1.id, t1.title, t1.account, t1.cipher, t1.type, t2.label AS type_label, t1.classify, t1.sort, t1.create_user, t1.create_time, t1.update_time, t1.terminal FROM ciphers t1 LEFT JOIN tags t2 ON t1.type = t2.code WHERE t1.id = ? AND t1.create_user = ?'
+  const sql: string = `
+    SELECT 
+      t1.id, t1.title, t1.account, t1.cipher, t1.type, t2.label AS type_label, t1.classify, t1.sort, t1.create_user, t1.create_time, t1.update_time, t1.terminal 
+    FROM ciphers t1 
+    LEFT JOIN tags t2 ON t1.type = t2.code 
+    WHERE t1.id = ? AND t1.create_user = ?`
   const data = [params.id, params.userId]
   let res: any = await query(sql, data)
   res = res[0] || null
-  if (res) await _handleCipher(res)
+  if (res) await handleCipher(res, params.userId)
   return res
 }
 
@@ -83,49 +84,22 @@ export const getCipherGetList = async (options: CipherListParams): Promise<Ciphe
 
   const sql1 = `SELECT COUNT(t1.id) AS total FROM ciphers t1 ${whereSQL}`
   const data1 = [...whereData]
-  const sql2 = `SELECT t1.id, ${keywordResult.orderFields} t1.account, t1.cipher, t1.type, t2.label AS type_label, t1.classify, t1.sort, t1.create_user, t1.create_time, t1.update_time, t1.terminal FROM ciphers t1 LEFT JOIN tags t2 ON t1.type = t2.code ${whereSQL} ORDER BY ${keywordResult.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
+  const sql2 = `
+    SELECT 
+      t1.id, t1.account, t1.cipher, t1.type, t2.label AS type_label, 
+      ${keywordResult.orderFields}
+      t1.classify, t1.sort, t1.create_user, t1.create_time, t1.update_time, t1.terminal 
+      FROM ciphers t1 
+      LEFT JOIN tags t2 ON t1.type = t2.code 
+      ${whereSQL} 
+      ORDER BY ${keywordResult.orderSql} t1.sort, t1.update_time DESC 
+      LIMIT ?, ?`
   const data2 = [...whereData, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 }
   ])
   const cipherList: CipherOptions[] = res[1]
-  await _handleCipher(cipherList)
+  await handleCipher(cipherList, options.userId)
   return { total: res[0][0]['total'], data: cipherList }
-}
-
-/*
- * 处理口令数据
- */
-async function _handleCipher(datas: CipherOptions | CipherOptions[]) {
-  const _handleList = async (data: CipherOptions) => {
-    // 处理自定义标签
-    if (data.classify)
-      data.classify = await getTagCustomByIds({
-        ids: data.classify,
-        userId: data.create_user
-      })
-    else data.classify = []
-    // 处理账号
-    data.account = decrypt(data.account)
-    // 处理密码
-    data.cipher = decrypt(data.cipher)
-    if (data.type === '802') {
-      const id = getUuId().replace(/-/g, '')
-      const len = Math.floor(id.length / 2)
-      const key_str = id.substring(0, len)
-      const iv_str = id.substring(len, id.length - 1)
-      data.key_str = key_str
-      data.iv_str = iv_str
-      data.account = encrypt(data.account, key_str, iv_str)
-      data.cipher = encrypt(data.cipher, key_str, iv_str)
-    }
-  }
-  if (isArray(datas)) {
-    for (let i = 0, len = datas.length; i < len; i++) {
-      await _handleList(datas[i])
-    }
-  } else {
-    await _handleList(datas)
-  }
 }

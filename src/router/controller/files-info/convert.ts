@@ -37,7 +37,7 @@ export const doFileDeleteConvert = async (ctx: Context, next: Next) => {
   const res: any = await query(sql, data)
   if (res && res.length) {
     const illegal = res.map((item: any) => item.id).join(',')
-    throw new ExceptionForbidden({ message: Message.forbidden + `，无法删除 ${illegal}` })
+    throw new ExceptionForbidden({ message: `${Message.forbidden}，无法删除 ${illegal}` })
   }
   await next()
 }

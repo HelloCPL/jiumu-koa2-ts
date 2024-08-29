@@ -154,7 +154,10 @@ async function _handleNovelChapter(
       delete data.comment_count2
       // 处理创建者头像
       if (params.showUserInfo === '1' && data.create_user_avatar) {
-        data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
+        data.create_user_avatar = await getFileById({
+          id: data.create_user_avatar,
+          userId: data.create_user
+        })
       }
       // 处理字数
       data.word_count = countWordCharactersAndWords(data.content).wordCount

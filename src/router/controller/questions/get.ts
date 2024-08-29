@@ -65,7 +65,7 @@ export const getQuestionList = async (options: QuestionListParams): Promise<Ques
     valid: ['@t4.(username):createUserName', 't1.title'],
     data: options,
     prefix: 'AND',
-    isOrderKeyword:true
+    isOrderKeyword: true
   })
   // 处理普通where参数
   const fieldsResult = getSelectWhereFields({
@@ -144,7 +144,10 @@ async function _handleQuestion(
     delete data.comment_count2
     // 处理创建者头像
     if (showUserInfo === '1' && data.create_user_avatar) {
-      data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
+      data.create_user_avatar = await getFileById({
+        id: data.create_user_avatar,
+        userId: data.create_user
+      })
     }
   }
   if (isArray(datas)) {

@@ -26,8 +26,11 @@ export const doArticleAdd = async (ctx: Context) => {
   const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
   const params = ctx._params
-  const sql: string =
-    'INSERT articles (id, title, content, content_type, cover_img, attachment, type, classify, is_draft, is_secret, sort, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const sql: string = `
+      INSERT articles 
+        (id, title, content, content_type, cover_img, attachment, type, classify, is_draft, is_secret, sort, create_user, create_time, update_time, terminal, remarks) 
+      VALUES 
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   const id = getUuId()
   const data = [
     id,
@@ -49,8 +52,11 @@ export const doArticleAdd = async (ctx: Context) => {
   ]
   // 保持图片和文章公开性质一致
   const sqlList: SQLOptions[] = [{ sql, data }]
-  const sql1: string =
-    'UPDATE files_info SET is_secret = ?, update_time = ? WHERE create_user = ? AND FIND_IN_SET(id, ?)'
+  const sql1: string = `UPDATE files_info 
+    SET 
+      is_secret = ?, update_time = ? 
+    WHERE 
+      create_user = ? AND FIND_IN_SET(id, ?)`
   if (params.coverImg) {
     sqlList.push({
       sql: sql1,
