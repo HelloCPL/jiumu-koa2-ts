@@ -86,7 +86,10 @@ export const getAllUserByTagCode = async (options: UserTagByTagCodeParams): Prom
   const userData = <UserOptions[]>res[1]
   if (options.simple !== '1')
     for (let i = 0, len = userData.length; i < len; i++) {
-      userData[i]['avatar'] = await getFileById(userData[i]['avatar'], userData[i]['id'])
+      userData[i]['avatar'] = await getFileById({
+        id: userData[i]['avatar'],
+        userId: userData[i]['id']
+      })
     }
   return {
     total: res[0][0]['total'],

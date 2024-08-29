@@ -12,11 +12,9 @@ import {
   TagCustomListParams,
   TagCustomListReturn,
   TagCustomTypeOptions,
-  TagCustomSelfParams,
-  TagCustomHandleParams
+  TagCustomSelfParams
 } from './interface'
-import { getFileById } from '../files-info/get'
-import { isArray } from 'lodash'
+import { handleTagCustom } from './utils'
 
 // 获取我的指定一个或多个自定义标签
 export const getTagCustomGetIdsSelf = async (ctx: Context) => {
@@ -47,10 +45,6 @@ export const getTagCustomGetList = async (ctx: Context) => {
     showUserInfo: ctx._params.showUserInfo || '0'
   }
   const data = await doTagCustomList(params)
-  // data.data.forEach((item) => {
-  //   item.isSelf = item.create_user === ctx._user.id ? '1' : '0'
-  //   delete item.create_user
-  // })
   throw new Success(data)
 }
 
@@ -62,10 +56,23 @@ export const getTagCustomByIds = async (params: TagCustomSelfParams): Promise<Ta
   // 处理创建者信息字段
   const userInfoField =
     params.showUserInfo === '1' ? ' t2.username AS create_user_name, t2.avatar AS create_user_avatar, ' : ''
-  const sql: string = `SELECT t1.id, t1.label, t1.sort, t1.type, t1.create_time, t1.update_time, t1.terminal, ${userInfoField} t1.create_user FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id WHERE FIND_IN_SET(t1.id, ?) AND t1.create_user = ?`
-  const data = [params.ids, params.userId]
+  let secretSql = ''
+  const secretData = []
+  if (params.ignoreUserId !== '1') {
+    secretSql = ' AND t1.create_user = ? '
+    secretData.push(params.userId)
+  }
+  const sql: string = `
+    SELECT 
+      t1.id, t1.label, t1.sort, t1.type, t1.create_time, t1.update_time, t1.terminal, ${userInfoField} t1.create_user 
+    FROM tags_custom t1 
+    LEFT JOIN users t2 ON t1.create_user = t2.id 
+    WHERE 
+      FIND_IN_SET(t1.id, ?) 
+      ${secretSql}`
+  const data = [params.ids, ...secretData]
   const res = <TagCustomOptions[]>await query(sql, data)
-  await _handleTagCustom(res, {
+  await handleTagCustom(res, {
     showUserInfo: params.showUserInfo
   })
   return res
@@ -106,40 +113,29 @@ export const doTagCustomList = async (options: TagCustomListParams): Promise<Tag
     options.showUserInfo === '1' ? ' t2.username AS create_user_name, t2.avatar AS create_user_avatar, ' : ''
   const sql1 = `SELECT COUNT(t1.id) AS total FROM tags_custom t1 ${fieldsResult.sql} ${keywordResult.sql}`
   const data1 = [...fieldsResult.data, ...keywordResult.data]
-  const sql2 = `SELECT t1.id, ${keywordResult.orderFields} t1.sort, t1.type, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal FROM tags_custom t1 LEFT JOIN users t2 ON t1.create_user = t2.id ${fieldsResult.sql} ${keywordResult.sql} ORDER BY ${keywordResult.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
+  const sql2 = `
+    SELECT 
+      t1.id,  t1.sort, t1.type, t1.create_user, t1.create_time, 
+      ${keywordResult.orderFields}
+      ${userInfoField}
+      t1.update_time, t1.terminal 
+    FROM tags_custom t1 
+    LEFT JOIN users t2 ON t1.create_user = t2.id 
+    ${fieldsResult.sql} 
+    ${keywordResult.sql} 
+    ORDER BY ${keywordResult.orderSql} t1.sort, t1.update_time DESC 
+    LIMIT ?, ?`
   const data2 = [...data1, pageNo, options.pageSize]
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 }
   ])
-  await _handleTagCustom(<TagCustomOptions[]>res[1], {
+  await handleTagCustom(<TagCustomOptions[]>res[1], {
     showUserInfo: options.showUserInfo,
     userId: options.userId
   })
   return {
     total: res[0][0]['total'],
     data: res[1]
-  }
-}
-
-// 处理资源数据
-async function _handleTagCustom(datas: TagCustomOptions[], params: TagCustomHandleParams) {
-  const _handleList = async (data: TagCustomOptions) => {
-    // 处理是否为自己发布
-    if (params.userId) {
-      if (data.create_user === params.userId) data.is_self = '1'
-      else data.is_self = '0'
-    }
-    // 处理创建者头像
-    if (params.showUserInfo === '1' && data.create_user_avatar) {
-      data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
-    }
-  }
-  if (isArray(datas)) {
-    for (let i = 0, len = datas.length; i < len; i++) {
-      await _handleList(datas[i])
-    }
-  } else {
-    await _handleList(datas)
   }
 }

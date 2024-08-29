@@ -41,8 +41,9 @@ export interface TagCustomListReturn {
 
 export interface TagCustomSelfParams {
   ids: string
-  userId: string
-  showUserInfo?: any
+  userId?: string
+  ignoreUserId?: BaseStatus
+  showUserInfo?: BaseStatus
 }
 
 export interface TagCustomHandleParams {

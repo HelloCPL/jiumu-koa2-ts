@@ -192,7 +192,10 @@ async function _handleNovel(datas: NovelOptions | NovelOptions[], userId: string
     delete data.chapter_comment_count2
     // 处理创建者头像
     if (showUserInfo === '1' && data.create_user_avatar) {
-      data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
+      data.create_user_avatar = await getFileById({
+        id: data.create_user_avatar,
+        userId: data.create_user
+      })
     }
   }
   if (isArray(datas)) {
