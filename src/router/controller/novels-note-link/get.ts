@@ -8,7 +8,7 @@ import { execTrans, query, getSelectWhereKeyword } from '@/db'
 import { Success } from '@/utils/http-exception'
 import { Context } from 'koa'
 import { NovelNoteLinkOptions, NovelNoteLinkParams, NovelNoteLinkReturnOption } from './interface'
-import { novelNoteLinkTypes } from './convert'
+import { getNovelNoteLinkType } from './utils'
 
 // 获取本用户的可共享关联的笔记列表
 export const doNovelNoteLinkDeleteGetListSelf = async (ctx: Context) => {
@@ -57,7 +57,7 @@ const _handleNovelNoteList = async (datas: NovelNoteLinkOptions[]) => {
   if (!Array.isArray(datas)) return
   for (let i = 0, len = datas.length; i < len; i++) {
     const item = datas[i]
-    const currentType = novelNoteLinkTypes[item.target_type]
+    const currentType = getNovelNoteLinkType(item.target_type)
     if (currentType) {
       const sql = `SELECT ${currentType.titleKey} AS title FROM ${currentType.table} WHERE id = ?`
       const data = [item.target_id]

@@ -9,6 +9,7 @@ import { Message } from '@/enums'
 import { ExceptionParameter, Success } from '@/utils/http-exception'
 import { Context, Next } from 'koa'
 import { isExist } from '../convert'
+import { getNovelNoteLinkType } from './utils'
 
 /**
  * 新增时
@@ -26,7 +27,7 @@ export const doNovelNoteLinkAddConvert = async (ctx: Context, next: Next) => {
     message: Message.unexistNovelNote
   })
   // 判断目标类型是否正确
-  const tb = novelNoteLinkTypes[ctx._params.targetType]
+  const tb = getNovelNoteLinkType(ctx._params.targetType)
   if (!tb)
     throw new ExceptionParameter({
       message: Message.errorType
@@ -59,40 +60,6 @@ export async function doNovelNoteLinkDeleteConvert(ctx: Context, next: Next) {
   if (flag === '0') throw new Success()
   ctx._params.__status = flag
   await next()
-}
-
-// 笔记关联可选类型
-export const novelNoteLinkTypes: ObjectAny = {
-  '502': {
-    table: 'questions',
-    unexistMessage: Message.unexistQuestion,
-    titleKey: 'title'
-    // label: '问答来源'
-  },
-  '503': {
-    table: 'sources',
-    unexistMessage: Message.unexistSource,
-    titleKey: 'title'
-    // label: '资源文件来源'
-  },
-  '504': {
-    table: 'novels',
-    unexistMessage: Message.unexistNovel,
-    titleKey: 'name'
-    // label: '连载来源'
-  },
-  '505': {
-    table: 'articles',
-    unexistMessage: Message.unexistArticle,
-    titleKey: 'title'
-    // label: '博客文章来源'
-  },
-  '507': {
-    table: 'novels_chapter',
-    unexistMessage: Message.unexistNovelChapter,
-    titleKey: 'title'
-    // label: '连载章节'
-  }
 }
 
 // 判断关联是否存在

@@ -9,8 +9,8 @@ import { Message } from '@/enums'
 import { validateRange } from '@/utils/validator'
 import { query } from '@/db'
 import { ExceptionParameter, ExceptionForbidden } from '@/utils/http-exception'
-import { novelNoteLinkTypes } from '../novels-note-link/convert'
 import { isExist } from '../convert'
+import { getNovelNoteLinkType } from '../novels-note-link/utils'
 
 /**
  * 新增时
@@ -19,7 +19,7 @@ import { isExist } from '../convert'
 export const doNovelNoteAddConvert = async (ctx: Context, next: Next) => {
   // 判断传 targetId 时必传 targetType
   if (ctx._params.targetId) {
-    const currentType = novelNoteLinkTypes[ctx._params.targetType]
+    const currentType = getNovelNoteLinkType(ctx._params.targetType)
     if (!currentType)
       throw new ExceptionParameter({
         message: Message.errorType

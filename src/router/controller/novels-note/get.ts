@@ -17,8 +17,8 @@ import {
 } from './interface'
 import { getTagCustomByIds } from '../tags-custom/get'
 import { getFileById } from '../files-info/get'
-import { novelNoteLinkTypes } from '../novels-note-link/convert'
 import { isArray } from 'lodash'
+import { getNovelNoteLinkType } from '../novels-note-link/utils'
 
 // 获取指定的某个笔记
 export const getNovelNoteGetOne = async (ctx: Context) => {
@@ -164,7 +164,7 @@ async function _handleGetTargetIds(target: NovelNoteTargetOptions[]): Promise<No
   const arr: NovelNoteTargetOptions[] = []
   for (let i = 0, len = target.length; i < len; i++) {
     const item = target[i]
-    const currentType = novelNoteLinkTypes[item.type]
+    const currentType = getNovelNoteLinkType(item.type)
     if (currentType) {
       const sql = `SELECT ${currentType.titleKey} AS title FROM ${currentType.table} WHERE id = ?`
       const data = [item.id]
