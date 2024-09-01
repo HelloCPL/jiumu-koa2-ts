@@ -4,6 +4,7 @@ import { CollectionOptions } from './interface'
 
 /**
  * 获取收藏类型
+ * @param type 资源类型
  */
 export function getCollectionType(type: string) {
   const types: string[] = type.split(',')
@@ -31,6 +32,8 @@ export function getCollectionType(type: string) {
 
 /**
  * 处理收藏数据
+ * @param data 原始数据
+ * @param showUserInfo 是否展示用户信息
  */
 export async function handleCollectionData(
   data: CollectionOptions[],

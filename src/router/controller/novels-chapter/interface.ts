@@ -52,7 +52,7 @@ export interface NovelChapterOneParams {
 
 export interface handleNovalChapterParams {
   userId: string
-  showUserInfo?: any
+  showUserInfo?: BaseStatus
   isConcise?: string
   showContent?: boolean
 }
