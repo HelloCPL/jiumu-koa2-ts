@@ -12,13 +12,10 @@ import { query } from '@/db'
 
 /**
  * 新增时
- * code 必须为真
  * 判断菜单是否已存在
  * 若 parentCode 为真，判断 parentCode 是否不存在
  */
 export const doMenuAddConvert = async (ctx: Context, next: Next) => {
-  // code 必须为真
-  if (!ctx._params.code) throw new ExceptionParameter({ message: 'code参数值必须为真' })
   // 判断菜单是否已存在
   await isExist({
     table: 'menus',

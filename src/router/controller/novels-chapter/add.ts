@@ -22,8 +22,11 @@ export const doNovelChapterAdd = async (ctx: Context) => {
     ],
     true
   )
-  const sql: string =
-    'INSERT novels_chapter (id, novel_id, title, content, sort, is_secret, is_draft, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT novels_chapter 
+      (id, novel_id, title, content, sort, is_secret, is_draft, create_user, create_time, update_time, terminal, remarks) 
+    VALUES 
+      (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   const currentTime = formatDate(new Date())
   const id = getUuId()
   const data = [

@@ -4,8 +4,11 @@ import { getUuId } from '@/utils/tools'
 import { isArray } from 'lodash'
 import { getOriginTagCustomByIds, getTagCustomByData } from '../tags-custom/utils'
 
-/*
+
+/**
  * 处理口令数据
+ * @param datas 原始数据
+ * @param userId 用户 id
  */
 export async function handleCipher(datas: CipherOptions | CipherOptions[], userId: string) {
   const tagCustoms = await getTagCustomByData(datas, ['classify'], userId)

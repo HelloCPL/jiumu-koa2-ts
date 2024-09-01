@@ -34,7 +34,7 @@ const pool: Pool = MySQL.createPool({
  * 普通查询
  * 参数 sql 查询语句；data? 查询数据 字符串或数据
  */
-export function query(sql: string, data?: any, noThrow?: boolean) {
+export function query(sql: string, data?: any, noThrow?: boolean): Promise<any> {
   return new Promise((resolve, reject) => {
     sql = replaceMultipleSpaces(sql)
     pool.query(sql, data, async (err, results: any) => {
@@ -58,7 +58,7 @@ export function query(sql: string, data?: any, noThrow?: boolean) {
  * 事务查询 按顺序查询但不依赖上一条查询结果 返回对应查询语句数量的数组
  * 参数 sqlList 查询列表 [{sql, data}, ...]
  */
-export function execTrans(sqlList: SQLOptions[]) {
+export function execTrans(sqlList: SQLOptions[]): Promise<any> {
   return new Promise((resolve, reject) => {
     sqlList.forEach((item) => {
       item.sql = replaceMultipleSpaces(item.sql)
