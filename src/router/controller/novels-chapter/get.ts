@@ -11,12 +11,9 @@ import {
   NovelChapterOptions,
   NovelChapterListParams,
   NovelChapterListReturn,
-  NovelChapterOneParams,
-  handleNovalChapterParams
+  NovelChapterOneParams
 } from './interface'
-import { getFileById } from '../files-info/get'
-import { countWordCharactersAndWords } from '@/utils/tools'
-import { isArray } from 'lodash'
+import { handleNovelChapter } from './utils'
 
 // 获取指定的某个小说章节
 export const doNovelChapterGetOne = async (ctx: Context) => {
@@ -56,12 +53,28 @@ export const getNovelChapterGetOne = async (
   // 处理创建者信息字段
   const userInfoField =
     params.showUserInfo === '1' ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, ' : ''
-  const sql: string = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t2.author AS novel_author, t1.title, t1.content, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) WHERE t1.id = ? AND ${conditional}`
+  const sql: string = `
+    SELECT 
+      t1.id, t1.novel_id, t2.name AS novel_name, t2.author AS novel_author, t1.title, 
+      t1.content, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, 
+      t1.create_user, t1.create_time, t1.update_time, t1.terminal, t1.remarks, 
+      t4.id AS is_like, t6.id AS is_collection, 
+      ${userInfoField} 
+      (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, 
+      (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, 
+      (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, 
+      (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2 
+    FROM novels_chapter t1 
+    LEFT JOIN novels t2 ON t1.novel_id = t2.id 
+    LEFT JOIN users t3 ON t1.create_user = t3.id 
+    LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) 
+    LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) 
+    WHERE t1.id = ? AND ${conditional}`
   const data = [params.userId, params.userId, params.id, params.userId]
   let res: any = await query(sql, data)
   res = res[0] || null
   if (res)
-    await _handleNovelChapter(res, {
+    await handleNovelChapter(res, {
       userId: params.userId,
       showUserInfo: params.showUserInfo,
       showContent: true
@@ -103,7 +116,15 @@ export const getNovelChapterGetList = async (
   let sql2 = ''
   let data2 = []
   if (options.isConcise === '1') {
-    sql2 = `SELECT t1.id, t1.title, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, t1.create_user, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id ${whereSQL} ORDER BY t1.sort LIMIT ?, ?`
+    sql2 = `
+      SELECT 
+        t1.id, t1.title, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, 
+        t1.is_draft, t1.create_user, t1.create_time, t1.update_time, t1.terminal, t1.remarks 
+      FROM novels_chapter t1 
+      LEFT JOIN novels t2 ON t1.novel_id = t2.id 
+      ${whereSQL} 
+      ORDER BY t1.sort 
+      LIMIT ?, ?`
     data2 = [...whereData, pageNo, options.pageSize]
   } else {
     // 处理创建者信息字段
@@ -111,7 +132,25 @@ export const getNovelChapterGetList = async (
       options.showUserInfo === '1'
         ? ' t3.username AS create_user_name, t3.avatar AS create_user_avatar, '
         : ''
-    sql2 = `SELECT t1.id, t1.novel_id, t2.name AS novel_name, t2.author AS novel_author, t1.title, t1.content, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, t1.is_draft, t1.create_user, ${userInfoField} t1.create_time, t1.update_time, t1.terminal, t1.remarks, t4.id AS is_like, (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, t6.id AS is_collection, (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2 FROM novels_chapter t1 LEFT JOIN novels t2 ON t1.novel_id = t2.id LEFT JOIN users t3 ON t1.create_user = t3.id LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) ${whereSQL} ORDER BY t1.sort LIMIT ?, ?`
+    sql2 = `
+      SELECT 
+        t1.id, t1.novel_id, t2.name AS novel_name, t2.author AS novel_author, t1.title, 
+        t1.content, t1.sort, t1.is_secret AS secret1, t2.is_secret AS secret2, 
+        t1.is_draft, t1.create_user, t1.create_time, t1.update_time, t1.terminal, 
+        t1.remarks, t4.id AS is_like, t6.id AS is_collection, 
+        ${userInfoField} 
+        (SELECT COUNT(t5.id) FROM likes t5 WHERE t5.target_id = t1.id) AS like_count, 
+        (SELECT COUNT(t7.id) FROM collections t7 WHERE t7.target_id = t1.id) AS collection_count, 
+        (SELECT COUNT(t8.id) FROM comments_first t8 WHERE t8.target_id = t1.id) AS comment_count1, 
+        (SELECT COUNT(t9.id) FROM comments_second t9 WHERE t9.comment_first_target_id = t1.id) AS comment_count2 
+      FROM novels_chapter t1 
+      LEFT JOIN novels t2 ON t1.novel_id = t2.id 
+      LEFT JOIN users t3 ON t1.create_user = t3.id 
+      LEFT JOIN likes t4 ON (t1.id = t4.target_id AND t4.create_user = ?) 
+      LEFT JOIN collections t6 ON (t1.id = t6.target_id AND t6.create_user = ?) 
+      ${whereSQL} 
+      ORDER BY t1.sort 
+      LIMIT ?, ?`
     data2 = [options.userId, options.userId, ...whereData, pageNo, options.pageSize]
   }
   const res: any = await execTrans([
@@ -119,53 +158,10 @@ export const getNovelChapterGetList = async (
     { sql: sql2, data: data2 }
   ])
   const novelChapterList: NovelChapterOptions[] = res[1]
-  await _handleNovelChapter(novelChapterList, {
+  await handleNovelChapter(novelChapterList, {
     userId: options.userId,
     showUserInfo: options.showUserInfo,
     isConcise: options.isConcise
   })
   return { total: res[0][0]['total'], data: novelChapterList }
-}
-
-// 处理小说数据
-async function _handleNovelChapter(
-  datas: NovelChapterOptions | NovelChapterOptions[],
-  params: handleNovalChapterParams
-) {
-  const _handleList = async (data: NovelChapterOptions) => {
-    // 处理是否为自己发布
-    if (data.create_user === params.userId) data.is_self = '1'
-    else data.is_self = '0'
-    // 处理是否公开状态
-    if (data.secret1 === '0' && data.secret2 === '0') data.is_secret = '0'
-    else data.is_secret = '1'
-    delete data.secret1
-    delete data.secret2
-    if (params.isConcise !== '1') {
-      // 处理是否点赞
-      if (data.is_like) data.is_like = '1'
-      else data.is_like = '0'
-      if (data.is_collection) data.is_collection = '1'
-      // 处理是否收藏
-      else data.is_collection = '0'
-      // 处理评论总数
-      data.comment_count = data.comment_count1 + data.comment_count2
-      delete data.comment_count1
-      delete data.comment_count2
-      // 处理创建者头像
-      if (params.showUserInfo === '1' && data.create_user_avatar) {
-        data.create_user_avatar = await getFileById(data.create_user_avatar, data.create_user)
-      }
-      // 处理字数
-      data.word_count = countWordCharactersAndWords(data.content).wordCount
-    }
-    if (!params.showContent) delete data.content
-  }
-  if (isArray(datas)) {
-    for (let i = 0, len = datas.length; i < len; i++) {
-      await _handleList(datas[i])
-    }
-  } else {
-    await _handleList(datas)
-  }
 }

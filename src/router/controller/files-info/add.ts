@@ -10,11 +10,11 @@ import { validateRange } from '@/utils/validator'
 import { getFileRandomName, getSuffix, getUuId, formatDate, getStaticPlace } from '@/utils/tools'
 import { query } from '@/db'
 import { File } from 'formidable'
-import { getFileById } from './get'
 import { Terminal } from '@/enums'
 import { FileInfoOptions } from './interface'
 import { createFile, getPath, sureIsDirSync } from '@/utils/files'
 import { isArray } from 'lodash'
+import { handleFileIsSecret } from './utils'
 
 /**
  * 文件上传 可上传一个或多个文件 返回数组格式
@@ -56,20 +56,24 @@ async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | n
   const createTime = formatDate(new Date())
   const id = getUuId()
   const filePath = getFileRandomName(<string>file.name)
+  const suffix = getSuffix(file.name)
   // 先写文件
   const dir = getPath(staticPlace)
   sureIsDirSync(dir)
   await createFile(file, dir, filePath)
   // 再写入数据库
-  const sql =
-    'INSERT files_info (id, file_path, file_name, file_size, suffix,static_place, create_user, is_secret, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const sql = `
+  INSERT files_info 
+    (id, file_path, file_name, file_size, suffix,static_place, create_user, is_secret, create_time, update_time, terminal, remarks) 
+  VALUES
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   // @ts-ignore
   const data = [
     id,
     filePath,
     file.name,
     file.size,
-    getSuffix(file.name),
+    suffix,
     staticPlace,
     ctx._user.id,
     isSecret,
@@ -79,6 +83,18 @@ async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | n
     ctx._data.query.remarks
   ]
   await query(sql, data)
-  const fileInfo = await getFileById(id, ctx._user.id)
-  return fileInfo
+  return handleFileIsSecret({
+    id,
+    file_path: filePath,
+    file_name: file.name as string,
+    file_size: file.size,
+    suffix,
+    static_place: staticPlace,
+    create_user: ctx._user.id,
+    is_secret: isSecret,
+    create_time: createTime,
+    update_time: createTime,
+    terminal: Terminal[ctx._terminal],
+    remarks: ctx._data.query.remarks
+  })
 }

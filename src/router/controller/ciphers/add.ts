@@ -18,8 +18,11 @@ export const doCipherAdd = async (ctx: Context) => {
   const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
   const params = ctx._params
-  const sql: string =
-    'INSERT ciphers (id, title, account, cipher, type, classify, sort, create_user, create_time, update_time, terminal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT ciphers 
+      (id, title, account, cipher, type, classify, sort, create_user, create_time, update_time, terminal) 
+    VALUES 
+      (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   const id = getUuId()
   const account = encrypt(params.account)
   const cipher = encrypt(params.cipher)

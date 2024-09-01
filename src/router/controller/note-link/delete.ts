@@ -11,9 +11,9 @@ import { Context } from 'koa'
 /*
  * 笔记关联删除
  */
-export const doNovelNoteLinkDelete = async (ctx: Context) => {
-  const sql: string = 'UPDATE novels_note_link SET status = ? WHERE id = ? OR (note_id = ? AND target_id = ?)'
-  const data = ['0', ctx._params.id, ctx._params.noteId, ctx._params.targetId]
+export const doNoteLinkDelete = async (ctx: Context) => {
+  const sql = 'DELETE FROM notes_link WHERE note_id = ? AND target_id = ?'
+  const data = [ctx._params.noteId, ctx._params.targetId]
   await query(sql, data)
   throw new Success()
 }

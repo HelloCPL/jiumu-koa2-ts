@@ -107,8 +107,10 @@ export const doFileChunkMerge = async (ctx: Context) => {
     // 将文件信息写进数据库
     const id = getUuId()
     const createTime = formatDate(new Date())
-    const sql =
-      'INSERT files_info (id, file_path, file_name, file_size, suffix,static_place, create_user, is_secret, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    const sql = `INSERT files_info 
+        (id, file_path, file_name, file_size, suffix,static_place, create_user, is_secret, create_time, update_time, terminal, remarks) 
+      VALUES 
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     const data = [
       id,
       fileName,
@@ -124,7 +126,7 @@ export const doFileChunkMerge = async (ctx: Context) => {
       ctx._data.query.remarks
     ]
     await query(sql, data)
-    const fileInfo = await getFileById(id, ctx._user.id)
+    const fileInfo = await getFileById({ id, userId: ctx._user.id })
     throw new Success({ data: fileInfo })
   }
 }
@@ -134,7 +136,10 @@ export const doFileChunkMerge = async (ctx: Context) => {
  */
 export const doFileChunkVerify = async (ctx: Context) => {
   const params = ctx._params
-  const file = await getFileById(`${params.fileHash}_${params.fileName}`, ctx._user.id)
+  const file = await getFileById({
+    id: `${params.fileHash}_${params.fileName}`,
+    userId: ctx._user.id
+  })
   if (file) {
     const dir = getPath(file.static_place, `${params.fileHash}_${params.fileName}`)
     const type = judgeDirSync(dir)

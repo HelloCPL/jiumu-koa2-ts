@@ -8,14 +8,14 @@ import { Context } from 'koa'
 import { ExceptionForbidden, Success } from '@/utils/http-exception'
 import { query } from '@/db'
 import { Message } from '@/enums'
-import { _findCommentById } from './add'
+import { findCommentById } from './add'
 import { CommentFindResult } from './interface'
 
 /**
  * 删除指定某条评论
  */
 export const doCommentDeleteById = async (ctx: Context) => {
-  const commentInfo = <CommentFindResult>await _findCommentById(ctx._params.id)
+  const commentInfo = <CommentFindResult>await findCommentById(ctx._params.id)
   let sql = ''
   let data: any = []
   let sqlWhere = ''

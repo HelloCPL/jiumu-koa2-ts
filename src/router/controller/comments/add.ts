@@ -15,8 +15,11 @@ import { CommentFindResult } from './interface'
  * 第一级别评论新增
  */
 export const doCommentFirstAdd = async (ctx: Context) => {
-  const sql: string =
-    'INSERT comments_first (id, target_id, content, create_user, type, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT comments_first 
+      (id, target_id, content, create_user, type, create_time, terminal) 
+    VALUES 
+      (?, ?, ?, ?, ?, ?, ?)`
   const id = getUuId()
   const data = [
     id,
@@ -35,9 +38,12 @@ export const doCommentFirstAdd = async (ctx: Context) => {
  * 第二级别评论新增
  */
 export const doCommentSecondAdd = async (ctx: Context) => {
-  const commentInfo = <CommentFindResult>await _findCommentById(ctx._params.targetId)
-  const sql: string =
-    'INSERT comments_second (id, reply_comment_id, reply_content, create_user, create_time, terminal, comment_first_target_id, comment_first_id, reply_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const commentInfo = <CommentFindResult>await findCommentById(ctx._params.targetId)
+  const sql: string = `
+    INSERT comments_second 
+      (id, reply_comment_id, reply_content, create_user, create_time, terminal, comment_first_target_id, comment_first_id, reply_user) 
+    VALUES 
+      (?, ?, ?, ?, ?, ?, ?, ?, ?)`
   const id = getUuId()
   const data = [
     id,
@@ -55,9 +61,12 @@ export const doCommentSecondAdd = async (ctx: Context) => {
 }
 
 // 根据评论id寻找评论信息
-export async function _findCommentById(id: string): Promise<CommentFindResult | void> {
-  const sql1 =
-    'SELECT id AS comment_first_id, target_id AS comment_first_target_id, create_user AS reply_user, type AS comment_first_target_type  FROM comments_first WHERE id = ?'
+export async function findCommentById(id: string): Promise<CommentFindResult | void> {
+  const sql1 = `
+    SELECT 
+      id AS comment_first_id, target_id AS comment_first_target_id, create_user AS reply_user, type AS comment_first_target_type  
+    FROM comments_first 
+    WHERE id = ?`
   const res1: any = await query(sql1, id)
   if (res1 && res1.length)
     return {
@@ -68,8 +77,12 @@ export async function _findCommentById(id: string): Promise<CommentFindResult | 
       reply_user: res1[0]['reply_user'],
       flag: 1
     }
-  const sql2 =
-    'SELECT t1.comment_first_id, t1.comment_first_target_id, t2.type AS comment_first_target_type, t1.create_user AS reply_user  FROM comments_second t1 LEFT JOIN comments_first t2 ON t1.comment_first_id = t2.id WHERE t1.id = ?'
+  const sql2 = `
+    SELECT 
+      t1.comment_first_id, t1.comment_first_target_id, t2.type AS comment_first_target_type, t1.create_user AS reply_user  
+    FROM comments_second t1 
+    LEFT JOIN comments_first t2 ON t1.comment_first_id = t2.id 
+    WHERE t1.id = ?`
   const res2: any = await query(sql2, id)
   if (res2 && res2.length)
     return {

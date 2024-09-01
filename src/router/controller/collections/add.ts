@@ -14,8 +14,11 @@ import { formatDate, getUuId } from '@/utils/tools'
  * 收藏新增
  */
 export const doCollectionAdd = async (ctx: Context) => {
-  const sql: string =
-    'INSERT collections (id, target_id, create_user, type, create_time, terminal) VALUES (?, ?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT collections 
+      (id, target_id, create_user, type, create_time, terminal) 
+    VALUES 
+      (?, ?, ?, ?, ?, ?)`
   const data = [
     getUuId(),
     ctx._params.targetId,

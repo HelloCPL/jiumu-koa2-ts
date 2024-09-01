@@ -29,12 +29,8 @@ export class Route {
     this.router = router
   }
 
-  /**
-   * 自动注册路由 初始化
-   */
-  init() {
-    logger.info({ message: '路由注册 初始化' })
-    // 加载 api 接口
+  // 加载路由文件
+  loadApis() {
     require('./api/articles/index')
     require('./api/ciphers-code/index')
     require('./api/ciphers/index')
@@ -46,8 +42,8 @@ export class Route {
     require('./api/login-info/index')
     require('./api/menus/index')
     require('./api/novels-chapter/index')
-    require('./api/novels-note-link/index')
-    require('./api/novels-note/index')
+    require('./api/note-link/index')
+    require('./api/note/index')
     require('./api/novels/index')
     require('./api/permissions/index')
     require('./api/questions/index')
@@ -61,6 +57,15 @@ export class Route {
     require('./api/users-roles/index')
     require('./api/users-tags/index')
     require('./api/users/index')
+  }
+
+  /**
+   * 自动注册路由 初始化
+   */
+  init() {
+    logger.info({ message: '路由注册 初始化' })
+    // 加载 api 接口
+    this.loadApis()
 
     logger.info({ message: '路由注册 添加白名单；匹配路由注册' })
     for (const [config, controller] of Route.__DecoratedRouters) {
