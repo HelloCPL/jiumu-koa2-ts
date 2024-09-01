@@ -94,7 +94,7 @@ export const getNoteGetList = async (options: NoteListParams): Promise<NoteListR
     whereData.push(options.rootId)
   }
   if (options.isSecret === '1') {
-    whereSQL += ' AND (t1.is_secret = 1 AND t1.create_user ?) '
+    whereSQL += ' AND t1.is_secret = 1 AND t1.create_user = ? '
     whereData.push(options.userId)
   } else if (options.isSecret === '0') {
     whereSQL += ' AND t1.is_secret = 0 '
