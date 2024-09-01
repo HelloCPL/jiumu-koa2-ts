@@ -57,8 +57,9 @@ export const doNoteLinkAddConvert = async (ctx: Context, next: Next) => {
  */
 export async function doNoteLinkDeleteConvert(ctx: Context, next: Next) {
   // 判断用户-角色关联是否不存在
-  const sql = 'SELECT id, create_user FROM notes_link WHERE id = ?'
-  const res = await query(sql, ctx._params.id)
+  const sql = 'SELECT id, create_user FROM notes_link WHERE note_id = ? AND target_id = ?'
+  const data = [ctx._params.noteId, ctx._params.targetId]
+  const res = await query(sql, data)
   if (!(res && res.length)) {
     throw new ExceptionParameter({ message: Message.unexistNoteLink })
   }

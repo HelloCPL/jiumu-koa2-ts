@@ -29,7 +29,7 @@ export default class API {
     path: 'delete',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required(['noteId', 'targetId'])
   @Convert(doNoteLinkDeleteConvert)
   async doNoteLinkDelete(ctx: Context) {
     await doNoteLinkDelete(ctx)
