@@ -33,8 +33,12 @@ export const doPermissionGetList = async (ctx: Context) => {
  * 获取指定的某个权限，返回对象或null
  */
 export const getPermissionOne = async (id: string): Promise<PermissionOptions | null> => {
-  const sql: string =
-    'SELECT t1.id, t1.code, t1.label, t1.href, t1.sort, t1.configurable, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM permissions t1 WHERE t1.code = ? OR t1.id = ?'
+  const sql: string = `
+    SELECT 
+      t1.id, t1.code, t1.label, t1.href, t1.sort, t1.configurable, 
+      t1.create_time, t1.update_time, t1.terminal, t1.remarks 
+    FROM permissions t1 
+    WHERE t1.code = ? OR t1.id = ?`
   const data = [id, id]
   let res: any = await query(sql, data)
   res = res[0] || null
