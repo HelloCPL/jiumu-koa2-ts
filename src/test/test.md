@@ -17,4 +17,4 @@
   + 增加修改和删除的校验
 
 
-- `router/controller/comments/utils.ts` 增加 `is_target_user` 字段判断
+- `router/controller/comments/utils.ts` 增加 `is_target_user` 字段判断，判断第一个 `target_type` 不为 `501`
