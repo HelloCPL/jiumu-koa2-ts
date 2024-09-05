@@ -13,13 +13,13 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| code | string | 是 | 菜单code，不能重复 |
-| label | string | 是 | 菜单说明 |
-| parentCode | string | 否 | 父级菜单code |
-| sort | mediumint | 否 | 排序，值越小越前，默认1 |
-| remarks | string | 否 | 备注 |
+|   参数名   |   类型    | 是否必填 |          说明           |
+| :--------: | :-------: | :------: | :---------------------: |
+|    code    |  string   |    是    |   菜单code，不能重复    |
+|   label    |  string   |    是    |        菜单说明         |
+| parentCode |  string   |    否    |      父级菜单code       |
+|    sort    | mediumint |    否    | 排序，值越小越前，默认1 |
+|  remarks   |  string   |    否    |          备注           |
 
 #### 返回示例
 
@@ -46,14 +46,14 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 菜单id |
-| code | string | 否 | 菜单code，不能重复 |
-| label | string | 否 | 菜单说明 |
-| parentCode | string | 否 | 父级菜单code |
-| sort | mediumint | 否 | 排序，值越小越前 |
-| remarks | string | 否 | 备注 |
+|   参数名   |   类型    | 是否必填 |        说明        |
+| :--------: | :-------: | :------: | :----------------: |
+|     id     |  string   |    是    |       菜单id       |
+|    code    |  string   |    否    | 菜单code，不能重复 |
+|   label    |  string   |    否    |      菜单说明      |
+| parentCode |  string   |    否    |    父级菜单code    |
+|    sort    | mediumint |    否    |  排序，值越小越前  |
+|  remarks   |  string   |    否    |        备注        |
 
 #### 返回示例
 
@@ -81,9 +81,9 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 菜单id |
+| 参数名 |  类型  | 是否必填 |  说明  |
+| :----: | :----: | :------: | :----: |
+|   id   | string |    是    | 菜单id |
 
 #### 返回示例
 
@@ -111,27 +111,27 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 菜单 id 或 code |
+| 参数名 |  类型  | 是否必填 |      说明       |
+| :----: | :----: | :------: | :-------------: |
+|   id   | string |    是    | 菜单 id 或 code |
 
 #### 返回字段说明
 
 - 返回对象或null
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 菜单id |
-| parentCode | string | 父级菜单code |
-| parentLabel | string | 父级菜单描述 |
-| code | string | 菜单code |
-| label | string | 菜单描述 |
-| sort | number | 排序，值越小越前 |
+|    参数名    |  类型  |                  说明                  |
+| :----------: | :----: | :------------------------------------: |
+|      id      | string |                 菜单id                 |
+|  parentCode  | string |              父级菜单code              |
+| parentLabel  | string |              父级菜单描述              |
+|     code     | string |                菜单code                |
+|    label     | string |                菜单描述                |
+|     sort     | number |            排序，值越小越前            |
 | configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
+|  createTime  | string |                创建时间                |
+|  updateTime  | string |                更新时间                |
+|   terminal   | string |                操作终端                |
+|   remarks    | string |                  备注                  |
 
 #### 返回示例
 
@@ -178,20 +178,20 @@
 
 - 返回数组或[]，数组有子级
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 菜单id |
-| parentCode | string | 父级菜单code |
-| parentLabel | string | 父级菜单描述 |
-| code | string | 菜单code |
-| label | string | 菜单描述 |
-| sort | number | 排序，值越小越前 |
-| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
-| children | array/[] | 子级 |
+|    参数名    |   类型   |                  说明                  |
+| :----------: | :------: | :------------------------------------: |
+|      id      |  string  |                 菜单id                 |
+|  parentCode  |  string  |              父级菜单code              |
+| parentLabel  |  string  |              父级菜单描述              |
+|     code     |  string  |                菜单code                |
+|    label     |  string  |                菜单描述                |
+|     sort     |  number  |            排序，值越小越前            |
+| configurable |  string  | 是否可修改 0 可修改 1 超级管理员可修改 |
+|  createTime  |  string  |                创建时间                |
+|  updateTime  |  string  |                更新时间                |
+|   terminal   |  string  |                操作终端                |
+|   remarks    |  string  |                  备注                  |
+|   children   | array/[] |                  子级                  |
 
 #### 返回示例
 
@@ -224,9 +224,9 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取指定的获取某类菜单
-- 若传了`roleId`，增加`checkedRoleId` 字段，表示是否与该角色关联
-- 若传了`userId`，增加`checkedUserId` 字段，表示是否与该用户关联，但不可直接关联
+- 获取指定的获取某类菜单，返回树级结构
+- 若传了`roleId`，增加`checkedRoleId` 字段，表示是否与该角色关联（只增加关联关系，并不会过滤）
+- 若传了`userId`，增加`checkedUserId` 字段，表示是否与该用户关联，但不可直接关联（只增加关联关系，并不会过滤）
 
 #### 请求
 
@@ -235,30 +235,30 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| parentCode | string | 否 | 父级菜单code，不传获取全部菜单 |
-| roleId | string | 否 | 角色id，会增加`checkedRoleId` 字段，表示是否与该角色关联 |
-| userId | string | 否 | 用户id，会增加`checkedUserId` 字段，表示是否与该用户关联，但不可直接关联 |
+|   参数名   |  类型  | 是否必填 |                                   说明                                   |
+| :--------: | :----: | :------: | :----------------------------------------------------------------------: |
+| parentCode | string |    否    |                      父级菜单code，不传获取全部菜单                      |
+|   roleId   | string |    否    |         角色id，会增加`checkedRoleId` 字段，表示是否与该角色关联         |
+|   userId   | string |    否    | 用户id，会增加`checkedUserId` 字段，表示是否与该用户关联，但不可直接关联 |
 
 #### 返回字段说明
 
 - 返回数组或[]，数组有子级
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 菜单id |
-| parentCode | string | 父级菜单code |
-| parentLabel | string | 父级菜单描述 |
-| code | string | 菜单code |
-| label | string | 菜单描述 |
-| sort | number | 排序，值越小越前 |
-| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
-| children | array/[] | 子级 |
+|    参数名    |   类型   |                  说明                  |
+| :----------: | :------: | :------------------------------------: |
+|      id      |  string  |                 菜单id                 |
+|  parentCode  |  string  |              父级菜单code              |
+| parentLabel  |  string  |              父级菜单描述              |
+|     code     |  string  |                菜单code                |
+|    label     |  string  |                菜单描述                |
+|     sort     |  number  |            排序，值越小越前            |
+| configurable |  string  | 是否可修改 0 可修改 1 超级管理员可修改 |
+|  createTime  |  string  |                创建时间                |
+|  updateTime  |  string  |                更新时间                |
+|   terminal   |  string  |                操作终端                |
+|   remarks    |  string  |                  备注                  |
+|   children   | array/[] |                  子级                  |
 
 #### 返回示例
 

@@ -1,26 +1,28 @@
 import { isArray } from 'lodash'
-import { getFileByData, getOriginFileById, getOriginFileByIds } from '../files-info/utils'
-import { ArticleOptions } from './interface'
+import { getFileById } from '../files-info/get'
+import { getTagCustomByIds } from '../tags-custom/get'
+import { NovelOptions } from './interface'
+import { FileInfoOptions } from '../files-info/interface'
+import { getFileByData, getOriginFileById } from '../files-info/utils'
 import { getOriginTagCustomByIds, getTagCustomByData } from '../tags-custom/utils'
 
 /**
- * 处理博客文章数据
+ * 处理小说数据
  * @param datas 原始数据
  * @param userId 用户 id
  * @param showUserInfo 是否展示用户信息
  */
-export async function handleArticleOptions(
-  datas: ArticleOptions | ArticleOptions[],
+export async function handleNovel(
+  datas: NovelOptions | NovelOptions[],
   userId: string,
   showUserInfo?: BaseStatus
 ) {
-  const files = await getFileByData(datas, ['cover_img', 'attachment', 'create_user_avatar'])
+  let files: FileInfoOptions[] = []
+  if (showUserInfo === '1') {
+    files = await getFileByData(datas, ['create_user_avatar'])
+  }
   const tagCustoms = await getTagCustomByData(datas, ['classify'], userId)
-  const _handleList = async (data: ArticleOptions) => {
-    // 处理封面图
-    if (data.cover_img) data.cover_img = getOriginFileById(files, data.cover_img)
-    // 处理附件
-    if (data.attachment) data.attachment = getOriginFileByIds(files, data.attachment)
+  const _handleList = async (data: NovelOptions) => {
     // 处理自定义标签
     data.classify = getOriginTagCustomByIds(tagCustoms, data.classify)
     // 处理是否为自己发布
@@ -36,6 +38,10 @@ export async function handleArticleOptions(
     data.comment_count = data.comment_count1 + data.comment_count2
     delete data.comment_count1
     delete data.comment_count2
+    // 处理该小说下所有的章节评论总数
+    data.chapter_comment_count = data.chapter_comment_count1 + data.chapter_comment_count2
+    delete data.chapter_comment_count1
+    delete data.chapter_comment_count2
     // 处理创建者头像
     if (showUserInfo === '1' && data.create_user_avatar) {
       data.create_user_avatar = getOriginFileById(files, data.create_user_avatar)

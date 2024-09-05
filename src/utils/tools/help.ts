@@ -168,7 +168,7 @@ export const countWordCharactersAndWords = (text?: string): WordCount => {
  * @returns 返回文本
  */
 export const replaceMultipleSpaces = (text: string): string => {
-  return text.replace(/\s+/g, ' ')
+  return text.replace(/[ ]{2,}/g, ' ')
 }
 
 /**

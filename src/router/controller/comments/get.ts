@@ -13,16 +13,12 @@ import { handleCommentList } from './utils'
 
 // 获取指定的某条评论
 export const doCommentGetOne = async (ctx: Context) => {
-  // const sql1 = 'SELECT t1.type FROM comments_first t1 WHERE t1.id = ?'
-  // const data = [ctx._params.id]
-  // const res1: any = await query(sql1, data)
   const commentInfo = <CommentFindResult>await findCommentById(ctx._params.id)
   // 处理评论者信息字段
   const showUserInfo = ctx._params.showUserInfo || '1'
   const userInfoField =
     showUserInfo === '1' ? ' t2.username AS create_user_name, t2.avatar AS create_user_avatar, ' : ''
   if (commentInfo.flag === 1) {
-    const type = commentInfo.comment_first_target_type
     const sql2 = `
       SELECT 
         t1.id, t1.target_id, t1.type AS target_type, t7.label AS target_type_label, t1.content, 
@@ -40,14 +36,10 @@ export const doCommentGetOne = async (ctx: Context) => {
     await handleCommentList(res2, {
       userId: ctx._user.id,
       flag: 1,
-      type,
       showUserInfo
     })
     throw new Success({ data: res2[0] })
   } else if (commentInfo.flag === 2) {
-    // const sql3 = 'SELECT t1.id FROM comments_second t1 WHERE t1.id = ?'
-    // const res3: any = await query(sql3, data)
-    const type = '501'
     const replyUserInfoField =
       showUserInfo === '1' ? ' t3.username AS reply_user_name, t3.avatar AS reply_user_avatar, ' : ''
     const sql4 = `
@@ -68,7 +60,6 @@ export const doCommentGetOne = async (ctx: Context) => {
     await handleCommentList(res4, {
       userId: ctx._user.id,
       flag: 2,
-      type,
       showUserInfo
     })
     throw new Success({ data: res4[0] })
@@ -112,7 +103,6 @@ export const doCommentFirstGetList = async (ctx: Context) => {
   await handleCommentList(comemntList, {
     userId: ctx._user.id,
     flag: 1,
-    type: ctx._params.type,
     showUserInfo
   })
   throw new Success({ total: res[0][0]['total'], data: comemntList })

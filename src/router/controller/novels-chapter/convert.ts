@@ -27,12 +27,16 @@ export const doNovelChapterAddConvert = async (ctx: Context, next: Next) => {
     throwType: false,
     message: Message.unexistNovel
   })
-  const sql: string = 'SELECT id FROM novels_chapter WHERE novel_id = ? AND sort = ?'
-  const data = [ctx._params.novelId, ctx._params.sort]
-  const res: any = await query(sql, data)
-  if (res && res.length) {
-    throw new ExceptionParameter({ message: Message.existNovelChapterSort })
-  }
+  // 判断章节序号是否重复
+  await isExist({
+    table: 'novels_chapter',
+    where: [
+      { key: 'id', value: ctx._params.novelId },
+      { key: 'sort', value: ctx._params.sort }
+    ],
+    throwType: true,
+    message: Message.existNovelChapterSort
+  })
   await next()
 }
 
@@ -53,18 +57,24 @@ export const doNovelChapterUpdateConvert = async (ctx: Context, next: Next) => {
   }
   // 若传 sort 判断 sort 是否除自己外已存在
   if (ctx._params.hasOwnProperty('sort')) {
-    const sql1: string =
-      'SELECT id FROM novels_chapter WHERE novel_id = ? AND id != ? AND sort = ? AND create_user = ?'
-    const data1 = [res[0].novel_id, ctx._params.id, ctx._params.sort, ctx._user.id]
-    const res1: any = await query(sql1, data1)
-    if (res1 && res1.length) throw new ExceptionParameter({ message: Message.existNovelChapterSort })
+    await isExist({
+      table: 'novels_chapter',
+      where: [
+        { key: 'novel_id', value: res[0].novel_id },
+        { key: 'id', value: ctx._params.id, connector: '!=' },
+        { key: 'sort', value: ctx._params.sort },
+        { key: 'create_user', value: ctx._user.id }
+      ],
+      throwType: true,
+      message: Message.existNovelChapterSort
+    })
   }
   // 若传 isDraft 判断 isDraft 是否['1', '0'] 范围
   if (ctx._params.hasOwnProperty('isDraft')) {
     await validateRange({
       value: ctx._params.isDraft,
       range: ['1', '0'],
-      message: 'isDraft参数必须为[\'1\', \'0\']范围'
+      message: 'isDraft参数必须为["1", "0"]范围'
     })
   }
   // 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
@@ -72,7 +82,7 @@ export const doNovelChapterUpdateConvert = async (ctx: Context, next: Next) => {
     await validateRange({
       value: ctx._params.isSecret,
       range: ['1', '0'],
-      message: 'isSecret参数必须为[\'1\', \'0\']范围'
+      message: 'isSecret参数必须为["1", "0"]范围'
     })
   }
   await next()

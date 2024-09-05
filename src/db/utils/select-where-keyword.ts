@@ -43,6 +43,13 @@ export const getSelectWhereKeyword = (
 
 /**
  * where 模糊查询，需要 order keyword 排序时，处理返回的搜索替换字段和排序条件
+ * @param options.isOrderKeyword? 是否处理 order keyword 的排序
+ * @param options.orderPrefix? order by 排序时的前缀
+ * @param options.orderSuffix? order by 排序时的后缀
+ * @param keywords 关键字集合
+ * @returns {orderFields, orderSql}
+ *   orderFields 替换查询字段（为了将该字段变为选中后的富文本字段）
+ *   orderSql 排序字段
  */
 function getOrderKeyword(options: SQLUtilsOptionsOrderKeyword, keywords: string[]) {
   let orderFields = ''

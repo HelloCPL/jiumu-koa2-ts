@@ -6,6 +6,8 @@ import { getTopSourcesType } from '../do-top/utils'
 
 /**
  * 获取评论目标的用户
+ * @param targetId 评论的资源目标 id
+ * @param type 评论的资源类型
  */
 async function getTargetCreateUser(targetId: string, type: string): Promise<string> {
   const source = getTopSourcesType(type)
@@ -18,6 +20,8 @@ async function getTargetCreateUser(targetId: string, type: string): Promise<stri
 
 /**
  * 处理评论列表 flag 1 一级评论 2 二级评论
+ * @param data 原始数据
+ * @param params 
  */
 export async function handleCommentList(data: CommentOptions[], params: CommentListParams) {
   let files: FileInfoOptions[] = []
@@ -25,12 +29,10 @@ export async function handleCommentList(data: CommentOptions[], params: CommentL
     files = await getFileByData(data, ['reply_user_avatar', 'create_user_avatar'])
   }
   // 处理是否评论目标的作者（顶级目标）
-  // let targetUser = ''
-  if (params.flag === 1) {
-    // targetUser = getTargetCreateUser()
-  } else if (params.flag === 2 && data.length) {
+  let targetUser = ''
+  if (data.length) {
+    targetUser = await getTargetCreateUser(data[0].target_id, data[0].target_type)
   }
-
   for (let i = 0, len = data.length; i < len; i++) {
     const item = data[i]
     // 处理是否点赞
@@ -50,14 +52,7 @@ export async function handleCommentList(data: CommentOptions[], params: CommentL
     // 处理子级数量
     if (params.flag === 2) item.comment_count = 0
     // 处理是否评论目标作者
-    // if (params.flag === 1)
-    //   item.is_target_user = await getTargetCreateUser(item.target_id, <string>params.type, item.create_user)
-    // else if (params.flag === 2)
-    //   item.is_target_user = await getTargetCreateUser(
-    //     item.target_id,
-    //     <string>item.target_type,
-    //     item.create_user
-    //   )
+    item.is_target_user = item.create_user === targetUser ? '1' : '0'
     // 处理评论者或回复者头像
     if (params.showUserInfo === '1' && item.create_user_avatar)
       item.create_user_avatar = getOriginFileById(files, item.create_user_avatar)
