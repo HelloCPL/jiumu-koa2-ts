@@ -30,7 +30,7 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required(['id'])
-  @Convert(doQuestionUpdateConvert, doQuestionUpdateConvert)
+  @Convert(doQuestionDeleteConvert, doQuestionUpdateConvert)
   async doQuestionUpdate(ctx: Context) {
     await doQuestionUpdate(ctx)
   }

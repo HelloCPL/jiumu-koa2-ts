@@ -19,7 +19,11 @@ export const doTagGetByCode = async (ctx: Context) => {
 
 // 获取我的所有标签
 export const doTagGetAllSelf = async (ctx: Context) => {
-  const data = <TagListReturnOptions>await getAllTagByUserId({ userId: ctx._user.id, all: true })
+  const data = <TagListReturnOptions>await getAllTagByUserId({
+    userId: ctx._user.id,
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10
+  })
   throw new Success(data.data ? data : { data })
 }
 

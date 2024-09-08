@@ -22,9 +22,9 @@ import { RequestOptions, RouteOptions } from './interface'
  */
 export const Prefix =
   (prefix: string): ClassDecorator =>
-  (target: Function) => {
-    target.prototype[symbolRoutePrefix] = prefix
-  }
+    (target: Function) => {
+      target.prototype[symbolRoutePrefix] = prefix
+    }
 
 /**
  * 定义路由请求，并将该方法存入 Route.__DecoratedRouters 中 方法装饰器
@@ -36,18 +36,18 @@ export const Prefix =
  */
 export const Request =
   (options: RequestOptions): MethodDecorator =>
-  (target: ObjectAny, key: string | symbol, descriptor: PropertyDescriptor) => {
-    if (!(isArray(options.terminals) && options.terminals.length))
-      options.terminals = ['pc', 'app', 'web', 'wechat']
-    Route.__DecoratedRouters.set(
+    (target: ObjectAny, key: string | symbol, descriptor: PropertyDescriptor) => {
+      if (!(isArray(options.terminals) && options.terminals.length))
+        options.terminals = ['pc', 'app', 'web', 'wechat']
+      Route.__DecoratedRouters.set(
       <RouteOptions>{
         target,
         ...options
       },
       target[key as string]
-    )
-    return descriptor
-  }
+      )
+      return descriptor
+    }
 
 /**
  * 校验路由请求必传参数 方法装饰器
@@ -56,16 +56,16 @@ export const Request =
  */
 export const Required =
   (params: string[]): MethodDecorator =>
-  (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-    async function requiredParameter(ctx: Context, next: Next) {
-      const newParams: ValidatorOptions[] = generateRequiredParams(params)
-      await new ValidatorParameters(newParams).validate(ctx)
-      await next()
+    (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
+      async function requiredParameter(ctx: Context, next: Next) {
+        const newParams: ValidatorOptions[] = generateRequiredParams(params)
+        await new ValidatorParameters(newParams).validate(ctx)
+        await next()
+      }
+      target[key] = sureIsArray(target[key])
+      target[key].splice(0, 0, requiredParameter)
+      return descriptor
     }
-    target[key] = sureIsArray(target[key])
-    target[key].splice(0, 0, requiredParameter)
-    return descriptor
-  }
 
 /**
  * 添加自定义中间件方法 方法装饰器
@@ -74,8 +74,8 @@ export const Required =
  */
 export const Convert =
   (...middleware: Function[]): MethodDecorator =>
-  (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-    target[key] = sureIsArray(target[key])
-    target[key].splice(target[key].length - 1, 0, ...middleware)
-    return descriptor
-  }
+    (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
+      target[key] = sureIsArray(target[key])
+      target[key].splice(target[key].length - 1, 0, ...middleware)
+      return descriptor
+    }

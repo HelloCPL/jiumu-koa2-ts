@@ -12,11 +12,14 @@ import { isExist } from '../convert'
 
 /**
  * 新增时
+ * 判断角色-权限关联是否已存在
  * 先判断角色是否不存在
  * 再判断权限是否不存在
- * 最后判断角色-权限关联是否已存在
  */
 export const doRolePermissionAddConvert = async (ctx: Context, next: Next) => {
+  // 判断角色-权限关联是否已存在
+  const flag = await _isExist(ctx)
+  if (flag) throw new Success()
   // 先判断角色是否不存在
   await isExist({
     table: 'roles',
@@ -31,9 +34,6 @@ export const doRolePermissionAddConvert = async (ctx: Context, next: Next) => {
     throwType: false,
     message: Message.unexistPermission
   })
-  // 最后判断角色-权限关联是否已存在
-  const flag = await _isExist(ctx)
-  if (flag) throw new Success()
   await next()
 }
 

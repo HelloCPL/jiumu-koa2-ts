@@ -28,7 +28,8 @@ export const doRoleAddConvert = async (ctx: Context, next: Next) => {
 /**
  * 修改时
  * 判断角色是否不存在
- * 判断是否拥有修改权限
+ * 判断是否拥可修改
+ * 判断是否仅管理员可修改
  * 若修改 code 再判断 code 除自身外是否存在
  */
 export async function doRoleUpdateConvert(ctx: Context, next: Next) {
@@ -37,10 +38,14 @@ export async function doRoleUpdateConvert(ctx: Context, next: Next) {
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistRole })
   res = res[0]
-  // 判断是否拥有修改权限
+  // 判断是否拥可修改
+  if (res.configurable === '-1') {
+    throw new ExceptionForbidden({ message: Message.forbiddenEdit })
+  }
+  // 判断是否仅管理员可修改
   if (res.configurable === '1') {
     const isS = await isSuper(ctx._user.id)
-    if (!isS) throw new ExceptionForbidden()
+    if (!isS) throw new ExceptionForbidden({ message: Message.forbiddenSuper })
   }
   // 若修改 code 再判断 code 除自身外是否存在
   if (ctx._params.hasOwnProperty('code')) {
@@ -60,7 +65,8 @@ export async function doRoleUpdateConvert(ctx: Context, next: Next) {
 /**
  * 删除时
  * 判断角色是否不存在
- * 判断是否拥有修改权限
+ * 判断是否拥可修改
+ * 判断是否仅管理员可修改
  * 再判断是否有 roles-permissions 角色-权限关联
  * 再判断是否有 users-roles 用户-角色关联
  * 再判断是否有 roles-menus 角色-菜单关联
@@ -71,10 +77,14 @@ export async function doRoleDeleteConvert(ctx: Context, next: Next) {
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistRole })
   res = res[0]
-  // 判断是否拥有修改权限
+  // 判断是否拥可修改
+  if (res.configurable === '-1') {
+    throw new ExceptionForbidden({ message: Message.forbiddenEdit })
+  }
+  // 判断是否仅管理员可修改
   if (res.configurable === '1') {
     const isS = await isSuper(ctx._user.id)
-    if (!isS) throw new ExceptionForbidden()
+    if (!isS) throw new ExceptionForbidden({ message: Message.forbiddenSuper })
   }
   // 再判断是否有 roles-permissions 角色-权限关联
   await isExist({

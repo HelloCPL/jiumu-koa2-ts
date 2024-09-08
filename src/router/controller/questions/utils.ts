@@ -1,17 +1,19 @@
+// 处理问答数据
+
 import { isArray } from 'lodash'
-import { NovelOptions } from './interface'
+import { QuestionOptions } from './interface'
+import { getOriginTagCustomByIds, getTagCustomByData } from '../tags-custom/utils'
 import { FileInfoOptions } from '../files-info/interface'
 import { getFileByData, getOriginFileById } from '../files-info/utils'
-import { getOriginTagCustomByIds, getTagCustomByData } from '../tags-custom/utils'
 
 /**
- * 处理小说数据
+ * 处理问答数据
  * @param datas 原始数据
  * @param userId 用户 id
  * @param showUserInfo 是否展示用户信息
  */
-export async function handleNovel(
-  datas: NovelOptions | NovelOptions[],
+export async function handleQuestion(
+  datas: QuestionOptions | QuestionOptions[],
   userId: string,
   showUserInfo?: BaseStatus
 ) {
@@ -20,7 +22,7 @@ export async function handleNovel(
     files = await getFileByData(datas, ['create_user_avatar'])
   }
   const tagCustoms = await getTagCustomByData(datas, ['classify'], userId)
-  const _handleList = async (data: NovelOptions) => {
+  const _handleList = async (data: QuestionOptions) => {
     // 处理自定义标签
     data.classify = getOriginTagCustomByIds(tagCustoms, data.classify)
     // 处理是否为自己发布
@@ -36,10 +38,6 @@ export async function handleNovel(
     data.comment_count = data.comment_count1 + data.comment_count2
     delete data.comment_count1
     delete data.comment_count2
-    // 处理该小说下所有的章节评论总数
-    data.chapter_comment_count = data.chapter_comment_count1 + data.chapter_comment_count2
-    delete data.chapter_comment_count1
-    delete data.chapter_comment_count2
     // 处理创建者头像
     if (showUserInfo === '1' && data.create_user_avatar) {
       data.create_user_avatar = getOriginFileById(files, data.create_user_avatar)

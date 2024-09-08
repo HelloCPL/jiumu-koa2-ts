@@ -5,12 +5,12 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { execTrans, query } from '@/db'
+import { execTrans } from '@/db'
 import { Context } from 'koa'
 import { RoleReturnOptions, RoleOptions } from '../roles/interface'
 import { UserListReturn, UserOptions } from '../users/interface'
 import { UserRoleByRoleIdParams, UserRoleByUserIdParams } from './interface'
-import { getFileById } from '../files-info/get'
+import { handleUser } from '../roles-menus/utils'
 
 // 获取指定权限关联的所有角色
 export const doUserRoleGetAllRoleByUserId = async (ctx: Context) => {
@@ -41,28 +41,38 @@ export const doUserRoleGetAllUserByRoleId = async (ctx: Context) => {
 export const getAllRoleByUserId = async (
   options: UserRoleByUserIdParams
 ): Promise<RoleReturnOptions | RoleOptions[]> => {
-  if (options.all) {
-    const sql =
-      'SELECT t1.id As relevance_id, t2.id, t2.code, t2.label, t2.sort, t2.configurable, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_roles t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t2.id IS NOT NULL AND t1.user_id = ? ORDER BY t2.sort, t2.update_time DESC'
-    const data = [options.userId]
-    const res: RoleOptions[] = <RoleOptions[]>await query(sql, data)
-    return res
-  } else {
-    options.pageNo = options.pageNo || 1
-    options.pageSize = options.pageSize || 10
-    const pageNo = (options.pageNo - 1) * options.pageSize
-    const sql1 =
-      'SELECT COUNT(t1.id) AS total FROM users_roles t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t2.id IS NOT NULL AND t1.user_id = ?'
-    const sql2 =
-      'SELECT t1.id As relevance_id, t2.id, t2.code, t2.label, t2.sort, t2.configurable, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_roles t1 LEFT JOIN roles t2 ON t1.role_id = t2.id WHERE t2.id IS NOT NULL AND t1.user_id = ? ORDER BY t2.sort, t2.update_time DESC LIMIT ?, ?'
-    const res: any = await execTrans([
-      { sql: sql1, data: [options.userId] },
-      { sql: sql2, data: [options.userId, pageNo, options.pageSize] }
-    ])
-    return {
-      total: res[0][0]['total'],
-      data: res[1]
-    }
+  options.pageNo = options.pageNo || 1
+  options.pageSize = options.pageSize || 10
+  const pageNo = (options.pageNo - 1) * options.pageSize
+  const sql1 = `
+    SELECT 
+      COUNT(t1.id) AS total 
+    FROM roles t1 
+    WHERE 
+      t1.id IN (
+        SELECT t3.role_id FROM users_roles t3
+        WHERE t3.user_id = ?
+      )`
+  const sql2 = `
+    SELECT 
+      t2.id As relevance_id, t1.id, t1.code, t1.label, t1.sort, 
+      t1.configurable, t1.create_time, t1.update_time, t1.terminal, t1.remarks 
+    FROM roles t1 
+    LEFT JOIN users_roles t2 ON (t2.role_id = t1.id AND t2.user_id = ?)
+    WHERE 
+      t1.id IN (
+        SELECT t3.role_id FROM users_roles t3
+        WHERE t3.user_id = ?
+      )
+    ORDER BY t1.sort, t1.update_time DESC 
+    LIMIT ?, ?`
+  const res: any = await execTrans([
+    { sql: sql1, data: [options.userId] },
+    { sql: sql2, data: [options.userId, options.userId, pageNo, options.pageSize] }
+  ])
+  return {
+    total: res[0][0]['total'],
+    data: res[1]
   }
 }
 
@@ -73,27 +83,53 @@ export const getAllUserByRoleId = async (options: UserRoleByRoleIdParams): Promi
   options.pageNo = options.pageNo || 1
   options.pageSize = options.pageSize || 10
   const pageNo = (options.pageNo - 1) * options.pageSize
-  const sql1 = 'SELECT COUNT(t1.id) AS total FROM users_roles t1 WHERE t1.role_id = ?'
+  const sql1 = `
+    SELECT 
+      COUNT(t1.id) AS total 
+      FROM users t1 
+      WHERE 
+        t1.id IN (
+          SELECT t4.user_id FROM users_roles t4
+          WHERE t4.role_id = ?
+        )`
   let sql2: string
   if (options.simple === '1') {
-    sql2 =
-      'SELECT t1.id As relevance_id, t2.id, t2.phone, t2.username, t2.create_time, t2.update_time, t2.terminal FROM users_roles t1 LEFT JOIN users t2 ON t1.user_id = t2.id WHERE t1.role_id = ? ORDER BY t2.update_time DESC LIMIT ?, ?'
+    sql2 = `
+      SELECT 
+        t3.id As relevance_id, t1.id, t1.phone, t1.username, 
+        t1.create_time, t1.update_time, t1.terminal 
+      FROM users t1 
+      LEFT JOIN users_roles t3 ON (t3.user_id = t1.id AND t3.role_id = ?)
+      WHERE 
+        t1.id IN (
+          SELECT t4.user_id FROM users_roles t4
+          WHERE t4.role_id = ?
+        )
+      ORDER BY t1.update_time DESC 
+      LIMIT ?, ?`
   } else {
-    sql2 =
-      'SELECT t1.id As relevance_id, t2.id, t2.phone, t2.username, t2.sex, t3.label as sex_label, t2.birthday, t2.avatar, t2.professional, t2.address, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_roles t1 LEFT JOIN users t2 ON t1.user_id = t2.id LEFT JOIN tags t3 ON t2.sex = t3.code  WHERE t1.role_id = ? ORDER BY t2.update_time DESC LIMIT ?, ?'
+    sql2 = `
+      SELECT 
+        t3.id As relevance_id, t1.id, t1.phone, t1.username, t1.sex, 
+        t2.label as sex_label, t1.birthday, t1.avatar, t1.professional, t1.address, 
+        t1.create_time, t1.update_time, t1.terminal, t1.remarks 
+      FROM users t1 
+      LEFT JOIN tags t2 ON t1.sex = t2.code 
+      LEFT JOIN users_roles t3 ON (t3.user_id = t1.id AND t3.role_id = ?)
+      WHERE 
+        t1.id IN (
+          SELECT t4.user_id FROM users_roles t4
+          WHERE t4.role_id = ?
+        )
+      ORDER BY t1.update_time DESC 
+      LIMIT ?, ?`
   }
   const res: any = await execTrans([
     { sql: sql1, data: [options.roleId] },
-    { sql: sql2, data: [options.roleId, pageNo, options.pageSize] }
+    { sql: sql2, data: [options.roleId, options.roleId, pageNo, options.pageSize] }
   ])
   const userData = <UserOptions[]>res[1]
-  if (options.simple !== '1')
-    for (let i = 0, len = userData.length; i < len; i++) {
-      userData[i]['avatar'] = await getFileById({
-        id: userData[i]['avatar'],
-        userId: userData[i]['id']
-      })
-    }
+  await handleUser(userData, options.simple)
   return {
     total: res[0][0]['total'],
     data: userData

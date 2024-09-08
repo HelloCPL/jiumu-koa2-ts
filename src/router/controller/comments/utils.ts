@@ -19,9 +19,11 @@ async function getTargetCreateUser(targetId: string, type: string): Promise<stri
 }
 
 /**
- * 处理评论列表 flag 1 一级评论 2 二级评论
+ * 处理评论列表
  * @param data 原始数据
- * @param params 
+ * @param params.userId 用户id
+ * @param params.flag 评论类型  1 一级评论 2 二级评论
+ * @param params.showUserInfo 是否展示用户信息
  */
 export async function handleCommentList(data: CommentOptions[], params: CommentListParams) {
   let files: FileInfoOptions[] = []
@@ -31,7 +33,9 @@ export async function handleCommentList(data: CommentOptions[], params: CommentL
   // 处理是否评论目标的作者（顶级目标）
   let targetUser = ''
   if (data.length) {
-    targetUser = await getTargetCreateUser(data[0].target_id, data[0].target_type)
+    // 获取第一个不是评论来源的对象，即可获取目标id和类型
+    const item = data.find((item) => item.target_type !== '501')
+    if (item) targetUser = await getTargetCreateUser(item.target_id, item.target_type)
   }
   for (let i = 0, len = data.length; i < len; i++) {
     const item = data[i]

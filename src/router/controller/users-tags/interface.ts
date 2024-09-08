@@ -16,7 +16,7 @@ export interface UserTagByTagCodeParams {
   tagCode: string
   pageNo?: number
   pageSize?: number
-  simple?: string
+  simple?: BaseStatus
 }
 
 // 用户-特殊关联获取关联用户参数接口类型
@@ -24,5 +24,4 @@ export interface UserTagByUserIdParams {
   userId: string
   pageNo?: number
   pageSize?: number
-  all?: boolean
 }

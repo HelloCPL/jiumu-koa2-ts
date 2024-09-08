@@ -10,6 +10,9 @@ export interface RoleOptions extends BaseOptions {
   code: string
   label: string
   sort?: number
+  checked_user_id?: BaseStatus
+  checked_permission_id?: BaseStatus
+  checked_menu_id?: BaseStatus
 }
 
 // 角色参数
@@ -27,4 +30,10 @@ export interface RoleParamsOptions {
 export interface RoleReturnOptions {
   total: number
   data: RoleOptions[]
+}
+
+export interface RoleParams {
+  userId?: string
+  permissionId?: string
+  menuId?: string
 }

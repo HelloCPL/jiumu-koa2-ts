@@ -13,11 +13,14 @@ import { isExist } from '../convert'
 
 /**
  * 新增时
+ * 判断用户-特殊标签关联是否已存在
  * 判断用户是否不存在
  * 判断特殊标签是否不存在
- * 判断用户-特殊标签关联是否已存在
  */
 export const doUserTagAddConvert = async (ctx: Context, next: Next) => {
+  // 判断用户-特殊标签关联是否已存在
+  const flag = await _isExist(ctx)
+  if (flag) throw new Success()
   // 判断用户是否不存在
   await isExist({
     table: 'users',
@@ -31,9 +34,6 @@ export const doUserTagAddConvert = async (ctx: Context, next: Next) => {
     range: '8888',
     message: 'tagCode参数必须为特殊标签8888范围'
   })
-  // 判断用户-特殊标签关联是否已存在
-  const flag = await _isExist(ctx)
-  if (flag) throw new Success()
   await next()
 }
 
