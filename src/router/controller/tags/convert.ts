@@ -14,13 +14,10 @@ import { query } from '@/db'
 
 /**
  * 新增时
- * code 必须为真
  * 判断标签是否已存在
  * 若 parentCode 为真，再判断 parentCode 是否不存在
  */
 export const doTagAddConvert = async (ctx: Context, next: Next) => {
-  // code 必须为真
-  if (!ctx._params.code) throw new ExceptionParameter({ message: 'code参数值必须为真' })
   //  判断标签是否已存在
   await isExist({
     table: 'tags',

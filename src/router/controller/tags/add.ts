@@ -17,8 +17,11 @@ export const doTagAdd = async (ctx: Context) => {
   const parentCode: number = ctx._params.parentCode || ''
   const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
-  const sql: string =
-    'INSERT tags (id, parent_code, code, label, sort, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT tags 
+      (id, parent_code, code, label, sort, create_time, update_time, terminal, remarks) 
+    VALUES 
+      (?, ?, ?, ?, ?, ?, ?, ?, ?)`
   const id = getUuId()
   const data = [
     id,

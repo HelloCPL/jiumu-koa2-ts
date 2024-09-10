@@ -10,7 +10,7 @@ import { query, getUpdateFields } from '@/db'
 import { formatDate } from '@/utils/tools'
 import { analysisToken } from './token'
 import { Code, Message } from '@/enums'
-import { handleDoubleToken } from './register'
+import { handleDoubleToken } from './utils'
 
 /**
  * 修改本用户基本信息

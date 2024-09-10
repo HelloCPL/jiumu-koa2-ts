@@ -49,7 +49,7 @@ export default class API {
     path: 'update/base/self',
     methods: ['post', 'get']
   })
-  @Convert(doUserUpdateBaseSelfConvert)
+  @Convert(doUserUpdateBaseSelfConvert, doUserUpdateBaseConvert)
   async doUserUpdateBaseSelf(ctx: Context) {
     await doUserUpdateBaseSelf(ctx)
   }
@@ -60,7 +60,7 @@ export default class API {
     methods: ['post']
   })
   @Required(['phone'])
-  @Convert(doUserRegisterConvert)
+  @Convert(doUserRegisterConvert, doUserUpdateBaseConvert)
   async doUserUpdatePhoneSelf(ctx: Context) {
     await doUserUpdatePhoneSelf(ctx)
   }

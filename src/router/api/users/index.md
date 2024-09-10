@@ -395,7 +395,7 @@
 |:---:|:---:|:---:|:---:|
 | keyword | string | 否 | 搜索关键字 |
 | highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| simple | string | 否 | '1' 返回数据列表简洁模式 '0' 正常模式 |
+| simple | string | 否 | '1' 返回数据列表简洁模式 '0' 正常模式，默认 '0' |
 | pageNo | number | 否 | 页码，默认 1 |
 | pageSize | number | 否 | 每页页数，默认 10 |
 

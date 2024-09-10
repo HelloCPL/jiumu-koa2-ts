@@ -7,11 +7,10 @@
 import { Context } from 'koa'
 import { Message, Terminal } from '@/enums'
 import { Success } from '@/utils/http-exception'
-import { gernerateToken } from './token'
-import { TOKEN } from '@/config'
 import { getUuId, formatDate, getIP } from '@/utils/tools'
 import { encrypt } from '@/utils/crypto'
 import { execTrans } from '@/db/index'
+import { handleDoubleToken } from './utils'
 
 /**
  * 用户注册
@@ -44,37 +43,4 @@ export const doUserRegister = async (ctx: Context) => {
   const params = { userId: userId, phone: ctx._params.phone }
   const doubleToken = await handleDoubleToken(ctx, params)
   throw new Success({ message: Message.register, data: doubleToken })
-}
-
-interface DoubleTokenParams {
-  userId: string
-  phone: string
-}
-
-export interface DoubleTokenReturn {
-  token: string
-  tokenRefresh: string
-}
-
-// 生成双token
-export const handleDoubleToken = async (
-  ctx: Context,
-  options: DoubleTokenParams
-): Promise<DoubleTokenReturn> => {
-  const tokenParams = {
-    id: options.userId,
-    phone: options.phone,
-    validTime: TOKEN.VALID_TIME,
-    key: 'token'
-  }
-  const token = await gernerateToken(ctx, tokenParams)
-  // 生成刷新 token
-  const tokenRefreshParams = {
-    id: options.userId,
-    phone: options.phone,
-    validTime: TOKEN.REFRESH_VALID_TIME,
-    key: 'token_refresh'
-  }
-  const tokenRefresh = await gernerateToken(ctx, tokenRefreshParams)
-  return { token, tokenRefresh }
 }

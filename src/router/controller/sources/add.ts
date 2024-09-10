@@ -20,8 +20,11 @@ export const doSourceAdd = async (ctx: Context) => {
   const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
   const params = ctx._params
-  const sql1: string =
-    'INSERT sources (id, title, type, attachment, classify, is_secret, sort, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const sql1: string = `
+    INSERT sources 
+      (id, title, type, attachment, classify, is_secret, sort, create_user, create_time, update_time, terminal, remarks) 
+    VALUES 
+      (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   const id = getUuId()
   const data1 = [
     id,

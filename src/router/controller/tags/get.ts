@@ -40,8 +40,13 @@ export const doTagGetByParentCode = async (ctx: Context) => {
  * 获取指定的某个标签，返回对象或null
  */
 export const getTagByCode = async (code: string): Promise<TagOptions | null> => {
-  const sql: string =
-    'SELECT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, t1.sort, t1.configurable, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM tags t1 LEFT JOIN tags t2 ON t1.parent_code = t2.code WHERE t1.code = ? OR t1.id = ?'
+  const sql: string = `
+    SELECT 
+      t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, 
+      t1.sort, t1.configurable, t1.create_time, t1.update_time, t1.terminal, t1.remarks 
+    FROM tags t1 
+    LEFT JOIN tags t2 ON t1.parent_code = t2.code 
+    WHERE t1.code = ? OR t1.id = ?`
   const data = [code, code]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -67,7 +72,14 @@ export const getTagByParentCode = async (parentCode: string, userId?: string): P
       sqlLeft = 'LEFT JOIN users_tags t3 ON (t3.user_id = ? AND t3.tag_code = t1.code)'
       data.push(userId)
     }
-    const sql = `SELECT t1.id, t1.parent_code, t2.label as parent_label, t1.code, t1.label, t1.sort, t1.configurable, t1.create_time, t1.update_time, ${sqlStr} t1.terminal, t1.remarks  FROM tags t1 LEFT JOIN tags t2 ON t1.parent_code = t2.code ${sqlLeft}`
+    const sql = `
+      SELECT 
+        t1.id, t1.parent_code, t2.label as parent_label, t1.code, t1.label, 
+        ${sqlStr} 
+        t1.sort, t1.configurable, t1.create_time, t1.update_time, t1.terminal, t1.remarks  
+      FROM tags t1 
+      LEFT JOIN tags t2 ON t1.parent_code = t2.code 
+      ${sqlLeft}`
     const res: TagOptions[] = <TagOptions[]>await query(sql, data)
     // 若与指定用户关联
     if (userId) {
