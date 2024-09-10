@@ -16,8 +16,11 @@ import { formatDate, getUuId } from '@/utils/tools'
 export const doRoleAdd = async (ctx: Context) => {
   const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
-  const sql: string =
-    'INSERT roles (id, code, label, sort, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT roles 
+      (id, code, label, sort, create_time, update_time, terminal, remarks) 
+    VALUES 
+      (?, ?, ?, ?, ?, ?, ?, ?)`
   const id = getUuId()
   const data = [
     id,

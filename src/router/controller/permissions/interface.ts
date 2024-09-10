@@ -12,10 +12,12 @@ export interface PermissionOptions extends BaseOptions {
   parent_code?: string
   href?: string
   sort?: number
+  checked_role_id?: BaseStatus
+  checked_user_id?: BaseStatus
 }
 
 // 权限参数类型
-export interface PermissionParmsOptions {
+export interface PermissionParamsOptions {
   pageNo: number
   pageSize: number
   keyword?: string
@@ -28,4 +30,9 @@ export interface PermissionParmsOptions {
 export interface PermissionReturnOptions {
   total: number
   data: PermissionOptions[]
+}
+
+export interface PermissionParams {
+  userId?: string
+  roleId?: string
 }

@@ -23,5 +23,5 @@ export interface RolePermissionByPermissionIdParams {
   permissionId: string
   pageNo?: number
   pageSize?: number
-  simple?: string
+  simple?: BaseStatus
 }

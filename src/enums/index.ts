@@ -25,6 +25,8 @@ export enum Message {
   authRefresh = '令牌已过期，请重新刷新',
   unknown = '未知错误',
 
+  forbiddenEdit = '权限不足，不可修改',
+  forbiddenSuper = '权限不足，仅管理员可修改',
   lockedAuth = '资源受保护，无权限查看',
   lockedTime = '资源受保护，链接已过期',
 

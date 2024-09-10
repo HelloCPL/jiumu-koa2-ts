@@ -13,7 +13,7 @@ import { getOriginTagCustomByIds, getTagCustomByData } from '../tags-custom/util
  */
 export async function handleNote(datas: NoteOptions | NoteOptions[], params: NoteParams) {
   let files: FileInfoOptions[] = []
-  if (params.showUserInfo) {
+  if (params.showUserInfo === '1') {
     files = await getFileByData(datas, ['create_user_avatar'])
   }
   const tagCustoms = await getTagCustomByData(datas, ['classify'], params.userId)

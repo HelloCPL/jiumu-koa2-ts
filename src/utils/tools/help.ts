@@ -206,14 +206,14 @@ export function toCamelCase<T>(results: T): T {
 
 interface TreeOption {
   data: any[]
-  parentCode: any
+  parentCode?: any
   parentKey?: string
   key?: string
 }
 /**
  * 将一维数组转为树结构
  * @param option.data 任意类型数组
- * @param option.parentCode 指定父级的值
+ * @param option.parentCode? 指定父级的值
  * @param option.parentKey? 父级属性 key
  * @param option.key? 属性 key
  * @returns 返回树结构数组
@@ -234,8 +234,8 @@ export const getTree = (option: TreeOption): any[] => {
     }
     if (data[0]?.sort || data[0]?.sort === 0) {
       data.sort((a, b) => {
-        if (a.update_time > b.update_time) return 1
-        else if (a.update_time < b.update_time) return -1
+        if (a.sort > b.sort) return 1
+        else if (a.sort < b.sort) return -1
         else return 0
       })
     }

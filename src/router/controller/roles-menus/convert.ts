@@ -14,12 +14,15 @@ import { MenuListOptions } from '../menus/interface'
 
 /**
  * 新增时
+ * 判断角色-菜单关联是否已存在
  * 先判断角色是否不存在
  * 再判断菜单是否不存在
  * 获取其父级菜单，如果父级菜单，判断父级菜单是否不存在
- * 最后判断角色-菜单关联是否已存在
  */
 export const doRoleMenuAddConvert = async (ctx: Context, next: Next) => {
+  // 判断角色-菜单关联是否已存在
+  const flag = await _isExist(ctx)
+  if (flag) throw new Success()
   // 先判断角色是否不存在
   await isExist({
     table: 'roles',
@@ -35,8 +38,11 @@ export const doRoleMenuAddConvert = async (ctx: Context, next: Next) => {
     message: Message.unexistMenus
   })
   // 获取其父级菜单，如果父级菜单，判断父级菜单是否不存在
-  const sql =
-    'SELECT t2.id AS parentMenuId FROM menus t1 LEFT JOIN menus t2 ON t1.parent_code = t2.code WHERE t1.id = ?'
+  const sql = `
+    SELECT t2.id AS parentMenuId 
+    FROM menus t1 
+    LEFT JOIN menus t2 ON t1.parent_code = t2.code 
+    WHERE t1.id = ?`
   const res: any = await query(sql, ctx._params.menuId)
   if (res && res.length && res[0]['parentMenuId']) {
     await isExist({
@@ -49,9 +55,6 @@ export const doRoleMenuAddConvert = async (ctx: Context, next: Next) => {
       message: Message.relevantNoParent
     })
   }
-  // 最后判断角色-菜单关联是否已存在
-  const flag = await _isExist(ctx)
-  if (flag) throw new Success()
   await next()
 }
 
@@ -62,8 +65,13 @@ export const doRoleMenuAddConvert = async (ctx: Context, next: Next) => {
  */
 export async function doRoleMenuDeleteConvert(ctx: Context, next: Next) {
   // 判断角色-菜单关联是否不存在
-  const sql =
-    'SELECT t1.role_id, t1.menu_id, t2.code FROM roles_menus t1 LEFT JOIN menus t2 ON t1.menu_id = t2.id WHERE t1.id = ? OR (t1.role_id = ? AND t1.menu_id = ?)'
+  const sql = `
+    SELECT t1.role_id, t1.menu_id, t2.code 
+    FROM roles_menus t1 
+    LEFT JOIN menus t2 ON t1.menu_id = t2.id 
+    WHERE 
+      t1.id = ? OR 
+      (t1.role_id = ? AND t1.menu_id = ?)`
   const data = [ctx._params.id, ctx._params.roleId, ctx._params.menuId]
   const res: any = await query(sql, data)
   if (!(res && res.length && res[0]['menu_id'])) throw new Success()
@@ -96,8 +104,11 @@ function _handleMenuList(data: MenuListOptions[]): string {
 
 // 判断关联是否存在
 async function _isExist(ctx: Context): Promise<boolean> {
-  const sql = 'SELECT t1.id FROM roles_menus t1 WHERE t1.id = ? OR (t1.role_id = ? AND t1.menu_id = ?)'
-  const data = [ctx._params.id, ctx._params.roleId, ctx._params.menuId]
+  const sql = `
+    SELECT t1.id 
+    FROM roles_menus t1 
+    WHERE t1.role_id = ? AND t1.menu_id = ?`
+  const data = [ctx._params.roleId, ctx._params.menuId]
   const res: any = await query(sql, data)
   return res && res.length
 }

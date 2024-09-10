@@ -5,12 +5,12 @@
  */
 
 import { Success } from '@/utils/http-exception'
-import { execTrans, query } from '@/db'
+import { execTrans } from '@/db'
 import { Context } from 'koa'
 import { UserListReturn, UserOptions } from '../users/interface'
 import { TagListReturnOptions, TagOptions } from '../tags/interface'
 import { UserTagByTagCodeParams, UserTagByUserIdParams } from './interface'
-import { getFileById } from '../files-info/get'
+import { handleUser } from '../roles-menus/utils'
 
 // 获取指定用户关联的所有特殊标签
 export const doUserTagGetAllTagByUserId = async (ctx: Context) => {
@@ -39,27 +39,40 @@ export const doUserTagGetAllUserByTagCode = async (ctx: Context) => {
 export const getAllTagByUserId = async (
   options: UserTagByUserIdParams
 ): Promise<TagListReturnOptions | TagOptions[]> => {
-  if (options.all) {
-    const sql =
-      'SELECT t2.id, t2.parent_code, t3.label as parent_label, t2.code, t2.label, t2.sort, t2.configurable, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_tags t1 LEFT JOIN tags t2 ON t1.tag_code = t2.code LEFT JOIN tags t3 ON t2.parent_code = t3.code WHERE t1.user_id = ? ORDER BY t2.sort, t2.update_time DESC'
-    const data = [options.userId]
-    const res: TagOptions[] = <TagOptions[]>await query(sql, data)
-    return res
-  } else {
-    options.pageNo = options.pageNo || 1
-    options.pageSize = options.pageSize || 10
-    const pageNo = (options.pageNo - 1) * options.pageSize
-    const sql1 = 'SELECT COUNT(t1.id) AS total FROM users_tags t1 WHERE t1.user_id = ?'
-    const sql2 =
-      'SELECT t1.id As relevance_id, t2.id, t2.parent_code, t3.label as parent_label, t2.code, t2.label, t2.sort, t2.configurable, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_tags t1 LEFT JOIN tags t2 ON t1.tag_code = t2.code LEFT JOIN tags t3 ON t2.parent_code = t3.code WHERE t1.user_id = ? ORDER BY t2.sort, t2.update_time DESC LIMIT ?, ?'
-    const res: any = await execTrans([
-      { sql: sql1, data: [options.userId] },
-      { sql: sql2, data: [options.userId, pageNo, options.pageSize] }
-    ])
-    return {
-      total: res[0][0]['total'],
-      data: res[1]
-    }
+  options.pageNo = options.pageNo || 1
+  options.pageSize = options.pageSize || 10
+  const pageNo = (options.pageNo - 1) * options.pageSize
+  const sql1 = `
+    SELECT 
+      COUNT(t1.id) AS total 
+    FROM tags t1 
+    WHERE 
+      t1.code IN (
+        SELECT t4.tag_code FROM users_tags t4
+        WHERE t4.user_id = ?
+      )`
+  const sql2 = `
+    SELECT 
+      t3.id As relevance_id, t1.id, t1.parent_code, t2.label as parent_label, 
+      t1.code, t1.label, t1.sort, t1.configurable, t1.create_time, 
+      t1.update_time, t1.terminal, t1.remarks 
+    FROM tags t1 
+    LEFT JOIN tags t2 ON t1.parent_code = t2.code 
+    LEFT JOIN users_tags t3 ON (t3.tag_code = t1.code AND t3.user_id = ?)
+    WHERE 
+      t1.code IN (
+        SELECT t4.tag_code FROM users_tags t4
+        WHERE t4.user_id = ?
+      )
+    ORDER BY t1.sort, t1.update_time DESC 
+    LIMIT ?, ?`
+  const res: any = await execTrans([
+    { sql: sql1, data: [options.userId] },
+    { sql: sql2, data: [options.userId, options.userId, pageNo, options.pageSize] }
+  ])
+  return {
+    total: res[0][0]['total'],
+    data: res[1]
   }
 }
 
@@ -70,27 +83,54 @@ export const getAllUserByTagCode = async (options: UserTagByTagCodeParams): Prom
   options.pageNo = options.pageNo || 1
   options.pageSize = options.pageSize || 10
   const pageNo = (options.pageNo - 1) * options.pageSize
-  const sql1 = 'SELECT COUNT(t1.id) AS total FROM users_tags t1 WHERE t1.tag_code = ?'
+  const sql1 = `
+    SELECT 
+      COUNT(t1.id) AS total 
+    FROM users t1 
+    WHERE 
+      t1.id IN (
+        SELECT t4.user_id FROM users_tags t4
+        WHERE t4.tag_code = ?
+      )`
   let sql2: string
   if (options.simple === '1') {
-    sql2 =
-      'SELECT t1.id As relevance_id, t2.id, t2.phone, t2.username, t2.create_time, t2.update_time, t2.terminal FROM users_tags t1 LEFT JOIN users t2 ON t1.user_id = t2.id   WHERE t1.tag_code = ? ORDER BY t2.update_time DESC LIMIT ?, ?'
+    sql2 = `
+      SELECT 
+        t3.id As relevance_id, t1.id, t1.phone, t1.username,  
+        t1.create_time, t1.update_time, t1.terminal 
+      FROM users t1 
+      LEFT JOIN tags t2 ON t1.sex = t2.code  
+      LEFT JOIN users_tags t3 ON (t3.user_id = t1.id AND t3.tag_code = ?)
+      WHERE 
+        t1.id IN (
+          SELECT t4.user_id FROM users_tags t4
+          WHERE t4.tag_code = ?
+        )
+      ORDER BY t1.update_time DESC 
+      LIMIT ?, ?`
   } else {
-    sql2 =
-      'SELECT t1.id As relevance_id, t2.id, t2.phone, t2.username, t2.sex, t3.label as sex_label, t2.birthday, t2.avatar, t2.professional, t2.address, t2.create_time, t2.update_time, t2.terminal, t2.remarks FROM users_tags t1 LEFT JOIN users t2 ON t1.user_id = t2.id LEFT JOIN tags t3 ON t2.sex = t3.code  WHERE t1.tag_code = ? ORDER BY t2.update_time DESC LIMIT ?, ?'
+    sql2 = `
+      SELECT 
+        t3.id As relevance_id, t1.id, t1.phone, t1.username, t1.sex, 
+        t2.label as sex_label, t1.birthday, t1.avatar, t1.professional, t1.address, 
+        t1.create_time, t1.update_time, t1.terminal, t1.remarks 
+      FROM users t1 
+      LEFT JOIN tags t2 ON t1.sex = t2.code  
+      LEFT JOIN users_tags t3 ON (t3.user_id = t1.id AND t3.tag_code = ?)
+      WHERE 
+        t1.id IN (
+          SELECT t4.user_id FROM users_tags t4
+          WHERE t4.tag_code = ?
+        )
+      ORDER BY t1.update_time DESC 
+      LIMIT ?, ?`
   }
   const res: any = await execTrans([
     { sql: sql1, data: [options.tagCode] },
-    { sql: sql2, data: [options.tagCode, pageNo, options.pageSize] }
+    { sql: sql2, data: [options.tagCode, options.tagCode, pageNo, options.pageSize] }
   ])
   const userData = <UserOptions[]>res[1]
-  if (options.simple !== '1')
-    for (let i = 0, len = userData.length; i < len; i++) {
-      userData[i]['avatar'] = await getFileById({
-        id: userData[i]['avatar'],
-        userId: userData[i]['id']
-      })
-    }
+  await handleUser(userData, options.simple)
   return {
     total: res[0][0]['total'],
     data: userData

@@ -14,8 +14,11 @@ import { formatDate, getUuId } from '@/utils/tools'
  * 角色-菜单关联新增
  */
 export const doRoleMenuAdd = async (ctx: Context) => {
-  const sql: string =
-    'INSERT roles_menus (id, role_id, menu_id, create_time, terminal) VALUES (?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT roles_menus 
+      (id, role_id, menu_id, create_time, terminal) 
+    VALUES 
+      (?, ?, ?, ?, ?)`
   const data = [
     getUuId(),
     ctx._params.roleId,

@@ -14,8 +14,11 @@ import { formatDate, getUuId } from '@/utils/tools'
  * 角色-权限关联新增
  */
 export const doRolePermissionAdd = async (ctx: Context) => {
-  const sql: string =
-    'INSERT roles_permissions (id, role_id, permission_id, create_time, terminal) VALUES (?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT roles_permissions 
+      (id, role_id, permission_id, create_time, terminal) 
+    VALUES 
+      (?, ?, ?, ?, ?)`
   const data = [
     getUuId(),
     ctx._params.roleId,

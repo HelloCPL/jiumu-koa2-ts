@@ -112,13 +112,13 @@ export default class API {
   // }
 
   // 10 获取所有自定义标签列表
-  @Request({
-    path: 'get/list',
-    methods: ['get', 'post']
-  })
-  async getTagCustomGetList(ctx: Context) {
-    ctx._params.userId = null
-    ctx._params.type = null
-    await getTagCustomGetList(ctx)
-  }
+  // @Request({
+  //   path: 'get/list',
+  //   methods: ['get', 'post']
+  // })
+  // async getTagCustomGetList(ctx: Context) {
+  //   ctx._params.userId = null
+  //   ctx._params.type = null
+  //   await getTagCustomGetList(ctx)
+  // }
 }

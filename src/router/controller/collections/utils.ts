@@ -46,21 +46,21 @@ export async function handleCollectionData(
   for (let i = 0, len = data.length; i < len; i++) {
     const item = data[i]
     switch (item.type) {
-      case '502':
-        item.title = item.title_questions
-        break
-      case '503':
-        item.title = item.title_sources
-        break
-      case '504':
-        item.title = item.title_novels
-        break
-      case '505':
-        item.title = item.title_articles
-        break
-      case '507':
-        item.title = item.title_novels_chapter
-        break
+    case '502':
+      item.title = item.title_questions
+      break
+    case '503':
+      item.title = item.title_sources
+      break
+    case '504':
+      item.title = item.title_novels
+      break
+    case '505':
+      item.title = item.title_articles
+      break
+    case '507':
+      item.title = item.title_novels_chapter
+      break
     }
     delete item.title_questions
     delete item.title_sources

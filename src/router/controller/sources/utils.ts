@@ -1,26 +1,45 @@
-import { isArray } from 'lodash'
-import { NovelOptions } from './interface'
+import { SourceOptions } from './interface'
 import { FileInfoOptions } from '../files-info/interface'
-import { getFileByData, getOriginFileById } from '../files-info/utils'
+import { getFileByData, getOriginFileById, getOriginFileByIds } from '../files-info/utils'
 import { getOriginTagCustomByIds, getTagCustomByData } from '../tags-custom/utils'
+import { sureIsArray } from '@/utils/tools'
+import { getOriginSourceLinkByIds, getSourceLinkByData } from '../sources-link/utils'
 
 /**
- * 处理小说数据
+ * 处理资源数据
  * @param datas 原始数据
  * @param userId 用户 id
- * @param showUserInfo 是否展示用户信息
+ * @param showUserInfo? 是否展示用户信息
  */
-export async function handleNovel(
-  datas: NovelOptions | NovelOptions[],
+export async function handleSource(
+  arr: SourceOptions | SourceOptions[],
   userId: string,
   showUserInfo?: BaseStatus
 ) {
+  const datas = sureIsArray(arr)
   let files: FileInfoOptions[] = []
   if (showUserInfo === '1') {
-    files = await getFileByData(datas, ['create_user_avatar'])
+    files = await await getFileByData(datas, ['create_user_avatar'])
   }
+  const attachment701 = await await getFileByData(
+    datas.filter((item) => item.type === '701'),
+    ['attachment']
+  )
+  const sourceLinks = await getSourceLinkByData(
+    datas.filter((item) => item.type !== '701'),
+    ['attachment']
+  )
   const tagCustoms = await getTagCustomByData(datas, ['classify'], userId)
-  const _handleList = async (data: NovelOptions) => {
+  const _handleList = async (data: SourceOptions) => {
+    // 处理附件
+    if (data.attachment) {
+      if (data.type === '701') {
+        data.attachment = getOriginFileByIds(attachment701, data.attachment)
+      } else {
+        data.attachment = getOriginSourceLinkByIds(sourceLinks, data.attachment)
+      }
+    }
+
     // 处理自定义标签
     data.classify = getOriginTagCustomByIds(tagCustoms, data.classify)
     // 处理是否为自己发布
@@ -36,20 +55,12 @@ export async function handleNovel(
     data.comment_count = data.comment_count1 + data.comment_count2
     delete data.comment_count1
     delete data.comment_count2
-    // 处理该小说下所有的章节评论总数
-    data.chapter_comment_count = data.chapter_comment_count1 + data.chapter_comment_count2
-    delete data.chapter_comment_count1
-    delete data.chapter_comment_count2
     // 处理创建者头像
     if (showUserInfo === '1' && data.create_user_avatar) {
       data.create_user_avatar = getOriginFileById(files, data.create_user_avatar)
     }
   }
-  if (isArray(datas)) {
-    for (let i = 0, len = datas.length; i < len; i++) {
-      await _handleList(datas[i])
-    }
-  } else {
-    await _handleList(datas)
+  for (let i = 0, len = datas.length; i < len; i++) {
+    await _handleList(datas[i])
   }
 }

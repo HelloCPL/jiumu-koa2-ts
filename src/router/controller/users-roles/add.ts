@@ -14,8 +14,11 @@ import { formatDate, getUuId } from '@/utils/tools'
  * 用户-角色关联新增
  */
 export const doUserRoleAdd = async (ctx: Context) => {
-  const sql: string =
-    'INSERT users_roles (id, role_id, user_id, create_time, terminal) VALUES (?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT users_roles 
+      (id, role_id, user_id, create_time, terminal) 
+    VALUES 
+      (?, ?, ?, ?, ?)`
   const data = [
     getUuId(),
     ctx._params.roleId,

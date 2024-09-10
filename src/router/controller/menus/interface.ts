@@ -11,6 +11,7 @@ export interface MenuOptions extends BaseOptions {
   label: string
   parent_code?: string
   sort: number
+  checked?: BaseStatus
 }
 
 // 菜单数组接口类型

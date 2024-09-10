@@ -10,6 +10,7 @@ import { Context } from 'koa'
 import { RoleOptions, RoleParamsOptions, RoleReturnOptions } from './interface'
 import { getAllRoleByUserId } from '../users-roles/get'
 import { UserRoleByUserIdParams } from '../users-roles/interface'
+import { handleRole } from './utils'
 
 // 获取指定的某个角色
 export const doRoleGetOne = async (ctx: Context) => {
@@ -19,7 +20,6 @@ export const doRoleGetOne = async (ctx: Context) => {
 
 // 我的角色列表
 export const doRoleGetAllSelf = async (ctx: Context) => {
-  // const data = await getMenuOne(ctx._params.id)
   const params: UserRoleByUserIdParams = {
     userId: ctx._user.id,
     pageNo: ctx._params.pageNo * 1 || 1,
@@ -48,8 +48,12 @@ export const doRoleGetList = async (ctx: Context) => {
  * 获取指定的某个角色，返回对象或null
  */
 export const getMenuOne = async (id: string): Promise<RoleOptions | null> => {
-  const sql: string =
-    'SELECT t1.id, t1.code, t1.label, t1.sort, t1.configurable, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM roles t1 WHERE t1.code = ? OR t1.id = ?'
+  const sql: string = `
+    SELECT 
+      t1.id, t1.code, t1.label, t1.sort, t1.configurable, 
+      t1.create_time, t1.update_time, t1.terminal, t1.remarks 
+    FROM roles t1 
+    WHERE t1.code = ? OR t1.id = ?`
   const data = [id, id]
   let res: any = await query(sql, data)
   res = res[0] || null
@@ -96,32 +100,30 @@ export const getMenuList = async (params: RoleParamsOptions): Promise<RoleReturn
     data2.push(params.menuId)
   }
   data2.push(...data1, pageNo, params.pageSize)
-  const sql2 = `SELECT t1.id, t1.code, ${keywordResult.orderFields} t1.sort, t1.configurable, t1.create_time, t1.update_time, ${sqlUserId} ${sqlPermissionId} ${sqlMenuId} t1.terminal, t1.remarks FROM roles t1 ${sqlUserIdLeft} ${sqlPermissionIdLeft} ${keywordResult.sql} ${sqlMenuIdLeft} ORDER BY ${keywordResult.orderSql} t1.sort, t1.update_time DESC LIMIT ?, ?`
+  const sql2 = `
+    SELECT 
+      t1.id, t1.code, t1.sort, t1.configurable, t1.create_time, 
+      ${keywordResult.orderFields} 
+      ${sqlUserId} 
+      ${sqlPermissionId} 
+      ${sqlMenuId} 
+      t1.update_time, t1.terminal, t1.remarks 
+    FROM roles t1 
+    ${sqlUserIdLeft} 
+    ${sqlPermissionIdLeft} 
+    ${keywordResult.sql} 
+    ${sqlMenuIdLeft} 
+    ORDER BY ${keywordResult.orderSql} t1.sort, t1.update_time DESC 
+    LIMIT ?, ?`
   const res: any = await execTrans([
     { sql: sql1, data: data1 },
     { sql: sql2, data: data2 }
   ])
-  // 若与指定用户关联
-  if (params.userId) {
-    res[1].forEach((item: any) => {
-      if (item.checked_user_id) item.checked_user_id = '1'
-      else item.checked_user_id = '0'
-    })
-  }
-  // 若与指定权限关联
-  if (params.permissionId) {
-    res[1].forEach((item: any) => {
-      if (item.checked_permission_id) item.checked_permission_id = '1'
-      else item.checked_permission_id = '0'
-    })
-  }
-  // 若与指定菜单关联
-  if (params.menuId) {
-    res[1].forEach((item: any) => {
-      if (item.checked_menu_id) item.checked_menu_id = '1'
-      else item.checked_menu_id = '0'
-    })
-  }
+  handleRole(res[1], {
+    userId: params.userId,
+    permissionId: params.permissionId,
+    menuId: params.menuId
+  })
   return {
     total: res[0][0]['total'],
     data: res[1]

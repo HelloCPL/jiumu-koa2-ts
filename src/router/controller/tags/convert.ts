@@ -14,13 +14,10 @@ import { query } from '@/db'
 
 /**
  * 新增时
- * code 必须为真
  * 判断标签是否已存在
  * 若 parentCode 为真，再判断 parentCode 是否不存在
  */
 export const doTagAddConvert = async (ctx: Context, next: Next) => {
-  // code 必须为真
-  if (!ctx._params.code) throw new ExceptionParameter({ message: 'code参数值必须为真' })
   //  判断标签是否已存在
   await isExist({
     table: 'tags',
@@ -43,8 +40,9 @@ export const doTagAddConvert = async (ctx: Context, next: Next) => {
 /**
  * 修改时
  * 若传 code 其中 code 值必须为真
- * 判断标签是否不存在，
- * 判断是否拥有修改权限
+ * 判断标签是否不存在
+ * 判断是否拥可修改
+ * 判断是否仅管理员可修改
  * 若修改 code 判断 code 除自身外是否存在
  * 若 parentCode 为真，判断 parentCode 是否不存在
  */
@@ -57,11 +55,14 @@ export async function doTagUpdateConvert(ctx: Context, next: Next) {
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistTag })
   res = res[0]
-  // 判断是否拥有修改权限
-  if (res.configurable === '-1') throw new ExceptionForbidden()
-  else if (res.configurable === '1') {
+  // 判断是否拥可修改
+  if (res.configurable === '-1') {
+    throw new ExceptionForbidden({ message: Message.forbiddenEdit })
+  }
+  // 判断是否仅管理员可修改
+  if (res.configurable === '1') {
     const isS = await isSuper(ctx._user.id)
-    if (!isS) throw new ExceptionForbidden()
+    if (!isS) throw new ExceptionForbidden({ message: Message.forbiddenSuper })
   }
   // 若修改 code 判断 code 除自身外是否存在
   if (ctx._params.hasOwnProperty('code')) {
@@ -90,7 +91,8 @@ export async function doTagUpdateConvert(ctx: Context, next: Next) {
 /**
  * 删除时
  * 先判断标签是否不存在
- * 判断是否拥有修改权限
+ * 判断是否拥可修改
+ * 判断是否仅管理员可修改
  * 再判断是否有子级
  * 再判断是否有 users-tags 用户-标签关联
  */
@@ -100,11 +102,14 @@ export async function doTagDeleteConvert(ctx: Context, next: Next) {
   let res: any = await query(sql, ctx._params.id)
   if (!(res && res.length)) throw new ExceptionParameter({ message: Message.unexistTag })
   res = res[0]
-  // 判断是否拥有修改权限
-  if (res.configurable === '-1') throw new ExceptionForbidden()
-  else if (res.configurable === '1') {
+  // 判断是否拥可修改
+  if (res.configurable === '-1') {
+    throw new ExceptionForbidden({ message: Message.forbiddenEdit })
+  }
+  // 判断是否仅管理员可修改
+  if (res.configurable === '1') {
     const isS = await isSuper(ctx._user.id)
-    if (!isS) throw new ExceptionForbidden()
+    if (!isS) throw new ExceptionForbidden({ message: Message.forbiddenSuper })
   }
   // 再判断是否有子级
   await isExistHasChildren({

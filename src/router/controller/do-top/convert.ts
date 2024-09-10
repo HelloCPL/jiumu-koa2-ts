@@ -8,6 +8,7 @@ import { Context, Next } from 'koa'
 import { validateRange } from '@/utils/validator'
 import { ExceptionForbidden } from '@/utils/http-exception'
 import { isSuper } from '../convert'
+import { Message } from '@/enums'
 
 /**
  * 置顶操作时
@@ -25,6 +26,6 @@ export const doTopUpdateConvert = async (ctx: Context, next: Next) => {
   ])
   // 判断是否管理员角色
   const flag = await isSuper(ctx._user.id)
-  if (!flag) throw new ExceptionForbidden()
+  if (!flag) throw new ExceptionForbidden({ message: Message.forbiddenSuper })
   await next()
 }

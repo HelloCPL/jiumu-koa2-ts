@@ -46,6 +46,6 @@ export const doCommentAddConvert = async (ctx: Context, next: Next) => {
 export const doCommentDeleteByIdConvert = async (ctx: Context, next: Next) => {
   // 判断是否管理员角色
   const flag = await isSuper(ctx._user.id)
-  if (!flag) throw new ExceptionForbidden()
+  if (!flag) throw new ExceptionForbidden({ message: Message.forbiddenSuper })
   await next()
 }

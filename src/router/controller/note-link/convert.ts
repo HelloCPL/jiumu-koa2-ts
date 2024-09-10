@@ -6,7 +6,7 @@
 
 import { query } from '@/db'
 import { Message } from '@/enums'
-import { ExceptionForbidden, ExceptionParameter, Success } from '@/utils/http-exception'
+import { ExceptionForbidden, ExceptionParameter } from '@/utils/http-exception'
 import { Context, Next } from 'koa'
 import { isExist } from '../convert'
 
