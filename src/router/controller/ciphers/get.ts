@@ -9,12 +9,15 @@ import { Success } from '@/utils/http-exception'
 import { Context } from 'koa'
 import { CipherListParams, CipherListReturn, CipherOneParams, CipherOptions } from './interface'
 import { handleCipher } from './utils'
+import { isExistCipherCode } from '../ciphers-code/convert'
 
 // 获取本人的某个口令
 export const doCipherGetOneSelf = async (ctx: Context) => {
+  const code = await isExistCipherCode(ctx)
   const params = {
     id: ctx._params.id,
-    userId: ctx._user.id
+    userId: ctx._user.id,
+    code
   }
   const data = await getCipherGetOneSelf(params)
   throw new Success({ data })
@@ -22,11 +25,13 @@ export const doCipherGetOneSelf = async (ctx: Context) => {
 
 // 获取本人的口令列表
 export const doCipherGetListSelf = async (ctx: Context) => {
+  const code = await isExistCipherCode(ctx)
   const params: CipherListParams = {
     pageNo: ctx._params.pageNo * 1 || 1,
     pageSize: ctx._params.pageSize * 1 || 10,
     keyword: ctx._params.keyword,
     userId: ctx._user.id,
+    code,
     type: ctx._params.type,
     classify: ctx._params.classify,
     highlight: ctx._params.highlight
@@ -48,7 +53,7 @@ export const getCipherGetOneSelf = async (params: CipherOneParams): Promise<Ciph
   const data = [params.id, params.userId]
   let res: any = await query(sql, data)
   res = res[0] || null
-  if (res) await handleCipher(res, params.userId)
+  if (res) await handleCipher(res, params.userId, params.code)
   return res
 }
 
@@ -100,6 +105,6 @@ export const getCipherGetList = async (options: CipherListParams): Promise<Ciphe
     { sql: sql2, data: data2 }
   ])
   const cipherList: CipherOptions[] = res[1]
-  await handleCipher(cipherList, options.userId)
+  await handleCipher(cipherList, options.userId, options.code)
   return { total: res[0][0]['total'], data: cipherList }
 }

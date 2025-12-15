@@ -58,14 +58,14 @@ export const doCipherCodeUpdateConvert = async (ctx: Context, next: Next) => {
 }
 
 /*
- * 校验个人秘钥code是否存在
+ * 校验个人秘钥code是否存在并返回
  */
-export const isExistCipherCode = async (ctx: Context): Promise<boolean> => {
-  let flag = false
-  const sql: string = 'SELECT t1.id FROM ciphers_code t1 WHERE t1.create_user = ?'
+export const isExistCipherCode = async (ctx: Context): Promise<string> => {
+  let code = ''
+  const sql: string = 'SELECT t1.id, t1.code FROM ciphers_code t1 WHERE t1.create_user = ?'
   const res: any = await query(sql, ctx._user.id)
   if (res && res.length) {
-    flag = true
+    code = decrypt(res[0].code)
   }
-  return flag
+  return code
 }

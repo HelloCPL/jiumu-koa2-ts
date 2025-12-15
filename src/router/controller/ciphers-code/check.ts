@@ -14,8 +14,8 @@ import { isExistCipherCode } from './convert'
  * 查看个人秘钥code是否存在
  */
 export const doCipherCodeExistSelf = async (ctx: Context) => {
-  const flag = await isExistCipherCode(ctx)
-  throw new Success({ data: flag })
+  const code = await isExistCipherCode(ctx)
+  throw new Success({ data: !!code })
 }
 
 /*

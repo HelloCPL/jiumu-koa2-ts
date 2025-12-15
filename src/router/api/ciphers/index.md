@@ -108,7 +108,8 @@
 
 - `pc | web | app | wechat` 端
 - 获取本人的某个口令，仅可获取本人的口令
-- `type=802` 时 `account cipher` 需要二次解密
+- `type=801` 时 `account cipher` 普通密码仅需要二次解密
+- `type=802` 时 `account cipher` 加权密码需要二次解密+口令解密
 
 #### 请求
 
@@ -183,7 +184,8 @@
 
 - `pc | web | app | wechat` 端
 - 获取本人的口令列表，仅可获取本人的口令
-- `type=802` 时 `account cipher` 需要二次解密
+- `type=801` 时 `account cipher` 普通密码仅需要二次解密
+- `type=802` 时 `account cipher` 加权密码需要二次解密+口令解密
 
 #### 请求
 

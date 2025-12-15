@@ -25,8 +25,8 @@ export const doCipherAddConvert = async (ctx: Context, next: Next) => {
     message: 'type参数必须为系统标签800范围'
   })
   if (type === '802') {
-    const flag = await isExistCipherCode(ctx)
-    if (!flag)
+    const code = await isExistCipherCode(ctx)
+    if (!code)
       throw new ExceptionNotFound({
         message: `${Message.unexistCipherCode}，请添加个人秘钥后再操作`
       })
@@ -52,8 +52,8 @@ export const doCipherUpdateConvert = async (ctx: Context, next: Next) => {
   }
   // 判断 type=802 时个人秘钥code是否存在
   if (type === '802') {
-    const flag = await isExistCipherCode(ctx)
-    if (!flag)
+    const code = await isExistCipherCode(ctx)
+    if (!code)
       throw new ExceptionNotFound({
         message: `${Message.unexistCipherCode}，请添加个人秘钥后再操作`
       })
