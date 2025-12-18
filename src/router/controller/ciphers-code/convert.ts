@@ -15,6 +15,7 @@ import { isExist } from '../convert'
 /**
  * 新增时
  * 判断是否已存在
+ * 判断 code 格式是否正确，必须进行加密
  */
 export const doCipherCodeAddConvert = async (ctx: Context, next: Next) => {
   // 判断是否已存在
@@ -24,12 +25,21 @@ export const doCipherCodeAddConvert = async (ctx: Context, next: Next) => {
     throwType: true,
     message: Message.existCipherCode
   })
+  const code = decrypt(ctx._params.code)
+  if (!code) {
+    throw new ExceptionParameter({
+      message: Message.errorCipherCodeFormat
+    })
+  }
+  ctx._params.code = code
   await next()
 }
 
 /**
  * 编辑时
  * 判断是否不存在
+ * 判断 code 格式是否正确，必须进行加密
+ * 判断 oldCode 格式是否正确，必须进行加密
  * 验证 oldCode 是否一致
  * 验证新 code 是否与老的 code 一样
  */
@@ -41,17 +51,29 @@ export const doCipherCodeUpdateConvert = async (ctx: Context, next: Next) => {
       message: Message.unexistCipherCode
     })
   }
-  const oldCode = ctx._params.oldCode
-  const code = ctx._params.code
+  const code = decrypt(ctx._params.code)
+  if (!code) {
+    throw new ExceptionParameter({
+      message: Message.errorCipherCodeFormat
+    })
+  }
+  ctx._params.code = code
+  const oldCode = decrypt(ctx._params.oldCode)
+  if (!code) {
+    throw new ExceptionParameter({
+      message: Message.errorCipherCodeFormat
+    })
+  }
+  ctx._params.oldCode = oldCode
   const _code = decrypt(res[0].code)
   if (oldCode !== _code) {
     throw new ExceptionParameter({
-      message: `参数oldCode${Message.errorCipherCode}`
+      message: Message.errorCipherCodeNotEqual
     })
   }
   if (code === _code) {
     throw new ExceptionParameter({
-      message: '参数code新的秘钥不能与老的秘钥相同'
+      message: Message.errorCipherCodeEqual
     })
   }
   await next()

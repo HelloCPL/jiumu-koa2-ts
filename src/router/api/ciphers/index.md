@@ -5,7 +5,7 @@
 
 - `pc | web | app | wechat` 端
 - 口令新增
-- 传值的时候建议对 `account cipher` 进行加密处理
+- 传值的时候需要对 `account cipher` 进行加密处理
 - 等级类型 `type=802` 时需先校验个人秘钥code是否存在，只有个人秘钥code存在才能新增该等级的口令
 
 #### 请求
@@ -42,7 +42,7 @@
 
 - `pc | web | app | wechat` 端
 - 口令修改，仅可修改本人的口令
-- 传值的时候建议对 `account cipher` 进行加密处理
+- 传值的时候需要对 `account cipher` 进行加密处理
 - 等级类型 `type=802` 时需先校验个人秘钥code是否存在，只有个人秘钥code存在才能修改为该等级的口令
 
 #### 请求

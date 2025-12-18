@@ -26,5 +26,5 @@ export const doCipherCodeAdd = async (ctx: Context) => {
   const id = getUuId()
   const data = [id, code, ctx._user.id, currentTime, currentTime, Terminal[ctx._terminal]]
   await query(sql, data)
-  throw new Success({ data: id })
+  throw new Success({ data: null })
 }

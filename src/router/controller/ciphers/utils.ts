@@ -16,21 +16,23 @@ export async function handleCipher(datas: CipherOptions | CipherOptions[], userI
     // 处理自定义标签
     data.classify = getOriginTagCustomByIds(tagCustoms, data.classify)
     // 处理账号
-    data.account = decrypt(data.account)
+    const account = decrypt(data.account)
     // 处理密码
-    data.cipher = decrypt(data.cipher)
+    const cipher = decrypt(data.cipher)
+    data.account88 = account
+    data.cipher88 = cipher
     const id = getUuId().replace(/-/g, '')
-    const len = Math.floor(id.length / 2)
-    let key_str = id.substring(0, len)
-    let iv_str = id.substring(len, id.length - 1)
-    if (data.type === '802') {
-      key_str += code
-      iv_str += code
-    }
+    const key_str = id.substring(0, 8)
+    const iv_str = id.substring(8, 16)
     data.key_str = key_str
     data.iv_str = iv_str
-    data.account = encrypt(data.account, key_str, iv_str)
-    data.cipher = encrypt(data.cipher, key_str, iv_str)
+    if (data.type === '802') {
+      data.account = encrypt(account, key_str, code + iv_str)
+      data.cipher = encrypt(cipher, key_str, code + iv_str)
+    } else {
+      data.account = encrypt(account, key_str, iv_str)
+      data.cipher = encrypt(cipher, key_str, iv_str)
+    }
   }
   if (isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {
