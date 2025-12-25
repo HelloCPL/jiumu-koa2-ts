@@ -14,7 +14,7 @@
     'type-enum': [
       2,
       'always',
-      ['feature', 'update', 'merge', 'fix', 'refactor', 'docs', 'test']
+      ['feature', 'feat', 'update', 'merge', 'fix', 'refactor', 'docs', 'test']
     ],
     'scope-enum': [2, 'always', ['pc', 'mobile', 'web']],
     'subject-empty': [0, 'always'],

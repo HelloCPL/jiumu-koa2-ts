@@ -10,11 +10,13 @@ import { ExceptionForbidden, ExceptionNotFound, ExceptionParameter } from '@/uti
 import { validateRange } from '@/utils/validator'
 import { Context, Next } from 'koa'
 import { isExistCipherCode } from '../ciphers-code/convert'
+import { decrypt } from '@/utils/crypto'
 
 /**
  * 新增时
  * 判断 type 是否系统标签800范围
  * 判断 type=802 时个人秘钥code是否存在
+ * 判断 account 和 cipher 格式是否正确，必须进行加密
  */
 export const doCipherAddConvert = async (ctx: Context, next: Next) => {
   // 判断 type 是否系统标签300范围
@@ -25,12 +27,26 @@ export const doCipherAddConvert = async (ctx: Context, next: Next) => {
     message: 'type参数必须为系统标签800范围'
   })
   if (type === '802') {
-    const flag = await isExistCipherCode(ctx)
-    if (!flag)
+    const code = await isExistCipherCode(ctx)
+    if (!code)
       throw new ExceptionNotFound({
         message: `${Message.unexistCipherCode}，请添加个人秘钥后再操作`
       })
   }
+  const account = decrypt(ctx._params.account)
+  if (!account) {
+    throw new ExceptionParameter({
+      message: Message.errorCipherFormat
+    })
+  }
+  ctx._params.account = account
+  const cipher = decrypt(ctx._params.cipher)
+  if (!cipher) {
+    throw new ExceptionParameter({
+      message: Message.errorCipherFormat
+    })
+  }
+  ctx._params.cipher = cipher
   await next()
 }
 
@@ -39,6 +55,7 @@ export const doCipherAddConvert = async (ctx: Context, next: Next) => {
  * 判断口令是否不存在，且是否为自己的口令 使用 doCipherDeleteConvert
  * 若传 type 判断 type 是否系统标签800范围
  * 判断 type=802 时个人秘钥code是否存在
+ * 判断 account 和 cipher 格式是否正确，必须进行加密
  */
 export const doCipherUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断 type 是否系统标签300范围
@@ -52,12 +69,26 @@ export const doCipherUpdateConvert = async (ctx: Context, next: Next) => {
   }
   // 判断 type=802 时个人秘钥code是否存在
   if (type === '802') {
-    const flag = await isExistCipherCode(ctx)
-    if (!flag)
+    const code = await isExistCipherCode(ctx)
+    if (!code)
       throw new ExceptionNotFound({
         message: `${Message.unexistCipherCode}，请添加个人秘钥后再操作`
       })
   }
+  const account = decrypt(ctx._params.account)
+  if (!account) {
+    throw new ExceptionParameter({
+      message: Message.errorCipherFormat
+    })
+  }
+  ctx._params.account = account
+  const cipher = decrypt(ctx._params.cipher)
+  if (!cipher) {
+    throw new ExceptionParameter({
+      message: Message.errorCipherFormat
+    })
+  }
+  ctx._params.cipher = cipher
   await next()
 }
 

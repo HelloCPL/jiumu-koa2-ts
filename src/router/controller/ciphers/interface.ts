@@ -8,6 +8,7 @@
 export interface CipherOneParams {
   id: string
   userId: string
+  code: string
 }
 
 // 获取本人口令列表参数类型
@@ -15,6 +16,7 @@ export interface CipherListParams {
   pageNo: number
   pageSize: number
   userId: string
+  code: string
   keyword?: string
   type?: string
   classify?: string

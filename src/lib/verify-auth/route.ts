@@ -44,12 +44,14 @@ export const verifyRoute = async (ctx: Context, next: Next) => {
  */
 async function verifyApiByUser(ctx: Context, next: Next) {
   const url = toPath(ctx.request.url)
+  console.log(url)
+
   const sql =
     'SELECT DISTINCT t2.href FROM roles_permissions t1 LEFT JOIN permissions t2 ON t1.permission_id = t2.id WHERE t1.role_id  IN (SELECT t3.role_id FROM users_roles t3 WHERE t3.user_id = ?) AND t2.href = ?'
   const res: any = await query(sql, [ctx._user.id, url])
   if (res && res.length) {
     await next()
   } else {
-    throw new ExceptionAuthFailed({ message: Message.forbiddenApi })
+    throw new ExceptionAuthFailed({ message: `权限不足：用户没有 ${url} 接口的请求权限` })
   }
 }

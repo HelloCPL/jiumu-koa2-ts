@@ -289,7 +289,7 @@ export const toParse = (text: string): ObjectAny | null => {
  */
 export const toStringify = (obj: any): string => {
   try {
-    if (isObject2(obj) || isObject(obj)) return JSON.stringify(obj)
+    if (isObject2(obj) || isObject(obj)) return JSON.stringify(obj, null, 2)
     return obj
   } catch (e) {
     return ''
@@ -317,13 +317,15 @@ export function stringifyStoreData(value: any): string {
  * @return 返回解析后的数据
  */
 export function parseStoreData(value: any): any {
-  if (!value) return value
+  const reg = /^-?\d+(?:\.\d*)?$/
+  if (!value || typeof value === 'object') return value
   else if (value === '__NaN__') return NaN
   else if (value === '__Null__') return null
   else if (value === '__Undefined__') return undefined
   else if (value === '__Boolean__true') return true
   else if (value === '__Boolean__false') return false
-  else if (isString(value) && value.startsWith('__Number__')) return Number(value.substring(10))
+  else if (value.startsWith('__Number__')) return Number(value.substring(10))
+  else if (reg.test(value) || value === 'false' || value === 'true') return value
   const obj = toParse(value)
   if (obj) return obj
   return value
