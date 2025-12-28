@@ -15,8 +15,7 @@ export const doRoleExport = async (ctx: Context) => {
   const ids: string = ctx._params.ids
   const sql: string = `
     SELECT 
-      t1.id, t1.code, t1.label, t1.sort, t1.configurable, 
-      t1.create_time, t1.update_time, t1.terminal, t1.remarks 
+      t1.code, t1.label, t1.sort, t1.configurable, t1.remarks 
     FROM roles t1 
     WHERE FIND_IN_SET(t1.id, ?)`
   const data = [ids]
