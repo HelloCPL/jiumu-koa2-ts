@@ -11,6 +11,7 @@ import { Success } from '@/utils/http-exception'
 import { readFile } from '@/utils/files'
 import { isArray } from 'lodash'
 import { Terminal } from '@/enums'
+import { File } from 'formidable'
 
 /**
  * 角色导出

@@ -47,7 +47,10 @@ export function sureIsArray(arr: any): any[] {
  * 判断是否为对象，补充 lodash 不能识别数据库查询返回的数据是否为对象的问题
  */
 export function isObject2(obj: any): boolean {
-  return isPlainObject(obj) || (typeof obj === 'object' && toString.call(obj) === '[object Object]')
+  return (
+    isPlainObject(obj) ||
+    (typeof obj === 'object' && Object.prototype.toString.call(obj) === '[object Object]')
+  )
 }
 
 /**

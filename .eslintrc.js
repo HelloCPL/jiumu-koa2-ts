@@ -9,7 +9,6 @@ module.exports = {
     parser: '@typescript-eslint/parser'
   },
   plugins: ['@typescript-eslint', 'prettier'],
-  extends: [''],
   extends: [
     'plugin:markdown/recommended',
     'plugin:jsonc/recommended-with-jsonc',
