@@ -11,6 +11,8 @@ import { doTagAdd } from '@/router/controller/tags/add'
 import { doTagUpdate } from '@/router/controller/tags/update'
 import { doTagDelete } from '@/router/controller/tags/delete'
 import { doTagGetByCode, doTagGetAllSelf, doTagGetByParentCode } from '@/router/controller/tags/get'
+import { doTagExport } from '@/router/controller/tags/exports'
+import { doTagImport } from '@/router/controller/tags/imports'
 
 @Prefix('tag')
 export default class API {
@@ -73,5 +75,24 @@ export default class API {
   })
   async doTagGetByParentCode(ctx: Context) {
     await doTagGetByParentCode(ctx)
+  }
+
+  // 7 导出标签数据
+  @Request({
+    path: 'export',
+    methods: ['get', 'post']
+  })
+  @Required(['ids'])
+  async doTagExport(ctx: Context) {
+    await doTagExport(ctx)
+  }
+
+  // 8 导入标签数据
+  @Request({
+    path: 'import',
+    methods: ['post']
+  })
+  async doTagImport(ctx: Context) {
+    await doTagImport(ctx)
   }
 }

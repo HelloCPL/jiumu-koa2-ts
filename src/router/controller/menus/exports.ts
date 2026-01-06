@@ -1,5 +1,5 @@
 /**
- * @description 角色导出
+ * @description 菜单导出
  * @author chen
  * @update 2021-08-07 15:15:08
  */
@@ -9,20 +9,19 @@ import { query } from '@/db'
 import { toStringify } from '@/utils/tools'
 
 /**
- * 角色导出
+ * 菜单导出
  */
-export const doRoleExport = async (ctx: Context) => {
+export const doMenuExport = async (ctx: Context) => {
   const ids: string = ctx._params.ids
   const sql: string = `
     SELECT 
-      t1.id, t1.code, t1.label, t1.sort, t1.configurable, 
-      t1.create_time, t1.update_time, t1.terminal, t1.remarks 
-    FROM roles t1 
+      t1.code, t1.parent_code, t1.label, t1.sort, t1.configurable, t1.remarks 
+    FROM menus t1 
     WHERE FIND_IN_SET(t1.id, ?)`
   const data = [ids]
   const res = await query(sql, data)
   ctx.set('Content-Type', 'application/json; charset=utf-8')
-  ctx.set('Content-Disposition', `attachment; filename="roles-export-${Date.now()}.json"`)
+  ctx.set('Content-Disposition', `attachment; filename="menus-export-${Date.now()}.json"`)
   ctx.set('Cache-Control', 'no-cache, no-store, must-revalidate')
   ctx.set('Pragma', 'no-cache')
   ctx.set('Expires', '0')

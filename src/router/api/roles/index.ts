@@ -11,7 +11,8 @@ import { doRoleAdd } from '@/router/controller/roles/add'
 import { doRoleUpdate } from '@/router/controller/roles/update'
 import { doRoleDelete } from '@/router/controller/roles/delete'
 import { doRoleGetOne, doRoleGetAllSelf, doRoleGetList } from '@/router/controller/roles/get'
-import { doRoleExport } from '@/router/controller/roles/export'
+import { doRoleExport } from '@/router/controller/roles/exports'
+import { doRoleImport } from '@/router/controller/roles/imports'
 
 @Prefix('role')
 export default class API {
@@ -84,5 +85,14 @@ export default class API {
   @Required(['ids'])
   async doRoleExport(ctx: Context) {
     await doRoleExport(ctx)
+  }
+
+  // 8 导入角色数据
+  @Request({
+    path: 'import',
+    methods: ['post']
+  })
+  async doRoleImport(ctx: Context) {
+    await doRoleImport(ctx)
   }
 }

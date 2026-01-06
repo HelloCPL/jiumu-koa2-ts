@@ -12,6 +12,8 @@ import { doMenuUpdate } from '@/router/controller/menus/update'
 import { doMenuDelete } from '@/router/controller/menus/delete'
 import { doMenuGetOne, doMenuGetByParentCode } from '@/router/controller/menus/get'
 import { doRoleMenugetAllMenuByUserId } from '@/router/controller/roles-menus/get'
+import { doMenuExport } from '@/router/controller/menus/exports'
+import { doMenuImport } from '@/router/controller/menus/imports'
 
 @Prefix('menu')
 export default class API {
@@ -75,5 +77,24 @@ export default class API {
   })
   async doMenuGetByParentCode(ctx: Context) {
     await doMenuGetByParentCode(ctx)
+  }
+
+  // 7 导出菜单数据
+  @Request({
+    path: 'export',
+    methods: ['get', 'post']
+  })
+  @Required(['ids'])
+  async doMenuExport(ctx: Context) {
+    await doMenuExport(ctx)
+  }
+
+  // 8 导入菜单数据
+  @Request({
+    path: 'import',
+    methods: ['post']
+  })
+  async doMenuImport(ctx: Context) {
+    await doMenuImport(ctx)
   }
 }

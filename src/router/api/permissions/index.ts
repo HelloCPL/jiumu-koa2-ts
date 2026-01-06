@@ -16,6 +16,8 @@ import { doPermissionUpdate } from '@/router/controller/permissions/update'
 import { doPermissionDelete } from '@/router/controller/permissions/delete'
 import { doPermissionGetOne, doPermissionGetList } from '@/router/controller/permissions/get'
 import { doRolePermissiongetAllPermissionByUserId } from '@/router/controller/roles-permissions/get'
+import { doPermissionExport } from '@/router/controller/permissions/exports'
+import { doPermissionImport } from '@/router/controller/permissions/imports'
 
 @Prefix('permission')
 export default class API {
@@ -79,5 +81,24 @@ export default class API {
   })
   async doPermissionGetList(ctx: Context) {
     await doPermissionGetList(ctx)
+  }
+
+  // 7 导出权限数据
+  @Request({
+    path: 'export',
+    methods: ['get', 'post']
+  })
+  @Required(['ids'])
+  async doPermissionExport(ctx: Context) {
+    await doPermissionExport(ctx)
+  }
+
+  // 8 导入权限数据
+  @Request({
+    path: 'import',
+    methods: ['post']
+  })
+  async doPermissionImport(ctx: Context) {
+    await doPermissionImport(ctx)
   }
 }
