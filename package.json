@@ -19,7 +19,7 @@
     "async": "^3.2.1",
     "basic-auth": "^2.0.1",
     "concurrently": "^6.2.0",
-    "crypto-js": "^4.1.1",
+    "crypto-js": "4.1.1",
     "dayjs": "^1.11.10",
     "eslint": "^8.27.0",
     "js-base64": "^3.6.1",
