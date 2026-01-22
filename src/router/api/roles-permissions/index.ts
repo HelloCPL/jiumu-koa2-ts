@@ -47,7 +47,11 @@ export default class API {
     path: 'get/allpermission/byroleid',
     methods: ['get', 'post']
   })
-  @Required(['roleId'])
+  @Required([
+    'roleId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRolePermissiongetAllPermissionByRoleId(ctx: Context) {
     await doRolePermissiongetAllPermissionByRoleId(ctx)
   }
@@ -57,7 +61,11 @@ export default class API {
     path: 'get/allrole/bypermissionid',
     methods: ['get', 'post']
   })
-  @Required(['permissionId'])
+  @Required([
+    'permissionId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRolePermissionGetAllRoleByPermissionId(ctx: Context) {
     await doRolePermissionGetAllRoleByPermissionId(ctx)
   }
@@ -67,7 +75,11 @@ export default class API {
     path: 'get/allpermission/byuserid',
     methods: ['get', 'post']
   })
-  @Required(['userId'])
+  @Required([
+    'userId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRolePermissiongetAllPermissionByUserId(ctx: Context) {
     await doRolePermissiongetAllPermissionByUserId(ctx)
   }
@@ -77,7 +89,11 @@ export default class API {
     path: 'get/alluser/bypermissionid',
     methods: ['get', 'post']
   })
-  @Required(['permissionId'])
+  @Required([
+    'permissionId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRolePermissionGetAllUserByPermissionId(ctx: Context) {
     await doRolePermissionGetAllUserByPermissionId(ctx)
   }

@@ -73,7 +73,12 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
-  @Required(['targetId', 'type'])
+  @Required([
+    'targetId',
+    'type',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doCommentGetList(ctx: Context) {
     if (ctx._params.type === '501') {
       // 二级评论列表

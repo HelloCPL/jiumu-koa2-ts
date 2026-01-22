@@ -5,9 +5,9 @@
 import { getTagByParentCode } from '@/router/controller/tags/get'
 import { isArray, isString } from 'lodash'
 import { ExceptionParameter } from '../http-exception'
-import { Message, MessageParameter } from '@/enums'
+import { Message } from '@/enums'
 import { TagOptions } from '@/router/controller/tags/interface'
-import { ValidatorOptions } from './validator'
+import { FieldRuleOptions, RequiredParams } from './type'
 
 interface RangeOptions {
   value: any // 校验值
@@ -75,33 +75,19 @@ function _getTagsCode(data: TagOptions[]): string[] {
  * @param params 校验参数集合
  * @returns 返回符合校验规范的数组
  */
-export const generateRequiredParams = (params: string[]): ValidatorOptions[] => {
-  const data: ValidatorOptions[] = []
+export const generateRequiredParams = (params: Array<string | RequiredParams>): FieldRuleOptions[] => {
+  const data: FieldRuleOptions[] = []
   params.forEach((item) => {
-    if (item) {
-      const i: number = item.indexOf('&')
-      let key: string
-      let rules: any[] = []
-      let paramsObj = {}
-      let message = ''
-      if (i !== -1) {
-        key = item.substring(0, i)
-        let rule: string = item.substring(i + 1)
-        if (Number(rule)) {
-          const min = Number(rule)
-          rule = 'isLength'
-          message = `参数长度必须大于${min}`
-          paramsObj = { min }
-        }
-        if (rule) {
-          // @ts-ignore
-          rules.push(rule, message || MessageParameter[rule] || Message.parameter, paramsObj)
-        }
-      } else {
-        key = item
-        rules = ['isLength', MessageParameter.isLength, { min: 1 }]
-      }
-      data.push({ key, rules })
+    if (typeof item === 'string' && item) {
+      data.push({
+        field: item,
+        rules: ['isLength', '', [{ min: 1 }], true]
+      })
+    } else if (typeof item === 'object' && item.field) {
+      data.push({
+        field: item.field,
+        rules: [item.name, item.message || '', item.options, item.required]
+      })
     }
   })
   return data

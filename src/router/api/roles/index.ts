@@ -21,7 +21,7 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['code', 'label'])
+  @Required(['code', 'label', { field: 'isDraft', required: false, name: 'isIn', options: [['0', '1']] }])
   @Convert(doRoleAddConvert)
   async doRoleAdd(ctx: Context) {
     await doRoleAdd(ctx)
@@ -32,7 +32,7 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required(['id', { field: 'isDraft', required: false, name: 'isIn', options: [['0', '1']] }])
   @Convert(doRoleUpdateConvert)
   async doRoleUpdate(ctx: Context) {
     await doRoleUpdate(ctx)
@@ -64,6 +64,10 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRoleGetAllSelf(ctx: Context) {
     await doRoleGetAllSelf(ctx)
   }
@@ -73,6 +77,10 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRoleGetList(ctx: Context) {
     await doRoleGetList(ctx)
   }

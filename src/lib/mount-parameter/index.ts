@@ -5,12 +5,12 @@
  */
 
 import { Context, Next } from 'koa'
-import { LinValidator } from '../lin-validator'
 import { DataOptions } from './interface'
 import { getTerminal } from '@/utils/tools'
 import xss from '@/utils/xss'
 import { isArray, isPlainObject, isString } from 'lodash'
 import { logger } from '../logger'
+import { CustomValidator } from '@/utils/validator'
 
 /*
  * 初始化请求参数
@@ -27,8 +27,8 @@ export const mountRequest = async (ctx: Context, next: Next) => {
     message: '处理请求参数挂载',
     requestCount: ctx._requestCount
   })
-  const v: any = await new LinValidator().validate(ctx)
-  ctx._data = <DataOptions>v.data
+  const v: any = await new CustomValidator().validate(ctx, true)
+  ctx._data = <DataOptions>v.__data__
   ctx._params = getParams(ctx)
   ctx._terminal = getTerminal(ctx)
   logger.request(ctx)

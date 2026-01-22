@@ -6,7 +6,6 @@
 
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
-import { validateRange } from '@/utils/validator'
 import { getFileRandomName, getSuffix, getUuId, formatDate, getStaticPlace } from '@/utils/tools'
 import { query } from '@/db'
 import { File } from 'formidable'
@@ -40,19 +39,8 @@ export const doFileAdd = async (ctx: Context) => {
  * 先保存文件再入库
  */
 async function _writeFile(ctx: Context, file: File): Promise<FileInfoOptions | null> {
-  const rangeResult: any = await validateRange(
-    [
-      { value: ctx._data.query.isSecret, range: ['0', '1'], default: '0' },
-      {
-        value: ctx._data.query.staticPlace,
-        range: ['files', 'images', 'videos', 'editors', 'sources', 'files_big'],
-        default: 'files'
-      }
-    ],
-    true
-  )
-  const isSecret = rangeResult[0]
-  const staticPlace = rangeResult[1] || getStaticPlace(<string>file.name)
+  const isSecret = ctx._data.query.isSecret
+  const staticPlace = ctx._data.query.staticPlace || getStaticPlace(<string>file.name)
   const createTime = formatDate(new Date())
   const id = getUuId()
   const filePath = getFileRandomName(<string>file.name)

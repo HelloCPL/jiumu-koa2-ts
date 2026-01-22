@@ -27,7 +27,10 @@ export default class API {
     methods: ['post'],
     unless: true
   })
-  @Required(['phone', 'password'])
+  @Required([
+    'password',
+    { field: 'phone', name: 'isMobilePhone', options: [{ locale: ['zh-CN', 'zh-TW', 'zh-HK'] }] }
+  ])
   @Convert(doUserRegisterConvert)
   async doUserRegister(ctx: Context) {
     await doUserRegister(ctx)
@@ -59,7 +62,7 @@ export default class API {
     path: 'update/phone/self',
     methods: ['post']
   })
-  @Required(['phone'])
+  @Required([{ field: 'phone', name: 'isMobilePhone', options: [{ locale: ['zh-CN', 'zh-TW', 'zh-HK'] }] }])
   @Convert(doUserRegisterConvert, doUserUpdateBaseConvert)
   async doUserUpdatePhoneSelf(ctx: Context) {
     await doUserUpdatePhoneSelf(ctx)
@@ -112,6 +115,10 @@ export default class API {
     path: 'get/list',
     methods: ['post', 'get']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doUserGetList(ctx: Context) {
     await doUserGetList(ctx)
   }

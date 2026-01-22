@@ -6,7 +6,7 @@
 
 import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
-import { doQuestionUpdateConvert, doQuestionDeleteConvert } from '@/router/controller/questions/convert'
+import { doQuestionDeleteConvert } from '@/router/controller/questions/convert'
 import { doQuestionAdd } from '@/router/controller/questions/add'
 import { doQuestionUpdate } from '@/router/controller/questions/update'
 import { doQuestionDelete } from '@/router/controller/questions/delete'
@@ -19,7 +19,13 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['title', 'content', 'isDraft'])
+  @Required([
+    'title',
+    'content',
+    { field: 'isDraft', name: 'isIn', options: [['0', '1']] },
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doQuestionAdd(ctx: Context) {
     await doQuestionAdd(ctx)
   }
@@ -29,8 +35,13 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
-  @Convert(doQuestionDeleteConvert, doQuestionUpdateConvert)
+  @Required([
+    'id',
+    { field: 'isDraft', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
+  @Convert(doQuestionDeleteConvert)
   async doQuestionUpdate(ctx: Context) {
     await doQuestionUpdate(ctx)
   }

@@ -23,7 +23,13 @@ export default class API {
     path: 'add',
     methods: ['post']
   })
-  @Required(['title', 'account', 'cipher', 'type'])
+  @Required([
+    'title',
+    'account',
+    'cipher',
+    'type',
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doCipherAddConvert)
   async doCipherAdd(ctx: Context) {
     await doCipherAdd(ctx)
@@ -45,7 +51,7 @@ export default class API {
     path: 'delete',
     methods: ['post']
   })
-  @Required(['id'])
+  @Required(['id', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
   @Convert(doCipherDeleteConvert)
   async doCipherDelete(ctx: Context) {
     await doCipherDelete(ctx)
@@ -66,6 +72,10 @@ export default class API {
     path: 'get/list/self',
     methods: ['post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doCipherGetListSelf(ctx: Context) {
     await doCipherGetListSelf(ctx)
   }

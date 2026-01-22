@@ -6,10 +6,7 @@
 
 import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
-import {
-  doSourceLinkUpdateConvert,
-  doSourceLinkDeleteConvert
-} from '@/router/controller/sources-link/convert'
+import { doSourceLinkDeleteConvert } from '@/router/controller/sources-link/convert'
 import { doSourceLinkAdd } from '@/router/controller/sources-link/add'
 import { doSourceLinkUpdate } from '@/router/controller/sources-link/update'
 import { doSourceLinkDelete } from '@/router/controller/sources-link/delete'
@@ -21,7 +18,11 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['title', 'link&isURL'])
+  @Required([
+    'title',
+    { field: 'link', name: 'isURL' },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doSourceLinkAdd(ctx: Context) {
     await doSourceLinkAdd(ctx)
   }
@@ -31,8 +32,12 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
-  @Convert(doSourceLinkDeleteConvert, doSourceLinkUpdateConvert)
+  @Required([
+    'id',
+    { field: 'link', required: false, name: 'isURL' },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
+  @Convert(doSourceLinkDeleteConvert)
   async doSourceLinkUpdate(ctx: Context) {
     await doSourceLinkUpdate(ctx)
   }

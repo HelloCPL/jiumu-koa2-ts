@@ -23,7 +23,14 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['novelId', 'title', 'content', 'sort&isInt', 'isDraft'])
+  @Required([
+    'novelId',
+    'title',
+    'content',
+    { field: 'isDraft', name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', name: 'isInt', options: [{ min: 1 }] },
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] }
+  ])
   @Convert(doNovelChapterAddConvert)
   async doNovelChapterAdd(ctx: Context) {
     await doNovelChapterAdd(ctx)
@@ -34,7 +41,12 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'isDraft', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doNovelChapterUpdateConvert)
   async doNovelChapterUpdate(ctx: Context) {
     await doNovelChapterUpdate(ctx)
@@ -68,7 +80,11 @@ export default class API {
     methods: ['get', 'post'],
     unless: true
   })
-  @Required(['novelId'])
+  @Required([
+    'novelId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doNovelChapterGetList(ctx: Context) {
     await doNovelChapterGetList(ctx)
   }

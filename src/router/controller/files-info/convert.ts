@@ -41,15 +41,3 @@ export const doFileDeleteConvert = async (ctx: Context, next: Next) => {
   }
   await next()
 }
-
-/**
- * 合并切片时
- */
-export const doFileChunkMergeConvert = async (ctx: Context, next: Next) => {
-  const params = ctx._params
-  const chunkSize = params.chunkSize
-  const chunkLength = params.chunkLength
-  if (chunkSize > 0 && chunkLength > 0) {
-    await next()
-  } else throw new ExceptionParameter()
-}

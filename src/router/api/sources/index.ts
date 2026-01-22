@@ -23,7 +23,13 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['title', 'attachment', 'type'])
+  @Required([
+    'title',
+    'attachment',
+    'type',
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doSourceAddConvert)
   async doSourceAdd(ctx: Context) {
     await doSourceAdd(ctx)
@@ -34,7 +40,11 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doSourceUpdateConvert)
   async doSourceUpdate(ctx: Context) {
     await doSourceUpdate(ctx)
@@ -67,6 +77,10 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doSourceGetListSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
     await doSourceGetList(ctx)
@@ -78,7 +92,11 @@ export default class API {
     methods: ['get', 'post'],
     unless: true
   })
-  @Required(['userId'])
+  @Required([
+    'userId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doSourceGetListByUserId(ctx: Context) {
     ctx._params.isSecret = '0'
     await doSourceGetList(ctx)
@@ -90,6 +108,10 @@ export default class API {
     methods: ['get', 'post'],
     unless: true
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doSourceGetList(ctx: Context) {
     ctx._params.userId = null
     ctx._params.classify = null

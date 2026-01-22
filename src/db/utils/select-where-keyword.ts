@@ -73,8 +73,12 @@ function getOrderKeyword(options: SQLUtilsOptionsOrderKeyword, keywords: string[
       }
     })
     orderSql = orderSqls.join(',')
-    orderSql && orderPrefix ? (orderSql = ` ${orderPrefix} ${orderSql} `) : ''
-    orderSql && orderSuffix ? (orderSql = ` ${orderSql} ${orderSuffix} `) : ''
+    if (orderSql && orderPrefix) {
+      orderSql = ` ${orderPrefix} ${orderSql} `
+    }
+    if (orderSql && orderSuffix) {
+      orderSql = ` ${orderSql} ${orderSuffix} `
+    }
   }
   return {
     orderFields,

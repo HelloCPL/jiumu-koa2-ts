@@ -50,6 +50,10 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doLikeGetListSelf(ctx: Context) {
     await doLikeGetListSelf(ctx)
   }
@@ -59,6 +63,10 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Required(['userId'])
   async doLikeGetList(ctx: Context) {
     await doLikeGetList(ctx)
