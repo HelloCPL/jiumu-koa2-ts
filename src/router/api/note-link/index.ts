@@ -40,7 +40,12 @@ export default class API {
     path: 'get/list/byrootid',
     methods: ['get', 'post']
   })
-  @Required(['rootId', 'targetId'])
+  @Required([
+    'rootId',
+    'targetId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doNoteLinkGetListByRootId(ctx: Context) {
     await doNoteLinkGetListByRootId(ctx)
   }

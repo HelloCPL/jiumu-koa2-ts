@@ -31,8 +31,6 @@ export const doNovelAddConvert = async (ctx: Context, next: Next) => {
  * 编辑时
  * 判断小说是否不存在，且是否为自己发布的小说
  * 如果小说类型为真 判断 type 是否系统标签600范围
- * 若传 isDraft 判断 isDraft 是否 ['1', '0'] 范围
- * 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
  */
 export const doNovelUpdateConvert = async (ctx: Context, next: Next) => {
   // 判断小说是否不存在
@@ -47,22 +45,6 @@ export const doNovelUpdateConvert = async (ctx: Context, next: Next) => {
       value: ctx._params.type,
       range: '600',
       message: 'type参数必须为系统标签600范围'
-    })
-  }
-  // 若传 isDraft 判断 isDraft 是否 ['1', '0'] 范围
-  if (ctx._params.hasOwnProperty('isDraft')) {
-    await validateRange({
-      value: ctx._params.isDraft,
-      range: ['1', '0'],
-      message: 'isDraft参数必须为[\'1\', \'0\']范围'
-    })
-  }
-  // 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
-  if (ctx._params.hasOwnProperty('isSecret')) {
-    await validateRange({
-      value: ctx._params.isSecret,
-      range: ['1', '0'],
-      message: 'isSecret参数必须为[\'1\', \'0\']范围'
     })
   }
   await next()

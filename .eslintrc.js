@@ -40,6 +40,8 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-inferrable-types': 'off',
     '@typescript-eslint/no-unused-vars': ['warn'],
+    '@typescript-eslint/no-require-imports': 'off',
+    '@typescript-eslint/no-unsafe-function-type': 'off',
     // other
     'space-before-function-paren': 'off',
     'no-console': 'off',

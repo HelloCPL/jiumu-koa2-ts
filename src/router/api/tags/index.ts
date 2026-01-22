@@ -21,7 +21,7 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['code', 'label'])
+  @Required(['code', 'label', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
   @Convert(doTagAddConvert)
   async doTagAdd(ctx: Context) {
     await doTagAdd(ctx)
@@ -32,7 +32,7 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required(['id', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
   @Convert(doTagUpdateConvert)
   async doTagUpdate(ctx: Context) {
     await doTagUpdate(ctx)
@@ -64,6 +64,10 @@ export default class API {
     path: 'get/all/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doTagGetAllSelf(ctx: Context) {
     await doTagGetAllSelf(ctx)
   }

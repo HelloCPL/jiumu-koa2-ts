@@ -22,7 +22,7 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['targetId', 'type'])
+  @Required(['targetId', { field: 'type', name: 'isIn', options: [['502', '503', '504', '505', '507']] }])
   @Convert(doCollectionAddConvert)
   async doCollectionAdd(ctx: Context) {
     await doCollectionAdd(ctx)
@@ -54,6 +54,10 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doCollectionGetListSelf(ctx: Context) {
     await doCollectionGetListSelf(ctx)
   }
@@ -63,6 +67,10 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Required(['userId'])
   async doCollectionGetList(ctx: Context) {
     await doCollectionGetList(ctx)

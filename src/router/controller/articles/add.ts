@@ -9,20 +9,12 @@ import { Success } from '@/utils/http-exception'
 import { execTrans } from '@/db'
 import { Terminal } from '@/enums'
 import { formatDate, getUuId } from '@/utils/tools'
-import { validateRange } from '@/utils/validator'
 import { SQLOptions } from '@/db/interface'
 
 /**
  * 博客文章新增
  */
 export const doArticleAdd = async (ctx: Context) => {
-  const rangeResult = await validateRange(
-    [
-      { value: ctx._params.isDraft, range: ['1', '0'], default: '0' },
-      { value: ctx._params.isSecret, range: ['1', '0'], default: '0' }
-    ],
-    true
-  )
   const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
   const params = ctx._params
@@ -41,8 +33,8 @@ export const doArticleAdd = async (ctx: Context) => {
     params.attachment,
     params.type,
     params.classify,
-    rangeResult[0],
-    rangeResult[1],
+    params.isDraft,
+    params.isSecret,
     sort,
     ctx._user.id,
     currentTime,
@@ -60,14 +52,14 @@ export const doArticleAdd = async (ctx: Context) => {
   if (params.coverImg) {
     sqlList.push({
       sql: sql1,
-      data: [rangeResult[1], currentTime, ctx._user.id, params.coverImg],
+      data: [params.isSecret, currentTime, ctx._user.id, params.coverImg],
       noThrow: true
     })
   }
   if (params.attachment) {
     sqlList.push({
       sql: sql1,
-      data: [rangeResult[1], currentTime, ctx._user.id, params.attachment],
+      data: [params.isSecret, currentTime, ctx._user.id, params.attachment],
       noThrow: true
     })
   }

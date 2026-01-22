@@ -6,7 +6,7 @@
 
 import { Context } from 'koa'
 import { Prefix, Convert, Request, Required } from '@/router/router'
-import { doNoteAddConvert, doNoteDeleteConvert, doNoteGetListConvert } from '@/router/controller/note/convert'
+import { doNoteDeleteConvert, doNoteGetListConvert } from '@/router/controller/note/convert'
 import { doNoteAdd } from '@/router/controller/note/add'
 import { doNoteUpdate } from '@/router/controller/note/update'
 import { doNoteDelete } from '@/router/controller/note/delete'
@@ -19,8 +19,14 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['content', 'rootId', 'targetId'])
-  @Convert(doNoteAddConvert)
+  @Required([
+    'content',
+    { field: 'rootId', name: 'isLength', options: [{ min: 32 }] },
+    { field: 'targetId', name: 'isLength', options: [{ min: 32 }] },
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'linkStatus', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doNoteAdd(ctx: Context) {
     await doNoteAdd(ctx)
   }
@@ -30,8 +36,14 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
-  @Convert(doNoteAddConvert)
+  @Required([
+    'id',
+    { field: 'rootId', required: false, name: 'isLength', options: [{ min: 32 }] },
+    { field: 'targetId', required: false, name: 'isLength', options: [{ min: 32 }] },
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'linkStatus', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doNoteUpdate(ctx: Context) {
     await doNoteUpdate(ctx)
   }
@@ -62,6 +74,10 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doNoteGetListConvert)
   async doNoteGetList(ctx: Context) {
     await doNoteGetList(ctx)

@@ -42,7 +42,11 @@ export default class API {
     path: 'get/allrole/byuserid',
     methods: ['get', 'post']
   })
-  @Required(['userId'])
+  @Required([
+    'userId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doUserRoleGetAllRoleByUserId(ctx: Context) {
     await doUserRoleGetAllRoleByUserId(ctx)
   }
@@ -52,7 +56,11 @@ export default class API {
     path: 'get/alluser/byroleid',
     methods: ['get', 'post']
   })
-  @Required(['roleId'])
+  @Required([
+    'roleId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doUserRoleGetAllUserByRoleId(ctx: Context) {
     await doUserRoleGetAllUserByRoleId(ctx)
   }

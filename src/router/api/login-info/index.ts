@@ -15,7 +15,11 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
-  @Required(['userId'])
+  @Required([
+    'userId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doLoginInfoGetList(ctx: Context) {
     await doLoginInfoGetList(ctx)
   }

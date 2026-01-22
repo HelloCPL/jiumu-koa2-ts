@@ -15,11 +15,7 @@ import {
 } from '@/router/controller/files-info/chunk'
 import { doFileGetOne } from '@/router/controller/files-info/get'
 import { doFileDelete } from '@/router/controller/files-info/delete'
-import {
-  doFileDeleteConvert,
-  doFileGetOneConvert,
-  doFileChunkMergeConvert
-} from '@/router/controller/files-info/convert'
+import { doFileDeleteConvert, doFileGetOneConvert } from '@/router/controller/files-info/convert'
 
 @Prefix('file')
 export default class API {
@@ -28,6 +24,15 @@ export default class API {
     path: 'add',
     methods: ['post']
   })
+  @Required([
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    {
+      field: 'staticPlace',
+      required: false,
+      name: 'isIn',
+      options: [['files', 'images', 'videos', 'editors', 'sources', 'files_big']]
+    }
+  ])
   async doFileAdd(ctx: Context) {
     await doFileAdd(ctx)
   }
@@ -79,8 +84,20 @@ export default class API {
     path: 'chunk/merge',
     methods: ['get', 'post']
   })
-  @Required(['fileName', 'fileHash', 'chunkSize&isInt', 'chunkLength&isInt'])
-  @Convert(doFileChunkMergeConvert)
+  @Required([
+    'fileName',
+    'fileHash',
+    { field: 'chunkSize', name: 'isNumeric', options: [{ min: 1 }] },
+    { field: 'chunkLength', name: 'isNumeric', options: [{ min: 1 }] },
+    { field: 'fileSize', required: false, name: 'isNumeric' },
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    {
+      field: 'staticPlace',
+      required: false,
+      name: 'isIn',
+      options: [['files', 'images', 'videos', 'editors', 'sources', 'files_big']]
+    }
+  ])
   async doFileChunkMerge(ctx: Context) {
     await doFileChunkMerge(ctx)
   }

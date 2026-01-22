@@ -38,9 +38,6 @@ export const doArticleAddConvert = async (ctx: Context, next: Next) => {
  * 判断博客文章是否不存在，且是否为自己发布的博客文章 使用 doArticleDeleteConvert
  * 若传 contentType 判断 contentType 是否系统标签400范围
  * 若传 type 判断 type 是否系统标签300范围
- * 若传 isDraft 判断 isDraft 是否 ['1', '0'] 范围
- * 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
- * 若传 isTop 判断 isTop 是否 ['1', '0'] 范围
  */
 export const doArticleUpdateConvert = async (ctx: Context, next: Next) => {
   // 若传 contentType 判断 contentType 是否系统标签400范围
@@ -57,22 +54,6 @@ export const doArticleUpdateConvert = async (ctx: Context, next: Next) => {
       value: ctx._params.type,
       range: '300',
       message: 'type参数必须为系统标签300范围'
-    })
-  }
-  // 若传 isDraft 判断 isDraft 是否 ['1', '0'] 范围
-  if (ctx._params.hasOwnProperty('isDraft')) {
-    await validateRange({
-      value: ctx._params.isDraft,
-      range: ['1', '0'],
-      message: 'isDraft参数必须为[\'1\', \'0\']范围'
-    })
-  }
-  // 若传 isSecret 判断 isSecret 是否 ['1', '0'] 范围
-  if (ctx._params.hasOwnProperty('isSecret')) {
-    await validateRange({
-      value: ctx._params.isSecret,
-      range: ['1', '0'],
-      message: 'isSecret参数必须为[\'1\', \'0\']范围'
     })
   }
   await next()

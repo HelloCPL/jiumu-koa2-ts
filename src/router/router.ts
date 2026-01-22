@@ -10,7 +10,12 @@
 
 import { Context, Next } from 'koa'
 import { symbolRoutePrefix, Route } from './index'
-import { ValidatorParameters, ValidatorOptions, generateRequiredParams } from '@/utils/validator'
+import {
+  ValidatorParameters,
+  FieldRuleOptions,
+  generateRequiredParams,
+  RequiredParams
+} from '@/utils/validator'
 import { isArray } from 'lodash'
 import { sureIsArray } from '@/utils/tools'
 import { RequestOptions, RouteOptions } from './interface'
@@ -22,9 +27,9 @@ import { RequestOptions, RouteOptions } from './interface'
  */
 export const Prefix =
   (prefix: string): ClassDecorator =>
-    (target: Function) => {
-      target.prototype[symbolRoutePrefix] = prefix
-    }
+  (target: Function) => {
+    target.prototype[symbolRoutePrefix] = prefix
+  }
 
 /**
  * 定义路由请求，并将该方法存入 Route.__DecoratedRouters 中 方法装饰器
@@ -36,36 +41,42 @@ export const Prefix =
  */
 export const Request =
   (options: RequestOptions): MethodDecorator =>
-    (target: ObjectAny, key: string | symbol, descriptor: PropertyDescriptor) => {
-      if (!(isArray(options.terminals) && options.terminals.length))
-        options.terminals = ['pc', 'app', 'web', 'wechat']
-      Route.__DecoratedRouters.set(
+  (target: ObjectAny, key: string | symbol, descriptor: PropertyDescriptor) => {
+    if (!(isArray(options.terminals) && options.terminals.length))
+      options.terminals = ['pc', 'app', 'web', 'wechat']
+    Route.__DecoratedRouters.set(
       <RouteOptions>{
         target,
         ...options
       },
       target[key as string]
-      )
-      return descriptor
-    }
+    )
+    return descriptor
+  }
 
 /**
  * 校验路由请求必传参数 方法装饰器
- * @param params 参数列表，如需指定类型 用 &+类型 拼接成字符串，拼接的为数字则指定最小长度
- * @demo @Required(['id', 'age&isInt', 'type&isBoolean', 'name&isString', 'title&12'])
+ * @param params 参数列表
+ * @demo
+ *   @Required([
+ *     'id',
+ *     {field: 'age', name: 'isInt'},
+ *     {field: 'type', message: '类型必须传布尔值', name: 'isBoolean'}
+ *     {field: 'title', name: 'isLength', options: [{min: 12}]}，
+ *   ])
  */
 export const Required =
-  (params: string[]): MethodDecorator =>
-    (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-      async function requiredParameter(ctx: Context, next: Next) {
-        const newParams: ValidatorOptions[] = generateRequiredParams(params)
-        await new ValidatorParameters(newParams).validate(ctx)
-        await next()
-      }
-      target[key] = sureIsArray(target[key])
-      target[key].splice(0, 0, requiredParameter)
-      return descriptor
+  (params: Array<string | RequiredParams>): MethodDecorator =>
+  (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
+    async function requiredParameter(ctx: Context, next: Next) {
+      const newParams: FieldRuleOptions[] = generateRequiredParams(params)
+      await new ValidatorParameters(newParams).validate(ctx)
+      await next()
     }
+    target[key] = sureIsArray(target[key])
+    target[key].splice(0, 0, requiredParameter)
+    return descriptor
+  }
 
 /**
  * 添加自定义中间件方法 方法装饰器
@@ -74,8 +85,8 @@ export const Required =
  */
 export const Convert =
   (...middleware: Function[]): MethodDecorator =>
-    (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
-      target[key] = sureIsArray(target[key])
-      target[key].splice(target[key].length - 1, 0, ...middleware)
-      return descriptor
-    }
+  (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
+    target[key] = sureIsArray(target[key])
+    target[key].splice(target[key].length - 1, 0, ...middleware)
+    return descriptor
+  }

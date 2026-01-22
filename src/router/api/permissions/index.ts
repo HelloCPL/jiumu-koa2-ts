@@ -26,7 +26,7 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['code', 'label'])
+  @Required(['code', 'label', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
   @Convert(doPermissionAddConvert)
   async doPermissionAdd(ctx: Context) {
     await doPermissionAdd(ctx)
@@ -37,7 +37,7 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required(['id', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
   @Convert(doPermissionUpdateConvert)
   async doPermissionUpdate(ctx: Context) {
     await doPermissionUpdate(ctx)
@@ -69,6 +69,10 @@ export default class API {
     path: 'get/all/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doPermissionGetAllSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
     await doRolePermissiongetAllPermissionByUserId(ctx)
@@ -79,6 +83,10 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doPermissionGetList(ctx: Context) {
     await doPermissionGetList(ctx)
   }

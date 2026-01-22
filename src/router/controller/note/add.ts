@@ -6,13 +6,10 @@ import { query } from '@/db'
 import { Terminal } from '@/enums'
 import { Success } from '@/utils/http-exception'
 import { formatDate, getUuId } from '@/utils/tools'
-import { validateRange } from '@/utils/validator'
 import { Context } from 'koa'
 
 export const doNoteAdd = async (ctx: Context) => {
   const params = ctx._params
-  const isSecret = await validateRange({ value: params.isSecret, range: ['1', '0'], default: '1' }, true)
-  const linkStatus = await validateRange({ value: params.linkStatus, range: ['1', '0'], default: '1' }, true)
   const currentTime = formatDate(new Date())
   const sort: number = params.sort || 1
   const sql: string = `
@@ -28,8 +25,8 @@ export const doNoteAdd = async (ctx: Context) => {
     params.content,
     params.classify,
     sort,
-    isSecret,
-    linkStatus,
+    params.isSecret,
+    params.linkStatus,
     ctx._user.id,
     currentTime,
     currentTime,
