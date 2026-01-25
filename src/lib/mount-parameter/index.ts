@@ -11,6 +11,7 @@ import xss from '@/utils/xss'
 import { isArray, isPlainObject, isString } from 'lodash'
 import { logger } from '../logger'
 import { CustomValidator } from '@/utils/validator'
+import { store } from '@/utils/store'
 
 /*
  * 初始化请求参数
@@ -18,11 +19,11 @@ import { CustomValidator } from '@/utils/validator'
 export const mountRequest = async (ctx: Context, next: Next) => {
   // 记录请求时间
   const cost = BigInt(2 * 1e6) // 中间消费时间
-  global._requestStart = process.hrtime.bigint() - cost
-  ctx._requestStart = global._requestStart
+  ctx._requestStart = process.hrtime.bigint() - cost
   // 记录请求次数
-  global._requestCount++
-  ctx._requestCount = global._requestCount
+  const requestCount = store.get('requestCount') || 1
+  ctx._requestCount = requestCount
+  store.set('requestCount', requestCount + 1)
   logger.info({
     message: '处理请求参数挂载',
     requestCount: ctx._requestCount
@@ -32,8 +33,6 @@ export const mountRequest = async (ctx: Context, next: Next) => {
   ctx._params = getParams(ctx)
   ctx._terminal = getTerminal(ctx)
   logger.request(ctx)
-  // 请求上次请求的缓存结果
-  global._results = {}
   await next()
 }
 

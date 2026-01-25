@@ -52,35 +52,29 @@ export const getMenuByParentCode = async (
   userId?: string,
   roleId?: string
 ): Promise<MenuListOptions[]> => {
-  if (global._results._menus && global._results._menus.length) {
-    return <MenuListOptions[]>getTree({
-      data: global._results._menus,
-      parentCode
-    })
-  } else {
-    const data: any[] = []
-    // 是否与指定角色关联
-    let sqlRoleId = ''
-    let sqlRoleIdLeft = ''
-    if (roleId) {
-      sqlRoleId = 't3.id AS checked_role_id,'
-      sqlRoleIdLeft = 'LEFT JOIN roles_menus t3 ON (t3.role_id = ? AND t3.menu_id = t1.id)'
-      data.push(roleId)
-    }
-    // 是否与指定用户关联
-    let sqlUserId = ''
-    let sqlUserIdLeft = ''
-    if (userId) {
-      sqlUserId = 't4.id AS checked_user_id,'
-      sqlUserIdLeft = `
+  const data: any[] = []
+  // 是否与指定角色关联
+  let sqlRoleId = ''
+  let sqlRoleIdLeft = ''
+  if (roleId) {
+    sqlRoleId = 't3.id AS checked_role_id,'
+    sqlRoleIdLeft = 'LEFT JOIN roles_menus t3 ON (t3.role_id = ? AND t3.menu_id = t1.id)'
+    data.push(roleId)
+  }
+  // 是否与指定用户关联
+  let sqlUserId = ''
+  let sqlUserIdLeft = ''
+  if (userId) {
+    sqlUserId = 't4.id AS checked_user_id,'
+    sqlUserIdLeft = `
         LEFT JOIN roles_menus t4 ON 
         (
           t4.menu_id = t1.id AND 
           t4.role_id IN (SELECT t5.role_id FROM users_roles t5 WHERE t5.user_id = ?)
         )`
-      data.push(userId)
-    }
-    const sql = `
+    data.push(userId)
+  }
+  const sql = `
       SELECT 
         DISTINCT t1.id, t1.parent_code, t2.label AS parent_label, t1.code, t1.label, 
         ${sqlRoleId}
@@ -90,24 +84,22 @@ export const getMenuByParentCode = async (
       LEFT JOIN menus t2 ON t1.parent_code = t2.code 
       ${sqlRoleIdLeft} 
       ${sqlUserIdLeft}`
-    const res: MenuOptions[] = <MenuOptions[]>await query(sql, data)
-    // 若与指定角色或用户关联
-    if (roleId || userId) {
-      res.forEach((item) => {
-        if (roleId) {
-          if (item.checked_role_id) item.checked_role_id = '1'
-          else item.checked_role_id = '0'
-        }
-        if (userId) {
-          if (item.checked_user_id) item.checked_user_id = '1'
-          else item.checked_user_id = '0'
-        }
-      })
-    }
-    global._results._menus = [...res]
-    return <MenuListOptions[]>getTree({
-      data: global._results._menus,
-      parentCode
+  const res: MenuOptions[] = <MenuOptions[]>await query(sql, data)
+  // 若与指定角色或用户关联
+  if (roleId || userId) {
+    res.forEach((item) => {
+      if (roleId) {
+        if (item.checked_role_id) item.checked_role_id = '1'
+        else item.checked_role_id = '0'
+      }
+      if (userId) {
+        if (item.checked_user_id) item.checked_user_id = '1'
+        else item.checked_user_id = '0'
+      }
     })
   }
+  return <MenuListOptions[]>getTree({
+    data: res,
+    parentCode
+  })
 }

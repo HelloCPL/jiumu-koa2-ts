@@ -3,7 +3,7 @@ import { camelCase, snakeCase, uniq } from 'lodash'
 /**
  * 处理某个字段是否参与查询，且返回查询时的规则
  * field 参与的字段
- *   '!field' 以 '!' 开头表示不参与查询，如 '!name'
+ *   '!field' 以 '!' 开头表示不参与 keyword where 查询，如 '!name'
  *   '@field' 参与 keyword where 条件的查询；仅为高亮查询设置
  *            以一个 '@' 不参与 highlight 的返回字段（keyword为真时且 highlight 为真时仍参与返回），
  *            以两个以上 '@' 全程不参与 highlight 的返回字段

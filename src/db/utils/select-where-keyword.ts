@@ -67,7 +67,8 @@ function getOrderKeyword(options: SQLUtilsOptionsOrderKeyword, keywords: string[
           const orderSql = ` (select LENGTH(${result.field}) - LENGTH('${keyword}')) DESC `
           orderSqls.push(orderSql)
         })
-        if (_orderFields) orderFields += ` ${_orderFields} AS ${result.dataField}, `
+        if (_orderFields)
+          orderFields += ` ${result.field} AS ${result.dataField}_unhighlight, ${_orderFields} AS ${result.dataField}, `
       } else if (result.isValid && result.validHighlightCount === 0) {
         orderFields += ` ${result.field}  AS ${result.dataField}, `
       }

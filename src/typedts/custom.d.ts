@@ -8,8 +8,5 @@
 declare namespace NodeJS {
   export interface Global {
     _unlessPath: string[]
-    _requestCount: number
-    _requestStart: any
-    _results: ObjectAny
   }
 }

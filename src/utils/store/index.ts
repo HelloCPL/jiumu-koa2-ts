@@ -1,9 +1,7 @@
 import { StoreJson } from './jsonfile'
 import { StoreData } from './store'
 
-const project = new StoreJson('project')
-const storeProject = new StoreData(project)
+const storeJson = new StoreJson('store-json')
+const store = new StoreData(storeJson)
 
-// storeProject.set('name', '小米')
-
-export { storeProject }
+export { store }

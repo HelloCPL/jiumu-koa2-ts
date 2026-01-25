@@ -57,22 +57,16 @@ export const getTagByCode = async (code: string): Promise<TagOptions | null> => 
  * 获取某类标签，返回数组或[]
  */
 export const getTagByParentCode = async (parentCode: string, userId?: string): Promise<TagListOptions[]> => {
-  if (global._results._tags && global._results._tags.length) {
-    return <TagListOptions[]>getTree({
-      data: global._results._tags,
-      parentCode
-    })
-  } else {
-    const data: any[] = []
-    // 是否与指定用户关联
-    let sqlStr = ''
-    let sqlLeft = ''
-    if (userId) {
-      sqlStr = 't3.id AS checked_user_id,'
-      sqlLeft = 'LEFT JOIN users_tags t3 ON (t3.user_id = ? AND t3.tag_code = t1.code)'
-      data.push(userId)
-    }
-    const sql = `
+  const data: any[] = []
+  // 是否与指定用户关联
+  let sqlStr = ''
+  let sqlLeft = ''
+  if (userId) {
+    sqlStr = 't3.id AS checked_user_id,'
+    sqlLeft = 'LEFT JOIN users_tags t3 ON (t3.user_id = ? AND t3.tag_code = t1.code)'
+    data.push(userId)
+  }
+  const sql = `
       SELECT 
         t1.id, t1.parent_code, t2.label as parent_label, t1.code, t1.label, 
         ${sqlStr} 
@@ -80,18 +74,16 @@ export const getTagByParentCode = async (parentCode: string, userId?: string): P
       FROM tags t1 
       LEFT JOIN tags t2 ON t1.parent_code = t2.code 
       ${sqlLeft}`
-    const res: TagOptions[] = <TagOptions[]>await query(sql, data)
-    // 若与指定用户关联
-    if (userId) {
-      res.forEach((item) => {
-        if (item.checked_user_id) item.checked_user_id = '1'
-        else item.checked_user_id = '0'
-      })
-    }
-    global._results._tags = [...res]
-    return <TagListOptions[]>getTree({
-      data: global._results._tags,
-      parentCode
+  const res: TagOptions[] = <TagOptions[]>await query(sql, data)
+  // 若与指定用户关联
+  if (userId) {
+    res.forEach((item) => {
+      if (item.checked_user_id) item.checked_user_id = '1'
+      else item.checked_user_id = '0'
     })
   }
+  return <TagListOptions[]>getTree({
+    data: res,
+    parentCode
+  })
 }

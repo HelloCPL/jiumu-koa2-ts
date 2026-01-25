@@ -2,7 +2,7 @@
  * 依赖收集
  */
 export default class Subscriber {
-  collection: any[] = []
+  private collection: any[] = []
   add(fn: Function, ...arg: any[]) {
     this.collection.unshift({ fn, arg })
   }
@@ -11,6 +11,9 @@ export default class Subscriber {
       const obj = this.collection.pop()
       if (obj.arg) obj.fn(...obj.arg)
       else obj.fn()
+      if (this.collection.length > 0) {
+        this.pop()
+      }
     }
   }
 }
