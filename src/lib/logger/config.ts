@@ -10,7 +10,7 @@ import { getCurrentTime, getFileName, isBeforeTargetDate } from '@/utils/tools'
 import { isArray } from 'lodash'
 import path from 'path'
 import log4js from 'log4js'
-import { storeProject } from '@/utils/store'
+import { store } from '@/utils/store'
 
 /**
  * 日志类
@@ -63,7 +63,7 @@ export class Log {
  */
 export const clearExpiredLogs = () => {
   const key = 'clear-logs-time'
-  const clearLogsTime = storeProject.get(key)
+  const clearLogsTime = store.get(key)
   if (
     !clearLogsTime ||
     !isBeforeTargetDate({
@@ -71,7 +71,7 @@ export const clearExpiredLogs = () => {
       value: 1
     })
   ) {
-    storeProject.set(key, getCurrentTime())
+    store.set(key, getCurrentTime())
     readDir(LOGS_URL).then((paths) => {
       if (isArray(paths)) {
         const logs = paths

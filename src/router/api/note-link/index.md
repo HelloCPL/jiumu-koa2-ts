@@ -47,8 +47,8 @@
 
 #### 参数
 
-| 参数名 |  类型  | 是否必填 |    说明    |
-| :----: | :----: | :------: | :--------: |
+|  参数名  |  类型  | 是否必填 |     说明     |
+| :------: | :----: | :------: | :----------: |
 |  noteId  | string |    是    | 关联的笔记id |
 | targetId | string |    是    | 关联的目标id |
 
@@ -99,26 +99,28 @@
   `updateTime`
 
 
-|      参数名       |    类型     |                  说明                   |
-| :---------------: | :---------: | :-------------------------------------: |
-|        id         |   string    |                 笔记id                  |
-|      rootId       |   string    |                根节点id                 |
-|     targetId      |   string    |               目标节点id                |
-|       title       |   string    |                  标题                   |
-|      content      |   string    |                  内容                   |
-|     classify      |  array/[]   |         用户自定义标签，数组/[]         |
-|       sort        |   number    |                  排序                   |
-|     isSecret      |   string    |      是否为私密笔记，'1' 是 '0' 否      |
-|    linkStatus     |   string    |   可关联性 '1' 全关联 '0' 仅目标关联    |
-|    createUser     |   string    |                创建者id                 |
-|  createUserName   |   string    |               创建者名字                |
-| createUserAvatar  | object/null |               创建者头像                |
-|    createTime     |   string    |                创建时间                 |
-|    updateTime     |   string    |                更新时间                 |
-|     terminal      |   string    |                操作终端                 |
-|      remarks      |   string    |                  备注                   |
-|      isSelf       |   string    |      是否本人的笔记，'1' 是 '0' 否      |
-| isTargetRelevance |   string    | 是否与当前目标节点已关联，'1' 是 '0' 否 |
+|       参数名       |    类型     |                  说明                   |
+| :----------------: | :---------: | :-------------------------------------: |
+|         id         |   string    |                 笔记id                  |
+|       rootId       |   string    |                根节点id                 |
+|      targetId      |   string    |               目标节点id                |
+|       title        |   string    |                  标题                   |
+|  titleUnhighlight  |   string    |   标题（仅高亮搜索时展示的原始字段）    |
+|      content       |   string    |                  内容                   |
+| contentUnhighlight |   string    |   内容（仅高亮搜索时展示的原始字段）    |
+|      classify      |  array/[]   |         用户自定义标签，数组/[]         |
+|        sort        |   number    |                  排序                   |
+|      isSecret      |   string    |      是否为私密笔记，'1' 是 '0' 否      |
+|     linkStatus     |   string    |   可关联性 '1' 全关联 '0' 仅目标关联    |
+|     createUser     |   string    |                创建者id                 |
+|   createUserName   |   string    |               创建者名字                |
+|  createUserAvatar  | object/null |               创建者头像                |
+|     createTime     |   string    |                创建时间                 |
+|     updateTime     |   string    |                更新时间                 |
+|      terminal      |   string    |                操作终端                 |
+|      remarks       |   string    |                  备注                   |
+|       isSelf       |   string    |      是否本人的笔记，'1' 是 '0' 否      |
+| isTargetRelevance  |   string    | 是否与当前目标节点已关联，'1' 是 '0' 否 |
 
 #### 返回示例
 

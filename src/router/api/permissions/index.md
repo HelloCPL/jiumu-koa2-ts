@@ -13,13 +13,13 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| code | string | 是 | 权限code，不能重复 |
-| label | string | 是 | 权限说明 |
-| href | string | 否 | 关联接口,*表示后面任意类型，默认# |
-| sort | mediumint | 否 | 排序，值越小越前，默认1 |
-| remarks | string | 否 | 备注 |
+| 参数名  |   类型    | 是否必填 |               说明                |
+| :-----: | :-------: | :------: | :-------------------------------: |
+|  code   |  string   |    是    |        权限code，不能重复         |
+|  label  |  string   |    是    |             权限说明              |
+|  href   |  string   |    否    | 关联接口,*表示后面任意类型，默认# |
+|  sort   | mediumint |    否    |      排序，值越小越前，默认1      |
+| remarks |  string   |    否    |               备注                |
 
 #### 返回示例
 
@@ -46,14 +46,14 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 权限id |
-| code | string | 否 | 权限code，不能重复 |
-| label | string | 否 | 权限说明 |
-| href | string | 否 | 关联接口,*表示后面任意类型，默认# |
-| sort | mediumint | 否 | 排序，值越小越前 |
-| remarks | string | 否 | 备注 |
+| 参数名  |   类型    | 是否必填 |               说明                |
+| :-----: | :-------: | :------: | :-------------------------------: |
+|   id    |  string   |    是    |              权限id               |
+|  code   |  string   |    否    |        权限code，不能重复         |
+|  label  |  string   |    否    |             权限说明              |
+|  href   |  string   |    否    | 关联接口,*表示后面任意类型，默认# |
+|  sort   | mediumint |    否    |         排序，值越小越前          |
+| remarks |  string   |    否    |               备注                |
 
 #### 返回示例
 
@@ -81,9 +81,9 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 权限id |
+| 参数名 |  类型  | 是否必填 |  说明  |
+| :----: | :----: | :------: | :----: |
+|   id   | string |    是    | 权限id |
 
 #### 返回示例
 
@@ -110,26 +110,26 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 权限 id 或 code |
+| 参数名 |  类型  | 是否必填 |      说明       |
+| :----: | :----: | :------: | :-------------: |
+|   id   | string |    是    | 权限 id 或 code |
 
 #### 返回字段说明
 
 - 返回对象或null
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 权限id |
-| code | string | 权限code |
-| label | string | 权限描述 |
-| href | string | 关联路径 |
-| sort | number | 排序，值越小越前 |
+|    参数名    |  类型  |                  说明                  |
+| :----------: | :----: | :------------------------------------: |
+|      id      | string |                 权限id                 |
+|     code     | string |                权限code                |
+|    label     | string |                权限描述                |
+|     href     | string |                关联路径                |
+|     sort     | number |            排序，值越小越前            |
 | configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
+|  createTime  | string |                创建时间                |
+|  updateTime  | string |                更新时间                |
+|   terminal   | string |                操作终端                |
+|   remarks    | string |                  备注                  |
 
 #### 返回示例
 
@@ -167,26 +167,26 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
+|  参数名  |  类型  | 是否必填 |       说明        |
+| :------: | :----: | :------: | :---------------: |
+|  pageNo  | number |    否    |   页码，默认 1    |
+| pageSize | number |    否    | 每页页数，默认 10 |
 
 #### 返回字段说明
 
 - 返回数组或[]
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 权限id |
-| code | string | 权限code |
-| label | string | 权限描述 |
-| sort | number | 排序，值越小越前 |
+|    参数名    |  类型  |                  说明                  |
+| :----------: | :----: | :------------------------------------: |
+|      id      | string |                 权限id                 |
+|     code     | string |                权限code                |
+|    label     | string |                权限描述                |
+|     sort     | number |            排序，值越小越前            |
 | configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
+|  createTime  | string |                创建时间                |
+|  updateTime  | string |                更新时间                |
+|   terminal   | string |                操作终端                |
+|   remarks    | string |                  备注                  |
 
 #### 返回示例
 
@@ -229,14 +229,14 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
-| keyword | string | 否 | 关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| roleId | string | 否 | 角色id，会增加`checked` 字段，表示是否与该角色关联 |
-| userId | string | 否 | 用户id，会增加`checked` 字段，表示是否与该用户关联，但不可直接关联 |
+|  参数名   |  类型  | 是否必填 |                                 说明                                  |
+| :-------: | :----: | :------: | :-------------------------------------------------------------------: |
+|  pageNo   | number |    否    |                             页码，默认 1                              |
+| pageSize  | number |    否    |                           每页页数，默认 10                           |
+|  keyword  | string |    否    |                                关键字                                 |
+| highlight | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+|  roleId   | string |    否    |          角色id，会增加`checked` 字段，表示是否与该角色关联           |
+|  userId   | string |    否    |  用户id，会增加`checked` 字段，表示是否与该用户关联，但不可直接关联   |
 
 #### 返回字段说明
 
@@ -246,17 +246,19 @@
   `搜索相似度(label、code)降序`
   `updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 权限id |
-| code | string | 权限code |
-| label | string | 权限描述 |
-| sort | number | 排序，值越小越前 |
-| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
+|      参数名      |  类型  |                  说明                  |
+| :--------------: | :----: | :------------------------------------: |
+|        id        | string |                 权限id                 |
+|       code       | string |                权限code                |
+| codeUnhighlight  | string | 权限code（仅高亮搜索时展示的原始字段） |
+|      label       | string |                权限描述                |
+| labelUnhighlight | string | 权限描述（仅高亮搜索时展示的原始字段） |
+|       sort       | number |            排序，值越小越前            |
+|   configurable   | string | 是否可修改 0 可修改 1 超级管理员可修改 |
+|    createTime    | string |                创建时间                |
+|    updateTime    | string |                更新时间                |
+|     terminal     | string |                操作终端                |
+|     remarks      | string |                  备注                  |
 
 #### 返回示例
 
@@ -296,9 +298,9 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| ids | string | 是 | 权限ids |
+| 参数名 |  类型  | 是否必填 |  说明   |
+| :----: | :----: | :------: | :-----: |
+|  ids   | string |    是    | 权限ids |
 
 #### 返回示例
 

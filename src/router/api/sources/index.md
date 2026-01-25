@@ -13,15 +13,15 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| title | string | 是 | 资源标题 |
-| attachment | string | 是 | 资源地址；其中701时为内部资源文件id，多个逗号隔开 |
-| type | string | 是 | 资源类型，取系统标签700 |
-| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用sourceClassify |
-| isSecret | string | 否 | 是否为私密资源，'1' 是 '0' 否，默认 '0' |
-| sort | mediumint | 否 | 排序，值越小越前，默认1 |
-| remarks | string | 否 | 备注 |
+|   参数名   |   类型    | 是否必填 |                                  说明                                   |
+| :--------: | :-------: | :------: | :---------------------------------------------------------------------: |
+|   title    |  string   |    是    |                                资源标题                                 |
+| attachment |  string   |    是    |            资源地址；其中701时为内部资源文件id，多个逗号隔开            |
+|    type    |  string   |    是    |                         资源类型，取系统标签700                         |
+|  classify  |  string   |    否    | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用sourceClassify |
+|  isSecret  |  string   |    否    |                 是否为私密资源，'1' 是 '0' 否，默认 '0'                 |
+|    sort    | mediumint |    否    |                         排序，值越小越前，默认1                         |
+|  remarks   |  string   |    否    |                                  备注                                   |
 
 #### 返回示例
 
@@ -49,16 +49,16 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 资源id |
-| title | string | 否 | 资源标题 |
-| type | string | 否 | 资源类型，取系统标签700 |
-| attachment | string | 否 | 资源地址；其中701时为内部资源文件id，多个逗号隔开 |
-| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用sourceClassify |
-| isSecret | string | 否 | 是否为私密资源，'1' 是 '0' 否 |
-| sort | mediumint | 否 | 排序，值越小越前 |
-| remarks | string | 否 | 备注 |
+|   参数名   |   类型    | 是否必填 |                                  说明                                   |
+| :--------: | :-------: | :------: | :---------------------------------------------------------------------: |
+|     id     |  string   |    是    |                                 资源id                                  |
+|   title    |  string   |    否    |                                资源标题                                 |
+|    type    |  string   |    否    |                         资源类型，取系统标签700                         |
+| attachment |  string   |    否    |            资源地址；其中701时为内部资源文件id，多个逗号隔开            |
+|  classify  |  string   |    否    | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用sourceClassify |
+|  isSecret  |  string   |    否    |                      是否为私密资源，'1' 是 '0' 否                      |
+|    sort    | mediumint |    否    |                            排序，值越小越前                             |
+|  remarks   |  string   |    否    |                                  备注                                   |
 
 #### 返回示例
 
@@ -85,9 +85,9 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 资源id |
+| 参数名 |  类型  | 是否必填 |  说明  |
+| :----: | :----: | :------: | :----: |
+|   id   | string |    是    | 资源id |
 
 #### 返回示例
 
@@ -115,56 +115,56 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 资源id |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '1' |
+|    参数名    |  类型  | 是否必填 |                      说明                       |
+| :----------: | :----: | :------: | :---------------------------------------------: |
+|      id      | string |    是    |                     资源id                      |
+| showUserInfo | string |    否    | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '1' |
 
 #### 返回字段说明
 
 - 返回对象或null
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 资源id |
-| title | string | 标题 |
-| attachment | array/[] | 资源文件 |
-| classify | array/[] | 用户自定义标签，文件数组/[] |
-| isSecret | string | 是否为私密资源，'1' 是 '0' 否 |
-| isTop | string | 是否置顶，'1' 是 '0' 否 |
-| sort | number | 排序，值越小越前，默认1 |
-| type | string | 资源类型标签code |
-| typeLabel | string | 资源类型标签说明 |
-| createUser | string | 创建者id |
-| createUserName | string | 创建者名字 |
-| createUserAvatar | object/null | 创建者头像 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
-| isLike | string | 是否点赞，'1' 是 '0' 否 |
-| likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，'1' 是 '0' 否 |
-| CollectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的资源，'1' 是 '0' 否 |
-| commentCount | number | 收藏总数 |
+|      参数名      |    类型     |             说明              |
+| :--------------: | :---------: | :---------------------------: |
+|        id        |   string    |            资源id             |
+|      title       |   string    |             标题              |
+|    attachment    |  array/[]   |           资源文件            |
+|     classify     |  array/[]   |  用户自定义标签，文件数组/[]  |
+|     isSecret     |   string    | 是否为私密资源，'1' 是 '0' 否 |
+|      isTop       |   string    |    是否置顶，'1' 是 '0' 否    |
+|       sort       |   number    |    排序，值越小越前，默认1    |
+|       type       |   string    |       资源类型标签code        |
+|    typeLabel     |   string    |       资源类型标签说明        |
+|    createUser    |   string    |           创建者id            |
+|  createUserName  |   string    |          创建者名字           |
+| createUserAvatar | object/null |          创建者头像           |
+|    createTime    |   string    |           创建时间            |
+|    updateTime    |   string    |           更新时间            |
+|     terminal     |   string    |           操作终端            |
+|     remarks      |   string    |             备注              |
+|      isLike      |   string    |    是否点赞，'1' 是 '0' 否    |
+|    likeCount     |   number    |           点赞总数            |
+|   isCollection   |   string    |    是否收藏，'1' 是 '0' 否    |
+| CollectionCount  |   number    |           收藏总数            |
+|      isSelf      |   string    | 是否本人的资源，'1' 是 '0' 否 |
+|   commentCount   |   number    |           收藏总数            |
 
 - 其中 attachment 为内部资源返回为文件类字段
   为资源的外部资源信息字段如下
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | id |
-| title | string | 标题 |
-| link | string | 链接地址 |
-| cover_img1 | object/null | 封面图，内部图片 |
-| cover_img2 | string | 封面图，外部链接地址 |
-| sort | number | 排序，值越小越前，默认1 |
-| createUser | string | 创建者id |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
+|   参数名   |    类型     |          说明           |
+| :--------: | :---------: | :---------------------: |
+|     id     |   string    |           id            |
+|   title    |   string    |          标题           |
+|    link    |   string    |        链接地址         |
+| cover_img1 | object/null |    封面图，内部图片     |
+| cover_img2 |   string    |  封面图，外部链接地址   |
+|    sort    |   number    | 排序，值越小越前，默认1 |
+| createUser |   string    |        创建者id         |
+| createTime |   string    |        创建时间         |
+| updateTime |   string    |        更新时间         |
+|  terminal  |   string    |        操作终端         |
+|  remarks   |   string    |          备注           |
 
 #### 返回示例
 
@@ -251,16 +251,16 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
-| keyword | string | 否 | 关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| type | string | 否 | 资源类型，取系统标签700范围 |
-| classify | string | 否 | 自定义文章类型，分类类型建议用sourceClassify，单选 |
-| isSecret | string | 否 | 是否为私密资源，'1' 是 '0' 否 |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
+|    参数名    |  类型  | 是否必填 |                                 说明                                  |
+| :----------: | :----: | :------: | :-------------------------------------------------------------------: |
+|    pageNo    | number |    否    |                             页码，默认 1                              |
+|   pageSize   | number |    否    |                           每页页数，默认 10                           |
+|   keyword    | string |    否    |                                关键字                                 |
+|  highlight   | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+|     type     | string |    否    |                      资源类型，取系统标签700范围                      |
+|   classify   | string |    否    |          自定义文章类型，分类类型建议用sourceClassify，单选           |
+|   isSecret   | string |    否    |                     是否为私密资源，'1' 是 '0' 否                     |
+| showUserInfo | string |    否    |            是否增加创建者姓名与头像 '1' 是 其他否 默认 '0'            |
 
 #### 返回字段说明
 
@@ -270,29 +270,31 @@
     `sort升序`
     `updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 资源id |
-| title | string | 标题 |
-| classify | array/[] | 用户自定义标签，文件数组/[] |
-| isSecret | string | 是否为私密资源，'1' 是 '0' 否 |
-| isTop | string | 是否置顶，'1' 是 '0' 否 |
-| sort | number | 排序，值越小越前，默认1 |
-| type | string | 资源类型标签code |
-| typeLabel | string | 资源类型标签说明 |
-| createUser | string | 创建者id |
-| createUserName | string | 创建者名字 |
-| createUserAvatar | object/null | 创建者头像 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
-| isLike | string | 是否点赞，'1' 是 '0' 否 |
-| likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，'1' 是 '0' 否 |
-| CollectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的资源，'1' 是 '0' 否 |
-| commentCount | number | 收藏总数 |
+|          参数名           |    类型     |                   说明                   |
+| :-----------------------: | :---------: | :--------------------------------------: |
+|            id             |   string    |                  资源id                  |
+|           title           |   string    |                   标题                   |
+|     titleUnhighlight      |   string    |    标题（仅高亮搜索时展示的原始字段）    |
+|         classify          |  array/[]   |       用户自定义标签，文件数组/[]        |
+|         isSecret          |   string    |      是否为私密资源，'1' 是 '0' 否       |
+|           isTop           |   string    |         是否置顶，'1' 是 '0' 否          |
+|           sort            |   number    |         排序，值越小越前，默认1          |
+|           type            |   string    |             资源类型标签code             |
+|         typeLabel         |   string    |             资源类型标签说明             |
+|        createUser         |   string    |                 创建者id                 |
+|      createUserName       |   string    |                创建者名字                |
+| createUserNameUnhighlight |   string    | 创建者名字（仅高亮搜索时展示的原始字段） |
+|     createUserAvatar      | object/null |                创建者头像                |
+|        createTime         |   string    |                 创建时间                 |
+|        updateTime         |   string    |                 更新时间                 |
+|         terminal          |   string    |                 操作终端                 |
+|          remarks          |   string    |                   备注                   |
+|          isLike           |   string    |         是否点赞，'1' 是 '0' 否          |
+|         likeCount         |   number    |                 点赞总数                 |
+|       isCollection        |   string    |         是否收藏，'1' 是 '0' 否          |
+|      CollectionCount      |   number    |                 收藏总数                 |
+|          isSelf           |   string    |      是否本人的资源，'1' 是 '0' 否       |
+|       commentCount        |   number    |                 收藏总数                 |
 
 #### 返回示例
 
@@ -353,16 +355,16 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| userId | string | 是 | 指定用户id |
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
-| keyword | string | 否 | 关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| type | string | 否 | 资源类型，取系统标签700范围 |
-| classify | string | 否 | 自定义文章类型，分类类型建议用sourceClassify，单选 |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
+|    参数名    |  类型  | 是否必填 |                                 说明                                  |
+| :----------: | :----: | :------: | :-------------------------------------------------------------------: |
+|    userId    | string |    是    |                              指定用户id                               |
+|    pageNo    | number |    否    |                             页码，默认 1                              |
+|   pageSize   | number |    否    |                           每页页数，默认 10                           |
+|   keyword    | string |    否    |                                关键字                                 |
+|  highlight   | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+|     type     | string |    否    |                      资源类型，取系统标签700范围                      |
+|   classify   | string |    否    |          自定义文章类型，分类类型建议用sourceClassify，单选           |
+| showUserInfo | string |    否    |            是否增加创建者姓名与头像 '1' 是 其他否 默认 '0'            |
 
 #### 返回字段说明
 
@@ -372,29 +374,31 @@
     `sort升序`
     `updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 资源id |
-| title | string | 标题 |
-| classify | array/[] | 用户自定义标签，文件数组/[] |
-| isSecret | string | 是否为私密资源，'1' 是 '0' 否 |
-| isTop | string | 是否置顶，'1' 是 '0' 否 |
-| sort | number | 排序，值越小越前，默认1 |
-| type | string | 资源类型标签code |
-| typeLabel | string | 资源类型标签说明 |
-| createUser | string | 创建者id |
-| createUserName | string | 创建者名字 |
-| createUserAvatar | object/null | 创建者头像 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
-| isLike | string | 是否点赞，'1' 是 '0' 否 |
-| likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，'1' 是 '0' 否 |
-| CollectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的资源，'1' 是 '0' 否 |
-| commentCount | number | 收藏总数 |
+|          参数名           |    类型     |                   说明                   |
+| :-----------------------: | :---------: | :--------------------------------------: |
+|            id             |   string    |                  资源id                  |
+|           title           |   string    |                   标题                   |
+|     titleUnhighlight      |   string    |    标题（仅高亮搜索时展示的原始字段）    |
+|         classify          |  array/[]   |       用户自定义标签，文件数组/[]        |
+|         isSecret          |   string    |      是否为私密资源，'1' 是 '0' 否       |
+|           isTop           |   string    |         是否置顶，'1' 是 '0' 否          |
+|           sort            |   number    |         排序，值越小越前，默认1          |
+|           type            |   string    |             资源类型标签code             |
+|         typeLabel         |   string    |             资源类型标签说明             |
+|        createUser         |   string    |                 创建者id                 |
+|      createUserName       |   string    |                创建者名字                |
+| createUserNameUnhighlight |   string    | 创建者名字（仅高亮搜索时展示的原始字段） |
+|     createUserAvatar      | object/null |                创建者头像                |
+|        createTime         |   string    |                 创建时间                 |
+|        updateTime         |   string    |                 更新时间                 |
+|         terminal          |   string    |                 操作终端                 |
+|          remarks          |   string    |                   备注                   |
+|          isLike           |   string    |         是否点赞，'1' 是 '0' 否          |
+|         likeCount         |   number    |                 点赞总数                 |
+|       isCollection        |   string    |         是否收藏，'1' 是 '0' 否          |
+|      CollectionCount      |   number    |                 收藏总数                 |
+|          isSelf           |   string    |      是否本人的资源，'1' 是 '0' 否       |
+|       commentCount        |   number    |                 收藏总数                 |
 
 #### 返回示例
 
@@ -455,14 +459,14 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
-| keyword | string | 否 | 关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| type | string | 否 | 资源类型，取系统标签700范围 |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
+|    参数名    |  类型  | 是否必填 |                                 说明                                  |
+| :----------: | :----: | :------: | :-------------------------------------------------------------------: |
+|    pageNo    | number |    否    |                             页码，默认 1                              |
+|   pageSize   | number |    否    |                           每页页数，默认 10                           |
+|   keyword    | string |    否    |                                关键字                                 |
+|  highlight   | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+|     type     | string |    否    |                      资源类型，取系统标签700范围                      |
+| showUserInfo | string |    否    |            是否增加创建者姓名与头像 '1' 是 其他否 默认 '0'            |
 
 #### 返回字段说明
 
@@ -474,29 +478,31 @@
     `collectionCount收藏总数降序`
     `updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 资源id |
-| title | string | 标题 |
-| classify | array/[] | 用户自定义标签，文件数组/[] |
-| isSecret | string | 是否为私密资源，'1' 是 '0' 否 |
-| isTop | string | 是否置顶，'1' 是 '0' 否 |
-| sort | number | 排序，值越小越前，默认1 |
-| type | string | 资源类型标签code |
-| typeLabel | string | 资源类型标签说明 |
-| createUser | string | 创建者id |
-| createUserName | string | 创建者名字 |
-| createUserAvatar | object/null | 创建者头像 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
-| isLike | string | 是否点赞，'1' 是 '0' 否 |
-| likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，'1' 是 '0' 否 |
-| CollectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的资源，'1' 是 '0' 否 |
-| commentCount | number | 收藏总数 |
+|          参数名           |    类型     |                   说明                   |
+| :-----------------------: | :---------: | :--------------------------------------: |
+|            id             |   string    |                  资源id                  |
+|           title           |   string    |                   标题                   |
+|     titleUnhighlight      |   string    |    标题（仅高亮搜索时展示的原始字段）    |
+|         classify          |  array/[]   |       用户自定义标签，文件数组/[]        |
+|         isSecret          |   string    |      是否为私密资源，'1' 是 '0' 否       |
+|           isTop           |   string    |         是否置顶，'1' 是 '0' 否          |
+|           sort            |   number    |         排序，值越小越前，默认1          |
+|           type            |   string    |             资源类型标签code             |
+|         typeLabel         |   string    |             资源类型标签说明             |
+|        createUser         |   string    |                 创建者id                 |
+|      createUserName       |   string    |                创建者名字                |
+| createUserNameUnhighlight |   string    | 创建者名字（仅高亮搜索时展示的原始字段） |
+|     createUserAvatar      | object/null |                创建者头像                |
+|        createTime         |   string    |                 创建时间                 |
+|        updateTime         |   string    |                 更新时间                 |
+|         terminal          |   string    |                 操作终端                 |
+|          remarks          |   string    |                   备注                   |
+|          isLike           |   string    |         是否点赞，'1' 是 '0' 否          |
+|         likeCount         |   number    |                 点赞总数                 |
+|       isCollection        |   string    |         是否收藏，'1' 是 '0' 否          |
+|      CollectionCount      |   number    |                 收藏总数                 |
+|          isSelf           |   string    |      是否本人的资源，'1' 是 '0' 否       |
+|       commentCount        |   number    |                 收藏总数                 |
 
 ```
 {
