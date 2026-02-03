@@ -85,6 +85,8 @@ const tagAttributeWhitelist = [
 
 /**
  * 处理 xss 属性过滤条件
+ * @param tag 标签名称
+ * @param name 属性名称
  */
 export const handleAttributeFilter = (tag: string, name: string) => {
   const flag1 = attributeWhitelist.indexOf('name') !== -1

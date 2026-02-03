@@ -144,7 +144,9 @@ export enum MessageParameter {
 
 export type MessageParameterType = keyof typeof MessageParameter
 
-// 终端类型枚举
+/**
+ * 终端类型枚举
+ */
 export enum Terminal {
   'pc' = '管理端',
   'web' = '桌面端',
@@ -154,7 +156,9 @@ export enum Terminal {
 
 export type TerminalType = keyof typeof Terminal
 
-// 可请求类型枚举
+/**
+ * 可请求类型枚举
+ */
 export enum Methods {
   'get' = 'get',
   'post' = 'post',

@@ -14,6 +14,9 @@ import { getKey, parseStoreData, stringifyStoreData } from '@/utils/tools'
 import { logger, loggerError } from '@/lib/logger'
 import { Message } from '@/enums'
 
+/**
+ * 创建 redis 实例
+ */
 function createRedis() {
   let redisClient: RedisClient
   if (IS_VERIFY_TOKEN_BY_REDIS) {
@@ -30,7 +33,11 @@ function createRedis() {
       })
     })
   }
-  // 保存 redis 值
+  /**
+   * 保存值到 redis
+   * @params key 键名
+   * @params value 值
+   */
   const clientSet = (key: string, value: any): Promise<any> | undefined => {
     if (redisClient) {
       key = getKey(key)
@@ -48,7 +55,10 @@ function createRedis() {
     }
   }
 
-  // 获取 redis 值
+  /**
+   * 获取 redis 值
+   * @params key 键名
+   */
   const clientGet = (key: string): Promise<any> | undefined => {
     if (redisClient) {
       key = getKey(key)
@@ -67,7 +77,10 @@ function createRedis() {
     }
   }
 
-  // 删除 redis 值
+  /**
+   * 删除某个 redis
+   * @params key 键名
+   */
   const clientDel = (key: string): Promise<any> | undefined => {
     if (redisClient) {
       key = getKey(key)

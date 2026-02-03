@@ -14,15 +14,19 @@
 import { toCamelCase } from '../tools'
 import { Message, Code, CodeValue } from '@/enums'
 
-// 异常类接口类型
+/**
+ * 异常类接口类型
+ */
 export interface ExceptionOptions {
-  message?: string
-  data?: any
-  code?: CodeValue
-  total?: number
+  message?: string // 接口返回提示信息
+  data?: any // 接口返回数据
+  code?: CodeValue // 接口返回状态
+  total?: number // 接口返回数据为列表时，返回数据总数，否则为 0
 }
 
-// 服务器异常
+/**
+ * 服务器异常
+ */
 export class ExceptionHttp extends Error {
   message: string
   data: any
@@ -48,7 +52,9 @@ export class ExceptionHttp extends Error {
   }
 }
 
-// 参数异常
+/**
+ * 参数异常
+ */
 export class ExceptionParameter extends ExceptionHttp {
   constructor(config: ExceptionOptions = {}) {
     super()
@@ -60,7 +66,9 @@ export class ExceptionParameter extends ExceptionHttp {
   }
 }
 
-// 资源不存在异常
+/**
+ * 资源不存在异常
+ */
 export class ExceptionNotFound extends ExceptionHttp {
   constructor(config: ExceptionOptions = {}) {
     super()
@@ -72,7 +80,9 @@ export class ExceptionNotFound extends ExceptionHttp {
   }
 }
 
-// 权限不足异常
+/**
+ * 权限不足异常
+ */
 export class ExceptionForbidden extends ExceptionHttp {
   constructor(config: ExceptionOptions = {}) {
     super()
@@ -84,7 +94,9 @@ export class ExceptionForbidden extends ExceptionHttp {
   }
 }
 
-// 授权失败异常
+/**
+ * 授权失败异常
+ */
 export class ExceptionAuthFailed extends ExceptionHttp {
   constructor(config: ExceptionOptions = {}) {
     super()
@@ -96,7 +108,9 @@ export class ExceptionAuthFailed extends ExceptionHttp {
   }
 }
 
-// 特殊异常 成功类异常用于返回数据
+/**
+ * 特殊异常 成功类异常用于返回数据
+ */
 export class Success extends ExceptionHttp {
   constructor(config: ExceptionOptions = {}) {
     super()

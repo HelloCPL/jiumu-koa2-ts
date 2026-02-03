@@ -50,7 +50,10 @@ export const getParams = (ctx: Context): ObjectAny => {
   return params
 }
 
-// 递归对参数进行xss处理
+/**
+ * 对参数进行xss处理
+ * @params obj 数据对象
+ */
 function handleXSS(obj: any) {
   // 如果是对象
   if (isPlainObject(obj)) {
