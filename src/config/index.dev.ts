@@ -34,7 +34,7 @@ function createConfig(): ConfigOptions {
     },
     TOKEN: {
       // token 信息配置
-      SECRET_KEY: 'dev_jiumu', // key
+      SECRET_KEY: 'jiumu_dev', // key
       VALID_TIME: 60 * 60 * 24 * 7, // token 有效期7天
       REFRESH_VALID_TIME: 60 * 60 * 24 * 15 // tokenRefresh 有效期15天
     },

@@ -13,7 +13,7 @@ import { imagesSuffix, videoSuffix } from './config'
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid'
 import { Context } from 'koa'
 import { TerminalType } from '@/enums'
-import { ENV } from '@/config'
+import { TOKEN } from '@/config'
 
 /**
  * 返回格式后的路径，仅返回路径，不保留参数
@@ -139,7 +139,7 @@ export function getFileName(path: string, noSuffix?: boolean): string {
  * @returns 返回修饰后的 key
  */
 export const getKey = (key: string): string => {
-  return `jiumu_koa2_ts_${ENV}_${key}`
+  return `${TOKEN.SECRET_KEY}_${key}`
 }
 
 type WordCount = {

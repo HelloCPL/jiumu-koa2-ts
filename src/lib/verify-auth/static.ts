@@ -5,6 +5,7 @@ import { ExceptionHttp, ExceptionNotFound } from '@/utils/http-exception'
 import { getCurrentTime, getDateValueOf, getSuffix, toPath } from '@/utils/tools'
 import { query } from '@/db'
 import { Code, Message } from '@/enums'
+
 /**
  * 静态资源访问权限拦截
  * @description 对静态资源请求作拦截
