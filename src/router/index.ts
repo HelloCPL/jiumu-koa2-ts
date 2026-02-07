@@ -42,7 +42,6 @@ export class Route {
     require('./api/login-info/index')
     require('./api/menus/index')
     require('./api/novels-chapter/index')
-    require('./api/note-link/index')
     require('./api/note/index')
     require('./api/novels/index')
     require('./api/permissions/index')
