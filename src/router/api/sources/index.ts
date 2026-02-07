@@ -24,11 +24,12 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required([
-    'title',
+    { field: 'title', name: 'isLength', options: [{ min: 1, max: 255 }] },
     'attachment',
     'type',
     { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
-    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
   ])
   @Convert(doSourceAddConvert)
   async doSourceAdd(ctx: Context) {
@@ -42,8 +43,10 @@ export default class API {
   })
   @Required([
     'id',
+    { field: 'title', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
     { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
-    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
   ])
   @Convert(doSourceUpdateConvert)
   async doSourceUpdate(ctx: Context) {

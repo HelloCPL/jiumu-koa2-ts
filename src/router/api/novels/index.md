@@ -161,7 +161,6 @@
 |       commentCount        |   number    |                   评论总数                    |
 |    chapterCommentCount    |   number    |          该连载下所有章节的评论总数           |
 |       chapterCount        |   number    | 章节总数 非草稿、非私密、或私密且为本人的章节 |
-|         wordCount         |   number    |      所有章节总字数，仅查询详情有该字段       |
 
 #### 返回示例
 

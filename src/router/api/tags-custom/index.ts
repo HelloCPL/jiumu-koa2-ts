@@ -23,7 +23,10 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['label', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
+  @Required([
+    { field: 'label', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doTagCustomAddConvert)
   async doTagCustomAdd(ctx: Context) {
     await doTagCustomAdd(ctx)
@@ -34,7 +37,11 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
+  @Required([
+    'id',
+    { field: 'label', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doTagCustomUpdateConvert)
   async doTagCustomUpdate(ctx: Context) {
     await doTagCustomUpdate(ctx)

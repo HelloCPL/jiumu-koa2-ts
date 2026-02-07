@@ -8,7 +8,6 @@ import { Success } from '@/utils/http-exception'
 import { execTrans, getSelectWhereFields, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
 import { NovelOptions, NovelListParams, NovelListReturn, NovelOneParams } from './interface'
-import { countWordCharactersAndWords } from '@/utils/tools'
 import { handleNovel } from './utils'
 
 // 获取指定的某个小说
@@ -88,7 +87,7 @@ export const getNovelOne = async (params: NovelOneParams): Promise<NovelOptions 
       (t1.is_secret = 0 OR (t1.is_secret = 1 AND t1.create_user = ?)) AND 
       (t1.is_draft = 0 OR (t1.is_draft = 1 AND t1.create_user = ?))`
   const data = [...chapterCountData, params.userId, params.userId, params.id, params.userId, params.userId]
-  const sql2 = 'SELECT update_time, content FROM novels_chapter WHERE novel_id = ?'
+  const sql2 = 'SELECT MAX(update_time) AS update_time FROM novels_chapter WHERE novel_id = ?'
   const data2 = [params.id]
   const res: any = await execTrans([
     { sql, data },
@@ -98,15 +97,10 @@ export const getNovelOne = async (params: NovelOneParams): Promise<NovelOptions 
   if (novelInfo) {
     await handleNovel(novelInfo, params.userId, params.showUserInfo)
     // 处理更新时间和总字数
-    const chapterList = res[1] || []
-    let updateTime = novelInfo.update_time
-    let wordCount = 0
-    chapterList.forEach((item: any) => {
-      if (item.update_time > updateTime) updateTime = item.update_time
-      wordCount += countWordCharactersAndWords(item.content).wordCount
-    })
-    novelInfo.update_time = updateTime
-    novelInfo.word_count = wordCount
+    const res2 = res[1][0] || null
+    if (res2 && res2.update_time > novelInfo.update_time) {
+      novelInfo.update_time = res2.update_time
+    }
   }
   return novelInfo
 }

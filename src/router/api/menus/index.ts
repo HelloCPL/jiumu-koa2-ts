@@ -22,7 +22,12 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['code', 'label', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
+  @Required([
+    'code',
+    { field: 'label', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doMenuAddConvert)
   async doMenuAdd(ctx: Context) {
     await doMenuAdd(ctx)
@@ -33,7 +38,12 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
+  @Required([
+    'id',
+    { field: 'label', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doMenuUpdateConvert)
   async doMenuUpdate(ctx: Context) {
     await doMenuUpdate(ctx)

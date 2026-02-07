@@ -28,7 +28,7 @@ export default class API {
     unless: true
   })
   @Required([
-    'password',
+    { field: 'password', name: 'isLength', options: [{ min: 1, max: 64 }] },
     { field: 'phone', name: 'isMobilePhone', options: [{ locale: ['zh-CN', 'zh-TW', 'zh-HK'] }] }
   ])
   @Convert(doUserRegisterConvert)
@@ -52,6 +52,12 @@ export default class API {
     path: 'update/base/self',
     methods: ['post', 'get']
   })
+  @Required([
+    { field: 'username', required: false, name: 'isLength', options: [{ max: 64 }] },
+    { field: 'professional', required: false, name: 'isLength', options: [{ max: 255 }] },
+    { field: 'address', required: false, name: 'isLength', options: [{ max: 255 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doUserUpdateBaseSelfConvert, doUserUpdateBaseConvert)
   async doUserUpdateBaseSelf(ctx: Context) {
     await doUserUpdateBaseSelf(ctx)
@@ -73,7 +79,10 @@ export default class API {
     path: 'update/password/self',
     methods: ['post']
   })
-  @Required(['password', 'newPassword'])
+  @Required([
+    { field: 'password', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'newPassword', name: 'isLength', options: [{ min: 1, max: 64 }] }
+  ])
   @Convert(doUserCheckPasswordConvert)
   async doUserUpdatePasswordSelf(ctx: Context) {
     await doUserUpdatePasswordSelf(ctx)
@@ -84,7 +93,13 @@ export default class API {
     path: 'update/base',
     methods: ['post', 'get']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'username', required: false, name: 'isLength', options: [{ max: 64 }] },
+    { field: 'professional', required: false, name: 'isLength', options: [{ max: 255 }] },
+    { field: 'address', required: false, name: 'isLength', options: [{ max: 255 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doUserUpdateBaseSelfConvert)
   @Convert(doUserUpdateBaseConvert)
   async doUserUpdateBase(ctx: Context) {

@@ -26,7 +26,13 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['code', 'label', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
+  @Required([
+    'code',
+    { field: 'label', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'href', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doPermissionAddConvert)
   async doPermissionAdd(ctx: Context) {
     await doPermissionAdd(ctx)
@@ -37,7 +43,13 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
+  @Required([
+    'id',
+    { field: 'label', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'href', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doPermissionUpdateConvert)
   async doPermissionUpdate(ctx: Context) {
     await doPermissionUpdate(ctx)

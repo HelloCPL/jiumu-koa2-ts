@@ -21,7 +21,12 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['code', 'label', { field: 'isDraft', required: false, name: 'isIn', options: [['0', '1']] }])
+  @Required([
+    { field: 'code', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'label', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doRoleAddConvert)
   async doRoleAdd(ctx: Context) {
     await doRoleAdd(ctx)
@@ -32,7 +37,13 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id', { field: 'isDraft', required: false, name: 'isIn', options: [['0', '1']] }])
+  @Required([
+    'id',
+    { field: 'code', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'label', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doRoleUpdateConvert)
   async doRoleUpdate(ctx: Context) {
     await doRoleUpdate(ctx)

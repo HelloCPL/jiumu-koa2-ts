@@ -20,11 +20,12 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required([
-    'title',
+    { field: 'title', name: 'isLength', options: [{ min: 1, max: 255 }] },
     'content',
     { field: 'isDraft', name: 'isIn', options: [['0', '1']] },
     { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
-    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
   ])
   async doQuestionAdd(ctx: Context) {
     await doQuestionAdd(ctx)
@@ -37,9 +38,11 @@ export default class API {
   })
   @Required([
     'id',
+    { field: 'title', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
     { field: 'isDraft', required: false, name: 'isIn', options: [['0', '1']] },
     { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
-    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
   ])
   @Convert(doQuestionDeleteConvert)
   async doQuestionUpdate(ctx: Context) {

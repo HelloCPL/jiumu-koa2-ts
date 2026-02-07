@@ -24,9 +24,9 @@ export default class API {
     methods: ['post']
   })
   @Required([
-    'title',
-    'account',
-    'cipher',
+    { field: 'title', name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'account', name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'cipher', name: 'isLength', options: [{ min: 1, max: 255 }] },
     'type',
     { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
   ])
@@ -40,7 +40,13 @@ export default class API {
     path: 'update',
     methods: ['post']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'title', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'account', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'cipher', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doCipherDeleteConvert, doCipherUpdateConvert)
   async doCipherUpdate(ctx: Context) {
     await doCipherUpdate(ctx)
@@ -51,7 +57,7 @@ export default class API {
     path: 'delete',
     methods: ['post']
   })
-  @Required(['id', { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }])
+  @Required(['id'])
   @Convert(doCipherDeleteConvert)
   async doCipherDelete(ctx: Context) {
     await doCipherDelete(ctx)

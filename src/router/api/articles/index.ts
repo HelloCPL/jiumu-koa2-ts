@@ -24,13 +24,14 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required([
-    'title',
+    { field: 'title', name: 'isLength', options: [{ min: 1, max: 255 }] },
     'content',
     'contentType',
     'type',
     { field: 'isDraft', name: 'isIn', options: [['0', '1']] },
     { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
-    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
   ])
   @Convert(doArticleAddConvert)
   async doArticleAdd(ctx: Context) {
@@ -44,9 +45,11 @@ export default class API {
   })
   @Required([
     'id',
+    { field: 'title', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
     { field: 'isDraft', required: false, name: 'isIn', options: [['0', '1']] },
     { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
-    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
   ])
   @Convert(doArticleDeleteConvert, doArticleUpdateConvert)
   async doArticleUpdate(ctx: Context) {

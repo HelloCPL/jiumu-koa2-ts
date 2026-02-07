@@ -14,9 +14,9 @@ export const doNoteAdd = async (ctx: Context) => {
   const sort: number = params.sort || 1
   const sql: string = `
     INSERT notes 
-      (id, root_id, target_id, title, content, classify, sort, is_secret, link_status, create_user, create_time, update_time, terminal, remarks) 
+      (id, root_id, target_id, title, content, classify, sort, is_secret,  create_user, create_time, update_time, terminal, remarks) 
     VALUES 
-     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   const data = [
     getUuId(),
     params.rootId,
@@ -26,7 +26,6 @@ export const doNoteAdd = async (ctx: Context) => {
     params.classify,
     sort,
     params.isSecret,
-    params.linkStatus,
     ctx._user.id,
     currentTime,
     currentTime,

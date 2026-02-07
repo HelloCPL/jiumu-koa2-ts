@@ -19,9 +19,11 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required([
-    'title',
+    { field: 'title', name: 'isLength', options: [{ min: 1, max: 255 }] },
     { field: 'link', name: 'isURL' },
-    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'coverImg2', required: false, name: 'isURL' },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] }
   ])
   async doSourceLinkAdd(ctx: Context) {
     await doSourceLinkAdd(ctx)
@@ -34,8 +36,11 @@ export default class API {
   })
   @Required([
     'id',
+    { field: 'title', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
     { field: 'link', required: false, name: 'isURL' },
-    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'coverImg2', required: false, name: 'isURL' },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] }
   ])
   @Convert(doSourceLinkDeleteConvert)
   async doSourceLinkUpdate(ctx: Context) {

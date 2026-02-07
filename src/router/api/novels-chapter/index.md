@@ -148,7 +148,6 @@
 | collectionCount | number | 收藏总数 |
 | isSelf | string | 是否本人的章节，'1' 是 '0' 否 |
 | commentCount | number | 评论总数 |
-| wordCount | number | 本章节总字数 |
 
 #### 返回示例
 
@@ -271,7 +270,6 @@ shai
 | collectionCount | number | 收藏总数 |
 | isSelf | string | 是否本人的章节，'1' 是 '0' 否 |
 | commentCount | number | 评论总数 |
-| wordCount | number | 本章节总字数 |
 
 #### 返回示例
 

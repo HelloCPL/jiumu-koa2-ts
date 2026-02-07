@@ -61,7 +61,7 @@ function createConfig(): ConfigOptions {
     IS_ALLOW_MULTIPLE_LOGIN: true, // 同一账号是否允许在不同设备不同平台（如浏览器）同时登录
     IS_VERIFY_API_PERMISSION: false, // 是否校验非公开api的用户请求权限
     IS_VERIFY_STATIC_PERMISSION: true, // 是否校验非公开静态资源文件的请求权限
-    IS_PRINT_LOG: true, // 是否在终端打印请求的普通日志信息
+    IS_PRINT_LOG: false, // 是否在终端打印请求的普通日志信息
     IS_SHOW_MDAPI: true // 是否提供mdapi文档接口
   }
 

@@ -20,15 +20,3 @@ export const doNoteDeleteConvert = async (ctx: Context, next: Next) => {
   if (res[0]['create_user'] !== ctx._user.id) throw new ExceptionForbidden({ message: Message.forbidden })
   await next()
 }
-
-/**
- * 获取笔记列表中间件
- * 判断 rootId targetId 两者必须传其一
- */
-export const doNoteGetListConvert = async (ctx: Context, next: Next) => {
-  // 判断 rootId targetId 两者必须传其一
-  if (ctx._params.rootId || ctx._params.targetId) {
-    await next()
-  }
-  throw new ExceptionParameter({ message: Message.parameter + '，rootId或targetId必须传其一' })
-}

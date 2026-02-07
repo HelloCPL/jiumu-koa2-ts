@@ -24,13 +24,14 @@ export default class API {
     methods: ['get', 'post']
   })
   @Required([
-    'name',
-    'introduce',
-    'author',
+    { field: 'name', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'introduce', name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'author', name: 'isLength', options: [{ min: 1, max: 64 }] },
     'type',
     { field: 'isDraft', name: 'isIn', options: [['0', '1']] },
     { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
-    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
   ])
   @Convert(doNovelAddConvert)
   async doNovelAdd(ctx: Context) {
@@ -44,9 +45,13 @@ export default class API {
   })
   @Required([
     'id',
+    { field: 'name', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'introduce', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'author', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
     { field: 'isDraft', required: false, name: 'isIn', options: [['0', '1']] },
     { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
-    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
   ])
   @Convert(doNovelUpdateConvert)
   async doNovelUpdate(ctx: Context) {

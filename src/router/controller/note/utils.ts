@@ -27,9 +27,6 @@ export async function handleNote(datas: NoteOptions | NoteOptions[], params: Not
     if (params.showUserInfo === '1' && data.create_user_avatar) {
       data.create_user_avatar = getOriginFileById(files, data.create_user_avatar)
     }
-    if (params.showTargetRelevance === '1') {
-      data.is_target_relevance = data['is_target_relevance'] > 0 ? '1' : '0'
-    }
   }
   if (isArray(datas)) {
     for (let i = 0, len = datas.length; i < len; i++) {

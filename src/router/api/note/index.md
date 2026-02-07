@@ -5,7 +5,8 @@
 
 - `pc | web | app | wechat` 端
 - 新增笔记
-- 笔记更新为独立模块，不受根节点或目标节点的影响，因此也不作这两者的来源
+- 笔记更新为独立模块
+- 笔记根节点可以理解为分类，如果只创建一个类型的笔记，可以设置根节点与目标节点一致
 
 #### 请求
 
@@ -16,17 +17,16 @@
 
 - body 传参
 
-|   参数名   |  类型  | 是否必填 |                                                 说明                                                  |
-| :--------: | :----: | :------: | :---------------------------------------------------------------------------------------------------: |
-|  content   | string |    是    |                                               笔记内容                                                |
-|   rootId   | string |    是    |                                               根节点id                                                |
-|  targetId  | string |    是    |                                              目标节点id                                               |
-|   title    | string |    否    |                                               笔记内容                                                |
-|  classify  | string |    否    | 自定义标签分类的id，如人物、武器等，最多三个，若为连载/连载章节分类类型建议用根节点id，其他看情况而定 |
-|    sort    | number |    否    |                                         序号，从小到大，默认1                                         |
-|  isSecret  | string |    否    |                                是否为私密笔记，'1' 是 '0' 否，默认 '1'                                |
-| linkStatus | string |    否    |            可关联性 1 全关联（即根节点和目标节点可关联）0 仅目标关联（即仅目标节点可关联）            |
-|  remarks   | string |    否    |                                                 备注                                                  |
+|  参数名  |  类型  | 是否必填 |                           说明                           |
+| :------: | :----: | :------: | :------------------------------------------------------: |
+|  rootId  | string |    是    |                         根节点id                         |
+| targetId | string |    是    |                        目标节点id                        |
+|  title   | string |    是    |                         笔记内容                         |
+| content  | string |    是    |                         笔记内容                         |
+| classify | string |    否    | 自定义标签分类的id，最多三个，分类类型建议使用用根节点id |
+|   sort   | number |    否    |                  序号，从小到大，默认1                   |
+| isSecret | string |    否    |         是否为私密笔记，'1' 是 '0' 否，默认 '1'          |
+| remarks  | string |    否    |                           备注                           |
 
 #### 返回示例
 
@@ -46,6 +46,7 @@
 
 - `pc | web | app | wechat` 端
 - 笔记修改
+- 注意：根节点不允许修改
 
 #### 请求
 
@@ -54,18 +55,16 @@
 
 #### 参数
 
-|   参数名   |  类型  | 是否必填 |                                                 说明                                                  |
-| :--------: | :----: | :------: | :---------------------------------------------------------------------------------------------------: |
-|     id     | string |    是    |                                                笔记id                                                 |
-|  content   | string |    否    |                                               笔记内容                                                |
-|   rootId   | string |    否    |                                               根节点id                                                |
-|  targetId  | string |    否    |                                              目标节点id                                               |
-|   title    | string |    否    |                                               笔记内容                                                |
-|  classify  | string |    否    | 自定义标签分类的id，如人物、武器等，最多三个，若为连载/连载章节分类类型建议用根节点id，其他看情况而定 |
-|    sort    | number |    否    |                                         序号，从小到大，默认1                                         |
-|  isSecret  | string |    否    |                                是否为私密笔记，'1' 是 '0' 否，默认 '1'                                |
-| linkStatus | string |    否    |       可关联性 1 全关联（即根节点和目标节点可关联）0 仅目标关联（即仅目标节点可关联），默认 '1'       |
-|  remarks   | string |    否    |                                                 备注                                                  |
+|  参数名  |  类型  | 是否必填 |                           说明                           |
+| :------: | :----: | :------: | :------------------------------------------------------: |
+|    id    | string |    是    |                          笔记id                          |
+| targetId | string |    否    |                        目标节点id                        |
+|  title   | string |    否    |                         笔记内容                         |
+| content  | string |    否    |                         笔记内容                         |
+| classify | string |    否    | 自定义标签分类的id，最多三个，分类类型建议使用用根节点id |
+|   sort   | number |    否    |                  序号，从小到大，默认1                   |
+| isSecret | string |    否    |         是否为私密笔记，'1' 是 '0' 否，默认 '1'          |
+| remarks  | string |    否    |                           备注                           |
 
 #### 返回示例
 
@@ -132,25 +131,24 @@
 
 - 返回对象或null
 
-|      参数名      |    类型     |                说明                |
-| :--------------: | :---------: | :--------------------------------: |
-|        id        |   string    |               笔记id               |
-|      rootId      |   string    |              根节点id              |
-|     targetId     |   string    |             目标节点id             |
-|      title       |   string    |                标题                |
-|     content      |   string    |                内容                |
-|     classify     |  array/[]   |      用户自定义标签，数组/[]       |
-|       sort       |   number    |                排序                |
-|     isSecret     |   string    |   是否为私密笔记，'1' 是 '0' 否    |
-|    linkStatus    |   string    | 可关联性 '1' 全关联 '0' 仅目标关联 |
-|    createUser    |   string    |              创建者id              |
-|  createUserName  |   string    |             创建者名字             |
-| createUserAvatar | object/null |             创建者头像             |
-|    createTime    |   string    |              创建时间              |
-|    updateTime    |   string    |              更新时间              |
-|     terminal     |   string    |              操作终端              |
-|     remarks      |   string    |                备注                |
-|      isSelf      |   string    |   是否本人的笔记，'1' 是 '0' 否    |
+|      参数名      |    类型     |             说明              |
+| :--------------: | :---------: | :---------------------------: |
+|        id        |   string    |            笔记id             |
+|      rootId      |   string    |           根节点id            |
+|     targetId     |   string    |          目标节点id           |
+|      title       |   string    |             标题              |
+|     content      |   string    |             内容              |
+|     classify     |  array/[]   |    用户自定义标签，数组/[]    |
+|       sort       |   number    |             排序              |
+|     isSecret     |   string    | 是否为私密笔记，'1' 是 '0' 否 |
+|    createUser    |   string    |           创建者id            |
+|  createUserName  |   string    |          创建者名字           |
+| createUserAvatar | object/null |          创建者头像           |
+|    createTime    |   string    |           创建时间            |
+|    updateTime    |   string    |           更新时间            |
+|     terminal     |   string    |           操作终端            |
+|     remarks      |   string    |             备注              |
+|      isSelf      |   string    | 是否本人的笔记，'1' 是 '0' 否 |
 
 #### 返回示例
 
@@ -178,7 +176,6 @@
     ],
     "sort": 1,
     "isSecret": "1",
-    "linkStatus": "1",
     "createUser": "25dbdfb5-cd04-4fbe-8e85-da8c989b2f0b",
     "createUserName": "管理员",
     "createUserAvatar": {
@@ -211,7 +208,7 @@
 #### 简要描述
 
 - `pc | web | app | wechat` 端
-- 获取指定的笔记，如果为私密笔记只有本人可获取
+- 获取指定根节点或目标节点的笔记列表，如果为私密笔记只有本人可获取
 - 笔记没有点赞、收藏或评论
 
 #### 请求
@@ -221,18 +218,17 @@
 
 #### 参数
 
-|    参数名    |  类型  | 是否必填 |                                               说明                                               |
-| :----------: | :----: | :------: | :----------------------------------------------------------------------------------------------: |
-|    rootId    | string |    否    |                    根节点id（rootId targetId 两者传其一，targetId 权重更高）                     |
-|   targetId   | string |    否    |                   目标节点id（rootId targetId 两者传其一，targetId 权重更高）                    |
-|  relevance   | string |    否    | 除了获取所属目标节点的笔记外，是否还获取与之关联的其他笔记，仅传了 targetId 时有效 '1' 是 '0' 否 |
-|   keyword    | string |    否    |                                              关键字                                              |
-|  highlight   | string |    否    |               是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认 '0'                |
-|    pageNo    | number |    否    |                                           页码，默认 1                                           |
-|   pageSize   | number |    否    |                                        每页页数，默认 10                                         |
-|   isSecret   | string |    否    |                                  是否为私密笔记，'1' 是 '0' 否                                   |
-|   classify   | string |    否    |          自定义文章类型，单选，若为连载/连载章节分类类型建议用根节点id，其他看情况而定           |
-| showUserInfo | string |    否    |                         是否增加创建者姓名与头像 '1' 是 其他否 默认 '0'                          |
+|    参数名    |  类型  | 是否必填 |                                说明                                 |
+| :----------: | :----: | :------: | :-----------------------------------------------------------------: |
+|    rootId    | string |    否    |      根节点id（rootId targetId 两者传其一，targetId 权重更高）      |
+|   targetId   | string |    否    |     目标节点id（rootId targetId 两者传其一，targetId 权重更高）     |
+|   keyword    | string |    否    |                               关键字                                |
+|  highlight   | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认 '0' |
+|    pageNo    | number |    否    |                            页码，默认 1                             |
+|   pageSize   | number |    否    |                          每页页数，默认 10                          |
+|   isSecret   | string |    否    |                    是否为私密笔记，'1' 是 '0' 否                    |
+|   classify   | string |    否    |                         自定义标签分类的id                          |
+| showUserInfo | string |    否    |           是否增加创建者姓名与头像 '1' 是 其他否 默认 '0'           |
 
 #### 返回字段说明
 
@@ -254,7 +250,6 @@
 |      classify      |  array/[]   |      用户自定义标签，数组/[]       |
 |        sort        |   number    |                排序                |
 |      isSecret      |   string    |   是否为私密笔记，'1' 是 '0' 否    |
-|     linkStatus     |   string    | 可关联性 '1' 全关联 '0' 仅目标关联 |
 |     createUser     |   string    |              创建者id              |
 |   createUserName   |   string    |             创建者名字             |
 |  createUserAvatar  | object/null |             创建者头像             |

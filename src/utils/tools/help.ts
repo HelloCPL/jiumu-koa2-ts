@@ -142,29 +142,6 @@ export const getKey = (key: string): string => {
   return `${TOKEN.SECRET_KEY}_${key}`
 }
 
-type WordCount = {
-  characterCount: number
-  wordCount: number
-}
-/**
- * 计算指定文本的字符数和单词数
- * @param text 指定文本
- * @returns 返回字符数和单词数
- */
-export const countWordCharactersAndWords = (text?: string): WordCount => {
-  let wordCount = 0
-  let characterCount = 0
-  if (text) {
-    const noHtml = text.replace(/<[^>]*>/g, '')
-    const singleSpaces = noHtml.replace(/\s+/g, ' ').trim()
-    // 计算单词数（假设单词由空格分隔）
-    wordCount = singleSpaces.split(' ').filter((word) => word.length > 0).length
-    // 计算字符数（包括 Unicode 字符）
-    characterCount = noHtml.replace(/\s/g, '').length
-  }
-  return { characterCount, wordCount }
-}
-
 /**
  * 将多个空格替换成一个空格
  * @param text 指定文本

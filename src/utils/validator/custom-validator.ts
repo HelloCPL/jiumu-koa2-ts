@@ -275,9 +275,9 @@ function getErrorMsg(
   const v8 = name === 'isLength'
   if (v8) {
     const obj: any = options[0] || {}
-    if (obj?.min && isNumber(obj.min) && obj.min !== 1 && Number(value) < obj.min)
+    if (obj?.min && isNumber(obj.min) && obj.min !== 1 && value.length < obj.min)
       return `${key}参数长度不能小于${obj.min}`
-    if (obj?.max && isNumber(obj.max) && Number(value) > obj.max) return `${key}参数长度不能大于${obj.max}`
+    if (obj?.max && isNumber(obj.max) && value.length > obj.max) return `${key}参数长度不能大于${obj.max}`
     if (obj?.min && obj.min === 1) return key + Message.required
   }
   return key + Message.parameter
