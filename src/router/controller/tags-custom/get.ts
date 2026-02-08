@@ -86,7 +86,12 @@ export const doTagCustomListType = async (userId?: string): Promise<TagCustomTyp
     whereSQL = ' WHERE create_user = ? '
     data.push(userId)
   }
-  const sql: string = `SELECT type, COUNT(id) AS total FROM tags_custom ${whereSQL}  GROUP BY type`
+  const sql: string = `
+    SELECT 
+      type, COUNT(id) AS total 
+    FROM tags_custom 
+    ${whereSQL}  
+    GROUP BY type`
   const res = <TagCustomTypeOptions[]>await query(sql, data)
   return res.filter((item) => item && item.type).sort((a, b) => b.total - a.total)
 }

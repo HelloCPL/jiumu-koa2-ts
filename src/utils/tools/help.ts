@@ -13,7 +13,7 @@ import { imagesSuffix, videoSuffix } from './config'
 import { v1 as uuidv1, v4 as uuidv4 } from 'uuid'
 import { Context } from 'koa'
 import { TerminalType } from '@/enums'
-import { ENV } from '@/config'
+import { TOKEN } from '@/config'
 
 /**
  * 返回格式后的路径，仅返回路径，不保留参数
@@ -47,7 +47,10 @@ export function sureIsArray(arr: any): any[] {
  * 判断是否为对象，补充 lodash 不能识别数据库查询返回的数据是否为对象的问题
  */
 export function isObject2(obj: any): boolean {
-  return isPlainObject(obj) || (typeof obj === 'object' && toString.call(obj) === '[object Object]')
+  return (
+    isPlainObject(obj) ||
+    (typeof obj === 'object' && Object.prototype.toString.call(obj) === '[object Object]')
+  )
 }
 
 /**
@@ -136,30 +139,7 @@ export function getFileName(path: string, noSuffix?: boolean): string {
  * @returns 返回修饰后的 key
  */
 export const getKey = (key: string): string => {
-  return `jiumu_koa2_ts_${ENV}_${key}`
-}
-
-type WordCount = {
-  characterCount: number
-  wordCount: number
-}
-/**
- * 计算指定文本的字符数和单词数
- * @param text 指定文本
- * @returns 返回字符数和单词数
- */
-export const countWordCharactersAndWords = (text?: string): WordCount => {
-  let wordCount = 0
-  let characterCount = 0
-  if (text) {
-    const noHtml = text.replace(/<[^>]*>/g, '')
-    const singleSpaces = noHtml.replace(/\s+/g, ' ').trim()
-    // 计算单词数（假设单词由空格分隔）
-    wordCount = singleSpaces.split(' ').filter((word) => word.length > 0).length
-    // 计算字符数（包括 Unicode 字符）
-    characterCount = noHtml.replace(/\s/g, '').length
-  }
-  return { characterCount, wordCount }
+  return `${TOKEN.SECRET_KEY}_${key}`
 }
 
 /**
@@ -206,14 +186,14 @@ export function toCamelCase<T>(results: T): T {
 
 interface TreeOption {
   data: any[]
-  parentCode: any
+  parentCode?: any
   parentKey?: string
   key?: string
 }
 /**
  * 将一维数组转为树结构
  * @param option.data 任意类型数组
- * @param option.parentCode 指定父级的值
+ * @param option.parentCode? 指定父级的值
  * @param option.parentKey? 父级属性 key
  * @param option.key? 属性 key
  * @returns 返回树结构数组
@@ -234,8 +214,8 @@ export const getTree = (option: TreeOption): any[] => {
     }
     if (data[0]?.sort || data[0]?.sort === 0) {
       data.sort((a, b) => {
-        if (a.update_time > b.update_time) return 1
-        else if (a.update_time < b.update_time) return -1
+        if (a.sort > b.sort) return 1
+        else if (a.sort < b.sort) return -1
         else return 0
       })
     }
@@ -289,7 +269,7 @@ export const toParse = (text: string): ObjectAny | null => {
  */
 export const toStringify = (obj: any): string => {
   try {
-    if (isObject2(obj) || isObject(obj)) return JSON.stringify(obj)
+    if (isObject2(obj) || isObject(obj)) return JSON.stringify(obj, null, 2)
     return obj
   } catch (e) {
     return ''
@@ -317,13 +297,15 @@ export function stringifyStoreData(value: any): string {
  * @return 返回解析后的数据
  */
 export function parseStoreData(value: any): any {
-  if (!value) return value
+  const reg = /^-?\d+(?:\.\d*)?$/
+  if (!value || typeof value === 'object') return value
   else if (value === '__NaN__') return NaN
   else if (value === '__Null__') return null
   else if (value === '__Undefined__') return undefined
   else if (value === '__Boolean__true') return true
   else if (value === '__Boolean__false') return false
-  else if (isString(value) && value.startsWith('__Number__')) return Number(value.substring(10))
+  else if (value.startsWith('__Number__')) return Number(value.substring(10))
+  else if (reg.test(value) || value === 'false' || value === 'true') return value
   const obj = toParse(value)
   if (obj) return obj
   return value

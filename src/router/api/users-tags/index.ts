@@ -43,7 +43,11 @@ export default class API {
     path: 'get/alltag/byuserid',
     methods: ['get', 'post']
   })
-  @Required(['userId'])
+  @Required([
+    'userId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doUserTagGetAllTagByUserId(ctx: Context) {
     await doUserTagGetAllTagByUserId(ctx)
   }
@@ -53,7 +57,11 @@ export default class API {
     path: 'get/alluser/bytagcode',
     methods: ['get', 'post']
   })
-  @Required(['tagCode'])
+  @Required([
+    'tagCode',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doUserTagGetAllUserByTagCodeConvert)
   async doUserTagGetAllUserByTagCode(ctx: Context) {
     await doUserTagGetAllUserByTagCode(ctx)

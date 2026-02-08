@@ -293,6 +293,7 @@
 |:---:|:---:|:---:|
 | id | string | 博客文章id |
 | title | string | 标题 |
+| titleUnhighlight | string | 标题（仅高亮搜索时展示的原始字段） |
 | coverImg | object/null | 封面图，文件对象/null |
 | type | string | 文章类型标签code |
 | typeLabel | string | 文章类型标签说明 |
@@ -303,6 +304,7 @@
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserNameUnhighlight | string | 创建者名字（仅高亮搜索时展示的原始字段） |
 | createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
@@ -414,6 +416,7 @@
 |:---:|:---:|:---:|
 | id | string | 博客文章id |
 | title | string | 标题 |
+| titleUnhighlight | string | 标题（仅高亮搜索时展示的原始字段） |
 | coverImg | object/null | 封面图，文件对象/null |
 | type | string | 文章类型标签code |
 | typeLabel | string | 文章类型标签说明 |
@@ -424,6 +427,7 @@
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserNameUnhighlight | string | 创建者名字（仅高亮搜索时展示的原始字段） |
 | createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |
@@ -535,6 +539,7 @@
 |:---:|:---:|:---:|
 | id | string | 博客文章id |
 | title | string | 标题 |
+| titleUnhighlight | string | 标题（仅高亮搜索时展示的原始字段） |
 | coverImg | object/null | 封面图，文件对象/null |
 | type | string | 文章类型标签code |
 | typeLabel | string | 文章类型标签说明 |
@@ -545,6 +550,7 @@
 | sort | number | 排序，值越小越前，默认1 |
 | createUser | string | 创建者id |
 | createUserName | string | 创建者名字 |
+| createUserNameUnhighlight | string | 创建者名字（仅高亮搜索时展示的原始字段） |
 | createUserAvatar | object/null | 创建者头像 |
 | createTime | string | 创建时间 |
 | updateTime | string | 更新时间 |

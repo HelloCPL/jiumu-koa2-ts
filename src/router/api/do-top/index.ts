@@ -16,7 +16,7 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['id', 'type'])
+  @Required(['id', { field: 'type', name: 'isIn', options: [['502', '503', '504', '505']] }])
   @Convert(doTopUpdateConvert)
   async doTopUpdate(ctx: Context) {
     ctx._params.isTop = '1'
@@ -28,7 +28,7 @@ export default class API {
     path: 'delete',
     methods: ['get', 'post']
   })
-  @Required(['id', 'type'])
+  @Required(['id', { field: 'type', name: 'isIn', options: [['502', '503', '504', '505']] }])
   @Convert(doTopUpdateConvert)
   async doTopUpdate2(ctx: Context) {
     ctx._params.isTop = '0'

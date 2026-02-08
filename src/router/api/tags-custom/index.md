@@ -14,11 +14,11 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| label | string | 是 | 用户自定义标签说明 |
-| sort | mediumint | 否 | 排序，值越小越前，默认1 |
-| type | string | 否 | 自定义类型，用户可通过自定义type，获取时传type以区分不同的用户自定义标签，一般由前端定义 |
+| 参数名 |   类型    | 是否必填 |                                           说明                                           |
+| :----: | :-------: | :------: | :--------------------------------------------------------------------------------------: |
+| label  |  string   |    是    |                                    用户自定义标签说明                                    |
+|  sort  | mediumint |    否    |                                 排序，值越小越前，默认1                                  |
+|  type  |  string   |    否    | 自定义类型，用户可通过自定义type，获取时传type以区分不同的用户自定义标签，一般由前端定义 |
 
 #### 返回示例
 
@@ -45,12 +45,12 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 用户自定义标签id |
-| label | string | 否 | 用户自定义标签说明 |
-| sort | mediumint | 否 | 排序，值越小越前 |
-| type | string | 否 | 自定义类型，用户可通过自定义type，获取时传type以区分不同的用户自定义标签，一般由前端定义 |
+| 参数名 |   类型    | 是否必填 |                                           说明                                           |
+| :----: | :-------: | :------: | :--------------------------------------------------------------------------------------: |
+|   id   |  string   |    是    |                                     用户自定义标签id                                     |
+| label  |  string   |    否    |                                    用户自定义标签说明                                    |
+|  sort  | mediumint |    否    |                                     排序，值越小越前                                     |
+|  type  |  string   |    否    | 自定义类型，用户可通过自定义type，获取时传type以区分不同的用户自定义标签，一般由前端定义 |
 
 #### 返回示例
 
@@ -77,9 +77,9 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 用户自定义标签id |
+| 参数名 |  类型  | 是否必填 |       说明       |
+| :----: | :----: | :------: | :--------------: |
+|   id   | string |    是    | 用户自定义标签id |
 
 #### 返回示例
 
@@ -106,10 +106,10 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| ids | string | 是 | 我的自定义标签 id 集合，多个用逗号隔开 |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '1' |
+|    参数名    |  类型  | 是否必填 |                      说明                       |
+| :----------: | :----: | :------: | :---------------------------------------------: |
+|     ids      | string |    是    |     我的自定义标签 id 集合，多个用逗号隔开      |
+| showUserInfo | string |    否    | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '1' |
 
 #### 返回字段说明
 
@@ -118,18 +118,18 @@
   `搜索相似度(label)降序`
   `sort升序、updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 自定义标签id |
-| label | string | 自定义标签描述 |
-| type | string | 自定义类型 |
-| sort | number | 排序，值越小越前 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| createUser | string | 创建用户id |
-| createUserName | string | 创建用户名称 |
-| createUserAvatar | object/null | 创建者头像 |
-| terminal | string | 操作终端 |
+|      参数名      |    类型     |       说明       |
+| :--------------: | :---------: | :--------------: |
+|        id        |   string    |   自定义标签id   |
+|      label       |   string    |  自定义标签描述  |
+|       type       |   string    |    自定义类型    |
+|       sort       |   number    | 排序，值越小越前 |
+|    createTime    |   string    |     创建时间     |
+|    updateTime    |   string    |     更新时间     |
+|    createUser    |   string    |    创建用户id    |
+|  createUserName  |   string    |   创建用户名称   |
+| createUserAvatar | object/null |    创建者头像    |
+|     terminal     |   string    |     操作终端     |
 
 #### 返回示例
 
@@ -188,10 +188,10 @@
 
 - 返回数组或[]
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| type | string | 用户自定义类型 |
-| total | number | 每个类型的标签总数 |
+| 参数名 |  类型  |        说明        |
+| :----: | :----: | :----------------: |
+|  type  | string |   用户自定义类型   |
+| total  | number | 每个类型的标签总数 |
 
 #### 返回示例
 
@@ -228,14 +228,14 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
-| keyword | string | 否 | 关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| type | string | 否 | 自定义类型，若传只会获取对应 `type` 类型的自定义标签列表 |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
+|    参数名    |  类型  | 是否必填 |                                 说明                                  |
+| :----------: | :----: | :------: | :-------------------------------------------------------------------: |
+|    pageNo    | number |    否    |                             页码，默认 1                              |
+|   pageSize   | number |    否    |                           每页页数，默认 10                           |
+|   keyword    | string |    否    |                                关键字                                 |
+|  highlight   | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+|     type     | string |    否    |       自定义类型，若传只会获取对应 `type` 类型的自定义标签列表        |
+| showUserInfo | string |    否    |            是否增加创建者姓名与头像 '1' 是 其他否 默认 '0'            |
 
 #### 返回字段说明
 
@@ -244,18 +244,19 @@
   `搜索相似度(label)降序`
   `sort升序、updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 用户自定义标签id |
-| label | string | 用户自定义标签描述 |
-| type | string | 用户自定义类型 |
-| sort | number | 排序，值越小越前 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| createUser | string | 创建用户id |
-| createUserName | string | 创建用户名称 |
-| createUserAvatar | object/null | 创建者头像 |
-| terminal | string | 操作终端 |
+|      参数名      |    类型     |                       说明                       |
+| :--------------: | :---------: | :----------------------------------------------: |
+|        id        |   string    |                 用户自定义标签id                 |
+|      label       |   string    |                用户自定义标签描述                |
+| labelUnhighlight |   string    | 用户自定义标签描述（仅高亮搜索时展示的原始字段） |
+|       type       |   string    |                  用户自定义类型                  |
+|       sort       |   number    |                 排序，值越小越前                 |
+|    createTime    |   string    |                     创建时间                     |
+|    updateTime    |   string    |                     更新时间                     |
+|    createUser    |   string    |                    创建用户id                    |
+|  createUserName  |   string    |                   创建用户名称                   |
+| createUserAvatar | object/null |                    创建者头像                    |
+|     terminal     |   string    |                     操作终端                     |
 
 #### 返回示例
 
@@ -293,18 +294,18 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| userId | string | 是 | 用户id |
+| 参数名 |  类型  | 是否必填 |  说明  |
+| :----: | :----: | :------: | :----: |
+| userId | string |    是    | 用户id |
 
 #### 返回字段说明
 
 - 返回数组或[]
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| type | string | 用户自定义类型 |
-| total | number | 每个类型的标签总数 |
+| 参数名 |  类型  |        说明        |
+| :----: | :----: | :----------------: |
+|  type  | string |   用户自定义类型   |
+| total  | number | 每个类型的标签总数 |
 
 #### 返回示例
 
@@ -338,15 +339,15 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| userId | number | 是 | 用户id  |
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
-| keyword | string | 否 | 关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| type | string | 否 | 自定义类型，若传只会获取对应 `type` 类型的自定义标签列表 |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
+|    参数名    |  类型  | 是否必填 |                                 说明                                  |
+| :----------: | :----: | :------: | :-------------------------------------------------------------------: |
+|    userId    | number |    是    |                                用户id                                 |
+|    pageNo    | number |    否    |                             页码，默认 1                              |
+|   pageSize   | number |    否    |                           每页页数，默认 10                           |
+|   keyword    | string |    否    |                                关键字                                 |
+|  highlight   | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+|     type     | string |    否    |       自定义类型，若传只会获取对应 `type` 类型的自定义标签列表        |
+| showUserInfo | string |    否    |            是否增加创建者姓名与头像 '1' 是 其他否 默认 '0'            |
 
 #### 返回字段说明
 
@@ -355,18 +356,19 @@
   `搜索相似度(label)降序`
   `sort升序、updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 用户自定义标签id |
-| label | string | 用户自定义标签描述 |
-| type | string | 用户自定义类型 |
-| sort | number | 排序，值越小越前 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| createUser | string | 创建用户id |
-| createUserName | string | 创建用户名称 |
-| createUserAvatar | object/null | 创建者头像 |
-| terminal | string | 操作终端 |
+|      参数名      |    类型     |                       说明                       |
+| :--------------: | :---------: | :----------------------------------------------: |
+|        id        |   string    |                 用户自定义标签id                 |
+|      label       |   string    |                用户自定义标签描述                |
+| labelUnhighlight |   string    | 用户自定义标签描述（仅高亮搜索时展示的原始字段） |
+|       type       |   string    |                  用户自定义类型                  |
+|       sort       |   number    |                 排序，值越小越前                 |
+|    createTime    |   string    |                     创建时间                     |
+|    updateTime    |   string    |                     更新时间                     |
+|    createUser    |   string    |                    创建用户id                    |
+|  createUserName  |   string    |                   创建用户名称                   |
+| createUserAvatar | object/null |                    创建者头像                    |
+|     terminal     |   string    |                     操作终端                     |
 
 #### 返回示例
 
@@ -410,10 +412,10 @@
 
 - 返回数组或[]
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| type | string | 用户自定义类型 |
-| total | number | 每个类型的标签总数 |
+| 参数名 |  类型  |        说明        |
+| :----: | :----: | :----------------: |
+|  type  | string |   用户自定义类型   |
+| total  | number | 每个类型的标签总数 |
 
 #### 返回示例
 
@@ -447,13 +449,13 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
-| keyword | string | 否 | 关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
+|    参数名    |  类型  | 是否必填 |                                 说明                                  |
+| :----------: | :----: | :------: | :-------------------------------------------------------------------: |
+|    pageNo    | number |    否    |                             页码，默认 1                              |
+|   pageSize   | number |    否    |                           每页页数，默认 10                           |
+|   keyword    | string |    否    |                                关键字                                 |
+|  highlight   | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+| showUserInfo | string |    否    |            是否增加创建者姓名与头像 '1' 是 其他否 默认 '0'            |
 
 #### 返回字段说明
 
@@ -462,19 +464,19 @@
   `搜索相似度(label)降序`
   `sort升序、updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 用户自定义标签id |
-| label | string | 用户自定义标签描述 |
-| type | string | 用户自定义类型 |
-| sort | number | 排序，值越小越前 |
-| isSelf | string | 是否我的标签 '1' 是 '0' 否 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| createUser | string | 创建用户id |
-| createUserName | string | 创建用户名称 |
-| createUserAvatar | object/null | 创建者头像 |
-| terminal | string | 操作终端 |
+|      参数名      |    类型     |            说明            |
+| :--------------: | :---------: | :------------------------: |
+|        id        |   string    |      用户自定义标签id      |
+|      label       |   string    |     用户自定义标签描述     |
+|       type       |   string    |       用户自定义类型       |
+|       sort       |   number    |      排序，值越小越前      |
+|      isSelf      |   string    | 是否我的标签 '1' 是 '0' 否 |
+|    createTime    |   string    |          创建时间          |
+|    updateTime    |   string    |          更新时间          |
+|    createUser    |   string    |         创建用户id         |
+|  createUserName  |   string    |        创建用户名称        |
+| createUserAvatar | object/null |         创建者头像         |
+|     terminal     |   string    |          操作终端          |
 
 #### 返回示例
 

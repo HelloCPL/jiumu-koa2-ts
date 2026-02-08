@@ -34,7 +34,7 @@ function createConfig(): ConfigOptions {
     },
     TOKEN: {
       // token 信息配置
-      SECRET_KEY: 'dev_jiumu', // key
+      SECRET_KEY: 'jiumu_dev', // key
       VALID_TIME: 60 * 60 * 24 * 7, // token 有效期7天
       REFRESH_VALID_TIME: 60 * 60 * 24 * 15 // tokenRefresh 有效期15天
     },
@@ -57,11 +57,11 @@ function createConfig(): ConfigOptions {
     CRYPTOJS_IV: '', // crypto-js 加密字符
     MAX_FIELDS_SIZE: 20 * 1024 * 1024, // 静态资源上传最大文件大小 默认20m 注意：切片上传不受限制
     FILE_VAILD_TIME: 7 * 24 * 60 * 60 * 1000, // 非公开静态资源链接有效期7天
-    IS_VERIFY_TOKEN_BY_REDIS: false, // 是否使用redis在线校验token信息 为false时将不校验IS_ALLOW_MULTIPLE_LOGIN条件
+    IS_VERIFY_TOKEN_BY_REDIS: true, // 是否使用redis在线校验token信息 为false时将不校验IS_ALLOW_MULTIPLE_LOGIN条件
     IS_ALLOW_MULTIPLE_LOGIN: true, // 同一账号是否允许在不同设备不同平台（如浏览器）同时登录
     IS_VERIFY_API_PERMISSION: false, // 是否校验非公开api的用户请求权限
     IS_VERIFY_STATIC_PERMISSION: true, // 是否校验非公开静态资源文件的请求权限
-    IS_PRINT_LOG: true, // 是否在终端打印请求的普通日志信息
+    IS_PRINT_LOG: false, // 是否在终端打印请求的普通日志信息
     IS_SHOW_MDAPI: true // 是否提供mdapi文档接口
   }
 

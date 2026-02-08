@@ -21,7 +21,7 @@ export class Timeout {
     Times.push(this)
   }
 
-  set(cb: Function, t?: number) {
+  set(cb: (...arg: any[]) => void, t?: number) {
     this.clear()
     this.timeId = setTimeout(cb, t || this.time)
   }

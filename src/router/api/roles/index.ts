@@ -11,6 +11,8 @@ import { doRoleAdd } from '@/router/controller/roles/add'
 import { doRoleUpdate } from '@/router/controller/roles/update'
 import { doRoleDelete } from '@/router/controller/roles/delete'
 import { doRoleGetOne, doRoleGetAllSelf, doRoleGetList } from '@/router/controller/roles/get'
+import { doRoleExport } from '@/router/controller/roles/exports'
+import { doRoleImport } from '@/router/controller/roles/imports'
 
 @Prefix('role')
 export default class API {
@@ -19,7 +21,12 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['code', 'label'])
+  @Required([
+    { field: 'code', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'label', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doRoleAddConvert)
   async doRoleAdd(ctx: Context) {
     await doRoleAdd(ctx)
@@ -30,7 +37,13 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'code', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'label', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doRoleUpdateConvert)
   async doRoleUpdate(ctx: Context) {
     await doRoleUpdate(ctx)
@@ -62,6 +75,10 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRoleGetAllSelf(ctx: Context) {
     await doRoleGetAllSelf(ctx)
   }
@@ -71,7 +88,30 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRoleGetList(ctx: Context) {
     await doRoleGetList(ctx)
+  }
+
+  // 7 导出角色数据
+  @Request({
+    path: 'export',
+    methods: ['get', 'post']
+  })
+  @Required(['ids'])
+  async doRoleExport(ctx: Context) {
+    await doRoleExport(ctx)
+  }
+
+  // 8 导入角色数据
+  @Request({
+    path: 'import',
+    methods: ['post']
+  })
+  async doRoleImport(ctx: Context) {
+    await doRoleImport(ctx)
   }
 }

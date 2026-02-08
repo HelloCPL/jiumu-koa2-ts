@@ -44,7 +44,11 @@ export default class API {
     path: 'get/allmenu/byroleid',
     methods: ['get', 'post']
   })
-  @Required(['roleId'])
+  @Required([
+    'roleId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRoleMenugetAllMenuByRoleId(ctx: Context) {
     await doRoleMenugetAllMenuByRoleId(ctx)
   }
@@ -54,7 +58,11 @@ export default class API {
     path: 'get/allrole/bymenuid',
     methods: ['get', 'post']
   })
-  @Required(['menuId'])
+  @Required([
+    'menuId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRoleMenuGetAllRoleByMenuId(ctx: Context) {
     await doRoleMenuGetAllRoleByMenuId(ctx)
   }
@@ -64,7 +72,11 @@ export default class API {
     path: 'get/allmenu/byuserid',
     methods: ['get', 'post']
   })
-  @Required(['userId'])
+  @Required([
+    'userId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRoleMenugetAllMenuByUserId(ctx: Context) {
     await doRoleMenugetAllMenuByUserId(ctx)
   }
@@ -74,7 +86,11 @@ export default class API {
     path: 'get/alluser/bymenuid',
     methods: ['get', 'post']
   })
-  @Required(['menuId'])
+  @Required([
+    'menuId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doRoleMenuGetAllUserByMenuId(ctx: Context) {
     await doRoleMenuGetAllUserByMenuId(ctx)
   }

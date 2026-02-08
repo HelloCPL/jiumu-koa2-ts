@@ -8,7 +8,7 @@ import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
 import { query } from '@/db'
 import { encrypt } from '@/utils/crypto'
-import { handleDoubleToken } from './register'
+import { handleDoubleToken } from './utils'
 
 /**
  * 修改本用户账号

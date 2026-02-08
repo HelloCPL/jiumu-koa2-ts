@@ -12,11 +12,14 @@ import { isExist } from '../convert'
 
 /**
  * 新增时
+ * 判断用户-角色关联是否已存在
  * 判断用户是否不存在
  * 判断角色是否不存在
- * 判断用户-角色关联是否已存在
  */
 export const doUserRoleAddConvert = async (ctx: Context, next: Next) => {
+  // 判断用户-角色关联是否已存在
+  const flag = await _isExist(ctx)
+  if (flag) throw new Success()
   //  判断用户是否不存在
   await isExist({
     table: 'users',
@@ -31,9 +34,6 @@ export const doUserRoleAddConvert = async (ctx: Context, next: Next) => {
     throwType: false,
     message: Message.unexistRole
   })
-  // 判断用户-角色关联是否已存在
-  const flag = await _isExist(ctx)
-  if (flag) throw new Success()
   await next()
 }
 

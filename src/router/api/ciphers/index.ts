@@ -23,7 +23,13 @@ export default class API {
     path: 'add',
     methods: ['post']
   })
-  @Required(['title', 'account', 'cipher', 'type'])
+  @Required([
+    { field: 'title', name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'account', name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'cipher', name: 'isLength', options: [{ min: 1, max: 255 }] },
+    'type',
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doCipherAddConvert)
   async doCipherAdd(ctx: Context) {
     await doCipherAdd(ctx)
@@ -34,7 +40,13 @@ export default class API {
     path: 'update',
     methods: ['post']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'title', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'account', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'cipher', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doCipherDeleteConvert, doCipherUpdateConvert)
   async doCipherUpdate(ctx: Context) {
     await doCipherUpdate(ctx)
@@ -66,6 +78,10 @@ export default class API {
     path: 'get/list/self',
     methods: ['post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doCipherGetListSelf(ctx: Context) {
     await doCipherGetListSelf(ctx)
   }

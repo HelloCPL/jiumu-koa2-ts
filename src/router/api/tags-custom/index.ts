@@ -23,7 +23,10 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['label'])
+  @Required([
+    { field: 'label', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doTagCustomAddConvert)
   async doTagCustomAdd(ctx: Context) {
     await doTagCustomAdd(ctx)
@@ -34,7 +37,11 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'label', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   @Convert(doTagCustomUpdateConvert)
   async doTagCustomUpdate(ctx: Context) {
     await doTagCustomUpdate(ctx)
@@ -76,6 +83,10 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async getTagCustomGetListSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
     await getTagCustomGetList(ctx)
@@ -86,7 +97,11 @@ export default class API {
     path: 'get/list/type/byuserid',
     methods: ['get', 'post']
   })
-  @Required(['userId'])
+  @Required([
+    'userId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async getTagCustomGetListTypeByUserId(ctx: Context) {
     await getTagCustomGetListType(ctx)
   }
@@ -106,19 +121,23 @@ export default class API {
   //   path: 'get/list/type',
   //   methods: ['get', 'post']
   // })
+  // @Required([
+  //   { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+  //   { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  // ])
   // async getTagCustomGetListType(ctx: Context) {
   //   ctx._params.userId = null
   //   await getTagCustomGetListType(ctx, )
   // }
 
   // 10 获取所有自定义标签列表
-  @Request({
-    path: 'get/list',
-    methods: ['get', 'post']
-  })
-  async getTagCustomGetList(ctx: Context) {
-    ctx._params.userId = null
-    ctx._params.type = null
-    await getTagCustomGetList(ctx)
-  }
+  // @Request({
+  //   path: 'get/list',
+  //   methods: ['get', 'post']
+  // })
+  // async getTagCustomGetList(ctx: Context) {
+  //   ctx._params.userId = null
+  //   ctx._params.type = null
+  //   await getTagCustomGetList(ctx)
+  // }
 }

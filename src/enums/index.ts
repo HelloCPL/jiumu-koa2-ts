@@ -16,7 +16,8 @@ export enum Message {
   success = '操作成功',
   error = '服务器发生错误',
   parameter = '参数错误',
-  notFound = '资源不存在',
+  required = '参数必填',
+  notFound = '资源未找到',
   forbidden = '权限不足',
   forbiddenApi = '权限不足：用户没有此接口的请求权限',
   authFailed = '授权失败',
@@ -25,6 +26,8 @@ export enum Message {
   authRefresh = '令牌已过期，请重新刷新',
   unknown = '未知错误',
 
+  forbiddenEdit = '权限不足，不可修改',
+  forbiddenSuper = '权限不足，仅管理员可修改',
   lockedAuth = '资源受保护，无权限查看',
   lockedTime = '资源受保护，链接已过期',
 
@@ -86,9 +89,13 @@ export enum Message {
   unexistNoteLink = '笔记关联标识不存在',
   errorNoteLinkSelf = '笔记自身不可关联',
   errorNoteLink = '笔记不可关联',
-  existCipherCode = '秘钥已存在',
-  unexistCipherCode = '秘钥不存在',
-  errorCipherCode = '秘钥不正确',
+  existCipherCode = '口令code已存在',
+  unexistCipherCode = '口令code不存在',
+  errorCipherFormat = '口令格式错误',
+  errorCipherCode = '口令code不正确',
+  errorCipherCodeNotEqual = '旧口令code不正确',
+  errorCipherCodeEqual = '新口令code与旧口令code不能相同',
+  errorCipherCodeFormat = '口令code格式错误',
   unexistCipher = '口令不存在',
 
   relevantHasChildren = '有子级关联，请解除子级关联后再操作',
@@ -137,7 +144,9 @@ export enum MessageParameter {
 
 export type MessageParameterType = keyof typeof MessageParameter
 
-// 终端类型枚举
+/**
+ * 终端类型枚举
+ */
 export enum Terminal {
   'pc' = '管理端',
   'web' = '桌面端',
@@ -147,7 +156,9 @@ export enum Terminal {
 
 export type TerminalType = keyof typeof Terminal
 
-// 可请求类型枚举
+/**
+ * 可请求类型枚举
+ */
 export enum Methods {
   'get' = 'get',
   'post' = 'post',

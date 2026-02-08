@@ -1,4 +1,4 @@
-/*
+/**
  * 文件操作相关方法
  */
 
@@ -10,29 +10,31 @@ import zlib from 'zlib'
 import { isArray } from 'lodash'
 import { getFileName, getSuffix, getUuId } from '../tools'
 
-/*
+/**
  * 获取路径
- * 相对于 jiumu-koa2-ts-static
+ * 相对于 STATIC_URL
  */
 export function getPath(...p: string[]): string {
   return path.join(STATIC_URL, ...p)
 }
 
-/*
+/**
  * 读取路径信息 异步
  * @param dir 路径
  * @returns 存在返回信息；不存在返回 Promise<false>
  */
 export function fsStat(dir: string): Promise<Stats | false> {
   return new Promise((resolve) => {
-    fs.stat(dir, (err: any, stats: Stats) => {
-      if (err) resolve(false)
-      else resolve(stats)
+    fs.stat(dir, (err: NodeJS.ErrnoException | null, stats: Stats) => {
+      if (err) {
+        console.warn('warn in fsStat:', err)
+        resolve(false)
+      } else resolve(stats)
     })
   })
 }
 
-/*
+/**
  * 读取路径信息 同步
  * @param dir 路径
  * @returns 存在返回信息； 不存在返回 false
@@ -40,40 +42,44 @@ export function fsStat(dir: string): Promise<Stats | false> {
 export function fsStatSync(dir: string): Stats | false {
   try {
     return fs.statSync(dir)
-  } catch (e) {
+  } catch (err) {
+    console.warn('Unexpected warn in fsStatSync:', err)
     return false
   }
 }
 
-/*
+/**
  * 创建目录 异步
  * @param dir 路径
  * @returns 返回 Promise<boolean>
  */
 export function fsMkdir(dir: string): Promise<boolean> {
   return new Promise((resolve) => {
-    fs.mkdir(dir, (err: any) => {
-      if (err) resolve(false)
-      else resolve(true)
+    fs.mkdir(dir, { recursive: true }, (err: NodeJS.ErrnoException | null) => {
+      if (err) {
+        console.warn('warn in fsMkdir:', err)
+        resolve(false)
+      } else resolve(true)
     })
   })
 }
 
-/*
+/**
  * 创建目录 同步
  * @param dir 路径
  * @returns 返回 boolean
  */
 export function fsMkdirSync(dir: string): boolean {
   try {
-    fs.mkdirSync(dir)
+    fs.mkdirSync(dir, { recursive: true })
     return true
-  } catch (e) {
+  } catch (err) {
+    console.warn('Unexpected warn in fsMkdirSync:', err)
     return false
   }
 }
 
-/*
+/**
  * 判断是否为目录或文件 异步
  * @param dir 路径
  * @returns 返回 Promise<1> 目录 Promise<0> 文件 Promise<-1> 不存在
@@ -85,7 +91,7 @@ export async function judgeDir(dir: string): Promise<1 | 0 | -1> {
   return -1
 }
 
-/*
+/**
  * 判断是否为目录或文件 同步
  * @param dir 路径
  * @returns 返回 1 目录 0 文件 -1 不存在
@@ -96,12 +102,13 @@ export function judgeDirSync(dir: string): 1 | 0 | -1 {
     if (isExist && isExist.isDirectory()) return 1
     else if (isExist && isExist.isFile()) return 0
     else return -1
-  } catch (e) {
+  } catch (err) {
+    console.warn('Unexpected warn in judgeDirSync:', err)
     return -1
   }
 }
 
-/*
+/**
  * 判断目录是否存在，不存在则创建目录 异步
  * @param dir 路径
  * @returns 返回是否创建成功 Promise<boolean>
@@ -111,17 +118,10 @@ export async function sureIsDir(dir: string): Promise<boolean> {
   // 目录存在返回true
   if (type === 1) return true
   else if (type === 0) return false
-  // 路径不存在则拿上级路径
-  const tempDir = path.parse(dir).dir
-  const status = await sureIsDir(tempDir)
-  let mkdirStatus = false
-  if (status) {
-    mkdirStatus = await fsMkdir(dir)
-  }
-  return mkdirStatus
+  return await fsMkdir(dir)
 }
 
-/*
+/**
  * 判断目录是否存在，不存在则创建目录 同步
  * @param dir 路径
  * @returns 返回是否创建成功 boolean
@@ -130,29 +130,44 @@ export function sureIsDirSync(dir: string): boolean {
   const type = judgeDirSync(dir)
   if (type === 1) return true
   else if (type === 0) return false
-  const tempDir = path.parse(dir).dir
-  const status = sureIsDirSync(tempDir)
-  let mkdirStatus = false
-  if (status) {
-    mkdirStatus = fsMkdirSync(dir)
-  }
-  return mkdirStatus
+  return fsMkdirSync(dir)
 }
 
-/*
+/**
  * 接收一个文件对象，创建一个相同的文件 异步
  * @param file 文件对象
  * @param dir 文件存放位置
  * @param fileName 指定文件名
  */
-export async function createFile(file: File, dir: string, fileName: string) {
+export function createFile(file: File, dir: string, fileName: string): Promise<boolean> {
   // 保证目录存在
-  await sureIsDir(dir)
-  // 创建可读流
-  const reader: ReadStream = fs.createReadStream(file.path)
-  const savePath = path.join(dir, fileName)
-  const writeStream: WriteStream = fs.createWriteStream(savePath)
-  reader.pipe(writeStream)
+  return new Promise((resolve) => {
+    try {
+      if (!sureIsDirSync(dir)) {
+        resolve(false)
+        return
+      }
+      const savePath = path.join(dir, fileName)
+      // 创建可读流
+      const reader: ReadStream = fs.createReadStream(file.path)
+      const writeStream: WriteStream = fs.createWriteStream(savePath)
+      reader.on('error', (err: NodeJS.ErrnoException | null) => {
+        console.warn('warn in createFile read stream:', err)
+        resolve(false)
+      })
+      writeStream.on('error', (err: NodeJS.ErrnoException | null) => {
+        console.warn('warn in createFile write stream:', err)
+        resolve(false)
+      })
+      writeStream.on('finish', () => {
+        resolve(true)
+      })
+      reader.pipe(writeStream)
+    } catch (err) {
+      console.warn('Unexpected warn in createFile:', err)
+      resolve(false)
+    }
+  })
 }
 
 /**
@@ -166,11 +181,16 @@ export async function copyFile(originPath: string, targetDir: string, filename: 
   return new Promise((resolve) => {
     const code = judgeDirSync(originPath)
     if (code === 0) {
-      sureIsDirSync(targetDir)
+      if (!sureIsDirSync(targetDir)) {
+        resolve(false)
+        return
+      }
       const targetFile = path.join(targetDir, filename)
-      fs.copyFile(originPath, targetFile, (err) => {
-        if (err) resolve(false)
-        else resolve(true)
+      fs.copyFile(originPath, targetFile, (err: NodeJS.ErrnoException | null) => {
+        if (err) {
+          console.warn('warn in copyFile:', err)
+          resolve(false)
+        } else resolve(true)
       })
     } else {
       resolve(false)
@@ -178,29 +198,46 @@ export async function copyFile(originPath: string, targetDir: string, filename: 
   })
 }
 
-/*
+/**
  * 删除文件 异步
  * @param filePath 文件路径
  */
-export async function deleteFile(filePath: string) {
-  const type = await judgeDir(filePath)
-  if (type === 0) {
-    fs.unlink(filePath, () => {})
-  }
+export async function deleteFile(filePath: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const type = judgeDirSync(filePath)
+    if (type === 0) {
+      fs.unlink(filePath, (err: NodeJS.ErrnoException | null) => {
+        if (err) {
+          console.warn('warn in deleteFile:', err)
+          resolve(false)
+        } else resolve(true)
+      })
+    } else {
+      resolve(true)
+    }
+  })
 }
 
-/*
+/**
  * 删除文件 同步
  * @param filePath 文件路径
  */
-export function deleteFileSync(filePath: string) {
+export function deleteFileSync(filePath: string): boolean {
   const type = judgeDirSync(filePath)
   if (type === 0) {
-    fs.unlinkSync(filePath)
+    try {
+      fs.unlinkSync(filePath)
+      return true
+    } catch (err) {
+      console.warn('Unexpected warn in deleteFileSync:', err)
+      return false
+    }
+  } else {
+    return true
   }
 }
 
-/*
+/**
  * !!! 慎用 !!!
  * 删除目录及下所有目录/文件
  * 或删除文件 同步
@@ -213,13 +250,13 @@ export function Danger_deleteDirSync(dir: string) {
     files.forEach((file) => {
       const dir2 = path.resolve(dir, file)
       const type2 = judgeDirSync(dir2)
-      if (type2 === 1) {
-        Danger_deleteDirSync(dir2)
-      } else if (type2 === 0) {
-        deleteFileSync(dir2)
-      }
+      if (type2 !== -1) Danger_deleteDirSync(dir2)
     })
-    fs.rmdirSync(dir)
+    try {
+      fs.rmdirSync(dir)
+    } catch (err) {
+      console.warn('Unexpected warn in Danger_deleteDirSync:', err)
+    }
   } else if (type === 0) {
     deleteFileSync(dir)
   }
@@ -229,33 +266,33 @@ export function Danger_deleteDirSync(dir: string) {
  * 获取指定目录下的所有文件 异步
  * @param dir 指定目录
  * @param suffix 指定要获取的后缀，不传默认所有类型文件
- * @returns Promise<string[] | null> 返回文件列表或null
+ * @returns Promise<string[]> 返回文件列表
  */
-export function readDir(dir: string, suffix?: string): Promise<string[] | null> {
+export function readDir(dir: string, suffix?: string): Promise<string[]> {
   return new Promise((resolve) => {
-    judgeDir(dir).then((status) => {
-      if (status === 1) {
-        fs.readdir(dir, (err, files) => {
-          if (!err && isArray(files)) {
-            const result = files
-              .filter((value) => {
-                const flag = judgeDirSync(path.join(dir, value)) === 0
-                if (suffix && suffix.includes('.')) {
-                  return flag && value.endsWith(suffix)
-                } else {
-                  return flag
-                }
-              })
-              .map((value) => path.join(dir, value))
-            resolve(result)
-          } else {
-            resolve(null)
-          }
-        })
-      } else {
-        resolve(null)
-      }
-    })
+    const status = judgeDirSync(dir)
+    if (status === 1) {
+      fs.readdir(dir, (err: NodeJS.ErrnoException | null, files) => {
+        if (!err && isArray(files)) {
+          const result = files
+            .filter((value) => {
+              const flag = judgeDirSync(path.join(dir, value)) === 0
+              if (suffix) {
+                const targetSuffix = suffix?.startsWith('.') ? suffix : '.' + suffix
+                return flag && value.endsWith(targetSuffix)
+              } else {
+                return flag
+              }
+            })
+            .map((value) => path.join(dir, value))
+          resolve(result)
+        } else {
+          resolve([])
+        }
+      })
+    } else {
+      resolve([])
+    }
   })
 }
 
@@ -263,30 +300,31 @@ export function readDir(dir: string, suffix?: string): Promise<string[] | null> 
  * 获取指定目录下的所有文件 同步
  * @param dir 指定目录
  * @param suffix 指定要获取的后缀，不传默认所有类型文件
- * @param recursion 是否递归遍历
- * @returns string[] | null 返回文件列表或null
+ * @param recursive 是否递归遍历
+ * @returns string[] 返回文件列表
  */
-export function readDirSync(dir: string, suffix?: string, recursion?: boolean): string[] | null {
+export function readDirSync(dir: string, suffix?: string, recursive?: boolean): string[] {
   const result: string[] = []
-  const _read = (result: string[], dir: string) => {
+  const _read = (dir: string) => {
     const files = fs.readdirSync(dir)
     files.forEach((value: string) => {
       const newDir = path.resolve(dir, value)
       const code = judgeDirSync(newDir)
       if (code === 0) {
-        if (suffix && value.includes('.')) {
-          if (value.endsWith(suffix)) result.push(newDir)
+        if (suffix) {
+          const targetSuffix = suffix?.startsWith('.') ? suffix : '.' + suffix
+          if (value.endsWith(targetSuffix)) result.push(newDir)
         } else {
           result.push(newDir)
         }
-      } else if (code === 1 && recursion) {
-        _read(result, newDir)
+      } else if (code === 1 && recursive) {
+        _read(newDir)
       }
     })
   }
   const status = judgeDirSync(dir)
   if (status === 1) {
-    _read(result, dir)
+    _read(dir)
   }
   return result
 }
@@ -300,13 +338,15 @@ export function readDirSync(dir: string, suffix?: string, recursion?: boolean): 
  */
 export function readFile(filePath: string, encoding: BufferEncoding = 'utf8', max = 1): Promise<string> {
   return new Promise((resolve) => {
-    fs.readFile(filePath, encoding, (err, data) => {
-      let content = data
-      if (err) content = ''
-      if (!content && max < 1) {
-        readFile(filePath, encoding, max - 1).then((content) => resolve(content))
+    fs.readFile(filePath, encoding, (err: NodeJS.ErrnoException | null, data) => {
+      if (err) {
+        if (max > 1) {
+          readFile(filePath, encoding, max - 1).then(resolve)
+        } else {
+          resolve('')
+        }
       } else {
-        resolve(content)
+        resolve(data)
       }
     })
   })
@@ -320,16 +360,14 @@ export function readFile(filePath: string, encoding: BufferEncoding = 'utf8', ma
  * @returns string 返回文件内容
  */
 export function readFileSync(filePath: string, encoding: BufferEncoding = 'utf8', max = 1): string {
-  let content = ''
   try {
-    content = fs.readFileSync(filePath, encoding)
-  } catch (e) {
-    console.warn(e)
+    const content = fs.readFileSync(filePath, encoding)
+    return content
+  } catch (err) {
+    console.warn('Unexpected warn in readFileSync:', err)
+    if (max > 1) return readFileSync(filePath, encoding, max - 1)
+    return ''
   }
-  if (!content && max < 1) {
-    return readFileSync(filePath, encoding, max - 1)
-  }
-  return content
 }
 
 /**
@@ -341,10 +379,9 @@ export function readFileSync(filePath: string, encoding: BufferEncoding = 'utf8'
  */
 export function writeFile(filePath: string, data: any, encoding: BufferEncoding = 'utf8'): Promise<boolean> {
   return new Promise((resolve) => {
-    fs.writeFile(filePath, data, encoding, (err) => {
-      const code = judgeDirSync(filePath)
-      if (err || code !== 0) resolve(false)
-      else resolve(true)
+    fs.writeFile(filePath, data, encoding, (err: NodeJS.ErrnoException | null) => {
+      if (err) resolve(false)
+      else resolve(judgeDirSync(filePath) === 0)
     })
   })
 }
@@ -358,14 +395,12 @@ export function writeFile(filePath: string, data: any, encoding: BufferEncoding 
  */
 export function writeFileSync(filePath: string, data: any, encoding: BufferEncoding = 'utf8'): boolean {
   try {
-    const o = path.resolve(filePath, '..')
-    sureIsDirSync(o)
+    const dir = path.resolve(filePath, '..')
+    sureIsDirSync(dir)
     fs.writeFileSync(filePath, data, encoding)
-    const code = judgeDirSync(filePath)
-    if (code === 0) return true
-    return false
-  } catch (e) {
-    console.warn(e)
+    return judgeDirSync(filePath) === 0
+  } catch (err) {
+    console.warn('Unexpected warn in writeFileSync:', err)
     return false
   }
 }
@@ -378,25 +413,34 @@ export function writeFileSync(filePath: string, data: any, encoding: BufferEncod
  */
 export function unzip(originPath: string, targetPath: string): Promise<boolean> {
   return new Promise((resolve) => {
-    const o = path.resolve(originPath, '..')
-    const t = path.resolve(targetPath, '..')
-    sureIsDirSync(o)
-    sureIsDirSync(t)
-    const gunzip = zlib.createGunzip()
-    const rs = fs.createReadStream(originPath)
-    const ws = fs.createWriteStream(targetPath)
-    rs.pipe(gunzip).pipe(ws)
-    rs.on('end', () => {
-      const code = judgeDirSync(targetPath)
-      if (code !== -1) resolve(true)
-      else resolve(false)
-    })
-    rs.on('error', () => {
+    try {
+      const o = path.resolve(originPath, '..')
+      const t = path.resolve(targetPath, '..')
+      sureIsDirSync(o)
+      sureIsDirSync(t)
+      const gunzip = zlib.createGunzip()
+      const readStream = fs.createReadStream(originPath)
+      const writeStream = fs.createWriteStream(targetPath)
+      readStream.pipe(gunzip).pipe(writeStream)
+      writeStream.on('finish', () => {
+        resolve(judgeDirSync(targetPath) !== -1)
+      })
+      readStream.on('error', (err: NodeJS.ErrnoException | null) => {
+        console.warn('warn in unzip read stream:', err)
+        resolve(false)
+      })
+      writeStream.on('error', (err: NodeJS.ErrnoException | null) => {
+        console.warn('warn in unzip write stream:', err)
+        resolve(false)
+      })
+      gunzip.on('error', (err: NodeJS.ErrnoException | null) => {
+        console.warn('warn in unzip gunzip:', err)
+        resolve(false)
+      })
+    } catch (err) {
+      console.warn('Unexpected warn in unzip:', err)
       resolve(false)
-    })
-    gunzip.on('error', () => {
-      resolve(false)
-    })
+    }
   })
 }
 
@@ -408,21 +452,36 @@ export function unzip(originPath: string, targetPath: string): Promise<boolean> 
  */
 export function zip(originPath: string, targetPath: string): Promise<boolean> {
   return new Promise((resolve) => {
-    const o = path.resolve(originPath, '..')
-    const t = path.resolve(targetPath, '..')
-    sureIsDirSync(o)
-    sureIsDirSync(t)
-    fs.createReadStream(originPath)
-      .pipe(zlib.createGzip())
-      .pipe(fs.createWriteStream(targetPath))
-      .on('finish', () => {
-        const code = judgeDirSync(targetPath)
-        if (code !== -1) resolve(true)
-        else resolve(false)
+    try {
+      const o = path.resolve(originPath, '..')
+      const t = path.resolve(targetPath, '..')
+      sureIsDirSync(o)
+      sureIsDirSync(t)
+      const gzip = zlib.createGzip()
+      const readStream = fs.createReadStream(originPath)
+      const writeStream = fs.createWriteStream(targetPath)
+
+      readStream.pipe(gzip).pipe(writeStream)
+
+      writeStream.on('finish', () => {
+        resolve(judgeDirSync(targetPath) !== -1)
       })
-      .on('error', () => {
+      readStream.on('error', (err: NodeJS.ErrnoException | null) => {
+        console.warn('warn in zip read stream:', err)
         resolve(false)
       })
+      writeStream.on('error', (err: NodeJS.ErrnoException | null) => {
+        console.warn('warn in unzip write stream:', err)
+        resolve(false)
+      })
+      gzip.on('error', (err: NodeJS.ErrnoException | null) => {
+        console.warn('warn in zip gzip:', err)
+        resolve(false)
+      })
+    } catch (err) {
+      console.warn('Unexpected warn in zip:', err)
+      resolve(false)
+    }
   })
 }
 
@@ -435,18 +494,16 @@ export function zip(originPath: string, targetPath: string): Promise<boolean> {
  */
 export function rename(originPath: string, targetPath: string): Promise<boolean> {
   return new Promise((resolve) => {
-    judgeDir(originPath).then((code1) => {
-      judgeDir(targetPath).then((code2) => {
-        if (code1 === 0 && code2 !== 0) {
-          fs.rename(originPath, targetPath, (err) => {
-            if (!err) resolve(true)
-            else resolve(false)
-          })
-        } else {
-          resolve(false)
-        }
+    const code1 = judgeDirSync(originPath)
+    const code2 = judgeDirSync(targetPath)
+    if (code1 === 0 && code2 !== 0) {
+      fs.rename(originPath, targetPath, (err: NodeJS.ErrnoException | null) => {
+        if (!err) resolve(true)
+        else resolve(false)
       })
-    })
+    } else {
+      resolve(false)
+    }
   })
 }
 
@@ -458,11 +515,18 @@ export function rename(originPath: string, targetPath: string): Promise<boolean>
  * @returns boolean 返回是否重命名成功
  */
 export function renameSync(originPath: string, targetPath: string): boolean {
-  if (judgeDirSync(originPath) === 0 && judgeDirSync(targetPath) !== 0) {
-    fs.renameSync(originPath, targetPath)
-    if (judgeDirSync(targetPath) === 0) return true
+  try {
+    const code1 = judgeDirSync(originPath)
+    const code2 = judgeDirSync(targetPath)
+
+    if (code1 === 0 && code2 !== 0) {
+      fs.renameSync(originPath, targetPath)
+      return judgeDirSync(targetPath) === 0
+    }
+    return false
+  } catch {
+    return false
   }
-  return false
 }
 
 /**
@@ -485,6 +549,7 @@ export function sureFileNameUnique(filePath: string): string {
     const p = path.resolve(fileBase, `${fileName}(${index}).${suffix}`)
     if (judgeDirSync(p) !== 0) {
       newPath = p
+      break
     }
     index++
   } while (!newPath && index < 100)

@@ -12,6 +12,8 @@ import { doMenuUpdate } from '@/router/controller/menus/update'
 import { doMenuDelete } from '@/router/controller/menus/delete'
 import { doMenuGetOne, doMenuGetByParentCode } from '@/router/controller/menus/get'
 import { doRoleMenugetAllMenuByUserId } from '@/router/controller/roles-menus/get'
+import { doMenuExport } from '@/router/controller/menus/exports'
+import { doMenuImport } from '@/router/controller/menus/imports'
 
 @Prefix('menu')
 export default class API {
@@ -20,7 +22,12 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['code', 'label'])
+  @Required([
+    'code',
+    { field: 'label', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doMenuAddConvert)
   async doMenuAdd(ctx: Context) {
     await doMenuAdd(ctx)
@@ -31,7 +38,12 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'label', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doMenuUpdateConvert)
   async doMenuUpdate(ctx: Context) {
     await doMenuUpdate(ctx)
@@ -63,6 +75,10 @@ export default class API {
     path: 'get/all/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doMenuGetAllSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
     await doRoleMenugetAllMenuByUserId(ctx)
@@ -75,5 +91,24 @@ export default class API {
   })
   async doMenuGetByParentCode(ctx: Context) {
     await doMenuGetByParentCode(ctx)
+  }
+
+  // 7 导出菜单数据
+  @Request({
+    path: 'export',
+    methods: ['get', 'post']
+  })
+  @Required(['ids'])
+  async doMenuExport(ctx: Context) {
+    await doMenuExport(ctx)
+  }
+
+  // 8 导入菜单数据
+  @Request({
+    path: 'import',
+    methods: ['post']
+  })
+  async doMenuImport(ctx: Context) {
+    await doMenuImport(ctx)
   }
 }

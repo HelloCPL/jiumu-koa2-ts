@@ -32,7 +32,9 @@ const pool: Pool = MySQL.createPool({
 
 /**
  * 普通查询
- * 参数 sql 查询语句；data? 查询数据 字符串或数据
+ * @params sql 查询语句
+ * @params data? 查询数据
+ * @params noThrow? 是否不抛出异常
  */
 export function query(sql: string, data?: any, noThrow?: boolean): Promise<any> {
   return new Promise((resolve, reject) => {
@@ -56,7 +58,7 @@ export function query(sql: string, data?: any, noThrow?: boolean): Promise<any> 
 
 /**
  * 事务查询 按顺序查询但不依赖上一条查询结果 返回对应查询语句数量的数组
- * 参数 sqlList 查询列表 [{sql, data}, ...]
+ * @params sqlList 查询列表 [{sql, data}, ...]
  */
 export function execTrans(sqlList: SQLOptions[]): Promise<any> {
   return new Promise((resolve, reject) => {
@@ -131,7 +133,9 @@ function _handleExceTransSQLParams(reject: any, connection: PoolConnection, sqlL
   return queryArr
 }
 
-// 普通错误抛出异常
+/**
+ * 普通错误抛出异常
+ */
 function _throwError(reject: any, errorMessage: ErrorOptions) {
   loggerError.error({
     code: errorMessage.code,
@@ -149,7 +153,9 @@ function _throwError(reject: any, errorMessage: ErrorOptions) {
   )
 }
 
-// 事务查询发生错误时回滚并返回错误
+/**
+ * 事务查询发生错误时回滚并返回错误
+ */
 function _handleExceTransRollback(reject: any, connection: PoolConnection, errorMessage: ErrorOptions) {
   connection.rollback(() => {
     loggerError.error({

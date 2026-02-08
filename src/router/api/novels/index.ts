@@ -23,7 +23,16 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['name', 'introduce', 'author', 'type', 'isDraft'])
+  @Required([
+    { field: 'name', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'introduce', name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'author', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    'type',
+    { field: 'isDraft', name: 'isIn', options: [['0', '1']] },
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doNovelAddConvert)
   async doNovelAdd(ctx: Context) {
     await doNovelAdd(ctx)
@@ -34,7 +43,16 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'name', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'introduce', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'author', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'isDraft', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doNovelUpdateConvert)
   async doNovelUpdate(ctx: Context) {
     await doNovelUpdate(ctx)
@@ -67,6 +85,10 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doNovelGetListSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
     await doNovelGetList(ctx)
@@ -78,7 +100,11 @@ export default class API {
     methods: ['get', 'post'],
     unless: true
   })
-  @Required(['userId'])
+  @Required([
+    'userId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doNovelGetListByUserId(ctx: Context) {
     ctx._params.isDraft = '0'
     ctx._params.isSecret = '0'
@@ -91,6 +117,10 @@ export default class API {
     methods: ['get', 'post'],
     unless: true
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doNovelGetList(ctx: Context) {
     ctx._params.userId = null
     ctx._params.classify = null

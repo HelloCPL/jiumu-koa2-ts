@@ -54,11 +54,23 @@ export interface UserListParams {
   pageSize: number
   keyword?: string
   highlight?: string
-  simple?: string
+  simple?: BaseStatus
 }
 
 // 获取用户列表返回类型
 export interface UserListReturn {
   total: number
   data: UserOptions[]
+}
+
+// 获取双 token 参数
+export interface DoubleTokenParams {
+  userId: string
+  phone: string
+}
+
+// 获取双 token 返回类型
+export interface DoubleTokenReturn {
+  token: string
+  tokenRefresh: string
 }

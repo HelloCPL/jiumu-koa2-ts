@@ -38,5 +38,5 @@ export interface CommentFindResult {
 export interface CommentListParams {
   userId: string
   flag: 1 | 2
-  showUserInfo?: any
+  showUserInfo?: BaseStatus
 }

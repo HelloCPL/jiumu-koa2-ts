@@ -13,7 +13,7 @@ import { getOriginTagCustomByIds, getTagCustomByData } from '../tags-custom/util
  */
 export async function handleNote(datas: NoteOptions | NoteOptions[], params: NoteParams) {
   let files: FileInfoOptions[] = []
-  if (params.showUserInfo) {
+  if (params.showUserInfo === '1') {
     files = await getFileByData(datas, ['create_user_avatar'])
   }
   const tagCustoms = await getTagCustomByData(datas, ['classify'], params.userId)
@@ -26,9 +26,6 @@ export async function handleNote(datas: NoteOptions | NoteOptions[], params: Not
     // 处理创建者头像
     if (params.showUserInfo === '1' && data.create_user_avatar) {
       data.create_user_avatar = getOriginFileById(files, data.create_user_avatar)
-    }
-    if (params.showTargetRelevance === '1') {
-      data.is_target_relevance = data['is_target_relevance'] > 0 ? '1' : '0'
     }
   }
   if (isArray(datas)) {

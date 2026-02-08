@@ -16,6 +16,8 @@ import { doPermissionUpdate } from '@/router/controller/permissions/update'
 import { doPermissionDelete } from '@/router/controller/permissions/delete'
 import { doPermissionGetOne, doPermissionGetList } from '@/router/controller/permissions/get'
 import { doRolePermissiongetAllPermissionByUserId } from '@/router/controller/roles-permissions/get'
+import { doPermissionExport } from '@/router/controller/permissions/exports'
+import { doPermissionImport } from '@/router/controller/permissions/imports'
 
 @Prefix('permission')
 export default class API {
@@ -24,7 +26,13 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['code', 'label'])
+  @Required([
+    'code',
+    { field: 'label', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'href', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doPermissionAddConvert)
   async doPermissionAdd(ctx: Context) {
     await doPermissionAdd(ctx)
@@ -35,7 +43,13 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'label', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'href', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doPermissionUpdateConvert)
   async doPermissionUpdate(ctx: Context) {
     await doPermissionUpdate(ctx)
@@ -67,6 +81,10 @@ export default class API {
     path: 'get/all/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doPermissionGetAllSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
     await doRolePermissiongetAllPermissionByUserId(ctx)
@@ -77,7 +95,30 @@ export default class API {
     path: 'get/list',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doPermissionGetList(ctx: Context) {
     await doPermissionGetList(ctx)
+  }
+
+  // 7 导出权限数据
+  @Request({
+    path: 'export',
+    methods: ['get', 'post']
+  })
+  @Required(['ids'])
+  async doPermissionExport(ctx: Context) {
+    await doPermissionExport(ctx)
+  }
+
+  // 8 导入权限数据
+  @Request({
+    path: 'import',
+    methods: ['post']
+  })
+  async doPermissionImport(ctx: Context) {
+    await doPermissionImport(ctx)
   }
 }

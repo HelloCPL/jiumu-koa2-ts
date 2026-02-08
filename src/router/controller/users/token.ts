@@ -10,7 +10,7 @@
  */
 
 import { Context } from 'koa'
-import { TOKEN, IS_VERIFY_TOKEN_BY_REDIS, IS_ALLOW_MULTIPLE_LOGIN, PUBLIC_PATH } from '@/config'
+import { ENV, TOKEN, IS_VERIFY_TOKEN_BY_REDIS, IS_ALLOW_MULTIPLE_LOGIN, PUBLIC_PATH } from '@/config'
 import JWT from 'jsonwebtoken'
 import { Base64 } from 'js-base64'
 import BasicAuth from 'basic-auth'
@@ -25,12 +25,12 @@ import { query } from '@/db'
  * 生成 token
  */
 export const gernerateToken = async (ctx: Context, info: TokenParamsOptions): Promise<string> => {
-  const uuid = <string>ctx.request.header['user-agent']
+  const userAgent = ctx.request.header['user-agent'] || ''
   const payload: TokenOptions = {
     id: info.id,
     phone: info.phone,
     terminal: ctx._terminal,
-    'user-agent': uuid
+    'user-agent': userAgent
   }
   const token: string = JWT.sign(payload, TOKEN.SECRET_KEY, { expiresIn: info.validTime })
   // 保存到 redis
@@ -53,7 +53,9 @@ export const gernerateToken = async (ctx: Context, info: TokenParamsOptions): Pr
  */
 export const analysisToken = async (ctx: Context, key: string = 'token'): Promise<ExceptionOptions> => {
   const tokenOrigin = BasicAuth(ctx.req)
-  if (!tokenOrigin || !tokenOrigin.name) return { message: Message.noToken, code: Code.forbidden }
+  if (!tokenOrigin?.name) {
+    return { message: Message.noToken, code: Code.forbidden }
+  }
   // 解析 token 信息
   const token = tokenOrigin.name
   const tokenInfo: TokenOptions = <TokenOptions>JWT.decode(token)
@@ -75,16 +77,17 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
         !tokenRedisInfo ||
         tokenInfo.phone !== tokenRedisInfo.phone ||
         tokenInfo.id !== tokenRedisInfo.id
-      )
+      ) {
         return { message: Message.authLogin, code: Code.authLogin }
-      // 校验登录设备、请求路径与终端的信息是否一致
-      const uuid = <string>ctx.request.header['user-agent']
-      if (ctx._terminal !== tokenInfo.terminal || uuid !== tokenInfo['user-agent'])
-        return { message: Message.errorDevice, code: Code.forbidden }
-      // 校验是否允许多平台登录
+      }
+      // 校验登录设备、请求路径与终端的信息是否一致，其中开发环境不校验设备（浏览器调试）
+      const userAgent = ctx.request.header['user-agent'] || ''
+      if (ctx._terminal !== tokenInfo.terminal || (userAgent !== tokenInfo['user-agent'] && ENV !== 'dev')) {
+        return { message: Message.errorDevice, code: Code.authLogin }
+      }
+      // 校验token的登录设备信息与redis缓存的登录设备信息是否一致
       if (tokenInfo['user-agent'] !== tokenRedisInfo['user-agent']) {
-        if (IS_ALLOW_MULTIPLE_LOGIN) return { message: Message.errorDevice, code: Code.forbidden }
-        else return { message: Message.errorLogin, code: Code.forbidden }
+        return { message: Message.errorLogin, code: Code.authLogin }
       }
     } else if (!tokenInfo.id) {
       return { message: Message.forbidden, code: Code.forbidden }
@@ -110,9 +113,10 @@ export const analysisToken = async (ctx: Context, key: string = 'token'): Promis
 
 // 获取保存 token 的 key
 export function _getTokenKey(info: TokenSaveParamsOptions): string {
-  if (IS_ALLOW_MULTIPLE_LOGIN)
+  if (IS_ALLOW_MULTIPLE_LOGIN) {
     return `${info.id}_${PUBLIC_PATH}_${info.terminal}_${info['user-agent']}_${info.key}`
-  else return `${info.id}_${PUBLIC_PATH}_${info.terminal}_${info.key}`
+  }
+  return `${info.id}_${PUBLIC_PATH}_${info.terminal}_${info.key}`
 }
 
 /*
@@ -121,17 +125,17 @@ export function _getTokenKey(info: TokenSaveParamsOptions): string {
  * @returns 返回 token 解析后包含的信息
  */
 export function getTokenInfo(token: string): TokenOptions | null {
-  let info = null
-  if (!token) return info
-  let str = token
-  if (str.startsWith('Basic ')) {
-    str = Base64.decode(str.substr(6))
-    if (str.endsWith(':')) str = str.substring(0, str.length - 1)
+  if (!token) return null
+  let tokenStr = token
+  if (tokenStr.startsWith('Basic ')) {
+    const encodedStr = tokenStr.substring(6)
+    const decodedStr = Base64.decode(encodedStr)
+    // 移除末尾的冒号
+    tokenStr = decodedStr.endsWith(':') ? decodedStr.slice(0, -1) : decodedStr
   }
   try {
-    info = <TokenOptions>JWT.verify(str, TOKEN.SECRET_KEY)
+    return JWT.verify(tokenStr, TOKEN.SECRET_KEY) as TokenOptions
   } catch (e) {
-    info = null
+    return null
   }
-  return info
 }

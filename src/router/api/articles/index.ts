@@ -23,7 +23,16 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['title', 'content', 'contentType', 'type', 'isDraft'])
+  @Required([
+    { field: 'title', name: 'isLength', options: [{ min: 1, max: 255 }] },
+    'content',
+    'contentType',
+    'type',
+    { field: 'isDraft', name: 'isIn', options: [['0', '1']] },
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doArticleAddConvert)
   async doArticleAdd(ctx: Context) {
     await doArticleAdd(ctx)
@@ -34,7 +43,14 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'title', required: false, name: 'isLength', options: [{ min: 1, max: 255 }] },
+    { field: 'isDraft', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'isSecret', required: false, name: 'isIn', options: [['0', '1']] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doArticleDeleteConvert, doArticleUpdateConvert)
   async doArticleUpdate(ctx: Context) {
     await doArticleUpdate(ctx)
@@ -67,6 +83,10 @@ export default class API {
     path: 'get/list/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doArticleGetListSelf(ctx: Context) {
     ctx._params.userId = ctx._user.id
     await doArticleGetList(ctx)
@@ -78,7 +98,11 @@ export default class API {
     methods: ['get', 'post'],
     unless: true
   })
-  @Required(['userId'])
+  @Required([
+    'userId',
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doArticleGetListByUserId(ctx: Context) {
     ctx._params.isDraft = '0'
     ctx._params.isSecret = '0'
@@ -91,6 +115,10 @@ export default class API {
     methods: ['get', 'post'],
     unless: true
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doArticleGetList(ctx: Context) {
     ctx._params.userId = null
     ctx._params.classify = null

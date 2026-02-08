@@ -20,7 +20,7 @@ export const symbolRoutePrefix: symbol = Symbol('routePrefix')
 
 export class Route {
   // 存储修饰后的路由
-  static __DecoratedRouters: Map<RouteOptions, Function | Function[]> = new Map()
+  static __DecoratedRouters: Map<RouteOptions, Controller | Controller[]> = new Map()
   private router: Router
   private app: Koa
 
@@ -42,7 +42,6 @@ export class Route {
     require('./api/login-info/index')
     require('./api/menus/index')
     require('./api/novels-chapter/index')
-    require('./api/note-link/index')
     require('./api/note/index')
     require('./api/novels/index')
     require('./api/permissions/index')
@@ -70,9 +69,9 @@ export class Route {
     logger.info({ message: '路由注册 添加白名单；匹配路由注册' })
     for (const [config, controller] of Route.__DecoratedRouters) {
       // 处理路由中间件方法
-      const controllers: Function[] = sureIsArray(controller)
+      const controllers: Controller[] = sureIsArray(controller)
       // 自定义路由中间件 自己调整中间件顺序
-      const middleares: Function[] = [
+      const middleares: Controller[] = [
         verifyRoute // 权限校验
       ]
       controllers.unshift(...middleares)

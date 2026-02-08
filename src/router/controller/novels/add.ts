@@ -9,19 +9,11 @@ import { Success } from '@/utils/http-exception'
 import { query } from '@/db'
 import { Terminal } from '@/enums'
 import { formatDate, getUuId } from '@/utils/tools'
-import { validateRange } from '@/utils/validator'
 
 /**
  * 小说新增
  */
 export const doNovelAdd = async (ctx: Context) => {
-  const rangeResult = await validateRange(
-    [
-      { value: ctx._params.isDraft, range: ['1', '0'], default: '0' },
-      { value: ctx._params.isSecret, range: ['1', '0'], default: '0' }
-    ],
-    true
-  )
   const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
   const params = ctx._params
@@ -38,8 +30,8 @@ export const doNovelAdd = async (ctx: Context) => {
     params.classify,
     params.type,
     params.author,
-    rangeResult[0],
-    rangeResult[1],
+    params.isDraft,
+    params.isSecret,
     sort,
     ctx._user.id,
     currentTime,

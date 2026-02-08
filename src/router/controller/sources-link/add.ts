@@ -16,8 +16,11 @@ import { Context } from 'koa'
 export const doSourceLinkAdd = async (ctx: Context) => {
   const params = ctx._params
   const currentTime = formatDate(new Date())
-  const sql: string =
-    'INSERT sources_link (id, title, link, cover_img1, cover_img2, sort, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT sources_link 
+      (id, title, link, cover_img1, cover_img2, sort, create_user, create_time, update_time, terminal, remarks) 
+    VALUES 
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   const id = getUuId()
   const data = [
     id,

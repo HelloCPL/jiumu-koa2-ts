@@ -19,39 +19,17 @@ export const doNoteGetOne = async (ctx: Context) => {
   })
   throw new Success({ data })
 }
-
-/**
- * 获取笔记列表
- */
-export const doNoteGetList = async (ctx: Context) => {
-  const data = await getNoteGetList({
-    rootId: ctx._params.rootId,
-    targetId: ctx._params.targetId,
-    relevance: ctx._params.relevance,
-    keyword: ctx._params.keyword,
-    highlight: ctx._params.highlight || '0',
-    pageNo: ctx._params.pageNo * 1 || 1,
-    pageSize: ctx._params.pageSize * 1 || 10,
-    isSecret: ctx._params.isSecret,
-    classify: ctx._params.classify,
-    userId: ctx._user.id,
-    showUserInfo: ctx._params.showUserInfo || '0'
-  })
-  throw new Success(data)
-}
-
 /**
  * 获取指定的某个笔记，返回对象或null
  */
 export const getNoteGetOne = async (params: NoteOneParams): Promise<NoteOptions | null> => {
-  // 处理创建者信息字段
   // 处理创建者信息字段
   const userInfoField =
     params.showUserInfo === '1' ? ' t2.username AS create_user_name, t2.avatar AS create_user_avatar, ' : ''
   const sql: string = `
       SELECT
         t1.id, t1.root_id, t1.target_id, t1.title, t1.content,
-        t1.classify, t1.sort, t1.is_secret, t1.link_status, t1.create_user,
+        t1.classify, t1.sort, t1.is_secret, t1.create_user,
         ${userInfoField}
         t1.create_time, t1.update_time, t1.terminal, t1.remarks
       FROM notes t1
@@ -71,24 +49,34 @@ export const getNoteGetOne = async (params: NoteOneParams): Promise<NoteOptions 
   return res
 }
 
+/**
+ * 获取笔记列表
+ */
+export const doNoteGetList = async (ctx: Context) => {
+  const data = await getNoteGetList({
+    rootId: ctx._params.rootId,
+    targetId: ctx._params.targetId,
+    keyword: ctx._params.keyword,
+    highlight: ctx._params.highlight || '0',
+    pageNo: ctx._params.pageNo * 1 || 1,
+    pageSize: ctx._params.pageSize * 1 || 10,
+    isSecret: ctx._params.isSecret,
+    classify: ctx._params.classify,
+    userId: ctx._user.id,
+    showUserInfo: ctx._params.showUserInfo || '0'
+  })
+  throw new Success(data)
+}
+
 export const getNoteGetList = async (options: NoteListParams): Promise<NoteListReturn> => {
+  if (!options.rootId && !options.targetId) return { total: 0, data: [] }
   const pageNo = (options.pageNo - 1) * options.pageSize
   let whereSQL = ''
   const whereData = []
   // 处理 targetId 或 rootId
   if (options.targetId) {
-    if (options.relevance === '1') {
-      whereSQL = `
-        WHERE 
-          (
-            t1.target_id = ? OR 
-            (t1.id IN (SELECT t3.note_id FROM notes_link t3 WHERE t3.target_id = ?) AND t1.link_status = 1)
-          )`
-      whereData.push(options.targetId, options.targetId)
-    } else {
-      whereSQL = 'WHERE t1.target_id = ?'
-      whereData.push(options.targetId)
-    }
+    whereSQL = 'WHERE t1.target_id = ?'
+    whereData.push(options.targetId)
   } else {
     whereSQL = 'WHERE t1.root_id = ?'
     whereData.push(options.rootId)
@@ -125,7 +113,7 @@ export const getNoteGetList = async (options: NoteListParams): Promise<NoteListR
   const sql2 = `
     SELECT 
       t1.id, t1.root_id, t1.target_id, t1.classify, t1.sort, 
-      t1.is_secret, t1.link_status, t1.create_user, 
+      t1.is_secret, t1.create_user, 
       ${userInfoField} 
       ${keywordResult.orderFields}
       t1.create_time, t1.update_time, t1.terminal, t1.remarks 

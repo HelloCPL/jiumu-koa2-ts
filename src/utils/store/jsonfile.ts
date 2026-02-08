@@ -5,26 +5,29 @@ import jsonfile from 'jsonfile'
 import { isObject, isString } from 'lodash'
 import { parseStoreData, stringifyStoreData, toParse, toStringify } from '../tools'
 import { decrypt, encrypt } from '../crypto'
+import Subscriber from '../subscriber'
 
+const subscriber = new Subscriber()
 /**
  * 操作 json 文件
  */
 export class StoreJson {
-  IS_INIT = false
-  filePath = ''
+  private filePath: string
+  private locked = false
 
   constructor(fileName: string) {
     const dir = path.resolve(STATIC_URL, STATIC_DIRS[8])
     sureIsDirSync(dir)
     this.filePath = path.resolve(dir, `${fileName}.json`)
+    this.init()
   }
 
   init() {
-    if (this.IS_INIT) return
     const status = judgeDirSync(this.filePath)
     if (status !== 0) {
       jsonfile.writeFileSync(this.filePath, {})
     }
+    this.getData()
   }
 
   // 原始数据 提高性能
@@ -34,7 +37,6 @@ export class StoreJson {
    * 文件读取
    */
   getData(): ObjectAny {
-    if (!this.IS_INIT) this.init()
     if (this.origin) return this.origin
     const obj: ObjectAny = {}
     try {
@@ -59,16 +61,22 @@ export class StoreJson {
    * 文件写入
    * sync 是否同步
    */
-  setData(data: ObjectAny, sync = true): void {
-    if (!this.IS_INIT) this.init()
-    this.origin = null
+  setData(data: ObjectAny, sync?: boolean): void {
+    if (this.locked) {
+      subscriber.add(this.setData, data, sync)
+      return
+    }
+    this.locked = true
+    this.origin = data
     const _data = toEncryptOrDecrypt2(toStringify(data))
     if (sync) {
       jsonfile.writeFileSync(this.filePath, _data)
-      this.getData()
+      this.locked = false
+      subscriber.pop()
     } else {
       jsonfile.writeFile(this.filePath, _data, () => {
-        this.getData()
+        this.locked = false
+        subscriber.pop()
       })
     }
   }

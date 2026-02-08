@@ -11,6 +11,8 @@ import { doTagAdd } from '@/router/controller/tags/add'
 import { doTagUpdate } from '@/router/controller/tags/update'
 import { doTagDelete } from '@/router/controller/tags/delete'
 import { doTagGetByCode, doTagGetAllSelf, doTagGetByParentCode } from '@/router/controller/tags/get'
+import { doTagExport } from '@/router/controller/tags/exports'
+import { doTagImport } from '@/router/controller/tags/imports'
 
 @Prefix('tag')
 export default class API {
@@ -19,7 +21,12 @@ export default class API {
     path: 'add',
     methods: ['get', 'post']
   })
-  @Required(['code', 'label'])
+  @Required([
+    { field: 'code', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'label', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doTagAddConvert)
   async doTagAdd(ctx: Context) {
     await doTagAdd(ctx)
@@ -30,7 +37,13 @@ export default class API {
     path: 'update',
     methods: ['get', 'post']
   })
-  @Required(['id'])
+  @Required([
+    'id',
+    { field: 'code', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'label', required: false, name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'sort', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
+  ])
   @Convert(doTagUpdateConvert)
   async doTagUpdate(ctx: Context) {
     await doTagUpdate(ctx)
@@ -62,6 +75,10 @@ export default class API {
     path: 'get/all/self',
     methods: ['get', 'post']
   })
+  @Required([
+    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  ])
   async doTagGetAllSelf(ctx: Context) {
     await doTagGetAllSelf(ctx)
   }
@@ -73,5 +90,24 @@ export default class API {
   })
   async doTagGetByParentCode(ctx: Context) {
     await doTagGetByParentCode(ctx)
+  }
+
+  // 7 导出标签数据
+  @Request({
+    path: 'export',
+    methods: ['get', 'post']
+  })
+  @Required(['ids'])
+  async doTagExport(ctx: Context) {
+    await doTagExport(ctx)
+  }
+
+  // 8 导入标签数据
+  @Request({
+    path: 'import',
+    methods: ['post']
+  })
+  async doTagImport(ctx: Context) {
+    await doTagImport(ctx)
   }
 }

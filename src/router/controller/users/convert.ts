@@ -62,8 +62,11 @@ export async function doUserUpdateBaseConvert(ctx: Context, next: Next) {
  * 校验密码是否正确
  */
 export async function doUserCheckPasswordConvert(ctx: Context, next: Next) {
-  const sql = 'SELECT password FROM users WHERE id = ?'
+  const sql = 'SELECT id, password FROM users WHERE id = ?'
   const res: any = await query(sql, ctx._user.id)
+  if (!(res && res.length)) {
+    throw new ExceptionParameter({ message: Message.unexistUser })
+  }
   const originPassowrd: string = decrypt(res[0]['password'])
   if (!(ctx._params.password && originPassowrd && ctx._params.password === originPassowrd))
     throw new ExceptionParameter({ message: Message.errorPassword })

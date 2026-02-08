@@ -10,7 +10,12 @@
 
 import { Context, Next } from 'koa'
 import { symbolRoutePrefix, Route } from './index'
-import { ValidatorParameters, ValidatorOptions, generateRequiredParams } from '@/utils/validator'
+import {
+  ValidatorParameters,
+  FieldRuleOptions,
+  generateRequiredParams,
+  RequiredParams
+} from '@/utils/validator'
 import { isArray } from 'lodash'
 import { sureIsArray } from '@/utils/tools'
 import { RequestOptions, RouteOptions } from './interface'
@@ -51,14 +56,20 @@ export const Request =
 
 /**
  * 校验路由请求必传参数 方法装饰器
- * @param params 参数列表，如需指定类型 用 &+类型 拼接成字符串，拼接的为数字则指定最小长度
- * @demo @Required(['id', 'age&isInt', 'type&isBoolean', 'name&isString', 'title&12'])
+ * @param params 参数列表
+ * @demo
+ *   @Required([
+ *     'id',
+ *     {field: 'age', name: 'isInt'},
+ *     {field: 'type', message: '类型必须传布尔值', name: 'isBoolean'}
+ *     {field: 'title', name: 'isLength', options: [{min: 12}]}，
+ *   ])
  */
 export const Required =
-  (params: string[]): MethodDecorator =>
+  (params: Array<string | RequiredParams>): MethodDecorator =>
   (target: any, key: string | symbol, descriptor: PropertyDescriptor) => {
     async function requiredParameter(ctx: Context, next: Next) {
-      const newParams: ValidatorOptions[] = generateRequiredParams(params)
+      const newParams: FieldRuleOptions[] = generateRequiredParams(params)
       await new ValidatorParameters(newParams).validate(ctx)
       await next()
     }

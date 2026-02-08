@@ -8,7 +8,7 @@ import { Success } from '@/utils/http-exception'
 import { query, execTrans, getSelectWhereKeyword } from '@/db'
 import { Context } from 'koa'
 import { UserOptions, UserListParams, UserListReturn } from './interface'
-import { getFileById } from '../files-info/get'
+import { handleUser } from './utils'
 
 // 获取本用户信息
 export const doUserGetSelf = async (ctx: Context) => {
@@ -39,17 +39,18 @@ export const doUserGetList = async (ctx: Context) => {
  * 获取指定的某个用户，返回对象或null
  */
 export const getUserOne = async (id: string): Promise<UserOptions | null> => {
-  const sql: string =
-    'SELECT t1.id, t1.phone, t1.username, t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code WHERE t1.id = ?'
+  const sql: string = `
+    SELECT 
+      t1.id, t1.phone, t1.username, t1.sex, t2.label AS sexLabel, 
+      t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, 
+      t1.update_time, t1.terminal, t1.remarks 
+    FROM users t1 
+    LEFT JOIN tags t2 ON t1.sex = t2.code 
+    WHERE t1.id = ?`
   const res: any = await query(sql, id)
-  if (res && res.length) {
-    const userInfo: UserOptions = <UserOptions>res[0]
-    userInfo.avatar = await getFileById({
-      id: userInfo.avatar,
-      userId: userInfo.id
-    })
-    return userInfo
-  } else return null
+  const userInfo: UserOptions = <UserOptions>res[0] || null
+  if (userInfo) await handleUser(userInfo)
+  return userInfo
 }
 
 /**
@@ -69,10 +70,26 @@ export const getUserList = async (options: UserListParams): Promise<UserListRetu
   let sql2: string
   let data2: any[]
   if (options.simple === '1') {
-    sql2 = `SELECT t1.id, ${keywordResult.orderFields} t1.create_time, t1.update_time, t1.terminal FROM users t1 ${keywordResult.sql} ORDER BY ${keywordResult.orderSql} t1.update_time DESC LIMIT ?, ?`
+    sql2 = `
+      SELECT 
+        t1.id, ${keywordResult.orderFields} t1.create_time, t1.update_time, t1.terminal 
+      FROM users t1 
+      ${keywordResult.sql} 
+      ORDER BY ${keywordResult.orderSql} t1.update_time DESC 
+      LIMIT ?, ?`
     data2 = [...keywordResult.data, pageNo, options.pageSize]
   } else {
-    sql2 = `SELECT t1.id, ${keywordResult.orderFields} t1.sex, t2.label AS sexLabel, t1.birthday, t1.avatar, t1.professional, t1.address, t1.create_time, t1.update_time, t1.terminal, t1.remarks FROM users t1 LEFT JOIN tags t2 ON t1.sex = t2.code ${keywordResult.sql} ORDER BY ${keywordResult.orderSql} t1.update_time DESC LIMIT ?, ?`
+    sql2 = `
+      SELECT 
+        t1.id, t1.sex, t2.label AS sexLabel, t1.birthday, 
+        t1.avatar, t1.professional, t1.address, t1.create_time, 
+        ${keywordResult.orderFields} 
+        t1.update_time, t1.terminal, t1.remarks 
+      FROM users t1 
+      LEFT JOIN tags t2 ON t1.sex = t2.code 
+      ${keywordResult.sql} 
+      ORDER BY ${keywordResult.orderSql} t1.update_time DESC 
+      LIMIT ?, ?`
     data2 = [...keywordResult.data, pageNo, options.pageSize]
   }
   const res: any = await execTrans([
@@ -80,13 +97,7 @@ export const getUserList = async (options: UserListParams): Promise<UserListRetu
     { sql: sql2, data: data2 }
   ])
   const targetData: UserOptions[] = <UserOptions[]>res[1]
-  if (options.simple !== '1')
-    for (let i = 0, len = targetData.length; i < len; i++) {
-      targetData[i]['avatar'] = await getFileById({
-        id: targetData[i]['avatar'],
-        userId: targetData[i]['id']
-      })
-    }
+  await handleUser(targetData, options.simple)
   return {
     total: res[0][0]['total'],
     data: targetData

@@ -9,19 +9,21 @@ import { Success } from '@/utils/http-exception'
 import { execTrans } from '@/db'
 import { Terminal } from '@/enums'
 import { formatDate, getUuId } from '@/utils/tools'
-import { validateRange } from '@/utils/validator'
 import { SQLOptions } from '@/db/interface'
 
 /**
  * 资源新增
  */
 export const doSourceAdd = async (ctx: Context) => {
-  const isSecret = await validateRange({ value: ctx._params.isSecret, range: ['1', '0'], default: '0' }, true)
-  const sort: number = ctx._params.sort || 1
-  const currentTime = formatDate(new Date())
   const params = ctx._params
-  const sql1: string =
-    'INSERT sources (id, title, type, attachment, classify, is_secret, sort, create_user, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const isSecret = params.isSecret || '0'
+  const sort: number = params.sort || 1
+  const currentTime = formatDate(new Date())
+  const sql1: string = `
+    INSERT sources 
+      (id, title, type, attachment, classify, is_secret, sort, create_user, create_time, update_time, terminal, remarks) 
+    VALUES 
+      (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   const id = getUuId()
   const data1 = [
     id,

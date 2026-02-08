@@ -1,6 +1,4 @@
 import { isArray } from 'lodash'
-import { getFileById } from '../files-info/get'
-import { getTagCustomByIds } from '../tags-custom/get'
 import { NovelOptions } from './interface'
 import { FileInfoOptions } from '../files-info/interface'
 import { getFileByData, getOriginFileById } from '../files-info/utils'

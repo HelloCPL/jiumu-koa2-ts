@@ -9,8 +9,8 @@ import { Success, ExceptionParameter } from '@/utils/http-exception'
 import { decrypt } from '@/utils/crypto'
 import { query } from '@/db'
 import { Message, Terminal } from '@/enums'
-import { handleDoubleToken } from './register'
 import { getUuId, getIP, formatDate } from '@/utils/tools'
+import { handleDoubleToken } from './utils'
 
 /**
  * 用户登录

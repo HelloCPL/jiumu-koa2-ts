@@ -16,8 +16,11 @@ import { formatDate, getUuId } from '@/utils/tools'
 export const doTagCustomAdd = async (ctx: Context) => {
   const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
-  const sql: string =
-    'INSERT tags_custom (id, label, sort, type, create_user, create_time, update_time, terminal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT tags_custom 
+      (id, label, sort, type, create_user, create_time, update_time, terminal) 
+    VALUES 
+      (?, ?, ?, ?, ?, ?, ?, ?)`
   const id = getUuId()
   const data = [
     id,

@@ -70,15 +70,15 @@ export const getLogger = (name: string): LoggerOptions => {
    * @param ctx? 上下文
    */
   const response = (options: LoggerOptionResponse) => {
-    const requestStart = options.requestStart || global._requestStart || 0
+    const requestStart = BigInt(options.requestStart || 0)
     const requestEnd = process.hrtime.bigint()
-    const costTime = requestEnd - requestStart
+    const costTime = Number(requestEnd - requestStart) / 1e6
     const current = getCurrentTime('YYYY-MM-DD HH:mm:ss.SSS')
     const requestCountId = getRequestCountId(options)
     let logText = ''
     logText += `\n\n[响应日志信息 ${current}]${requestCountId}`
     logText += `\n  [responseEndTime]: ${requestEnd}`
-    logText += `\n  [totalTime]: ${Number(costTime) / 1e6}毫秒`
+    logText += `\n  [totalTime]: ${Number(costTime)}毫秒`
     logText = handleLogText(logText, options)
     if (IS_PRINT_LOG) console.log(logText)
     logger.info(logText)

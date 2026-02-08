@@ -1,4 +1,3 @@
-import { countWordCharactersAndWords } from '@/utils/tools'
 import { handleNovalChapterParams, NovelChapterOptions } from './interface'
 import { isArray } from 'lodash'
 import { FileInfoOptions } from '../files-info/interface'
@@ -39,8 +38,6 @@ export async function handleNovelChapter(
       if (params.showUserInfo === '1' && data.create_user_avatar) {
         data.create_user_avatar = getOriginFileById(files, data.create_user_avatar)
       }
-      // 处理字数
-      data.word_count = countWordCharactersAndWords(data.content).wordCount
     }
     if (!params.showContent) delete data.content
   }

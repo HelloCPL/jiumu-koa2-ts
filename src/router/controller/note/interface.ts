@@ -34,7 +34,6 @@ export interface NoteOptions extends BaseOptions {
   classify?: any
   sort: number
   is_secret: string
-  link_status: string
   create_user: string
   create_user_name?: string
   create_user_avatar?: any

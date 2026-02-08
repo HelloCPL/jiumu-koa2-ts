@@ -50,6 +50,6 @@ async function verifyApiByUser(ctx: Context, next: Next) {
   if (res && res.length) {
     await next()
   } else {
-    throw new ExceptionAuthFailed({ message: Message.forbiddenApi })
+    throw new ExceptionAuthFailed({ message: `权限不足：用户没有 ${url} 接口的请求权限` })
   }
 }

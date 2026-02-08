@@ -18,7 +18,7 @@ export default class API {
     path: 'add',
     methods: ['post']
   })
-  @Required(['code'])
+  @Required([{ field: 'code', name: 'isLength', options: [{ min: 1, max: 64 }] }])
   @Convert(doCipherCodeAddConvert)
   async doCipherCodeAdd(ctx: Context) {
     await doCipherCodeAdd(ctx)
@@ -29,7 +29,10 @@ export default class API {
     path: 'update',
     methods: ['post']
   })
-  @Required(['code', 'oldCode'])
+  @Required([
+    { field: 'code', name: 'isLength', options: [{ min: 1, max: 64 }] },
+    { field: 'oldCode', name: 'isLength', options: [{ min: 1, max: 64 }] }
+  ])
   @Convert(doCipherCodeUpdateConvert)
   async doCipherCodeUpdate(ctx: Context) {
     await doCipherCodeUpdate(ctx)

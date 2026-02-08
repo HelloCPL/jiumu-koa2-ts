@@ -9,10 +9,6 @@ class InitGlobal {
 
   init() {
     global._unlessPath = [] // 不校验路由集合
-    global._requestCount = 0 // 记录第几次请求
-    global._requestStart = process.hrtime.bigint() // 请求开始时间
-    global._results = {} // 缓存结果，一般用于缓存mysql查询，避免重复查询
-
     logger.info('挂载全局变量')
   }
 }

@@ -14,8 +14,11 @@ import { formatDate, getUuId } from '@/utils/tools'
  * 用户-特殊标签关联新增
  */
 export const doUserTagAdd = async (ctx: Context) => {
-  const sql: string =
-    'INSERT users_tags (id, tag_code, user_id, create_time, terminal) VALUES (?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT users_tags 
+      (id, tag_code, user_id, create_time, terminal) 
+    VALUES 
+      (?, ?, ?, ?, ?)`
   const data = [
     getUuId(),
     ctx._params.tagCode,

@@ -23,7 +23,6 @@ export interface NovelChapterOptions extends BaseOptions {
   is_collection?: string
   collection_count?: number
   comment_count?: number
-  word_count?: number
 }
 
 // 获取列表参数类型接口

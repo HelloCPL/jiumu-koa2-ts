@@ -13,15 +13,15 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| title | string | 是 | 问答标题 |
-| content | string | 是 | 内容 |
-| isDraft | string | 是 | 是否草稿，'1' 是 '0' 否，默认 '0' |
-| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用questionClassify |
-| isSecret | string | 否 | 是否为私密问答，'1' 是 '0' 否，默认 '0' |
-| sort | mediumint | 否 | 排序，值越小越前，默认1 |
-| remarks | string | 否 | 备注 |
+|  参数名  |   类型    | 是否必填 |                                   说明                                    |
+| :------: | :-------: | :------: | :-----------------------------------------------------------------------: |
+|  title   |  string   |    是    |                                 问答标题                                  |
+| content  |  string   |    是    |                                   内容                                    |
+| isDraft  |  string   |    是    |                     是否草稿，'1' 是 '0' 否，默认 '0'                     |
+| classify |  string   |    否    | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用questionClassify |
+| isSecret |  string   |    否    |                  是否为私密问答，'1' 是 '0' 否，默认 '0'                  |
+|   sort   | mediumint |    否    |                          排序，值越小越前，默认1                          |
+| remarks  |  string   |    否    |                                   备注                                    |
 
 #### 返回示例
 
@@ -48,16 +48,16 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 问答id |
-| title | string | 否 | 问答标题 |
-| content | string | 否 | 内容 |
-| isDraft | string | 否 | 是否草稿，'1' 是 '0' 否 |
-| classify | string | 否 | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用questionClassify |
-| isSecret | string | 否 | 是否为私密问答，'1' 是 '0' 否 |
-| sort | mediumint | 否 | 排序，值越小越前 |
-| remarks | string | 否 | 备注 |
+|  参数名  |   类型    | 是否必填 |                                   说明                                    |
+| :------: | :-------: | :------: | :-----------------------------------------------------------------------: |
+|    id    |  string   |    是    |                                  问答id                                   |
+|  title   |  string   |    否    |                                 问答标题                                  |
+| content  |  string   |    否    |                                   内容                                    |
+| isDraft  |  string   |    否    |                          是否草稿，'1' 是 '0' 否                          |
+| classify |  string   |    否    | 自定义分类，用户自定义标签id集合，最多3个，分类类型建议用questionClassify |
+| isSecret |  string   |    否    |                       是否为私密问答，'1' 是 '0' 否                       |
+|   sort   | mediumint |    否    |                             排序，值越小越前                              |
+| remarks  |  string   |    否    |                                   备注                                    |
 
 #### 返回示例
 
@@ -84,9 +84,9 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 问答id |
+| 参数名 |  类型  | 是否必填 |  说明  |
+| :----: | :----: | :------: | :----: |
+|   id   | string |    是    | 问答id |
 
 #### 返回示例
 
@@ -114,38 +114,38 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 问答id |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '1' |
+|    参数名    |  类型  | 是否必填 |                      说明                       |
+| :----------: | :----: | :------: | :---------------------------------------------: |
+|      id      | string |    是    |                     问答id                      |
+| showUserInfo | string |    否    | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '1' |
 
 #### 返回字段说明
 
 - 返回对象或null
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 问答id |
-| title | string | 标题 |
-| content | string | 内容 |
-| classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，'1' 是 '0' 否 |
-| isSecret | string | 是否为私密问答，'1' 是 '0' 否 |
-| isTop | string | 是否置顶，'1' 是 '0' 否 |
-| sort | number | 排序，值越小越前，默认1 |
-| createUser | string | 创建者id |
-| createUserName | string | 创建者名字 |
-| createUserAvatar | object/null | 创建者头像 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
-| isLike | string | 是否点赞，'1' 是 '0' 否 |
-| likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，'1' 是 '0' 否 |
-| likeCount | number | 收藏总数 |
-| isSelf | string | 是否本人的问答，'1' 是 '0' 否 |
-| commentCount | number | 收藏总数 |
+|      参数名      |    类型     |             说明              |
+| :--------------: | :---------: | :---------------------------: |
+|        id        |   string    |            问答id             |
+|      title       |   string    |             标题              |
+|     content      |   string    |             内容              |
+|     classify     |  array/[]   |  用户自定义标签，文件数组/[]  |
+|     isDraft      |   string    |    是否草稿，'1' 是 '0' 否    |
+|     isSecret     |   string    | 是否为私密问答，'1' 是 '0' 否 |
+|      isTop       |   string    |    是否置顶，'1' 是 '0' 否    |
+|       sort       |   number    |    排序，值越小越前，默认1    |
+|    createUser    |   string    |           创建者id            |
+|  createUserName  |   string    |          创建者名字           |
+| createUserAvatar | object/null |          创建者头像           |
+|    createTime    |   string    |           创建时间            |
+|    updateTime    |   string    |           更新时间            |
+|     terminal     |   string    |           操作终端            |
+|     remarks      |   string    |             备注              |
+|      isLike      |   string    |    是否点赞，'1' 是 '0' 否    |
+|    likeCount     |   number    |           点赞总数            |
+|   isCollection   |   string    |    是否收藏，'1' 是 '0' 否    |
+|    likeCount     |   number    |           收藏总数            |
+|      isSelf      |   string    | 是否本人的问答，'1' 是 '0' 否 |
+|   commentCount   |   number    |           收藏总数            |
 
 #### 返回示例
 
@@ -219,16 +219,16 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
-| keyword | string | 否 | 关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| isDraft | string | 否 | 是否草稿，'1' 是 '0' 否 |
-| isSecret | string | 否 | 是否为私密问答，'1' 是 '0' 否 |
-| classify | string | 否 | 自定义文章类型，分类类型建议用questionClassify，单选 |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
+|    参数名    |  类型  | 是否必填 |                                 说明                                  |
+| :----------: | :----: | :------: | :-------------------------------------------------------------------: |
+|    pageNo    | number |    否    |                             页码，默认 1                              |
+|   pageSize   | number |    否    |                           每页页数，默认 10                           |
+|   keyword    | string |    否    |                                关键字                                 |
+|  highlight   | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+|   isDraft    | string |    否    |                        是否草稿，'1' 是 '0' 否                        |
+|   isSecret   | string |    否    |                     是否为私密问答，'1' 是 '0' 否                     |
+|   classify   | string |    否    |         自定义文章类型，分类类型建议用questionClassify，单选          |
+| showUserInfo | string |    否    |            是否增加创建者姓名与头像 '1' 是 其他否 默认 '0'            |
 
 #### 返回字段说明
 
@@ -238,29 +238,31 @@
     `sort升序`
     `updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 问答id |
-| title | string | 标题 |
-| content | string | 内容 |
-| classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，'1' 是 '0' 否 |
-| isSecret | string | 是否为私密问答，'1' 是 '0' 否 |
-| isTop | string | 是否置顶，'1' 是 '0' 否 |
-| sort | number | 排序，值越小越前，默认1 |
-| createUser | string | 创建者id |
-| createUserName | string | 创建者名字 |
-| createUserAvatar | object/null | 创建者头像 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
-| isLike | string | 是否点赞，'1' 是 '0' 否 |
-| likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，'1' 是 '0' 否 |
-| collectionCount | number | 收藏总数 |
-| isSelf | string | 是否本人的问答，'1' 是 '0' 否 |
-| commentCount | number | 评论总数 |
+|          参数名           |    类型     |                   说明                   |
+| :-----------------------: | :---------: | :--------------------------------------: |
+|            id             |   string    |                  问答id                  |
+|           title           |   string    |                   标题                   |
+|     titleUnhighlight      |   string    |    标题（仅高亮搜索时展示的原始字段）    |
+|          content          |   string    |                   内容                   |
+|         classify          |  array/[]   |       用户自定义标签，文件数组/[]        |
+|          isDraft          |   string    |         是否草稿，'1' 是 '0' 否          |
+|         isSecret          |   string    |      是否为私密问答，'1' 是 '0' 否       |
+|           isTop           |   string    |         是否置顶，'1' 是 '0' 否          |
+|           sort            |   number    |         排序，值越小越前，默认1          |
+|        createUser         |   string    |                 创建者id                 |
+|      createUserName       |   string    |                创建者名字                |
+|     createUserAvatar      | object/null |                创建者头像                |
+| createUserNameUnhighlight |   string    | 创建者名字（仅高亮搜索时展示的原始字段） |
+|        createTime         |   string    |                 创建时间                 |
+|        updateTime         |   string    |                 更新时间                 |
+|         terminal          |   string    |                 操作终端                 |
+|          remarks          |   string    |                   备注                   |
+|          isLike           |   string    |         是否点赞，'1' 是 '0' 否          |
+|         likeCount         |   number    |                 点赞总数                 |
+|       isCollection        |   string    |         是否收藏，'1' 是 '0' 否          |
+|      collectionCount      |   number    |                 收藏总数                 |
+|          isSelf           |   string    |      是否本人的问答，'1' 是 '0' 否       |
+|       commentCount        |   number    |                 评论总数                 |
 
 #### 返回示例
 
@@ -323,15 +325,15 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| userId | string | 是 | 指定用户id |
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
-| keyword | string | 否 | 关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| classify | string | 否 | 自定义文章类型，分类类型建议用questionClassify，单选 |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
+|    参数名    |  类型  | 是否必填 |                                 说明                                  |
+| :----------: | :----: | :------: | :-------------------------------------------------------------------: |
+|    userId    | string |    是    |                              指定用户id                               |
+|    pageNo    | number |    否    |                             页码，默认 1                              |
+|   pageSize   | number |    否    |                           每页页数，默认 10                           |
+|   keyword    | string |    否    |                                关键字                                 |
+|  highlight   | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+|   classify   | string |    否    |         自定义文章类型，分类类型建议用questionClassify，单选          |
+| showUserInfo | string |    否    |            是否增加创建者姓名与头像 '1' 是 其他否 默认 '0'            |
 
 #### 返回字段说明
 
@@ -341,29 +343,31 @@
     `sort升序`
     `updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 问答id |
-| title | string | 标题 |
-| content | string | 内容 |
-| classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，'1' 是 '0' 否 |
-| isSecret | string | 是否为私密问答，'1' 是 '0' 否 |
-| isTop | string | 是否置顶，'1' 是 '0' 否 |
-| sort | number | 排序，值越小越前，默认1 |
-| createUser | string | 创建者id |
-| createUserName | string | 创建者名字 |
-| createUserAvatar | object/null | 创建者头像 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
-| isLike | string | 是否点赞，'1' 是 '0' 否 |
-| likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，'1' 是 '0' 否 |
-| likeCount | number | 收藏总数 |
-| isSelf | string | 是否本人的问答，'1' 是 '0' 否 |
-| commentCount | number | 收藏总数 |
+|          参数名           |    类型     |                   说明                   |
+| :-----------------------: | :---------: | :--------------------------------------: |
+|            id             |   string    |                  问答id                  |
+|           title           |   string    |                   标题                   |
+|     titleUnhighlight      |   string    |    标题（仅高亮搜索时展示的原始字段）    |
+|          content          |   string    |                   内容                   |
+|         classify          |  array/[]   |       用户自定义标签，文件数组/[]        |
+|          isDraft          |   string    |         是否草稿，'1' 是 '0' 否          |
+|         isSecret          |   string    |      是否为私密问答，'1' 是 '0' 否       |
+|           isTop           |   string    |         是否置顶，'1' 是 '0' 否          |
+|           sort            |   number    |         排序，值越小越前，默认1          |
+|        createUser         |   string    |                 创建者id                 |
+|      createUserName       |   string    |                创建者名字                |
+| createUserNameUnhighlight |   string    | 创建者名字（仅高亮搜索时展示的原始字段） |
+|     createUserAvatar      | object/null |                创建者头像                |
+|        createTime         |   string    |                 创建时间                 |
+|        updateTime         |   string    |                 更新时间                 |
+|         terminal          |   string    |                 操作终端                 |
+|          remarks          |   string    |                   备注                   |
+|          isLike           |   string    |         是否点赞，'1' 是 '0' 否          |
+|         likeCount         |   number    |                 点赞总数                 |
+|       isCollection        |   string    |         是否收藏，'1' 是 '0' 否          |
+|         likeCount         |   number    |                 收藏总数                 |
+|          isSelf           |   string    |      是否本人的问答，'1' 是 '0' 否       |
+|       commentCount        |   number    |                 收藏总数                 |
 
 #### 返回示例
 
@@ -427,13 +431,13 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
-| keyword | string | 否 | 关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| showUserInfo | string | 否 | 是否增加创建者姓名与头像 '1' 是 其他否 默认 '0' |
+|    参数名    |  类型  | 是否必填 |                                 说明                                  |
+| :----------: | :----: | :------: | :-------------------------------------------------------------------: |
+|    pageNo    | number |    否    |                             页码，默认 1                              |
+|   pageSize   | number |    否    |                           每页页数，默认 10                           |
+|   keyword    | string |    否    |                                关键字                                 |
+|  highlight   | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+| showUserInfo | string |    否    |            是否增加创建者姓名与头像 '1' 是 其他否 默认 '0'            |
 
 #### 返回字段说明
 
@@ -445,29 +449,31 @@
     `collectionCount收藏总数降序`
     `updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 问答id |
-| title | string | 标题 |
-| content | string | 内容 |
-| classify | array/[] | 用户自定义标签，文件数组/[] |
-| isDraft | string | 是否草稿，'1' 是 '0' 否 |
-| isSecret | string | 是否为私密问答，'1' 是 '0' 否 |
-| isTop | string | 是否置顶，'1' 是 '0' 否 |
-| sort | number | 排序，值越小越前，默认1 |
-| createUser | string | 创建者id |
-| createUserName | string | 创建者名字 |
-| createUserAvatar | object/null | 创建者头像 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
-| isLike | string | 是否点赞，'1' 是 '0' 否 |
-| likeCount | number | 点赞总数 |
-| isCollection | string | 是否收藏，'1' 是 '0' 否 |
-| likeCount | number | 收藏总数 |
-| isSelf | string | 是否本人的问答，'1' 是 '0' 否 |
-| commentCount | number | 收藏总数 |
+|          参数名           |    类型     |                   说明                   |
+| :-----------------------: | :---------: | :--------------------------------------: |
+|            id             |   string    |                  问答id                  |
+|           title           |   string    |                   标题                   |
+|     titleUnhighlight      |   string    |    标题（仅高亮搜索时展示的原始字段）    |
+|          content          |   string    |                   内容                   |
+|         classify          |  array/[]   |       用户自定义标签，文件数组/[]        |
+|          isDraft          |   string    |         是否草稿，'1' 是 '0' 否          |
+|         isSecret          |   string    |      是否为私密问答，'1' 是 '0' 否       |
+|           isTop           |   string    |         是否置顶，'1' 是 '0' 否          |
+|           sort            |   number    |         排序，值越小越前，默认1          |
+|        createUser         |   string    |                 创建者id                 |
+|      createUserName       |   string    |                创建者名字                |
+| createUserNameUnhighlight |   string    | 创建者名字（仅高亮搜索时展示的原始字段） |
+|     createUserAvatar      | object/null |                创建者头像                |
+|        createTime         |   string    |                 创建时间                 |
+|        updateTime         |   string    |                 更新时间                 |
+|         terminal          |   string    |                 操作终端                 |
+|          remarks          |   string    |                   备注                   |
+|          isLike           |   string    |         是否点赞，'1' 是 '0' 否          |
+|         likeCount         |   number    |                 点赞总数                 |
+|       isCollection        |   string    |         是否收藏，'1' 是 '0' 否          |
+|         likeCount         |   number    |                 收藏总数                 |
+|          isSelf           |   string    |      是否本人的问答，'1' 是 '0' 否       |
+|       commentCount        |   number    |                 收藏总数                 |
 
 #### 返回示例
 

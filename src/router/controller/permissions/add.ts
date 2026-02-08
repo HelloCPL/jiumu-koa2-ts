@@ -17,8 +17,11 @@ export const doPermissionAdd = async (ctx: Context) => {
   const href: string = ctx._params.href || '#'
   const sort: number = ctx._params.sort || 1
   const currentTime = formatDate(new Date())
-  const sql: string =
-    'INSERT permissions (id, code, label, href, sort, create_time, update_time, terminal, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  const sql: string = `
+    INSERT permissions 
+      (id, code, label, href, sort, create_time, update_time, terminal, remarks) 
+    VALUES 
+      (?, ?, ?, ?, ?, ?, ?, ?, ?)`
   const id = getUuId()
   const data = [
     id,

@@ -11,11 +11,12 @@
     "strict": true, // 严格模式
     "experimentalDecorators": true,
     "target": "es6",
+    "lib": ["ES2020"],
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
     }
   },
   "include": ["src"],
-  "exclude": ["node_module", "dist"]
+  "exclude": ["node_module", "dist", "./src/test"]
 }

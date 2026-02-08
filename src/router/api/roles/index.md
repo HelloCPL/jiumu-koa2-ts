@@ -13,12 +13,12 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| code | string | 是 | 角色code，不能重复 |
-| label | string | 是 | 角色说明 |
-| sort | mediumint | 否 | 排序，值越小越前，默认1 |
-| remarks | string | 否 | 备注 |
+| 参数名  |   类型    | 是否必填 |          说明           |
+| :-----: | :-------: | :------: | :---------------------: |
+|  code   |  string   |    是    |   角色code，不能重复    |
+|  label  |  string   |    是    |        角色说明         |
+|  sort   | mediumint |    否    | 排序，值越小越前，默认1 |
+| remarks |  string   |    否    |          备注           |
 
 #### 返回示例
 
@@ -45,13 +45,13 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 角色id |
-| code | string | 是 | 角色code，不能重复 |
-| label | string | 是 | 角色说明 |
-| sort | mediumint | 否 | 排序，值越小越前 |
-| remarks | string | 否 | 备注 |
+| 参数名  |   类型    | 是否必填 |        说明        |
+| :-----: | :-------: | :------: | :----------------: |
+|   id    |  string   |    是    |       角色id       |
+|  code   |  string   |    是    | 角色code，不能重复 |
+|  label  |  string   |    是    |      角色说明      |
+|  sort   | mediumint |    否    |  排序，值越小越前  |
+| remarks |  string   |    否    |        备注        |
 
 #### 返回示例
 
@@ -79,9 +79,9 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 角色id |
+| 参数名 |  类型  | 是否必填 |  说明  |
+| :----: | :----: | :------: | :----: |
+|   id   | string |    是    | 角色id |
 
 #### 返回示例
 
@@ -93,7 +93,6 @@
   "total": 0
 }
 ```
-
 
 ## ---------------- 获取指定的某个角色 ---------------------
 
@@ -109,25 +108,25 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 角色 id 或 code |
+| 参数名 |  类型  | 是否必填 |      说明       |
+| :----: | :----: | :------: | :-------------: |
+|   id   | string |    是    | 角色 id 或 code |
 
 #### 返回字段说明
 
 - 返回对象或null
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 角色id |
-| code | string | 角色code |
-| label | string | 角色描述 |
-| sort | number | 排序，值越小越前 |
+|    参数名    |  类型  |                  说明                  |
+| :----------: | :----: | :------------------------------------: |
+|      id      | string |                 角色id                 |
+|     code     | string |                角色code                |
+|    label     | string |                角色描述                |
+|     sort     | number |            排序，值越小越前            |
 | configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
+|  createTime  | string |                创建时间                |
+|  updateTime  | string |                更新时间                |
+|   terminal   | string |                操作终端                |
+|   remarks    | string |                  备注                  |
 
 #### 返回示例
 
@@ -164,26 +163,26 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
+|  参数名  |  类型  | 是否必填 |       说明        |
+| :------: | :----: | :------: | :---------------: |
+|  pageNo  | number |    否    |   页码，默认 1    |
+| pageSize | number |    否    | 每页页数，默认 10 |
 
 #### 返回字段说明
 
 - 返回数组或[]
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 角色id |
-| code | string | 角色code |
-| label | string | 角色描述 |
-| sort | number | 排序，值越小越前 |
+|    参数名    |  类型  |                  说明                  |
+| :----------: | :----: | :------------------------------------: |
+|      id      | string |                 角色id                 |
+|     code     | string |                角色code                |
+|    label     | string |                角色描述                |
+|     sort     | number |            排序，值越小越前            |
 | configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
+|  createTime  | string |                创建时间                |
+|  updateTime  | string |                更新时间                |
+|   terminal   | string |                操作终端                |
+|   remarks    | string |                  备注                  |
 
 #### 返回示例
 
@@ -225,15 +224,15 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
-| keyword | string | 否 | 关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| userId | string | 否 | 用户id，会增加`checkedUserId` 字段，表示是否与该用户关联 |
-| permissionId | string | 否 | 权限id，会增加`checkedPermissionId` 字段，表示是否与该权限关联  |
-| menuId | string | 否 | 菜单id，会增加`checkedMenuId` 字段，表示是否与该菜单关联  |
+|    参数名    |  类型  | 是否必填 |                                 说明                                  |
+| :----------: | :----: | :------: | :-------------------------------------------------------------------: |
+|    pageNo    | number |    否    |                             页码，默认 1                              |
+|   pageSize   | number |    否    |                           每页页数，默认 10                           |
+|   keyword    | string |    否    |                                关键字                                 |
+|  highlight   | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+|    userId    | string |    否    |       用户id，会增加`checkedUserId` 字段，表示是否与该用户关联        |
+| permissionId | string |    否    |    权限id，会增加`checkedPermissionId` 字段，表示是否与该权限关联     |
+|    menuId    | string |    否    |       菜单id，会增加`checkedMenuId` 字段，表示是否与该菜单关联        |
 
 #### 返回字段说明
 
@@ -242,17 +241,18 @@
   `搜索相似度(label)降序`
   `sort升序、updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 角色id |
-| code | string | 角色code |
-| label | string | 角色描述 |
-| sort | number | 排序，值越小越前 |
-| configurable | string | 是否可修改 0 可修改 1 超级管理员可修改 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
+|      参数名      |  类型  |                  说明                  |
+| :--------------: | :----: | :------------------------------------: |
+|        id        | string |                 角色id                 |
+|       code       | string |                角色code                |
+|      label       | string |                角色描述                |
+| labelUnhighlight | string | 角色描述（仅高亮搜索时展示的原始字段） |
+|       sort       | number |            排序，值越小越前            |
+|   configurable   | string | 是否可修改 0 可修改 1 超级管理员可修改 |
+|    createTime    | string |                创建时间                |
+|    updateTime    | string |                更新时间                |
+|     terminal     | string |                操作终端                |
+|     remarks      | string |                  备注                  |
 
 #### 返回示例
 
@@ -274,5 +274,56 @@
     }
   ],
   "total": 3
+}
+```
+
+## ---------------- 导出角色数据 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 导出角色数据
+
+#### 请求
+
+- `get | post`
+- `role/export`
+
+#### 参数
+
+| 参数名 |  类型  | 是否必填 |  说明   |
+| :----: | :----: | :------: | :-----: |
+|  ids   | string |    是    | 角色ids |
+
+#### 返回示例
+
+- 返回文件格式的数据，前端根据数据转为二进制格式数据再进行下载
+- 文件名从 `response.headers['content-disposition']` 中获取
+
+## ---------------- 导入角色数据 ---------------------
+
+#### 简要描述
+
+- `pc | web | app | wechat` 端
+- 导入角色数据
+- 上传一个json文件（从导出的文件进行导入，如不同环境的数据插入），只对code为真且不存在的code进行插入
+
+#### 请求
+
+- `post`
+- `role/import`
+
+#### 参数
+
+- 字段名称 file
+
+#### 返回示例
+
+```
+{
+  "code": 200,
+  "message": "成功导入1条角色数据",
+  "data": 1,
+  "total": 0
 }
 ```

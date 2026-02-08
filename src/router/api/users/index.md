@@ -15,18 +15,18 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| phone | string | 是 | 手机号 |
-| password | string | 是 | 密码 |
+|  参数名  |  类型  | 是否必填 |  说明  |
+| :------: | :----: | :------: | :----: |
+|  phone   | string |    是    | 手机号 |
+| password | string |    是    |  密码  |
 
 #### 返回字段说明
 
 - 返回对象或null
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| token | string | token |
+|    参数名    |  类型  |   说明    |
+| :----------: | :----: | :-------: |
+|    token     | string |   token   |
 | tokenRefresh | string | 刷新token |
 
 #### 返回示例
@@ -58,18 +58,18 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| phone | string | 是 | 手机号 |
-| password | string | 是 | 密码 |
+|  参数名  |  类型  | 是否必填 |  说明  |
+| :------: | :----: | :------: | :----: |
+|  phone   | string |    是    | 手机号 |
+| password | string |    是    |  密码  |
 
 #### 返回字段说明
 
 - 返回对象或null
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| token | string | token |
+|    参数名    |  类型  |   说明    |
+| :----------: | :----: | :-------: |
+|    token     | string |   token   |
 | tokenRefresh | string | 刷新token |
 
 #### 返回示例
@@ -100,15 +100,15 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| username | string | 否 | 用户名 |
-| sex | string | 否 | 性别，使用系统标签200范围 |
-| birthday | string | 否 | 生日 |
-| avatar | string | 否 | 头像，使用文件信息id |
-| professional | string | 否 | 职业 |
-| address | string | 否 | 地址 |
-| remarks | string | 否 | 备注 |
+|    参数名    |  类型  | 是否必填 |           说明            |
+| :----------: | :----: | :------: | :-----------------------: |
+|   username   | string |    否    |          用户名           |
+|     sex      | string |    否    | 性别，使用系统标签200范围 |
+|   birthday   | string |    否    |           生日            |
+|    avatar    | string |    否    |   头像，使用文件信息id    |
+| professional | string |    否    |           职业            |
+|   address    | string |    否    |           地址            |
+|   remarks    | string |    否    |           备注            |
 
 #### 返回示例
 
@@ -135,17 +135,17 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| phone | string | 是 | 要修改的用户账号 |
+| 参数名 |  类型  | 是否必填 |       说明       |
+| :----: | :----: | :------: | :--------------: |
+| phone  | string |    是    | 要修改的用户账号 |
 
 #### 返回字段说明
 
 - 返回对象或null
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| token | string | token |
+|    参数名    |  类型  |   说明    |
+| :----------: | :----: | :-------: |
+|    token     | string |   token   |
 | tokenRefresh | string | 刷新token |
 
 #### 返回示例
@@ -176,10 +176,10 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| password | string | 是 | 原密码 |
-| newPassword | string | 是 | 新密码 |
+|   参数名    |  类型  | 是否必填 |  说明  |
+| :---------: | :----: | :------: | :----: |
+|  password   | string |    是    | 原密码 |
+| newPassword | string |    是    | 新密码 |
 
 #### 返回示例
 
@@ -206,16 +206,16 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 用户id |
-| username | string | 否 | 用户名 |
-| sex | string | 否 | 性别，使用系统标签200范围 |
-| birthday | string | 否 | 生日 |
-| avatar | string | 否 | 头像，使用文件信息id |
-| professional | string | 否 | 职业 |
-| address | string | 否 | 地址 |
-| remarks | string | 否 | 备注 |
+|    参数名    |  类型  | 是否必填 |           说明            |
+| :----------: | :----: | :------: | :-----------------------: |
+|      id      | string |    是    |          用户id           |
+|   username   | string |    否    |          用户名           |
+|     sex      | string |    否    | 性别，使用系统标签200范围 |
+|   birthday   | string |    否    |           生日            |
+|    avatar    | string |    否    |   头像，使用文件信息id    |
+| professional | string |    否    |           职业            |
+|   address    | string |    否    |           地址            |
+|   remarks    | string |    否    |           备注            |
 
 #### 返回示例
 
@@ -248,21 +248,21 @@
 
 - 返回对象或null
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 用户id |
-| phone | string | 用户账号（即手机号） |
-| username | string | 用户名称 |
-| sex | string | 性别标签code |
-| sexLabel | string | 性别标签说明 |
-| birthday | string | 生日 |
-| avatar | object/null | 头像文件对象 |
-| professional | string | 职位 |
-| address | string | 地址 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
+|    参数名    |    类型     |         说明         |
+| :----------: | :---------: | :------------------: |
+|      id      |   string    |        用户id        |
+|    phone     |   string    | 用户账号（即手机号） |
+|   username   |   string    |       用户名称       |
+|     sex      |   string    |     性别标签code     |
+|   sexLabel   |   string    |     性别标签说明     |
+|   birthday   |   string    |         生日         |
+|    avatar    | object/null |     头像文件对象     |
+| professional |   string    |         职位         |
+|   address    |   string    |         地址         |
+|  createTime  |   string    |       创建时间       |
+|  updateTime  |   string    |       更新时间       |
+|   terminal   |   string    |       操作终端       |
+|   remarks    |   string    |         备注         |
 
 #### 返回示例
 
@@ -316,29 +316,29 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| id | string | 是 | 用户id |
+| 参数名 |  类型  | 是否必填 |  说明  |
+| :----: | :----: | :------: | :----: |
+|   id   | string |    是    | 用户id |
 
 #### 返回字段说明
 
 - 返回对象或null
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 用户id |
-| phone | string | 用户账号（即手机号） |
-| username | string | 用户名称 |
-| sex | string | 性别标签code |
-| sexLabel | string | 性别标签说明 |
-| birthday | string | 生日 |
-| avatar | object/null | 头像文件对象 |
-| professional | string | 职位 |
-| address | string | 地址 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
+|    参数名    |    类型     |         说明         |
+| :----------: | :---------: | :------------------: |
+|      id      |   string    |        用户id        |
+|    phone     |   string    | 用户账号（即手机号） |
+|   username   |   string    |       用户名称       |
+|     sex      |   string    |     性别标签code     |
+|   sexLabel   |   string    |     性别标签说明     |
+|   birthday   |   string    |         生日         |
+|    avatar    | object/null |     头像文件对象     |
+| professional |   string    |         职位         |
+|   address    |   string    |         地址         |
+|  createTime  |   string    |       创建时间       |
+|  updateTime  |   string    |       更新时间       |
+|   terminal   |   string    |       操作终端       |
+|   remarks    |   string    |         备注         |
 
 #### 返回示例
 
@@ -391,13 +391,13 @@
 
 #### 参数
 
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| keyword | string | 否 | 搜索关键字 |
-| highlight | string | 否 | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
-| simple | string | 否 | '1' 返回数据列表简洁模式 '0' 正常模式 |
-| pageNo | number | 否 | 页码，默认 1 |
-| pageSize | number | 否 | 每页页数，默认 10 |
+|  参数名   |  类型  | 是否必填 |                                 说明                                  |
+| :-------: | :----: | :------: | :-------------------------------------------------------------------: |
+|  keyword  | string |    否    |                              搜索关键字                               |
+| highlight | string |    否    | 是否高亮显示搜索关键字 '0' 否 '1' 高亮（需要用v-html渲染） 默认不高亮 |
+|  simple   | string |    否    |            '1' 返回数据列表简洁模式 '0' 正常模式，默认 '0'            |
+|  pageNo   | number |    否    |                             页码，默认 1                              |
+| pageSize  | number |    否    |                           每页页数，默认 10                           |
 
 #### 返回字段说明
 
@@ -406,21 +406,23 @@
   `搜索相似度(phone全等搜索 username)降序`
   `updateTime更新时间降序`
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| id | string | 用户id |
-| phone | string | 用户账号（即手机号） |
-| username | string | 用户名称 |
-| sex | string | 性别标签code |
-| sexLabel | string | 性别标签说明 |
-| birthday | string | 生日 |
-| avatar | object/null | 头像文件对象 |
-| professional | string | 职位 |
-| address | string | 地址 |
-| createTime | string | 创建时间 |
-| updateTime | string | 更新时间 |
-| terminal | string | 操作终端 |
-| remarks | string | 备注 |
+|       参数名        |    类型     |                        说明                        |
+| :-----------------: | :---------: | :------------------------------------------------: |
+|         id          |   string    |                       用户id                       |
+|        phone        |   string    |                用户账号（即手机号）                |
+|  phoneUnhighlight   |   string    | 用户账号（即手机号）（仅高亮搜索时展示的原始字段） |
+|      username       |   string    |                      用户名称                      |
+| usernameUnhighlight |   string    |       用户名称（仅高亮搜索时展示的原始字段）       |
+|         sex         |   string    |                    性别标签code                    |
+|      sexLabel       |   string    |                    性别标签说明                    |
+|      birthday       |   string    |                        生日                        |
+|       avatar        | object/null |                    头像文件对象                    |
+|    professional     |   string    |                        职位                        |
+|       address       |   string    |                        地址                        |
+|     createTime      |   string    |                      创建时间                      |
+|     updateTime      |   string    |                      更新时间                      |
+|      terminal       |   string    |                      操作终端                      |
+|       remarks       |   string    |                        备注                        |
 
 #### 返回示例
 
@@ -483,9 +485,9 @@
 
 - 返回对象或null
 
-| 参数名 | 类型 | 说明 |
-|:---:|:---:|:---:|
-| token | string | token |
+|    参数名    |  类型  |   说明    |
+| :----------: | :----: | :-------: |
+|    token     | string |   token   |
 | tokenRefresh | string | 刷新token |
 
 #### 返回示例
@@ -516,9 +518,9 @@
 - 公开
 
 #### 参数
-| 参数名 | 类型 | 是否必填 | 说明 |
-|:---:|:---:|:---:|:---:|
-| tokenRefresh | string | 否 | 刷新token，可选，以防token过期确保同步redis，建议传入 |
+|    参数名    |  类型  | 是否必填 |                         说明                          |
+| :----------: | :----: | :------: | :---------------------------------------------------: |
+| tokenRefresh | string |    否    | 刷新token，可选，以防token过期确保同步redis，建议传入 |
 
 #### 返回示例
 

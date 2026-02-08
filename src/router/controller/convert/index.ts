@@ -37,6 +37,16 @@ interface ExistOptions extends ExistBaseOptions {
  * @param options.noThrow? 是否不抛出错误，默认 false （即默认抛出错误）
  * @param options.throwType? 抛出错误的条件（即指定结果true抛出错误还是false才抛出错误），当 noThrow 为 false 时有效
  * @param options.message? 抛出错误时指定提示消息，当 noThrow 为 false 时有效
+ * @demo
+ *  await isExist({
+      table: 'collections',
+      where: [
+        { key: 'target_id', value: ctx._params.targetId },
+        { key: 'create_user', value: ctx._user.id }
+      ],
+      throwType: true,
+      message: Message.existCollection
+    })
  */
 export const isExist = async (options: ExistOptions) => {
   options.connector = options.connector || 'AND'
@@ -85,6 +95,13 @@ interface ExistChildrenOptions extends ExistBaseOptions {
  * @param options.noThrow? 是否不抛出错误，默认 false （即默认抛出错误）
  * @param options.throwType? 抛出错误的条件（即指定结果true抛出错误还是false才抛出错误），当 noThrow 为 false 时有效
  * @param options.message? 抛出错误时指定提示消息，当 noThrow 为 false 时有效
+ * @demo 
+ *  await isExistHasChildren({
+      table: 'menus',
+      where: { key: 'id', value: ctx._params.id },
+      throwType: true,
+      message: Message.relevantHasChildren
+    })
  */
 export const isExistHasChildren = async (options: ExistChildrenOptions) => {
   const childKey = options.where.childKey || 'code'
