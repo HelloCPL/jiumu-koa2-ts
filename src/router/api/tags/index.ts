@@ -10,7 +10,7 @@ import { doTagAddConvert, doTagUpdateConvert, doTagDeleteConvert } from '@/route
 import { doTagAdd } from '@/router/controller/tags/add'
 import { doTagUpdate } from '@/router/controller/tags/update'
 import { doTagDelete } from '@/router/controller/tags/delete'
-import { doTagGetByCode, doTagGetAllSelf, doTagGetByParentCode } from '@/router/controller/tags/get'
+import { doTagGetByCode, doTagGetByParentCode } from '@/router/controller/tags/get'
 import { doTagExport } from '@/router/controller/tags/exports'
 import { doTagImport } from '@/router/controller/tags/imports'
 
@@ -71,17 +71,17 @@ export default class API {
   }
 
   // 5 获取我的所有标签
-  @Request({
-    path: 'get/all/self',
-    methods: ['get', 'post']
-  })
-  @Required([
-    { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
-    { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
-  ])
-  async doTagGetAllSelf(ctx: Context) {
-    await doTagGetAllSelf(ctx)
-  }
+  // @Request({
+  //   path: 'get/all/self',
+  //   methods: ['get', 'post']
+  // })
+  // @Required([
+  //   { field: 'pageNo', required: false, name: 'isInt', options: [{ min: 1 }] },
+  //   { field: 'pageSize', required: false, name: 'isInt', options: [{ min: 1 }] }
+  // ])
+  // async doTagGetAllSelf(ctx: Context) {
+  //   await doTagGetAllSelf(ctx)
+  // }
 
   // 6 获取某类标签
   @Request({

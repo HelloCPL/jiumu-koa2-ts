@@ -216,21 +216,7 @@
 | create_time |  v64  |    是    |    创建时间     |
 |  terminal   |  v64  |    是    |    操作终端     |
 
-
-#### 14 users_tags 用户-特殊标签关联信息表
-
-- 说明
-
-|  字段名称   | 类型  | 是否必填 |        说明         |
-| :---------: | :---: | :------: | :-----------------: |
-|     id      |  v64  |    是    | 角色-特殊标签关联id |
-|   user_id   |  v64  |    是    |       用户id        |
-|  tag_code   |  v64  |    是    |    特殊标签code     |
-| create_time |  v64  |    是    |      创建时间       |
-|  terminal   |  v64  |    是    |      操作终端       |
-
-
-#### 15 roles_menus 角色-菜单关联信息表
+#### 14 roles_menus 角色-菜单关联信息表
 
 - 说明
 
@@ -243,7 +229,7 @@
 |  terminal   |  v64  |    是    |    操作终端     |
 
 
-#### 16 roles_permissions 角色-权限关联信息表
+#### 15 roles_permissions 角色-权限关联信息表
 
 - 说明
 
@@ -256,7 +242,7 @@
 |   terminal    |  v64  |    是    |    操作终端     |
 
 
-#### 17 articles 博客文章信息表
+#### 16 articles 博客文章信息表
 
 - 说明
 
@@ -281,7 +267,7 @@
 |   remarks    |   v255    |    否    |                       备注                       |
 
 
-#### 18 sources 资源信息表
+#### 17 sources 资源信息表
 
 - 说明
 
@@ -301,7 +287,7 @@
 |  terminal   |    v64    |    是    |                     操作终端                     |
 |   remarks   |   v255    |    否    |                       备注                       |
 
-#### 19 sources_link 资源所属的外部资源记录信息表
+#### 18 sources_link 资源所属的外部资源记录信息表
 
 - 说明
 
@@ -320,7 +306,7 @@
 |   remarks   |   v255    |    否    |             备注             |
 
 
-#### 20 questions 问答信息表
+#### 19 questions 问答信息表
 
 - 说明
 
@@ -341,7 +327,7 @@
 |   remarks   |   v255    |    否    |                       备注                       |
 
 
-#### 21 novels 连载信息表
+#### 20 novels 连载信息表
 
 - 说明
 
@@ -364,7 +350,7 @@
 |   remarks   |   v255    |    否    |                       备注                       |
 
 
-#### 22 novels_chapter 连载章节信息表
+#### 21 novels_chapter 连载章节信息表
 
 - 说明
 
@@ -384,7 +370,7 @@
 |   remarks   |   v255    |    否    |                备注                 |
 
 
-#### 23 notes 笔记信息表
+#### 22 notes 笔记信息表
 
 - 说明
 
@@ -404,7 +390,7 @@
 |  terminal   |    v64    |    是    |                     操作终端                     |
 |   remarks   |   v255    |    否    |                       备注                       |
 
-#### 24 ciphers 口令信息表
+#### 23 ciphers 口令信息表
 
 - 说明
 
@@ -422,7 +408,7 @@
 | update_time |    v64    |    是    |                     更新时间                     |
 |  terminal   |    v64    |    是    |                     操作终端                     |
 
-#### 25 ciphers_code 个人口令的秘钥code信息表
+#### 24 ciphers_code 个人口令的秘钥code信息表
 
 - 说明
 

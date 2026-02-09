@@ -7,8 +7,6 @@
 import { Context, Next } from 'koa'
 import { Message } from '@/enums'
 import { isExist, isExistHasChildren, isSuper } from '../convert'
-import { getTagByCode } from './get'
-import { TagOptions } from './interface'
 import { ExceptionForbidden, ExceptionParameter } from '@/utils/http-exception'
 import { query } from '@/db'
 
@@ -94,7 +92,6 @@ export async function doTagUpdateConvert(ctx: Context, next: Next) {
  * 判断是否拥可修改
  * 判断是否仅管理员可修改
  * 再判断是否有子级
- * 再判断是否有 users-tags 用户-标签关联
  */
 export async function doTagDeleteConvert(ctx: Context, next: Next) {
   // 先判断标签是否不存在
@@ -117,14 +114,6 @@ export async function doTagDeleteConvert(ctx: Context, next: Next) {
     where: { key: 'id', value: ctx._params.id },
     throwType: true,
     message: Message.relevantHasChildren
-  })
-  // 再判断是否有 users-tags 用户-标签关联
-  const tagInfo = <TagOptions>await getTagByCode(ctx._params.id)
-  await isExist({
-    table: 'users_tags',
-    where: [{ key: 'tag_code', value: tagInfo.code }],
-    throwType: true,
-    message: Message.existUserTag
   })
   await next()
 }

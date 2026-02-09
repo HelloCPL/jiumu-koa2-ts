@@ -54,7 +54,6 @@ export class Route {
     require('./api/tags-custom/index')
     require('./api/tags/index')
     require('./api/users-roles/index')
-    require('./api/users-tags/index')
     require('./api/users/index')
   }
 
