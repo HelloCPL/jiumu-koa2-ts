@@ -1,23 +1,21 @@
-import { FilterXSS, escapeAttrValue } from 'xss'
-import { handleAttributeFilter } from './config'
+import { FilterXSS } from 'xss'
+import { buildTagWhitelist, handleTag, handleTagAttr } from './config'
 
-/**
- * @author chen
- * @params text
- * @description 自定义 xss 过滤规则
- * 保留style、data-开头的属性 图片地址
- * @update 2021-12-05 00:17:23
- */
-
-// 不过滤的标签属性
-const myxss = new FilterXSS({
+// 创建安全的XSS过滤器
+const xss = new FilterXSS({
+  // 不启用CSS过滤，通过 onTagAttr 过滤
   css: false,
-  onTagAttr(tag, name, value) {
-    // 通用属性不过滤
-    const flag = handleAttributeFilter(tag, name)
-    if (flag) return name + '="' + escapeAttrValue(value) + '"'
-  },
+  whiteList: buildTagWhitelist(),
+  // 仅过滤配置了的危险标签
+  onTag: handleTag,
+  onIgnoreTag: handleTag,
+
+  // 属性过滤钩子
+  onTagAttr: handleTagAttr,
+  onIgnoreTagAttr: handleTagAttr,
+
+  // html 标签不做转换
   escapeHtml: (html) => html
 })
 
-export default myxss
+export default xss
