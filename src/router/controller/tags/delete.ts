@@ -7,6 +7,7 @@
 import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
 import { query } from '@/db'
+import { useTagCache } from './cache'
 
 /**
  * 标签删除
@@ -14,5 +15,7 @@ import { query } from '@/db'
 export const doTagDelete = async (ctx: Context) => {
   const sql: string = 'DELETE FROM tags WHERE id = ?'
   await query(sql, ctx._params.id)
+  const { setTagListCacheData } = useTagCache()
+  setTagListCacheData(null)
   throw new Success()
 }

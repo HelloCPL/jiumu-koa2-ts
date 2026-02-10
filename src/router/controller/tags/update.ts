@@ -8,6 +8,7 @@ import { Context } from 'koa'
 import { Success } from '@/utils/http-exception'
 import { query, getUpdateFields } from '@/db'
 import { formatDate } from '@/utils/tools'
+import { useTagCache } from './cache'
 
 /**
  * 标签修改
@@ -21,5 +22,7 @@ export const doTagUpdate = async (ctx: Context) => {
   const sql: string = `UPDATE tags SET ${fieldsResult.sql} WHERE id = ?`
   const data = [...fieldsResult.data, ctx._params.id]
   await query(sql, data)
+  const { setTagListCacheData } = useTagCache()
+  setTagListCacheData(null)
   throw new Success()
 }

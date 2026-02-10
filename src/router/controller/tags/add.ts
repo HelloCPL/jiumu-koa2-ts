@@ -9,6 +9,7 @@ import { Success } from '@/utils/http-exception'
 import { query } from '@/db'
 import { Terminal } from '@/enums'
 import { formatDate, getUuId } from '@/utils/tools'
+import { useTagCache } from './cache'
 
 /**
  * 标签新增
@@ -35,5 +36,7 @@ export const doTagAdd = async (ctx: Context) => {
     ctx._params.remarks
   ]
   await query(sql, data)
+  const { setTagListCacheData } = useTagCache()
+  setTagListCacheData(null)
   throw new Success({ data: id })
 }

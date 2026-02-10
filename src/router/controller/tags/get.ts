@@ -9,6 +9,7 @@ import { query } from '@/db'
 import { Context } from 'koa'
 import { TagOptions, TagListOptions } from './interface'
 import { getTree } from '@/utils/tools'
+import { useTagCache } from './cache'
 
 // 获取指定的某个标签
 export const doTagGetByCode = async (ctx: Context) => {
@@ -43,16 +44,24 @@ export const getTagByCode = async (code: string): Promise<TagOptions | null> => 
  * 获取某类标签，返回数组或[]
  */
 export const getTagByParentCode = async (parentCode: string): Promise<TagListOptions[]> => {
-  const data: any[] = []
-  const sql = `
+  let tags: any = null
+  const { getTagListCacheData, setTagListCacheData } = useTagCache()
+  const cacheData = getTagListCacheData()
+  if (cacheData) {
+    tags = cacheData
+  } else {
+    const data: any[] = []
+    const sql = `
       SELECT 
         t1.id, t1.parent_code, t2.label as parent_label, t1.code, t1.label, 
         t1.sort, t1.configurable, t1.create_time, t1.update_time, t1.terminal, t1.remarks  
       FROM tags t1 
       LEFT JOIN tags t2 ON t1.parent_code = t2.code`
-  const res: TagOptions[] = <TagOptions[]>await query(sql, data)
+    tags = (await query(sql, data)) as TagOptions[]
+    setTagListCacheData(tags)
+  }
   return getTree({
-    data: res,
+    data: tags,
     parentCode
   }) as TagListOptions[]
 }

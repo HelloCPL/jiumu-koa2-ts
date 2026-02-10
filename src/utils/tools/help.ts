@@ -198,52 +198,121 @@ interface TreeOption {
  * @param option.key? 属性 key
  * @returns 返回树结构数组
  */
+// export const getTree = (option: TreeOption): any[] => {
+//   const { data, parentCode, parentKey = 'parent_code', key = 'code' } = option
+//   if (!data.length) return []
+//   // 去重
+//   const originData = uniqBy(data, 'id')
+//   // 降序排序
+//   const sortData = (data: any[]) => {
+//     if (data[0]?.update_time) {
+//       data.sort((a, b) => {
+//         if (a.update_time > b.update_time) return 1
+//         else if (a.update_time < b.update_time) return -1
+//         else return 0
+//       })
+//     }
+//     if (data[0]?.sort || data[0]?.sort === 0) {
+//       data.sort((a, b) => {
+//         if (a.sort > b.sort) return 1
+//         else if (a.sort < b.sort) return -1
+//         else return 0
+//       })
+//     }
+//   }
+//   sortData(originData)
+//   const trees: any[] = []
+//   const subTrees: any[] = []
+//   // 获取第一级
+//   originData.forEach((item) => {
+//     item.children = []
+//     if ((!parentCode && !item[parentKey]) || parentCode === item[parentKey]) {
+//       trees.push(item)
+//     } else {
+//       subTrees.push(item)
+//     }
+//   })
+//   // 递归获取子级
+//   const findTree = (arr: any[]) => {
+//     arr.forEach((list) => {
+//       subTrees.forEach((obj) => {
+//         if (obj[parentKey] === list[key]) {
+//           list.children.push(obj)
+//         }
+//       })
+//       if (list.children.length) findTree(list.children)
+//     })
+//   }
+//   findTree(trees)
+//   return trees
+// }
 export const getTree = (option: TreeOption): any[] => {
   const { data, parentCode, parentKey = 'parent_code', key = 'code' } = option
+
   if (!data.length) return []
-  // 去重
-  const originData = uniqBy(data, 'id')
-  // 降序排序
-  const sortData = (data: any[]) => {
-    if (data[0]?.update_time) {
-      data.sort((a, b) => {
+
+  // 去重并创建数据副本，避免修改原始数据
+  const originData = [...new Map(data.map((item) => [item.id, item])).values()]
+
+  // 排序函数，不修改原数组，返回新数组
+  const sortData = (arr: any[]): any[] => {
+    return [...arr].sort((a, b) => {
+      // 优先按 update_time 排序
+      if (a.update_time && b.update_time) {
         if (a.update_time > b.update_time) return 1
-        else if (a.update_time < b.update_time) return -1
-        else return 0
-      })
-    }
-    if (data[0]?.sort || data[0]?.sort === 0) {
-      data.sort((a, b) => {
+        if (a.update_time < b.update_time) return -1
+      }
+
+      // 其次按 sort 排序
+      if ((a.sort || a.sort === 0) && (b.sort || b.sort === 0)) {
         if (a.sort > b.sort) return 1
-        else if (a.sort < b.sort) return -1
-        else return 0
-      })
-    }
-  }
-  sortData(originData)
-  const trees: any[] = []
-  const subTrees: any[] = []
-  // 获取第一级
-  originData.forEach((item) => {
-    item.children = []
-    if ((!parentCode && !item[parentKey]) || parentCode === item[parentKey]) {
-      trees.push(item)
-    } else {
-      subTrees.push(item)
-    }
-  })
-  // 递归获取子级
-  const findTree = (arr: any[]) => {
-    arr.forEach((list) => {
-      subTrees.forEach((obj) => {
-        if (obj[parentKey] === list[key]) {
-          list.children.push(obj)
-        }
-      })
-      if (list.children.length) findTree(list.children)
+        if (a.sort < b.sort) return -1
+      }
+
+      return 0
     })
   }
-  findTree(trees)
+
+  const sortedData = sortData(originData)
+
+  // 创建节点的深拷贝，避免修改原始数据
+  const createNodeCopy = (item: any) => ({
+    ...item,
+    children: []
+  })
+
+  // 构建节点映射，提高查找性能
+  const nodeMap = new Map()
+  const allNodes: any[] = []
+
+  // 初始化所有节点
+  sortedData.forEach((item) => {
+    const node = createNodeCopy(item)
+    nodeMap.set(item[key], node)
+    allNodes.push(node)
+  })
+
+  const trees: any[] = []
+
+  // 构建树结构
+  allNodes.forEach((node) => {
+    const parentId = node[parentKey]
+    const parentNode = nodeMap.get(parentId)
+
+    // 判断是否为根节点
+    const isRootNode = (!parentCode && !parentId) || parentCode === parentId
+
+    if (isRootNode) {
+      trees.push(node)
+    } else if (parentNode) {
+      // 如果有父节点，则添加到父节点的 children
+      if (!parentNode.children) {
+        parentNode.children = []
+      }
+      parentNode.children.push(node)
+    }
+  })
+
   return trees
 }
 
