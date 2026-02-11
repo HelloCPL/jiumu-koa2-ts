@@ -198,122 +198,57 @@ interface TreeOption {
  * @param option.key? 属性 key
  * @returns 返回树结构数组
  */
-// export const getTree = (option: TreeOption): any[] => {
-//   const { data, parentCode, parentKey = 'parent_code', key = 'code' } = option
-//   if (!data.length) return []
-//   // 去重
-//   const originData = uniqBy(data, 'id')
-//   // 降序排序
-//   const sortData = (data: any[]) => {
-//     if (data[0]?.update_time) {
-//       data.sort((a, b) => {
-//         if (a.update_time > b.update_time) return 1
-//         else if (a.update_time < b.update_time) return -1
-//         else return 0
-//       })
-//     }
-//     if (data[0]?.sort || data[0]?.sort === 0) {
-//       data.sort((a, b) => {
-//         if (a.sort > b.sort) return 1
-//         else if (a.sort < b.sort) return -1
-//         else return 0
-//       })
-//     }
-//   }
-//   sortData(originData)
-//   const trees: any[] = []
-//   const subTrees: any[] = []
-//   // 获取第一级
-//   originData.forEach((item) => {
-//     item.children = []
-//     if ((!parentCode && !item[parentKey]) || parentCode === item[parentKey]) {
-//       trees.push(item)
-//     } else {
-//       subTrees.push(item)
-//     }
-//   })
-//   // 递归获取子级
-//   const findTree = (arr: any[]) => {
-//     arr.forEach((list) => {
-//       subTrees.forEach((obj) => {
-//         if (obj[parentKey] === list[key]) {
-//           list.children.push(obj)
-//         }
-//       })
-//       if (list.children.length) findTree(list.children)
-//     })
-//   }
-//   findTree(trees)
-//   return trees
-// }
 export const getTree = (option: TreeOption): any[] => {
   const { data, parentCode, parentKey = 'parent_code', key = 'code' } = option
-
   if (!data.length) return []
-
-  // 去重并创建数据副本，避免修改原始数据
-  const originData = [...new Map(data.map((item) => [item.id, item])).values()]
-
-  // 排序函数，不修改原数组，返回新数组
-  const sortData = (arr: any[]): any[] => {
-    return [...arr].sort((a, b) => {
-      // 优先按 update_time 排序
-      if (a.update_time && b.update_time) {
-        if (a.update_time > b.update_time) return 1
-        if (a.update_time < b.update_time) return -1
-      }
-
-      // 其次按 sort 排序
-      if ((a.sort || a.sort === 0) && (b.sort || b.sort === 0)) {
-        if (a.sort > b.sort) return 1
-        if (a.sort < b.sort) return -1
-      }
-
-      return 0
-    })
-  }
-
-  const sortedData = sortData(originData)
-
-  // 创建节点的深拷贝，避免修改原始数据
-  const createNodeCopy = (item: any) => ({
-    ...item,
-    children: []
+  // 数据去重并创建深拷贝（不修改原始数据）
+  const originData = Array.from(new Map(data.map((item) => [item.id, { ...item }])).values())
+  // 统一排序规则：sort越小越前，更新时间越晚越前
+  const sortedData = [...originData].sort((a, b) => {
+    const sortA = a.sort ?? Infinity
+    const sortB = b.sort ?? Infinity
+    if (sortA !== sortB) return sortA - sortB
+    const timeA = a.update_time ? new Date(a.update_time).getTime() : 0
+    const timeB = b.update_time ? new Date(b.update_time).getTime() : 0
+    return timeB - timeA
   })
-
-  // 构建节点映射，提高查找性能
+  // 构建节点映射（所有节点已深拷贝）
   const nodeMap = new Map()
   const allNodes: any[] = []
-
-  // 初始化所有节点
   sortedData.forEach((item) => {
-    const node = createNodeCopy(item)
+    const node = { ...item, children: [] }
     nodeMap.set(item[key], node)
     allNodes.push(node)
   })
-
-  const trees: any[] = []
-
   // 构建树结构
+  const trees: any[] = []
   allNodes.forEach((node) => {
     const parentId = node[parentKey]
     const parentNode = nodeMap.get(parentId)
-
-    // 判断是否为根节点
     const isRootNode = (!parentCode && !parentId) || parentCode === parentId
-
     if (isRootNode) {
       trees.push(node)
     } else if (parentNode) {
-      // 如果有父节点，则添加到父节点的 children
-      if (!parentNode.children) {
-        parentNode.children = []
-      }
       parentNode.children.push(node)
     }
   })
-
-  return trees
+  // 递归对每层 children 按统一规则排序（保证所有层级都排序）
+  const sortTree = (nodes: any[]): any[] => {
+    return nodes
+      .map((node) => ({
+        ...node,
+        children: node.children?.length ? sortTree(node.children) : []
+      }))
+      .sort((a, b) => {
+        const sortA = a.sort ?? Infinity
+        const sortB = b.sort ?? Infinity
+        if (sortA !== sortB) return sortA - sortB
+        const timeA = a.update_time ? new Date(a.update_time).getTime() : 0
+        const timeB = b.update_time ? new Date(b.update_time).getTime() : 0
+        return timeB - timeA
+      })
+  }
+  return sortTree(trees)
 }
 
 /**
