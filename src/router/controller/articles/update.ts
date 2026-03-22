@@ -46,7 +46,7 @@ export const doArticleUpdate = async (ctx: Context) => {
           FIND_IN_SET (t1.id, (SELECT t2.cover_img FROM articles t2 WHERE t2.id = ?)) OR 
           FIND_IN_SET (t1.id, (SELECT t3.attachment FROM articles t3 WHERE t3.id = ?))
         )`
-    const data1 = [ctx._params.isSecret, ctx._params.id, ctx._params.id, ctx._user.id]
+    const data1 = [ctx._params.isSecret, ctx._user.id, ctx._params.id, ctx._params.id]
     sqlList.push({ sql: sql1, data: data1, noThrow: true })
   }
   await execTrans(sqlList)
