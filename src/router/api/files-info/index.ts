@@ -64,7 +64,7 @@ export default class API {
     path: 'chunk/add',
     methods: ['post']
   })
-  @Required(['fileHash', 'chunkIndex&isInt'])
+  @Required(['fileHash', { field: 'chunkIndex', name: 'isInt', options: [{ min: 0 }] }])
   async doFileChunkAdd(ctx: Context) {
     await doFileChunkAdd(ctx)
   }
