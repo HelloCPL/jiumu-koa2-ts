@@ -45,8 +45,12 @@ async function run() {
     bundle: true,
     platform: 'node',
     minify: true,
-    outfile: './dist/app.js'
+    outfile: './dist/app.js',
+    external: [], // 不排除任何依赖，全部打包
   })
+
+  // 生成 package.json
+  await generatePackageJson()
 
   console.log('build success')
 }
@@ -174,4 +178,25 @@ function copyFile(originDir, dir, filename) {
       resolve(false)
     }
   })
+}
+
+// 生成 dist 目录专用的 package.json
+async function generatePackageJson() {
+  const originalPackagePath = path.resolve(__dirname, '../package.json')
+  const targetPackagePath = path.resolve(__dirname, '../dist/package.json')
+  const originalPackage = require(originalPackagePath)
+  // 只保留运行时必需的字段
+  const distPackage = {
+    name: originalPackage.name,
+    version: originalPackage.version,
+    description: originalPackage.description,
+    main: 'app.js',
+    scripts: {
+      start: 'node app.js'
+    },
+    author: originalPackage.author,
+    license: originalPackage.license,
+    dependencies: {} // 所有依赖已打包，不需要声明
+  }
+  fs.writeFileSync(targetPackagePath, JSON.stringify(distPackage, null, 2))
 }
