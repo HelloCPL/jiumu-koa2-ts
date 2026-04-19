@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 /dist
+/jiumu-koa2-ts-logs
+/jiumu-koa2-ts-static
 /src/config/secret.ts
 /build
 # ./package-lock.json
