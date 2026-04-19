@@ -18,7 +18,7 @@ async function run() {
   // 复制md文件
   const apiDir = path.resolve(__dirname, '../src/router/api')
   const files = readDirSync(apiDir, '.md', true)
-  const targetApiDir = path.resolve(__dirname, '../dist/dist/src/router/api')
+  const targetApiDir = path.resolve(__dirname, '../dist/src/router/api')
   sureIsDirSync(targetApiDir)
   files.forEach((file) => {
     const t = file.replace(/\\\\/g, '\\').replace(/\\/g, '/')
@@ -45,8 +45,8 @@ async function run() {
     bundle: true,
     platform: 'node',
     minify: true,
-    outfile: './dist/dist/app.js',
-    external: [], // 不排除任何依赖，全部打包
+    outfile: './dist/app.js',
+    external: [] // 不排除任何依赖，全部打包
   })
 
   // 生成 package.json
