@@ -58,7 +58,7 @@ export default class API {
     { field: 'address', required: false, name: 'isLength', options: [{ max: 255 }] },
     { field: 'remarks', required: false, name: 'isLength', options: [{ max: 255 }] }
   ])
-  @Convert(doUserUpdateBaseSelfConvert, doUserUpdateBaseConvert)
+  @Convert(doUserUpdateBaseSelfConvert)
   async doUserUpdateBaseSelf(ctx: Context) {
     await doUserUpdateBaseSelf(ctx)
   }
@@ -69,7 +69,7 @@ export default class API {
     methods: ['post']
   })
   @Required([{ field: 'phone', name: 'isMobilePhone', options: [{ locale: ['zh-CN', 'zh-TW', 'zh-HK'] }] }])
-  @Convert(doUserRegisterConvert, doUserUpdateBaseConvert)
+  @Convert(doUserRegisterConvert)
   async doUserUpdatePhoneSelf(ctx: Context) {
     await doUserUpdatePhoneSelf(ctx)
   }

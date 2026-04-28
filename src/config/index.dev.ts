@@ -10,7 +10,7 @@ import { ConfigOptions } from './interface'
 function createConfig(): ConfigOptions {
   const config: ConfigOptions = {
     ENV: 'dev', // 开发环境
-    PORT: 3030, // http 服务端口
+    PORT: 7100, // http 服务端口
     PUBLIC_PATH: '', // 服务器位置
     DATABASE: {
       // mysql数据库配置
